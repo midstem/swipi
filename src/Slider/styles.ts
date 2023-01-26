@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { SlidesContainerType } from "./types";
+import { DotType, SlidesContainerType } from "./types";
 
 export const SliderContainer = styled.div`
   display: flex;
@@ -26,3 +26,29 @@ export const SlidesContainer = styled.div<SlidesContainerType>(
     height: 100%;
 `
 );
+
+export const SlidesWrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+`;
+
+export const CarouselWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+`;
+
+export const DotsWrapper = styled.div`
+  display: flex;
+  gap: 5px;
+`;
+
+export const Dot = styled.div<DotType>`
+    height: 12px;
+    width: 12px;
+    background-color: ${({slideIndex, index}) => slideIndex === index ? 'black' : 'red'};
+    border-radius: 50%;
+    cursor: pointer;
+`;

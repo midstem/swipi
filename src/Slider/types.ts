@@ -18,6 +18,9 @@ export type SliderProps = {
   children: JSX.Element[];
   sliderUpdates?: sliderUpdateType[];
   defaultSpaceBetween?: number;
+  showDots?: boolean;
+  activeDot?: JSX.Element;
+  dot?: JSX.Element;
 };
 
 export type SlidesContainerType = {
@@ -30,3 +33,8 @@ export type returnSlideWidthType = {
   spaceBetween: number;
   current: HTMLDivElement | null;
 };
+
+export type DotType = {
+  slideIndex: number;
+  index: number;
+}

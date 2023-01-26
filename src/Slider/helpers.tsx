@@ -47,3 +47,12 @@ export const returnSlideWidth = ({
   spaceBetween,
 }: returnSlideWidthType): number =>
   (getSliderWidth(current) + spaceBetween) / visibleCountSlides;
+
+export const calculateSlideIndex = (
+  transform: number,
+  slideWidth: number,
+  children: JSX.Element[],
+): number => {
+  const result = Math.round(Math.abs(transform / slideWidth));
+  return Math.abs(result % children.length)
+};
