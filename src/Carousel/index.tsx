@@ -34,43 +34,33 @@ const Carousel = (): JSX.Element => {
             }}
           />
         </Slide>
-        <Slide key={3}>
+        <Slide key={2}>
           <Box
             sx={{
-              width: "300px",
-              height: "300px",
-              cursor: "pointer",
-              background: "black",
-            }}
-          />
-        </Slide>
-        <Slide key={4}>
-          <Box
-            sx={{
-              width: "300px",
-              height: "300px",
-              cursor: "pointer",
-              background: "grey",
-            }}
-          />
-        </Slide>
-        <Slide key={1}>
-          <Box
-            sx={{
-              width: "300px",
-              height: "300px",
+              width: "100%",
+              height: "100%",
               cursor: "pointer",
               background: "yellow",
             }}
           />
         </Slide>
-        <Slide key={1}>
+        <Slide key={2}>
           <Box
             sx={{
-              width: "300px",
-              height: "300px",
+              width: "100%",
+              height: "100%",
               cursor: "pointer",
-              background: "red",
+              background: "green",
+            }}
+          />
+        </Slide>
+        <Slide key={2}>
+          <Box
+            sx={{
+              width: "100%",
+              height: "100%",
+              cursor: "pointer",
+              background: "black",
             }}
           />
         </Slide>

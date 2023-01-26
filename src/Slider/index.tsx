@@ -45,10 +45,11 @@ export const Slider = ({
         ref={ref}
       >
         <SlidesContainer animation={animation} transform={transform}>
-          {slides.map(({ id }, index) => (
+          {slides?.map(({ id }, index) => (
             <Box
               key={id}
               sx={{
+                boxSizing: "border-box",
                 width: `${slideWidth}px`,
                 paddingRight: `${spaceBetween}px`,
               }}
