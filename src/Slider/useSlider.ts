@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState, useMemo } from "react";
-import { returnSlideWidthType, sliderUpdateType } from "./types";
 import { reduceSlide } from "./constants";
+import { 
+  returnSlideWidthType,
+  sliderUpdateType,
+  NextPrevDotType 
+} from "./types";
 import {
   addUniqueId,
   isCornerSlide,
@@ -101,36 +105,49 @@ export const useSlider = (
     setTransform(movePath > 0 ? rightJump : 0);
   };
 
-  const nextDot = (prev: number, slideWidth: number, children: JSX.Element[]) =>
-    setSlideIndex(calculateSlideIndex(prev - slideWidth, slideWidth, children))
+  const nextDot = (args: NextPrevDotType) =>
+    setSlideIndex(
+      calculateSlideIndex(
+        args.prev - args.slideWidth,
+        args.slideWidth,
+        args.children
+      )
+    );
 
-  const previousDot = (prev: number, slideWidth: number, children: JSX.Element[]) => 
-    setSlideIndex(calculateSlideIndex(prev + slideWidth, slideWidth, children))
+  const previousDot = (args: NextPrevDotType) => 
+    setSlideIndex(
+      calculateSlideIndex(
+        args.prev + args.slideWidth,
+        args.slideWidth,
+        args.children
+      )
+    );
 
   const nextImg = (): void => {
     setTransform((prev) => {
-      nextDot(prev, slideWidth, children);
+      nextDot({prev, slideWidth, children});
+
       return prev - slideWidth
     });
 
     setAnimation(true);
     checkSliderCorner() &&
     putInTheInitialPosition(() => setTransform((prev) => {
-      nextDot(prev, slideWidth, children);
+      nextDot({prev, slideWidth, children});
       return prev - slideWidth
     }));
   };
 
   const prevImg = (): void => {
     setTransform((prev) =>  {
-      previousDot(prev, slideWidth, children);
+      previousDot({prev, slideWidth, children});
       return prev + slideWidth
     });
 
     setAnimation(true);
     checkSliderCorner() &&
       putInTheInitialPosition(() => setTransform((prev) =>  {
-        previousDot(prev, slideWidth, children);
+        previousDot({prev, slideWidth, children});
         return prev + slideWidth
       }));
   };
@@ -148,12 +165,11 @@ export const useSlider = (
   };
 
   const moveTouchScreen = (endX: number): void => {
-    if (mouseDown) {
+    if (!mouseDown) return 
       setAnimation(false);
       moveSlides();
       setEndX(endX);
       setSlideIndex(calculateSlideIndex(transform, slideWidth, children));
-    }
   };
 
   const endTouchScreen = (): void => {

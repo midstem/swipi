@@ -10,21 +10,22 @@ import {
   DotsWrapper,
   Dot 
 } from "./styles";
+import { ArrowLeft, ArrowRight } from "./arrows";
 
 export const Slider = ({
   defaultCountSlides = 3,
   sx = {},
-  nextButton = "⇛",
-  prevButton = "⇚",
+  nextButton = <ArrowRight />,
+  prevButton = <ArrowLeft />,
   children = [],
   sliderUpdates = [],
   defaultSpaceBetween = 0,
   showDots,
   customDot,
   customActiveDot,
-  defaultDotColor,
-  defaultDotActiveColor,
-  defaultDotSize,
+  colorForDefaultDot,
+  activeColorForDefaultDot,
+  sizeForDefaultDot,
 }: SliderProps) => {
   const {
     animation,
@@ -50,7 +51,7 @@ export const Slider = ({
 
   return (
     <CarouselWrapper>
-      <SliderContainer style={sx} onMouseLeave={endTouchScreen}>
+      <SliderContainer style={sx}>
         <SliderButton type="submit" onClick={() => {prevImg()}}>
           {isButton && prevButton}
         </SliderButton>
@@ -91,12 +92,11 @@ export const Slider = ({
             {customDot 
               ? slideIndex === index ? customActiveDot : customDot 
               : <Dot
-                key={index}
                 slideIndex={slideIndex}
                 index={index}
-                defaultDotColor={defaultDotColor}
-                defaultDotSize={defaultDotSize}
-                defaultDotActiveColor={defaultDotActiveColor}/>
+                colorForDefaultDot={colorForDefaultDot}
+                activeColorForDefaultDot={activeColorForDefaultDot}
+                sizeForDefaultDot={sizeForDefaultDot}/>
             }
           </div>
             ))

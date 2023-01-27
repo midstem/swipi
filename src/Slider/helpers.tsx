@@ -54,5 +54,6 @@ export const calculateSlideIndex = (
   children: JSX.Element[],
 ): number => {
   const result = Math.round(Math.abs(transform / slideWidth));
+
   return Math.abs(result % children.length)
 };

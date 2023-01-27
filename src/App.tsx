@@ -1,7 +1,9 @@
-import Carousel from "./Carousel";
+import { Slider } from "./Slider";
 
 function App() {
-  return <Carousel showDots={true} />;
+  return <Slider>
+    
+  </Slider>;
 }
 
 export default App;
