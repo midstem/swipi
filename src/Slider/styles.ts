@@ -46,9 +46,16 @@ export const DotsWrapper = styled.div`
 `;
 
 export const Dot = styled.div<DotType>`
-    height: 12px;
-    width: 12px;
-    background-color: ${({slideIndex, index}) => slideIndex === index ? 'black' : 'red'};
+    aspect-ratio: 1 / 1;
+    width: ${({defaultDotSize}) => defaultDotSize ? defaultDotSize : 12}px;
+    background-color: ${({
+      slideIndex,
+      index,
+      defaultDotColor,
+      defaultDotActiveColor
+      }) => slideIndex === index 
+      ? `${defaultDotColor || 'orange'}` 
+      : `${defaultDotActiveColor || 'black'}`};
     border-radius: 50%;
     cursor: pointer;
 `;

@@ -19,8 +19,11 @@ export type SliderProps = {
   sliderUpdates?: sliderUpdateType[];
   defaultSpaceBetween?: number;
   showDots?: boolean;
-  activeDot?: JSX.Element;
-  dot?: JSX.Element;
+  customDot?: JSX.Element;
+  customActiveDot?: JSX.Element;
+  defaultDotColor?: string;
+  defaultDotActiveColor?: string;
+  defaultDotSize?: number;
 };
 
 export type SlidesContainerType = {
@@ -37,4 +40,7 @@ export type returnSlideWidthType = {
 export type DotType = {
   slideIndex: number;
   index: number;
+  defaultDotColor?: string;
+  defaultDotActiveColor?: string;
+  defaultDotSize?: number;
 }

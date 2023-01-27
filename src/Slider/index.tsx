@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { SliderProps } from "./types";
 import { useSlider } from "./useSlider";
 import { Box } from "./../UI";
@@ -21,6 +20,11 @@ export const Slider = ({
   sliderUpdates = [],
   defaultSpaceBetween = 0,
   showDots,
+  customDot,
+  customActiveDot,
+  defaultDotColor,
+  defaultDotActiveColor,
+  defaultDotSize,
 }: SliderProps) => {
   const {
     animation,
@@ -46,7 +50,7 @@ export const Slider = ({
 
   return (
     <CarouselWrapper>
-      <SliderContainer style={sx}>
+      <SliderContainer style={sx} onMouseLeave={endTouchScreen}>
         <SliderButton type="submit" onClick={() => {prevImg()}}>
           {isButton && prevButton}
         </SliderButton>
@@ -83,11 +87,18 @@ export const Slider = ({
       {showDots &&
         <DotsWrapper>
         {children.map((_, index) => (
-          <Dot
-            key={index}
-            slideIndex={slideIndex}
-            index={index}
-            onClick={() => {handleDotClick(index)}}/>
+          <div key={index} onClick={() => {handleDotClick(index)}}>
+            {customDot 
+              ? slideIndex === index ? customActiveDot : customDot 
+              : <Dot
+                key={index}
+                slideIndex={slideIndex}
+                index={index}
+                defaultDotColor={defaultDotColor}
+                defaultDotSize={defaultDotSize}
+                defaultDotActiveColor={defaultDotActiveColor}/>
+            }
+          </div>
             ))
         }
         </DotsWrapper>
