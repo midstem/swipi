@@ -50,8 +50,8 @@ export const Dot = styled.div<DotType>
     aspect-ratio: 1 / 1;
     width: ${sizeForDefaultDot ? sizeForDefaultDot : 12}px;
     background-color: ${ slideIndex === index 
-      ? `${colorForDefaultDot || 'orange'}` 
-      : `${activeColorForDefaultDot || 'black'}`};
+      ? `${activeColorForDefaultDot || 'orange'}` 
+      : `${colorForDefaultDot || 'black'}`};
     border-radius: 50%;
     cursor: pointer;
 `);

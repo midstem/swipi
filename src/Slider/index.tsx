@@ -11,6 +11,7 @@ import {
   Dot 
 } from "./styles";
 import { ArrowLeft, ArrowRight } from "./arrows";
+import { defaultSliderUpdates } from "./constants";
 
 export const Slider = ({
   defaultCountSlides = 3,
@@ -45,7 +46,7 @@ export const Slider = ({
   } = useSlider(
     defaultCountSlides,
     children,
-    sliderUpdates,
+    sliderUpdates = sliderUpdates.length === 0 ? defaultSliderUpdates : sliderUpdates,
     defaultSpaceBetween
   );
 

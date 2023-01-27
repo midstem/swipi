@@ -17,6 +17,7 @@ export type SliderProps = {
   prevButton?: ReactNode;
   children: JSX.Element[];
   sliderUpdates?: sliderUpdateType[];
+  defaultSliderUpdates?: sliderUpdateType[];
   defaultSpaceBetween?: number;
   showDots?: boolean;
   customDot?: JSX.Element;

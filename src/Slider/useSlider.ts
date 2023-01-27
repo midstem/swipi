@@ -182,6 +182,7 @@ export const useSlider = (
 
   const resizeHandler = (): void => {
     setWindowWidth(window.innerWidth);
+    setTransform(0)
     setAnimation(false);
   };
 
