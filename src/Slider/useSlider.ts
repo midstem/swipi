@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState, useMemo } from "react";
-import { reduceSlide } from "./constants";
-import { 
-  returnSlideWidthType,
-  sliderUpdateType,
-  NextPrevDotType 
-} from "./types";
+/* eslint-disable no-unused-expressions */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+import { useEffect, useRef, useState, useMemo } from 'react';
+import { reduceSlide } from './constants';
+import {
+  ReturnSlideWidthType,
+  SliderUpdateType,
+  NextPrevDotType,
+} from './types';
 import {
   addUniqueId,
   isCornerSlide,
@@ -12,11 +14,13 @@ import {
   returnSlideWidth,
   returnSpaceBetween,
   calculateSlideIndex,
-} from "./helpers";
+} from './helpers';
 
 export const useSlider = (
   children: JSX.Element[],
-  sliderUpdates: sliderUpdateType[]
+  sliderUpdates: SliderUpdateType[],
+  customActiveDot: JSX.Element | undefined,
+  customDot: JSX.Element | undefined
 ) => {
   const [animation, setAnimation] = useState<boolean>(false);
   const [startX, setStartX] = useState<number>(0);
@@ -24,36 +28,34 @@ export const useSlider = (
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [movePath, setMovePath] = useState<number>(0);
   const [transform, setTransform] = useState<number>(0);
-  const [current, setCurrent] = useState<HTMLDivElement | null>(null);
+  const [currentRef, setCurrent] = useState<HTMLDivElement | null>(null);
   const [slideIndex, setSlideIndex] = useState(0);
   const [mouseDown, setMouseDown] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const visibleCountSlides = returnCountSlides(
-    sliderUpdates,
-    windowWidth
-  );
+  const visibleCountSlides = returnCountSlides(sliderUpdates, windowWidth);
 
-  const spaceBetween = returnSpaceBetween(
-    sliderUpdates,
-    windowWidth
-  );
+  const spaceBetween = returnSpaceBetween(sliderUpdates, windowWidth);
 
   const isButton = children.length > visibleCountSlides;
 
-  const returnSlideWidthArgs: returnSlideWidthType = {
+  const returnSlideWidthArgs: ReturnSlideWidthType = {
     visibleCountSlides,
     spaceBetween,
-    current: current,
+    current: currentRef,
   };
 
   const slideWidth = isCornerSlide(sliderUpdates, windowWidth)
     ? returnSlideWidth(returnSlideWidthArgs) * reduceSlide
     : returnSlideWidth(returnSlideWidthArgs);
 
-  const slides = useMemo(() => isButton
-  ? addUniqueId([...children, ...children, ...children])
-  : addUniqueId(children), [isButton, children]);
+  const slides = useMemo(
+    () =>
+      isButton
+        ? addUniqueId([...children, ...children, ...children])
+        : addUniqueId(children),
+    [isButton, children]
+  );
 
   const startTransform = -slideWidth * children.length;
 
@@ -82,9 +84,7 @@ export const useSlider = (
 
   const turnInitialPositionByTouched = () => {
     setAnimation(false);
-    setTransform((transform) =>
-      transform ? transform - startTransform : startTransform
-    );
+    setTransform((prev) => (prev ? prev - startTransform : startTransform));
   };
 
   const moveSlides = (): void => {
@@ -110,7 +110,7 @@ export const useSlider = (
       )
     );
 
-  const previousDot = (args: NextPrevDotType) => 
+  const previousDot = (args: NextPrevDotType) =>
     setSlideIndex(
       calculateSlideIndex(
         args.prev + args.slideWidth,
@@ -121,51 +121,53 @@ export const useSlider = (
 
   const nextImg = (): void => {
     setTransform((prev) => {
-      nextDot({prev, slideWidth, children});
+      nextDot({ prev, slideWidth, children });
 
-      return prev - slideWidth
+      return prev - slideWidth;
     });
 
     setAnimation(true);
     checkSliderCorner() &&
-    putInTheInitialPosition(() => setTransform((prev) => {
-      nextDot({prev, slideWidth, children});
-      return prev - slideWidth
-    }));
+      putInTheInitialPosition(() =>
+        setTransform((prev) => {
+          nextDot({ prev, slideWidth, children });
+          return prev - slideWidth;
+        })
+      );
   };
 
   const prevImg = (): void => {
-    setTransform((prev) =>  {
-      previousDot({prev, slideWidth, children});
-      return prev + slideWidth
+    setTransform((prev) => {
+      previousDot({ prev, slideWidth, children });
+      return prev + slideWidth;
     });
 
     setAnimation(true);
     checkSliderCorner() &&
-      putInTheInitialPosition(() => setTransform((prev) =>  {
-        previousDot({prev, slideWidth, children});
-        return prev + slideWidth
-      }));
+      putInTheInitialPosition(() =>
+        setTransform((prev) => {
+          previousDot({ prev, slideWidth, children });
+          return prev + slideWidth;
+        })
+      );
   };
 
   const onSwipe = (): void => {
-    setTransform(
-      (transform) => Math.round(transform / slideWidth) * slideWidth
-    );
+    setTransform((prev) => Math.round(prev / slideWidth) * slideWidth);
   };
 
-  const startTouchByScreen = (startX: number): void => {
+  const startTouchByScreen = (X: number): void => {
     checkSliderCorner() && turnInitialPositionByTouched();
-    setStartX(startX);
+    setStartX(X);
     setMouseDown(true);
   };
 
-  const moveTouchScreen = (endX: number): void => {
-    if (!mouseDown) return 
-      setAnimation(false);
-      moveSlides();
-      setEndX(endX);
-      setSlideIndex(calculateSlideIndex(transform, slideWidth, children));
+  const moveTouchScreen = (X: number): void => {
+    if (!mouseDown) return;
+    setAnimation(false);
+    moveSlides();
+    setEndX(X);
+    setSlideIndex(calculateSlideIndex(transform, slideWidth, children));
   };
 
   const endTouchScreen = (): void => {
@@ -178,19 +180,22 @@ export const useSlider = (
 
   const resizeHandler = (): void => {
     setWindowWidth(window.innerWidth);
-    setTransform(0)
+    setTransform(0);
     setAnimation(false);
   };
 
   const handleDotClick = (index: number) => {
-    setAnimation(true);  
+    setAnimation(true);
     setTransform(-index * slideWidth);
-    setSlideIndex(index)
+    setSlideIndex(index);
   };
+
+  const returnCustomDots = (index: number) =>
+    slideIndex === index ? customActiveDot : customDot;
 
   useEffect(() => {
     setCurrent(ref.current);
-    window.addEventListener("resize", resizeHandler);
+    window.addEventListener('resize', resizeHandler);
   }, []);
 
   return {
@@ -204,10 +209,11 @@ export const useSlider = (
     slideIndex,
     nextImg,
     prevImg,
-    setTransform, 
+    setTransform,
     setAnimation,
     handleDotClick,
     endTouchScreen,
+    returnCustomDots,
     moveTouchScreen: isButton ? moveTouchScreen : () => {},
     startTouchByScreen: isButton ? startTouchByScreen : () => {},
   };

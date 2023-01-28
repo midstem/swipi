@@ -1,175 +1,70 @@
-# Image_carousel
+# Getting Started with Create React App
 
-### Installation
-**npm**
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-```bash
-npm install image_carousel
-```
+## Available Scripts
 
-**yarn**
+In the project directory, you can run:
 
-```bash
-yarn add image_carousel
-```
+### `npm start`
 
-## **Example**
-```js
-import React from 'react';
-import Slider from 'react-carousel';
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-const SimpleSlider = () => (
-  <Slider>
-    <div>
-      <h3>1</h3>
-    </div>
-    <div>
-      <h3>2</h3>
-    </div>
-    <div>
-      <h3>3</h3>
-    </div>
-    <div>
-      <h3>4</h3>
-    </div>
-    <div>
-      <h3>5</h3>
-    </div>
-  </Slider>
-);
-```
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-## **Props**
+### `npm test`
 
-<table width='100%'>
-  <tr>
-    <th><h3><b>Props</b></h3></th>
-    <th><h3><b>Description</b></h3></th>
-    <th><h3><b>Default</b></h3></th>
-    <th><h3><b>Type</b></h3></th>
-  </tr>
-  <tr>
-    <td>showDots</td>
-    <td>Enable/disable dots.</td>
-    <td><code>false</code></td>
-    <td>boolean</td>
-  </tr>
-  <tr>
-    <td>colorForDefaultDot</td>
-    <td>
-      If a custom dot is not provided but <code>showDots</code> is set to
-      <code>true</code> then you can change the default dots color.
-    </td>
-    <td><code>'orange'</code></td>
-    <td>string</td>
-  </tr>
-  <tr>
-    <td>colorForDefaultActiveDot</td>
-    <td>
-      If a custom active dot is not provided but <code>showDots</code> is set
-      to <code>true</code> then you can change the active dot color.
-    </td>
-    <td><code>'black'</code></td>
-    <td>string</td>
-  </tr>
-  <tr>
-    <td>customDot</td>
-    <td>Provide your custom JSX.Element.</td>
-    <td>-</td>
-    <td>JSX.Element</td>
-  </tr>
-  <tr>
-    <td>customActiveDot</td>
-    <td>
-      Provide your your custom active dot. It will be
-      used to show to the user what slide he is at.
-    </td>
-    <td>-</td>
-    <td>JSX.Element</td>
-  </tr>
-  <tr>
-    <td>prevButton</td>
-    <td>Custom element to move slides back</td>
-    <td>-</td>
-    <td>JSX.Element</td>
-  </tr>
-  <tr>
-    <td>nextButton</td>
-    <td>Custom element to move slides forward</td>
-    <td>-</td>
-    <td>JSX.Element</td>
-  </tr>
-  <tr>
-    <td>sliderUpdates</td>
-    <td>
-      Takes an array of objects to manipulate slides:
-      <code>countSlide, maxWidth, isSlideCornerRight, spaceBetween</code>.
-      If <code>sliderUpdates</code> is not provided then the default
-      settings of it's properties are used.
-    </td>
-    <td>
-      <code>
-        [{ countSlide: 2, maxWidth: 992 },{ countSlide: 1,
-        maxWidth: 450, isSlideCornerRight: true, spaceBetween: 3 }]
-      </code>
-    </td>
-    <td>array</td>
-  </tr>
-  <tr>
-    <td colspan="4" align='center'>
-      <h3><code>sliderUpdates</code> parameters:</h3>
-    </td>
-  </tr>
-  <tr>
-    <td>countSlide</td>
-    <td>Amount of visible slides.</td>
-    <td>
-      <code>3</code> / 
-      screen width <= 992px <code>2</code> / 
-      screen width <= 450px <code>1</code>
-    </td>
-    <td>number</td>
-  </tr>
-  <tr>
-    <td>maxWidth</td>
-    <td>Defines a width after which the slides amount will change.</td>
-    <td><code>992</code>px and <code>450</code>px</td>
-    <td>number</td>
-  </tr>
-  <tr>
-    <td>isSlideCornerRight</td>
-    <td>Show/hide a pice of an element that goes after visible slides.</td>
-    <td><code>false</code> / screen width <= 450px <code>true</code></td>
-    <td>boolean</td>
-  </tr>
-  <tr>
-    <td>spaceBetween</td>
-    <td>Space between slides.</td>
-    <td><code>3</code></td>
-    <td>number</td>
-  </tr>
-</table>
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-<br/>
+### `npm run build`
 
-## Development
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-Want to run demos locally
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-```bash
-git clone https://github.com/MaKs-Tkachyk/image_carousel.git
-cd image_carousel
-```
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-**npm**
-```bash
-npm install
-npm run dev
-```
+### `npm run eject`
 
-**yarn**
-```bash
-yarn
-yarn dev
-```
-**Open** http://localhost:5173/
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
