@@ -11,10 +11,9 @@ export type sliderUpdateType = {
 };
 
 export type SliderProps = {
-  defaultCountSlides?: number;
   sx?: CSSProperties;
-  nextButton?: ReactNode;
-  prevButton?: ReactNode;
+  nextButton?: JSX.Element;
+  prevButton?: JSX.Element;
   children: JSX.Element[];
   sliderUpdates?: sliderUpdateType[];
   defaultSliderUpdates?: sliderUpdateType[];
@@ -23,7 +22,7 @@ export type SliderProps = {
   customDot?: JSX.Element;
   customActiveDot?: JSX.Element;
   colorForDefaultDot?: string;
-  activeColorForDefaultDot?: string;
+  colorForDefaultActiveDot?: string;
   sizeForDefaultDot?: number;
 };
 
@@ -42,7 +41,7 @@ export type DotType = {
   slideIndex: number;
   index: number;
   colorForDefaultDot?: string;
-  activeColorForDefaultDot?: string;
+  colorForDefaultActiveDot?: string;
   sizeForDefaultDot?: number;
 }
 

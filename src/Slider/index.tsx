@@ -14,18 +14,16 @@ import { ArrowLeft, ArrowRight } from "./arrows";
 import { defaultSliderUpdates } from "./constants";
 
 export const Slider = ({
-  defaultCountSlides = 3,
   sx = {},
   nextButton = <ArrowRight />,
   prevButton = <ArrowLeft />,
   children = [],
   sliderUpdates = [],
-  defaultSpaceBetween = 0,
   showDots,
   customDot,
   customActiveDot,
   colorForDefaultDot,
-  activeColorForDefaultDot,
+  colorForDefaultActiveDot,
   sizeForDefaultDot,
 }: SliderProps) => {
   const {
@@ -44,10 +42,8 @@ export const Slider = ({
     moveTouchScreen,
     startTouchByScreen,
   } = useSlider(
-    defaultCountSlides,
     children,
     sliderUpdates = sliderUpdates.length === 0 ? defaultSliderUpdates : sliderUpdates,
-    defaultSpaceBetween
   );
 
   return (
@@ -96,7 +92,7 @@ export const Slider = ({
                 slideIndex={slideIndex}
                 index={index}
                 colorForDefaultDot={colorForDefaultDot}
-                activeColorForDefaultDot={activeColorForDefaultDot}
+                colorForDefaultActiveDot={colorForDefaultActiveDot}
                 sizeForDefaultDot={sizeForDefaultDot}/>
             }
           </div>

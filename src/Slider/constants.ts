@@ -6,5 +6,5 @@ export const reduceSlide = 0.75
 
 export const defaultSliderUpdates: sliderUpdateType[] = [
     { countSlide: 2, maxWidth: BREAKPOINTS.lg },
-    { countSlide: 1, maxWidth: 450, isSlideCornerRight: true, spaceBetween: 3 },
+    { countSlide: 1, maxWidth: 450, isSlideCornerRight: true },
   ];

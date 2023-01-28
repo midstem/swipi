@@ -15,10 +15,8 @@ import {
 } from "./helpers";
 
 export const useSlider = (
-  defaultCountSlides: number,
   children: JSX.Element[],
-  sliderUpdates: sliderUpdateType[],
-  defaultSpaceBetween: number
+  sliderUpdates: sliderUpdateType[]
 ) => {
   const [animation, setAnimation] = useState<boolean>(false);
   const [startX, setStartX] = useState<number>(0);
@@ -32,13 +30,11 @@ export const useSlider = (
   const ref = useRef<HTMLDivElement>(null);
 
   const visibleCountSlides = returnCountSlides(
-    defaultCountSlides,
     sliderUpdates,
     windowWidth
   );
 
   const spaceBetween = returnSpaceBetween(
-    defaultSpaceBetween,
     sliderUpdates,
     windowWidth
   );

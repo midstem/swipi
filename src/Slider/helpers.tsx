@@ -26,20 +26,16 @@ export const isCornerSlide = (
   !!getSliderUpdatesParam(sliderUpdates, windowWidth, "isSlideCornerRight");
 
 export const returnCountSlides = (
-  defaultCountSlides: number,
   sliderUpdates: sliderUpdateType[],
   windowWidth: number
 ): number =>
-  getSliderUpdatesParam(sliderUpdates, windowWidth, "countSlide") ||
-  defaultCountSlides;
+  getSliderUpdatesParam(sliderUpdates, windowWidth, "countSlide") || 3;
 
 export const returnSpaceBetween = (
-  defaultSpaceBetween: number,
   sliderUpdates: sliderUpdateType[],
   windowWidth: number
 ): number =>
-  getSliderUpdatesParam(sliderUpdates, windowWidth, "spaceBetween") ||
-  defaultSpaceBetween;
+  getSliderUpdatesParam(sliderUpdates, windowWidth, "spaceBetween") || 3;
 
 export const returnSlideWidth = ({
   visibleCountSlides,
