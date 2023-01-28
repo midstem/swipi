@@ -1,9 +1,8 @@
-import { ReactNode } from "react";
-import { CSSProperties } from "styled-components";
+import { CSSProperties } from 'styled-components';
 
-export type addUniqueIdReturnType = Array<{ id: string } & JSX.Element>;
+export type AddUniqueIdReturnType = Array<{ id: string } & JSX.Element>;
 
-export type sliderUpdateType = {
+export type SliderUpdateType = {
   countSlide: number;
   maxWidth: number;
   isSlideCornerRight?: boolean;
@@ -15,8 +14,8 @@ export type SliderProps = {
   nextButton?: JSX.Element;
   prevButton?: JSX.Element;
   children: JSX.Element[];
-  sliderUpdates?: sliderUpdateType[];
-  defaultSliderUpdates?: sliderUpdateType[];
+  sliderUpdates?: SliderUpdateType[];
+  defaultSliderUpdates?: SliderUpdateType[];
   defaultSpaceBetween?: number;
   showDots?: boolean;
   customDot?: JSX.Element;
@@ -31,7 +30,7 @@ export type SlidesContainerType = {
   animation: boolean;
 };
 
-export type returnSlideWidthType = {
+export type ReturnSlideWidthType = {
   visibleCountSlides: number;
   spaceBetween: number;
   current: HTMLDivElement | null;
@@ -43,10 +42,10 @@ export type DotType = {
   colorForDefaultDot?: string;
   colorForDefaultActiveDot?: string;
   sizeForDefaultDot?: number;
-}
+};
 
 export type NextPrevDotType = {
   prev: number;
   slideWidth: number;
   children: JSX.Element[];
-}
+};

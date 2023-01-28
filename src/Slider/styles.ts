@@ -1,5 +1,5 @@
-import styled, { css } from "styled-components";
-import { DotType, SlidesContainerType } from "./types";
+import styled, { css } from 'styled-components';
+import { DotType, SlidesContainerType } from './types';
 
 export const SliderContainer = styled.div`
   display: flex;
@@ -45,13 +45,20 @@ export const DotsWrapper = styled.div`
   gap: 5px;
 `;
 
-export const Dot = styled.div<DotType>
-(({sizeForDefaultDot, slideIndex, index, colorForDefaultDot, colorForDefaultActiveDot})=>css`
+export const Dot = styled.div<DotType>(
+  ({
+    sizeForDefaultDot,
+    slideIndex,
+    index,
+    colorForDefaultDot,
+    colorForDefaultActiveDot,
+  }) => css`
     aspect-ratio: 1 / 1;
-    width: ${sizeForDefaultDot ? sizeForDefaultDot : 12}px;
-    background-color: ${ slideIndex === index 
-      ? `${colorForDefaultActiveDot || 'orange'}` 
+    width: ${sizeForDefaultDot || 12}px;
+    background-color: ${slideIndex === index
+      ? `${colorForDefaultActiveDot || 'orange'}`
       : `${colorForDefaultDot || 'black'}`};
     border-radius: 50%;
     cursor: pointer;
-`);
+  `
+);

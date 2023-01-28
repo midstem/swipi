@@ -1,17 +1,19 @@
-import { SliderProps } from "./types";
-import { useSlider } from "./useSlider";
-import { Box } from "./../UI";
-import { 
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import { SliderProps } from './types';
+import { useSlider } from './useSlider';
+import { Box } from '../UI';
+import {
   CarouselWrapper,
   SliderButton,
   SliderContainer,
   SlidesContainer,
   SlidesWrapper,
   DotsWrapper,
-  Dot 
-} from "./styles";
-import { ArrowLeft, ArrowRight } from "./arrows";
-import { defaultSliderUpdates } from "./constants";
+  Dot,
+} from './styles';
+import { ArrowLeft, ArrowRight } from './arrows';
+import { defaultSliderUpdates } from './constants';
 
 export const Slider = ({
   sx = {},
@@ -26,6 +28,9 @@ export const Slider = ({
   colorForDefaultActiveDot,
   sizeForDefaultDot,
 }: SliderProps) => {
+  const currentSliderUpdates =
+    sliderUpdates.length === 0 ? defaultSliderUpdates : sliderUpdates;
+
   const {
     animation,
     transform,
@@ -39,17 +44,20 @@ export const Slider = ({
     nextImg,
     prevImg,
     endTouchScreen,
+    returnCustomDots,
     moveTouchScreen,
     startTouchByScreen,
-  } = useSlider(
-    children,
-    sliderUpdates = sliderUpdates.length === 0 ? defaultSliderUpdates : sliderUpdates,
-  );
+  } = useSlider(children, currentSliderUpdates, customActiveDot, customDot);
 
   return (
     <CarouselWrapper>
       <SliderContainer style={sx}>
-        <SliderButton type="submit" onClick={() => {prevImg()}}>
+        <SliderButton
+          type="submit"
+          onClick={() => {
+            prevImg();
+          }}
+        >
           {isButton && prevButton}
         </SliderButton>
         <SlidesWrapper
@@ -57,7 +65,6 @@ export const Slider = ({
           onTouchStart={(e) => startTouchByScreen(e.touches[0].clientX)}
           onTouchMove={(e) => moveTouchScreen(e.touches[0].clientX)}
           onTouchEnd={endTouchScreen}
-
           onMouseDown={(e) => startTouchByScreen(e.clientX)}
           onMouseMove={(e) => moveTouchScreen(e.clientX)}
           onMouseUp={endTouchScreen}
@@ -68,7 +75,7 @@ export const Slider = ({
               <Box
                 key={id}
                 sx={{
-                  boxSizing: "border-box",
+                  boxSizing: 'border-box',
                   width: `${slideWidth}px`,
                   paddingRight: `${spaceBetween}px`,
                 }}
@@ -82,24 +89,30 @@ export const Slider = ({
           {isButton && nextButton}
         </SliderButton>
       </SliderContainer>
-      {showDots &&
+      {showDots && (
         <DotsWrapper>
-        {children.map((_, index) => (
-          <div key={index} onClick={() => {handleDotClick(index)}}>
-            {customDot 
-              ? slideIndex === index ? customActiveDot : customDot 
-              : <Dot
-                slideIndex={slideIndex}
-                index={index}
-                colorForDefaultDot={colorForDefaultDot}
-                colorForDefaultActiveDot={colorForDefaultActiveDot}
-                sizeForDefaultDot={sizeForDefaultDot}/>
-            }
-          </div>
-            ))
-        }
+          {children.map((_, index) => (
+            <div
+              key={index}
+              onClick={() => {
+                handleDotClick(index);
+              }}
+            >
+              {customDot ? (
+                returnCustomDots(index)
+              ) : (
+                <Dot
+                  slideIndex={slideIndex}
+                  index={index}
+                  colorForDefaultDot={colorForDefaultDot}
+                  colorForDefaultActiveDot={colorForDefaultActiveDot}
+                  sizeForDefaultDot={sizeForDefaultDot}
+                />
+              )}
+            </div>
+          ))}
         </DotsWrapper>
-      }
+      )}
     </CarouselWrapper>
   );
 };

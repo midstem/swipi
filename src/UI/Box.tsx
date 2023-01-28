@@ -1,5 +1,5 @@
-import { SIZES } from "./../constants";
-import { Spacing } from "./../types";
+import { SIZES } from '../constants';
+import { Spacing } from '../types';
 
 type Stiles = {
   display?: string;
@@ -19,16 +19,16 @@ type Stiles = {
 
 const setStyles = (props: Stiles) => ({
   display: props.display,
-  margin: `${props.m ? SIZES[props.m] : "auto"}rem`,
-  marginLeft: `${props.ml ? SIZES[props.ml] : "auto"}rem`,
-  marginRight: `${props.mr ? SIZES[props.mr] : "auto"}rem`,
-  marginTop: `${props.mt ? SIZES[props.mt] : "auto"}rem`,
-  marginBottom: `${props.mb ? SIZES[props.mb] : "auto"}rem`,
-  padding: `${props.p ? SIZES[props.p] : "auto"}rem`,
-  paddingLeft: `${props.pl ? SIZES[props.pl] : "auto"}rem`,
-  paddingRight: `${props.pr ? SIZES[props.pr] : "auto"}rem`,
-  paddingTop: `${props.pt ? SIZES[props.pt] : "auto"}rem`,
-  paddingBottom: `${props.pb ? SIZES[props.pb] : "auto"}rem`,
+  margin: `${props.m ? SIZES[props.m] : 'auto'}rem`,
+  marginLeft: `${props.ml ? SIZES[props.ml] : 'auto'}rem`,
+  marginRight: `${props.mr ? SIZES[props.mr] : 'auto'}rem`,
+  marginTop: `${props.mt ? SIZES[props.mt] : 'auto'}rem`,
+  marginBottom: `${props.mb ? SIZES[props.mb] : 'auto'}rem`,
+  padding: `${props.p ? SIZES[props.p] : 'auto'}rem`,
+  paddingLeft: `${props.pl ? SIZES[props.pl] : 'auto'}rem`,
+  paddingRight: `${props.pr ? SIZES[props.pr] : 'auto'}rem`,
+  paddingTop: `${props.pt ? SIZES[props.pt] : 'auto'}rem`,
+  paddingBottom: `${props.pb ? SIZES[props.pb] : 'auto'}rem`,
   ...props.sx,
 });
 
@@ -37,7 +37,7 @@ type BoxProps = {
 } & Stiles;
 
 export const Box = ({
-  display = "block",
+  display = 'block',
   sx = {},
   m = 0,
   ml = 0,
@@ -49,7 +49,7 @@ export const Box = ({
   pr = 0,
   pt = 0,
   pb = 0,
-  tag: Tag = "div",
+  tag: Tag = 'div',
   children,
 }: BoxProps) => (
   <Tag style={setStyles({ sx, display, m, ml, mr, mt, mb, p, pl, pr, pt, pb })}>
