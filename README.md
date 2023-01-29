@@ -4,23 +4,23 @@
 **npm**
 
 ```bash
-npm install image_carousel
+npm install infinite-image-slider
 ```
 
 **yarn**
 
 ```bash
-yarn add image_carousel
+yarn add infinite-image-slider
 ```
 
-## **Example**
+## [Example](https://codesandbox.io/s/infinite-image-slider-8y1ts3)
 ```js
 import React from 'react';
-import Slider from 'react-carousel';
+import Slider from 'infinite-image-slider';
 
 const SimpleSlider = () => (
-  <Slider>
-    <div>
+  <Slider showDots={true}>
+    <div style={{height: '300px'}}>
       <h3>1</h3>
     </div>
     <div>
@@ -172,4 +172,4 @@ npm run dev
 yarn
 yarn dev
 ```
-**Open** http://localhost:5173/
+**Open** http://localhost:3000/
