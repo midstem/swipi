@@ -1,68 +1,115 @@
-import { SliderButton, SliderContainer, SlidesContainer } from "./styles";
-import { useSlider } from "./useSlider";
-import { Box } from "./../UI";
-import { SliderProps } from "./types";
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import React from 'react';
+import { SliderProps } from './types';
+import { useSlider } from './useSlider';
+import { Box } from '../UI';
+import {
+  CarouselWrapper,
+  SliderButton,
+  SliderContainer,
+  SlidesContainer,
+  SlidesWrapper,
+  DotsWrapper,
+  Dot,
+} from './styles';
+import { defaultSliderUpdates } from './constants';
 
 export const Slider = ({
-  defaultCountSlides = 3,
   sx = {},
-  nextButton = "⇛",
-  prevButton = "⇚",
+  nextButton = 'ᐳ',
+  prevButton = 'ᐸ',
   children = [],
-  sliderUpdates = [],
-  defaultSpaceBetween = 0,
+  sliderUpdates = defaultSliderUpdates,
+  showDots,
+  customDot,
+  customActiveDot,
+  colorForDefaultDot,
+  colorForDefaultActiveDot,
+  sizeForDefaultDot,
 }: SliderProps) => {
   const {
     animation,
-    nextImg,
-    prevImg,
     transform,
     slideWidth,
     ref,
     slides,
-    endTouchScreen,
-    moveTouchScreen,
-    startTouchByScreen,
     isButton,
     spaceBetween,
-  } = useSlider(
-    defaultCountSlides,
-    children,
-    sliderUpdates,
-    defaultSpaceBetween
-  );
+    slideIndex,
+    handleDotClick,
+    nextImg,
+    prevImg,
+    endTouchScreen,
+    returnCustomDots,
+    moveTouchScreen,
+    startTouchByScreen,
+  } = useSlider(children, sliderUpdates, customActiveDot, customDot);
 
   return (
-    <SliderContainer style={sx}>
-      <SliderButton type="submit" onClick={prevImg}>
-        {isButton && prevButton}
-      </SliderButton>
-      <div
-        onTouchStart={(e) => startTouchByScreen(e.touches[0].clientX)}
-        onTouchMove={(e) => moveTouchScreen(e.touches[0].clientX)}
-        onTouchEnd={endTouchScreen}
-        style={{ overflow: "hidden", height: "100%", width: "100%" }}
-        ref={ref}
-      >
-        <SlidesContainer animation={animation} transform={transform}>
-          {slides?.map(({ id }, index) => (
-            <Box
-              key={id}
-              sx={{
-                boxSizing: "border-box",
-                width: `${slideWidth}px`,
-                paddingRight: `${spaceBetween}px`,
+    <CarouselWrapper>
+      <SliderContainer style={sx}>
+        <SliderButton
+          type="submit"
+          onClick={() => {
+            prevImg();
+          }}
+        >
+          {isButton && prevButton}
+        </SliderButton>
+        <SlidesWrapper
+          ref={ref}
+          onTouchStart={(e) => startTouchByScreen(e.touches[0].clientX)}
+          onTouchMove={(e) => moveTouchScreen(e.touches[0].clientX)}
+          onTouchEnd={endTouchScreen}
+          onMouseDown={(e) => startTouchByScreen(e.clientX)}
+          onMouseMove={(e) => moveTouchScreen(e.clientX)}
+          onMouseUp={endTouchScreen}
+          onMouseLeave={endTouchScreen}
+        >
+          <SlidesContainer animation={animation} transform={transform}>
+            {slides?.map(({ id }, index) => (
+              <Box
+                key={id}
+                sx={{
+                  boxSizing: 'border-box',
+                  width: `${slideWidth}px`,
+                  paddingRight: `${spaceBetween}px`,
+                }}
+              >
+                {slides[index]}
+              </Box>
+            ))}
+          </SlidesContainer>
+        </SlidesWrapper>
+        <SliderButton type="submit" onClick={nextImg}>
+          {isButton && nextButton}
+        </SliderButton>
+      </SliderContainer>
+      {showDots && (
+        <DotsWrapper>
+          {children.map((_, index) => (
+            <div
+              key={index}
+              onClick={() => {
+                handleDotClick(index);
               }}
             >
-              {slides[index]}
-            </Box>
+              {customDot ? (
+                returnCustomDots(index)
+              ) : (
+                <Dot
+                  slideIndex={slideIndex}
+                  index={index}
+                  colorForDefaultDot={colorForDefaultDot}
+                  colorForDefaultActiveDot={colorForDefaultActiveDot}
+                  sizeForDefaultDot={sizeForDefaultDot}
+                />
+              )}
+            </div>
           ))}
-        </SlidesContainer>
-      </div>
-
-      <SliderButton type="submit" onClick={nextImg}>
-        {isButton && nextButton}
-      </SliderButton>
-    </SliderContainer>
+        </DotsWrapper>
+      )}
+    </CarouselWrapper>
   );
 };
