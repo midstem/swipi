@@ -13,26 +13,26 @@ npm install infinite-image-slider
 yarn add infinite-image-slider
 ```
 
-## [Example](https://codesandbox.io/s/infinite-image-slider-8y1ts3)
+## 👉 [Example](https://codesandbox.io/s/infinite-image-slider-8y1ts3) 👈
 ```js
 import React from 'react';
 import Slider from 'infinite-image-slider';
 
 const SimpleSlider = () => (
   <Slider showDots={true}>
-    <div style={{height: '300px'}}>
+    <div style={{height: '300px', backgroundColor: 'black'}}>
       <h3>1</h3>
     </div>
-    <div>
+    <div style={{height: '300px', backgroundColor: 'blue'}}>
       <h3>2</h3>
     </div>
-    <div>
+    <div style={{height: '300px', backgroundColor: 'red'}}>
       <h3>3</h3>
     </div>
-    <div>
+    <div style={{height: '300px', backgroundColor: 'green'}}>
       <h3>4</h3>
     </div>
-    <div>
+    <div style={{height: '300px', backgroundColor: 'pink'}}>
       <h3>5</h3>
     </div>
   </Slider>
@@ -91,13 +91,13 @@ const SimpleSlider = () => (
     <td>prevButton</td>
     <td>Custom element to move slides back</td>
     <td>-</td>
-    <td>JSX.Element</td>
+    <td>ReactNode</td>
   </tr>
   <tr>
     <td>nextButton</td>
     <td>Custom element to move slides forward</td>
     <td>-</td>
-    <td>JSX.Element</td>
+    <td>ReactNode</td>
   </tr>
   <tr>
     <td>sliderUpdates</td>
@@ -105,13 +105,12 @@ const SimpleSlider = () => (
       Takes an array of objects to manipulate slides:
       <code>countSlide, maxWidth, isSlideCornerRight, spaceBetween</code>.
       If <code>sliderUpdates</code> is not provided then the default
-      settings of it's properties are used.
+      settings of it's parameters are used.
     </td>
     <td>
-      <code>
-        [{ countSlide: 2, maxWidth: 992 },{ countSlide: 1,
-        maxWidth: 450, isSlideCornerRight: true, spaceBetween: 3 }]
-      </code>
+      <div>
+        <code>[{ countSlide: 2, maxWidth: 992 }, { countSlide: 1, maxWidth: 450, isSlideCornerRight: true, spaceBetween: 3 }]</code>
+      </div>
     </td>
     <td>array</td>
   </tr>
@@ -124,9 +123,9 @@ const SimpleSlider = () => (
     <td>countSlide</td>
     <td>Amount of visible slides.</td>
     <td>
-      <code>3</code> / 
-      screen width <= 992px <code>2</code> / 
-      screen width <= 450px <code>1</code>
+      <div>screen width > 992px: <code>3</code> slides</div>
+      <div>screen width <= 992px: <code>2</code> slides</div>
+      <div>screen width <= 450px: <code>1</code> slide</div>
     </td>
     <td>number</td>
   </tr>
@@ -139,37 +138,16 @@ const SimpleSlider = () => (
   <tr>
     <td>isSlideCornerRight</td>
     <td>Show/hide a pice of an element that goes after visible slides.</td>
-    <td><code>false</code> / screen width <= 450px <code>true</code></td>
+    <td>
+      <div>screen width > 450: <code>false</code></div>
+      <div>screen width <= 450px: <code>true</code></div>
+    </td>
     <td>boolean</td>
   </tr>
   <tr>
     <td>spaceBetween</td>
     <td>Space between slides.</td>
-    <td><code>3</code></td>
+    <td><code>3</code>px</td>
     <td>number</td>
   </tr>
 </table>
-
-<br/>
-
-## Development
-
-Want to run demos locally
-
-```bash
-git clone https://github.com/MaKs-Tkachyk/image_carousel.git
-cd image_carousel
-```
-
-**npm**
-```bash
-npm install
-npm run dev
-```
-
-**yarn**
-```bash
-yarn
-yarn dev
-```
-**Open** http://localhost:3000/

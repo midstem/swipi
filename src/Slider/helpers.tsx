@@ -35,7 +35,7 @@ export const returnSpaceBetween = (
   sliderUpdates: SliderUpdateType[],
   windowWidth: number
 ): number =>
-  getSliderUpdatesParam(sliderUpdates, windowWidth, 'spaceBetween') || 3;
+  getSliderUpdatesParam(sliderUpdates, windowWidth, 'spaceBetween') || 0;
 
 export const returnSlideWidth = ({
   visibleCountSlides,

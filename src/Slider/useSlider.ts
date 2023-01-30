@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-import { useEffect, useRef, useState, useMemo } from 'react';
+import { useEffect, useRef, useState, useMemo, ReactNode } from 'react';
 import { reduceSlide } from './constants';
 import {
   ReturnSlideWidthType,
@@ -82,7 +82,7 @@ export const useSlider = (
     return () => clearTimeout(timer);
   };
 
-  const turnInitialPositionByTouched = () => {
+  const turnInitialPositionByTouched = (): void => {
     setAnimation(false);
     setTransform((prev) => (prev ? prev - startTransform : startTransform));
   };
@@ -101,7 +101,7 @@ export const useSlider = (
     setTransform(movePath > 0 ? rightJump : 0);
   };
 
-  const nextDot = (args: NextPrevDotType) =>
+  const nextDot = (args: NextPrevDotType): void =>
     setSlideIndex(
       calculateSlideIndex(
         args.prev - args.slideWidth,
@@ -110,7 +110,7 @@ export const useSlider = (
       )
     );
 
-  const previousDot = (args: NextPrevDotType) =>
+  const previousDot = (args: NextPrevDotType): void =>
     setSlideIndex(
       calculateSlideIndex(
         args.prev + args.slideWidth,
@@ -184,13 +184,13 @@ export const useSlider = (
     setAnimation(false);
   };
 
-  const handleDotClick = (index: number) => {
+  const handleDotClick = (index: number): void => {
     setAnimation(true);
     setTransform(-index * slideWidth);
     setSlideIndex(index);
   };
 
-  const returnCustomDots = (index: number) =>
+  const returnCustomDots = (index: number): ReactNode =>
     slideIndex === index ? customActiveDot : customDot;
 
   useEffect(() => {

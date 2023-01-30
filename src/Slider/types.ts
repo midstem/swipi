@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { CSSProperties } from 'styled-components';
 
 export type AddUniqueIdReturnType = Array<{ id: string } & JSX.Element>;
@@ -11,8 +12,8 @@ export type SliderUpdateType = {
 
 export type SliderProps = {
   sx?: CSSProperties;
-  nextButton?: JSX.Element;
-  prevButton?: JSX.Element;
+  nextButton?: ReactNode;
+  prevButton?: ReactNode;
   children: JSX.Element[];
   sliderUpdates?: SliderUpdateType[];
   defaultSliderUpdates?: SliderUpdateType[];

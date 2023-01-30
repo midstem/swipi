@@ -13,15 +13,14 @@ import {
   DotsWrapper,
   Dot,
 } from './styles';
-import { ArrowLeft, ArrowRight } from './arrows';
 import { defaultSliderUpdates } from './constants';
 
 export const Slider = ({
   sx = {},
-  nextButton = <ArrowRight />,
-  prevButton = <ArrowLeft />,
+  nextButton = 'ᐳ',
+  prevButton = 'ᐸ',
   children = [],
-  sliderUpdates = [],
+  sliderUpdates = defaultSliderUpdates,
   showDots,
   customDot,
   customActiveDot,
@@ -29,9 +28,6 @@ export const Slider = ({
   colorForDefaultActiveDot,
   sizeForDefaultDot,
 }: SliderProps) => {
-  const currentSliderUpdates =
-    sliderUpdates.length === 0 ? defaultSliderUpdates : sliderUpdates;
-
   const {
     animation,
     transform,
@@ -48,7 +44,7 @@ export const Slider = ({
     returnCustomDots,
     moveTouchScreen,
     startTouchByScreen,
-  } = useSlider(children, currentSliderUpdates, customActiveDot, customDot);
+  } = useSlider(children, sliderUpdates, customActiveDot, customDot);
 
   return (
     <CarouselWrapper>
