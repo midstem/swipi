@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "license": "MIT",
   "author": "Maksym Tkachuk",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
+  "main": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
   "peerDependencies": {
     "react": ">=16"
@@ -38,9 +37,7 @@
     "build": "tsc",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "prepare": "rm -rf dist && npm run build",
-    "version": "npm run lint:fix && git add -A src",
-    "postversion": "git push && git push --tags"
+    "prepare": "rm -rf dist && npm run build"
   },
   "dependencies": {
     "react": "^18.2.0",
