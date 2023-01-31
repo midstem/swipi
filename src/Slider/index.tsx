@@ -13,19 +13,19 @@ import {
   DotsWrapper,
   Dot,
 } from './styles';
-import { defaultSliderUpdates } from './constants';
+import { defaultConfig } from './constants';
 
 export const Slider = ({
   sx = {},
   nextButton = 'ᐳ',
   prevButton = 'ᐸ',
   children = [],
-  sliderUpdates = defaultSliderUpdates,
+  config = defaultConfig,
   showDots,
   customDot,
   customActiveDot,
-  colorForDefaultDot,
-  colorForDefaultActiveDot,
+  dotColor,
+  activeDotColor,
   sizeForDefaultDot,
 }: SliderProps) => {
   const {
@@ -44,7 +44,7 @@ export const Slider = ({
     returnCustomDots,
     moveTouchScreen,
     startTouchByScreen,
-  } = useSlider(children, sliderUpdates, customActiveDot, customDot);
+  } = useSlider(children, config, customActiveDot, customDot);
 
   return (
     <CarouselWrapper>
@@ -101,8 +101,8 @@ export const Slider = ({
                 <Dot
                   slideIndex={slideIndex}
                   index={index}
-                  colorForDefaultDot={colorForDefaultDot}
-                  colorForDefaultActiveDot={colorForDefaultActiveDot}
+                  dotColor={dotColor}
+                  activeDotColor={activeDotColor}
                   sizeForDefaultDot={sizeForDefaultDot}
                 />
               )}

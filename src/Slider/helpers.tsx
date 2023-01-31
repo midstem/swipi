@@ -2,7 +2,7 @@ import { v4 as uuid } from 'uuid';
 import {
   AddUniqueIdReturnType,
   ReturnSlideWidthType,
-  SliderUpdateType,
+  ConfigType,
 } from './types';
 import { defaultSliderWidth } from './constants';
 
@@ -12,30 +12,27 @@ export const getSliderWidth = (current: HTMLDivElement | null): number =>
 export const addUniqueId = (slides: JSX.Element[]): AddUniqueIdReturnType =>
   slides.map((slide) => ({ ...slide, id: uuid() }));
 
-export const getSliderUpdatesParam = <T extends keyof SliderUpdateType>(
-  sliderUpdates: SliderUpdateType[],
+export const getSliderUpdatesParam = <T extends keyof ConfigType>(
+  config: ConfigType[],
   windowWidth: number,
   param: T
-): SliderUpdateType[T] | undefined =>
-  sliderUpdates.filter((item) => item.maxWidth >= windowWidth).at(-1)?.[param];
+): ConfigType[T] | undefined =>
+  config.filter((item) => item.maxWidth >= windowWidth).at(-1)?.[param];
 
 export const isCornerSlide = (
-  sliderUpdates: SliderUpdateType[],
+  config: ConfigType[],
   windowWidth: number
-): boolean =>
-  !!getSliderUpdatesParam(sliderUpdates, windowWidth, 'isSlideCornerRight');
+): boolean => !!getSliderUpdatesParam(config, windowWidth, 'biasRight');
 
 export const returnCountSlides = (
-  sliderUpdates: SliderUpdateType[],
+  config: ConfigType[],
   windowWidth: number
-): number =>
-  getSliderUpdatesParam(sliderUpdates, windowWidth, 'countSlide') || 3;
+): number => getSliderUpdatesParam(config, windowWidth, 'slidesNumber') || 3;
 
 export const returnSpaceBetween = (
-  sliderUpdates: SliderUpdateType[],
+  config: ConfigType[],
   windowWidth: number
-): number =>
-  getSliderUpdatesParam(sliderUpdates, windowWidth, 'spaceBetween') || 0;
+): number => getSliderUpdatesParam(config, windowWidth, 'spaceBetween') || 0;
 
 export const returnSlideWidth = ({
   visibleCountSlides,

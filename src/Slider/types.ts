@@ -3,10 +3,10 @@ import { CSSProperties } from 'styled-components';
 
 export type AddUniqueIdReturnType = Array<{ id: string } & JSX.Element>;
 
-export type SliderUpdateType = {
-  countSlide: number;
+export type ConfigType = {
+  slidesNumber: number;
   maxWidth: number;
-  isSlideCornerRight?: boolean;
+  biasRight?: boolean;
   spaceBetween?: number;
 };
 
@@ -15,14 +15,14 @@ export type SliderProps = {
   nextButton?: ReactNode;
   prevButton?: ReactNode;
   children: JSX.Element[];
-  sliderUpdates?: SliderUpdateType[];
-  defaultSliderUpdates?: SliderUpdateType[];
+  config?: ConfigType[];
+  defaultSliderUpdates?: ConfigType[];
   defaultSpaceBetween?: number;
   showDots?: boolean;
   customDot?: JSX.Element;
   customActiveDot?: JSX.Element;
-  colorForDefaultDot?: string;
-  colorForDefaultActiveDot?: string;
+  dotColor?: string;
+  activeDotColor?: string;
   sizeForDefaultDot?: number;
 };
 
@@ -40,8 +40,8 @@ export type ReturnSlideWidthType = {
 export type DotType = {
   slideIndex: number;
   index: number;
-  colorForDefaultDot?: string;
-  colorForDefaultActiveDot?: string;
+  dotColor?: string;
+  activeDotColor?: string;
   sizeForDefaultDot?: number;
 };
 

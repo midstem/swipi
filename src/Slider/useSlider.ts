@@ -2,11 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { useEffect, useRef, useState, useMemo, ReactNode } from 'react';
 import { reduceSlide } from './constants';
-import {
-  ReturnSlideWidthType,
-  SliderUpdateType,
-  NextPrevDotType,
-} from './types';
+import { ReturnSlideWidthType, ConfigType, NextPrevDotType } from './types';
 import {
   addUniqueId,
   isCornerSlide,
@@ -18,7 +14,7 @@ import {
 
 export const useSlider = (
   children: JSX.Element[],
-  sliderUpdates: SliderUpdateType[],
+  config: ConfigType[],
   customActiveDot: JSX.Element | undefined,
   customDot: JSX.Element | undefined
 ) => {
@@ -33,9 +29,9 @@ export const useSlider = (
   const [mouseDown, setMouseDown] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const visibleCountSlides = returnCountSlides(sliderUpdates, windowWidth);
+  const visibleCountSlides = returnCountSlides(config, windowWidth);
 
-  const spaceBetween = returnSpaceBetween(sliderUpdates, windowWidth);
+  const spaceBetween = returnSpaceBetween(config, windowWidth);
 
   const isButton = children.length > visibleCountSlides;
 
@@ -45,7 +41,7 @@ export const useSlider = (
     current: currentRef,
   };
 
-  const slideWidth = isCornerSlide(sliderUpdates, windowWidth)
+  const slideWidth = isCornerSlide(config, windowWidth)
     ? returnSlideWidth(returnSlideWidthArgs) * reduceSlide
     : returnSlideWidth(returnSlideWidthArgs);
 

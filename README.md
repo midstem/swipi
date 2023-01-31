@@ -1,5 +1,9 @@
 # Image_carousel
 
+## [DomDev](https://domdev.pro/)
+
+<br>
+
 ### Installation
 **npm**
 
@@ -15,8 +19,8 @@ yarn add infinite-image-slider
 
 ## 👉 [Example](https://codesandbox.io/s/infinite-image-slider-8y1ts3) 👈
 ```js
-import React from 'react';
-import Slider from 'infinite-image-slider';
+import React from 'react'
+import Slider from 'infinite-image-slider'
 
 const SimpleSlider = () => (
   <Slider showDots={true}>
@@ -36,7 +40,7 @@ const SimpleSlider = () => (
       <h3>5</h3>
     </div>
   </Slider>
-);
+)
 ```
 
 ## **Props**
@@ -55,7 +59,7 @@ const SimpleSlider = () => (
     <td>boolean</td>
   </tr>
   <tr>
-    <td>colorForDefaultDot</td>
+    <td>dotColor</td>
     <td>
       If a custom dot is not provided but <code>showDots</code> is set to
       <code>true</code> then you can change the default dots color.
@@ -64,7 +68,7 @@ const SimpleSlider = () => (
     <td>string</td>
   </tr>
   <tr>
-    <td>colorForDefaultActiveDot</td>
+    <td>activeDotColor</td>
     <td>
       If a custom active dot is not provided but <code>showDots</code> is set
       to <code>true</code> then you can change the active dot color.
@@ -90,37 +94,37 @@ const SimpleSlider = () => (
   <tr>
     <td>prevButton</td>
     <td>Custom element to move slides back</td>
-    <td>-</td>
+    <td>ᐸ</td>
     <td>ReactNode</td>
   </tr>
   <tr>
     <td>nextButton</td>
     <td>Custom element to move slides forward</td>
-    <td>-</td>
+    <td>ᐳ</td>
     <td>ReactNode</td>
   </tr>
   <tr>
-    <td>sliderUpdates</td>
+    <td>config</td>
     <td>
       Takes an array of objects to manipulate slides:
-      <code>countSlide, maxWidth, isSlideCornerRight, spaceBetween</code>.
-      If <code>sliderUpdates</code> is not provided then the default
+      <code>slidesNumber, maxWidth, biasRight, spaceBetween</code>.
+      If <code>config</code> is not provided then the default
       settings of it's parameters are used.
     </td>
     <td>
       <div>
-        <code>[{ countSlide: 2, maxWidth: 992 }, { countSlide: 1, maxWidth: 450, isSlideCornerRight: true, spaceBetween: 3 }]</code>
+        <code>[{ slidesNumber: 2, maxWidth: 992 }, { slidesNumber: 1, maxWidth: 450, biasRight: true, spaceBetween: 3 }]</code>
       </div>
     </td>
     <td>array</td>
   </tr>
   <tr>
     <td colspan="4" align='center'>
-      <h3><code>sliderUpdates</code> parameters:</h3>
+      <h3><code>config</code> parameters:</h3>
     </td>
   </tr>
   <tr>
-    <td>countSlide</td>
+    <td>slidesNumber</td>
     <td>Amount of visible slides.</td>
     <td>
       <div>screen width > 992px: <code>3</code> slides</div>
@@ -136,7 +140,7 @@ const SimpleSlider = () => (
     <td>number</td>
   </tr>
   <tr>
-    <td>isSlideCornerRight</td>
+    <td>biasRight</td>
     <td>Show/hide a pice of an element that goes after visible slides.</td>
     <td>
       <div>screen width > 450: <code>false</code></div>
@@ -147,7 +151,7 @@ const SimpleSlider = () => (
   <tr>
     <td>spaceBetween</td>
     <td>Space between slides.</td>
-    <td><code>3</code>px</td>
+    <td><code>0</code>px</td>
     <td>number</td>
   </tr>
 </table>

@@ -1,12 +1,11 @@
 {
   "name": "infinite-image-slider",
   "version": "0.0.1",
-  "license": "ISC",
-  "author": "",
+  "license": "MIT",
+  "author": "Maksym Tkachuk",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
-  "description": "My first react typescript package",
   "peerDependencies": {
     "react": ">=16"
   },
@@ -35,7 +34,6 @@
     ]
   },
   "scripts": {
-    "start": "react-scripts start",
     "build": "tsc",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -46,10 +44,8 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
     "styled-components": "^5.3.6",
-    "uuid": "^9.0.0",
-    "web-vitals": "^2.1.4"
+    "uuid": "^9.0.0"
   },
   "browserslist": {
     "production": [
