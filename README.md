@@ -1,4 +1,4 @@
-# Image_carousel
+# Infinite Image Slider
 
 ## [DomDev](https://domdev.pro/)
 
@@ -17,30 +17,37 @@ npm install infinite-image-slider
 yarn add infinite-image-slider
 ```
 
-## 👉 [Example](https://codesandbox.io/s/infinite-image-slider-8y1ts3) 👈
+## 👉 [Example](https://codesandbox.io/p/github/alex-dishen/slider-example/draft/sleepy-panka?file=%2Fsrc%2FApp.tsx) 👈
 ```js
-import React from 'react'
-import Slider from 'infinite-image-slider'
+import React from 'react';
+import { Slider } from '../Slider';
+import pictures from './constants';
+import { ArrowLeft, ArrowRight } from './arrows';
+import { SliderWrapper, Image } from './styles/App.styles';
 
-const SimpleSlider = () => (
-  <Slider showDots={true}>
-    <div style={{height: '300px', backgroundColor: 'black'}}>
-      <h3>1</h3>
-    </div>
-    <div style={{height: '300px', backgroundColor: 'blue'}}>
-      <h3>2</h3>
-    </div>
-    <div style={{height: '300px', backgroundColor: 'red'}}>
-      <h3>3</h3>
-    </div>
-    <div style={{height: '300px', backgroundColor: 'green'}}>
-      <h3>4</h3>
-    </div>
-    <div style={{height: '300px', backgroundColor: 'pink'}}>
-      <h3>5</h3>
-    </div>
-  </Slider>
-)
+const configSettings = [
+  { maxWidth: 1400, slidesNumber: 2, spaceBetween: 4 },
+  { maxWidth: 900, slidesNumber: 1, spaceBetween: 2 },
+];
+
+const App = () => {
+  return (
+    <SliderWrapper>
+      <Slider
+        prevButton={<ArrowLeft />}
+        nextButton={<ArrowRight />}
+        showDots
+        dotColor="black"
+        activeDotColor="blue"
+        config={configSettings}
+      >
+        {pictures.map((picture) => (
+          <Image key={picture.id} src={picture.src} alt={picture.alt} />
+        ))}
+      </Slider>
+    </SliderWrapper>
+  );
+};
 ```
 
 ## **Props**
@@ -104,6 +111,18 @@ const SimpleSlider = () => (
     <td>ReactNode</td>
   </tr>
   <tr>
+    <td>slidesNumber</td>
+    <td>Number of visible slides.</td>
+    <td>3</td>
+    <td>number</td>
+  </tr>
+  <tr>
+    <td>spaceBetweenSlides</td>
+    <td>Space between slides.</td>
+    <td>0</td>
+    <td>number</td>
+  </tr>
+  <tr>
     <td>config</td>
     <td>
       Takes an array of objects to manipulate slides:
@@ -125,7 +144,7 @@ const SimpleSlider = () => (
   </tr>
   <tr>
     <td>slidesNumber</td>
-    <td>Amount of visible slides.</td>
+    <td>Number of visible slides.</td>
     <td>
       <div>screen width > 992px: <code>3</code> slides</div>
       <div>screen width <= 992px: <code>2</code> slides</div>
@@ -155,3 +174,21 @@ const SimpleSlider = () => (
     <td>number</td>
   </tr>
 </table>
+
+<br/>
+
+## **Want to play locally?**
+
+```
+https - $ git clone https://github.com/MaKs-Tkachyk/image_carousel.git
+or
+ssh - $ git clone git@github.com:MaKs-Tkachyk/image_carousel.git
+
+$ cd infinite-image-slider
+
+$ git checkout example
+
+$ npm install
+or
+$ yarn
+```

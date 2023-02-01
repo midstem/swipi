@@ -12,6 +12,8 @@ export type ConfigType = {
 
 export type SliderProps = {
   sx?: CSSProperties;
+  spaceBetweenSlides?: number;
+  slidesNumber?: number;
   nextButton?: ReactNode;
   prevButton?: ReactNode;
   children: JSX.Element[];

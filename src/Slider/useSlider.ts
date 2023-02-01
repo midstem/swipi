@@ -16,7 +16,9 @@ export const useSlider = (
   children: JSX.Element[],
   config: ConfigType[],
   customActiveDot: JSX.Element | undefined,
-  customDot: JSX.Element | undefined
+  customDot: JSX.Element | undefined,
+  slidesNumber: number,
+  spaceBetweenSlides: number
 ) => {
   const [animation, setAnimation] = useState<boolean>(false);
   const [startX, setStartX] = useState<number>(0);
@@ -29,9 +31,17 @@ export const useSlider = (
   const [mouseDown, setMouseDown] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const visibleCountSlides = returnCountSlides(config, windowWidth);
+  const visibleCountSlides = returnCountSlides(
+    config,
+    windowWidth,
+    slidesNumber
+  );
 
-  const spaceBetween = returnSpaceBetween(config, windowWidth);
+  const spaceBetween = returnSpaceBetween(
+    config,
+    windowWidth,
+    spaceBetweenSlides
+  );
 
   const isButton = children.length > visibleCountSlides;
 

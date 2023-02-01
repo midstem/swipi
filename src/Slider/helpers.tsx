@@ -26,13 +26,18 @@ export const isCornerSlide = (
 
 export const returnCountSlides = (
   config: ConfigType[],
-  windowWidth: number
-): number => getSliderUpdatesParam(config, windowWidth, 'slidesNumber') || 3;
+  windowWidth: number,
+  slidesNumber: number
+): number =>
+  getSliderUpdatesParam(config, windowWidth, 'slidesNumber') || slidesNumber;
 
 export const returnSpaceBetween = (
   config: ConfigType[],
-  windowWidth: number
-): number => getSliderUpdatesParam(config, windowWidth, 'spaceBetween') || 0;
+  windowWidth: number,
+  spaceBetweenSlides: number
+): number =>
+  getSliderUpdatesParam(config, windowWidth, 'spaceBetween') ||
+  spaceBetweenSlides;
 
 export const returnSlideWidth = ({
   visibleCountSlides,

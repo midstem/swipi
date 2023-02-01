@@ -17,6 +17,8 @@ import { defaultConfig } from './constants';
 
 export const Slider = ({
   sx = {},
+  slidesNumber = 3,
+  spaceBetweenSlides = 0,
   nextButton = 'ᐳ',
   prevButton = 'ᐸ',
   children = [],
@@ -44,7 +46,14 @@ export const Slider = ({
     returnCustomDots,
     moveTouchScreen,
     startTouchByScreen,
-  } = useSlider(children, config, customActiveDot, customDot);
+  } = useSlider(
+    children,
+    config,
+    customActiveDot,
+    customDot,
+    slidesNumber,
+    spaceBetweenSlides
+  );
 
   return (
     <CarouselWrapper>
@@ -67,7 +76,13 @@ export const Slider = ({
           onMouseUp={endTouchScreen}
           onMouseLeave={endTouchScreen}
         >
-          <SlidesContainer animation={animation} transform={transform}>
+          <SlidesContainer
+            animation={animation}
+            transform={transform}
+            onDragStart={(e) => {
+              e.preventDefault();
+            }}
+          >
             {slides?.map(({ id }, index) => (
               <Box
                 key={id}
