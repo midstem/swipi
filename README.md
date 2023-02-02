@@ -1,8 +1,11 @@
 # Infinite Image Slider
 
-## [DomDev](https://domdev.pro/)
+<a href='https://domdev.pro/'>
+  <img src='src/assets/domdev.png' height='60'>
+</a>
+<hr/>
 
-<br>
+<p><b>The Infinity Image Slider</b> is a lightweight and compact slider optimized for mobile use. It's built with TypeScript and has a fast loading speed. It's also swappable, making it easy for users to switch slides with a swipe on their mobile device. Its mobile-friendly design and convenience make it a great choice for improving user experience.</p>
 
 ### Installation
 **npm**
@@ -17,7 +20,7 @@ npm install infinite-image-slider
 yarn add infinite-image-slider
 ```
 
-## 👉 [Example](https://codesandbox.io/p/github/alex-dishen/slider-example/draft/sleepy-panka?file=%2Fsrc%2FApp.tsx) 👈
+## 👉 [Demo](https://codesandbox.io/p/github/MaKs-Tkachyk/infinite-image-slider/example?file=%2FREADME.md) 👈
 ```js
 import React from 'react';
 import { Slider } from '../Slider';
@@ -177,7 +180,7 @@ const App = () => {
 
 <br/>
 
-## **Want to play locally?**
+## **Welcome to suggestions**
 
 ```
 https - $ git clone https://github.com/MaKs-Tkachyk/image_carousel.git
@@ -191,4 +194,10 @@ $ git checkout example
 $ npm install
 or
 $ yarn
+
+$ npm start
+or
+$ yarn start
+
+Open: http://localhost:5173/
 ```
