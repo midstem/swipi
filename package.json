@@ -1,6 +1,6 @@
 {
   "name": "infinite-image-slider",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "license": "MIT",
   "author": "Maksym Tkachuk",
   "main": "./dist/esm/index.js",
