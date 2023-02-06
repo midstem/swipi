@@ -1,9 +1,10 @@
 {
   "name": "infinite-image-slider",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "author": "Maksym Tkachuk",
-  "main": "./dist/esm/index.js",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
   "peerDependencies": {
     "react": ">=16"
@@ -34,7 +35,9 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "tsc",
+    "build": "yarn build:esm && yarn build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepare": "rm -rf dist && npm run build"

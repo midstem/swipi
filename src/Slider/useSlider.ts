@@ -23,7 +23,7 @@ export const useSlider = (
   const [animation, setAnimation] = useState<boolean>(false);
   const [startX, setStartX] = useState<number>(0);
   const [endX, setEndX] = useState<number>(0);
-  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState<number>(0);
   const [movePath, setMovePath] = useState<number>(0);
   const [transform, setTransform] = useState<number>(0);
   const [currentRef, setCurrent] = useState<HTMLDivElement | null>(null);
@@ -200,6 +200,7 @@ export const useSlider = (
     slideIndex === index ? customActiveDot : customDot;
 
   useEffect(() => {
+    setWindowWidth(window.innerWidth);
     setCurrent(ref.current);
     window.addEventListener('resize', resizeHandler);
   }, []);

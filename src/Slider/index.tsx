@@ -15,7 +15,7 @@ import {
 } from './styles';
 import { defaultConfig } from './constants';
 
-export const Slider = ({
+const Slider = ({
   sx = {},
   slidesNumber = 3,
   spaceBetweenSlides = 0,
@@ -128,3 +128,5 @@ export const Slider = ({
     </CarouselWrapper>
   );
 };
+
+export default Slider;
