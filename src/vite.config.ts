@@ -4,4 +4,12 @@ import reactRefresh from '@vitejs/plugin-react-refresh';
 
 export default defineConfig({
   plugins: [reactRefresh()],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/setup.ts',
+    coverage: {
+      reporter: ['text', 'json', 'html'],
+    },
+  },
 });

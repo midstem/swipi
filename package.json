@@ -36,6 +36,7 @@
   "scripts": {
     "start": "vite",
     "build": "yarn build:esm && yarn build:cjs",
+    "test": "vitest",
     "build:esm": "tsc",
     "build:cjs": "tsc --module commonjs --outDir dist/cjs",
     "lint": "eslint .",
@@ -47,7 +48,8 @@
     "react-dom": "^18.2.0",
     "styled-components": "^5.3.6",
     "tslib": "^2.5.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "vitest": "^0.28.4"
   },
   "browserslist": {
     "production": [
