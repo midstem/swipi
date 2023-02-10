@@ -58,8 +58,8 @@ export const Dot = styled.div<DotType>(
     aspect-ratio: 1 / 1;
     width: ${sizeForDefaultDot || 12}px;
     background-color: ${slideIndex === index
-      ? `${activeDotColor || 'orange'}`
-      : `${dotColor || 'black'}`};
+      ? `${activeDotColor || 'black'}`
+      : `${dotColor || '#c7c7c7'}`};
     border-radius: 50%;
     cursor: pointer;
   `
