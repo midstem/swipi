@@ -19,7 +19,7 @@ npm install infinite-image-slider
 yarn add infinite-image-slider
 ```
 
-## 👉 [Demo with default settings](https://codesandbox.io/p/github/MaKs-Tkachyk/infinite-image-slider/example?file=%2FREADME.md) 👈
+## 👉 [Demo with default settings](https://codesandbox.io/p/github/MaKs-Tkachyk/infinite-image-slider/default-demo?file=%2Fpackage.json&selection=%5B%7B%22endColumn%22%3A8%2C%22endLineNumber%22%3A62%2C%22startColumn%22%3A8%2C%22startLineNumber%22%3A62%7D%5D) 👈
 ```js
 import Slider from 'infinite-image-slider';
 import pictures from './constants';
@@ -36,7 +36,7 @@ const App = () => (
 );
 ```
 
-## 👉 [Demo with custom settings](https://codesandbox.io/p/github/MaKs-Tkachyk/infinite-image-slider/example?file=%2FREADME.md) 👈
+## 👉 [Demo with custom settings](https://codesandbox.io/p/github/MaKs-Tkachyk/infinite-image-slider/custom-demo?file=%2Fpackage.json&selection=%5B%7B%22endColumn%22%3A1%2C%22endLineNumber%22%3A9%2C%22startColumn%22%3A1%2C%22startLineNumber%22%3A9%7D%5D) 👈
 ```js
 import Slider from 'infinite-image-slider';
 import pictures from './constants';
