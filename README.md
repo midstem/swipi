@@ -208,7 +208,9 @@ ssh - $ git clone git@github.com:MaKs-Tkachyk/image_carousel.git
 
 $ cd infinite-image-slider
 
-$ git checkout example
+$ git checkout default-demo
+Or
+$ git checkout custom-demo
 
 $ npm install
 or
