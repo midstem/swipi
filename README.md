@@ -19,29 +19,47 @@ npm install infinite-image-slider
 yarn add infinite-image-slider
 ```
 
-## 👉 [Demo](https://codesandbox.io/p/github/MaKs-Tkachyk/infinite-image-slider/example?file=%2FREADME.md) 👈
+## 👉 [Demo with default settings](https://codesandbox.io/p/github/MaKs-Tkachyk/infinite-image-slider/example?file=%2FREADME.md) 👈
 ```js
-import React from 'react';
-import { Slider } from '../Slider';
+import Slider from 'infinite-image-slider';
 import pictures from './constants';
-import { ArrowLeft, ArrowRight } from './arrows';
 import { SliderWrapper, Image } from './styles/App.styles';
 
-const configSettings = [
-  { maxWidth: 1400, slidesNumber: 2, spaceBetween: 4 },
-  { maxWidth: 900, slidesNumber: 1, spaceBetween: 2 },
-];
+const App = () => (
+  <SliderWrapper>
+    <Slider showDots>
+      {pictures.map((picture) => (
+        <Image key={picture.id} src={picture.src} alt={picture.alt} />
+      ))}
+    </Slider>
+  </SliderWrapper>
+);
+```
+
+## 👉 [Demo with custom settings](https://codesandbox.io/p/github/MaKs-Tkachyk/infinite-image-slider/example?file=%2FREADME.md) 👈
+```js
+import Slider from 'infinite-image-slider';
+import pictures from './constants';
+import { Diamond, Circle } from './customDots';
+import { SliderWrapper, Image } from './styles/App.styles';
+import { ReactComponent as LeftArrow } from './assets/arrow-left.svg';
+import { ReactComponent as RightArrow } from './assets/arrow-right.svg';
 
 const App = () => {
+  const configSettings = [
+    { maxWidth: 2200, slidesNumber: 3, spaceBetween: 5 },
+    { maxWidth: 1400, slidesNumber: 2, spaceBetween: 4 },
+    { maxWidth: 900, slidesNumber: 1, spaceBetween: 2 },
+  ];
   return (
     <SliderWrapper>
       <Slider
-        prevButton={<ArrowLeft />}
-        nextButton={<ArrowRight />}
         showDots
-        dotColor="black"
-        activeDotColor="blue"
+        prevButton={<LeftArrow />}
+        nextButton={<RightArrow />}
         config={configSettings}
+        customDot={<Circle />}
+        customActiveDot={<Diamond />}
       >
         {pictures.map((picture) => (
           <Image key={picture.id} src={picture.src} alt={picture.alt} />
@@ -50,6 +68,8 @@ const App = () => {
     </SliderWrapper>
   );
 };
+
+export default App;
 ```
 
 ## **Props**
