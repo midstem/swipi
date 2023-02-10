@@ -18,13 +18,21 @@ export const SliderButton = styled.button`
 `;
 
 export const SlidesContainer = styled.div<SlidesContainerType>(
-  ({ animation, transform }) => `
+  ({ animation, transform }) => css`
     display: flex;
     width: fit-content;
-    transform: translate3d(${transform}px, 0,0);
+    transform: translate3d(${transform}px, 0, 0);
     transition: ${animation ? `all 0.3s ease-out 0s` : `0s`};
     height: 100%;
-`
+
+    &:hover {
+      cursor: grab;
+    }
+
+    &:active {
+      cursor: grabbing;
+    }
+  `
 );
 
 export const SlidesWrapper = styled.div`

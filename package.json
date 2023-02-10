@@ -3,8 +3,7 @@
   "version": "1.0.2",
   "license": "MIT",
   "author": "Maksym Tkachuk",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
+  "main": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
   "peerDependencies": {
     "react": ">=16"
@@ -35,10 +34,8 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "yarn build:esm && yarn build:cjs",
+    "build": "tsc",
     "test": "vitest",
-    "build:esm": "tsc",
-    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepare": "rm -rf dist && npm run build"
