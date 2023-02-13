@@ -19,55 +19,44 @@ npm install infinite-image-slider
 yarn add infinite-image-slider
 ```
 
-## 👉 [Demo with default settings](https://codesandbox.io/p/github/MaKs-Tkachyk/infinite-image-slider/default-demo?file=%2Fpackage.json&selection=%5B%7B%22endColumn%22%3A8%2C%22endLineNumber%22%3A62%2C%22startColumn%22%3A8%2C%22startLineNumber%22%3A62%7D%5D) 👈
+## 👉 [Demo with default settings](https://codesandbox.io/s/default-demo-g81knf) 👈
+
+## 👉 [Demo with custom arrows](https://codesandbox.io/s/demo-with-arrows-uqf4rf) 👈
+
+## 👉 [Demo with custom arrows and dots](https://codesandbox.io/s/demo-with-arrows-dots-unqoph) 👈
+
+## 👉 [Demo with custom settings](https://codesandbox.io/s/all-custom-demo-vfxhtr) 👈
 ```js
-import Slider from 'infinite-image-slider';
-import pictures from './constants';
-import { SliderWrapper, Image } from './styles/App.styles';
+import Slider from "infinite-image-slider";
+import pictures from "./constants";
+import { SliderWrapper, Image } from "./styles";
+import { Circle, Diamond } from "./customDots";
+import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg";
+import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg";
+import "./styles.css";
+
+const configSettings = [
+  { maxWidth: 2200, slidesNumber: 3, spaceBetween: 5 },
+  { maxWidth: 1400, slidesNumber: 2, spaceBetween: 4 },
+  { maxWidth: 900, slidesNumber: 1, spaceBetween: 2 }
+];
 
 const App = () => (
   <SliderWrapper>
-    <Slider showDots>
+    <Slider
+      showDots
+      prevButton={<ArrowLeft />}
+      nextButton={<ArrowRight />}
+      config={configSettings}
+      customDot={<Circle />}
+      customActiveDot={<Diamond />}
+    >
       {pictures.map((picture) => (
         <Image key={picture.id} src={picture.src} alt={picture.alt} />
       ))}
     </Slider>
   </SliderWrapper>
 );
-```
-
-## 👉 [Demo with custom settings](https://codesandbox.io/p/github/MaKs-Tkachyk/infinite-image-slider/custom-demo?file=%2Fpackage.json&selection=%5B%7B%22endColumn%22%3A1%2C%22endLineNumber%22%3A9%2C%22startColumn%22%3A1%2C%22startLineNumber%22%3A9%7D%5D) 👈
-```js
-import Slider from 'infinite-image-slider';
-import pictures from './constants';
-import { Diamond, Circle } from './customDots';
-import { SliderWrapper, Image } from './styles/App.styles';
-import { ReactComponent as LeftArrow } from './assets/arrow-left.svg';
-import { ReactComponent as RightArrow } from './assets/arrow-right.svg';
-
-const App = () => {
-  const configSettings = [
-    { maxWidth: 2200, slidesNumber: 3, spaceBetween: 5 },
-    { maxWidth: 1400, slidesNumber: 2, spaceBetween: 4 },
-    { maxWidth: 900, slidesNumber: 1, spaceBetween: 2 },
-  ];
-  return (
-    <SliderWrapper>
-      <Slider
-        showDots
-        prevButton={<LeftArrow />}
-        nextButton={<RightArrow />}
-        config={configSettings}
-        customDot={<Circle />}
-        customActiveDot={<Diamond />}
-      >
-        {pictures.map((picture) => (
-          <Image key={picture.id} src={picture.src} alt={picture.alt} />
-        ))}
-      </Slider>
-    </SliderWrapper>
-  );
-};
 
 export default App;
 ```
