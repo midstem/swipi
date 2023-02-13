@@ -27,19 +27,19 @@ yarn add infinite-image-slider
 
 ## 👉 [Demo with custom settings](https://codesandbox.io/s/all-custom-demo-vfxhtr) 👈
 ```js
-import Slider from "infinite-image-slider";
-import pictures from "./constants";
-import { SliderWrapper, Image } from "./styles";
-import { Circle, Diamond } from "./customDots";
-import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg";
-import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg";
-import "./styles.css";
+import Slider from "infinite-image-slider"
+import pictures from "./constants"
+import { SliderWrapper, Image } from "./styles"
+import { Circle, Diamond } from "./customDots"
+import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg"
+import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg"
+import "./styles.css"
 
 const configSettings = [
   { maxWidth: 2200, slidesNumber: 3, spaceBetween: 5 },
   { maxWidth: 1400, slidesNumber: 2, spaceBetween: 4 },
   { maxWidth: 900, slidesNumber: 1, spaceBetween: 2 }
-];
+]
 
 const App = () => (
   <SliderWrapper>
@@ -58,7 +58,7 @@ const App = () => (
   </SliderWrapper>
 );
 
-export default App;
+export default App
 ```
 
 ## **Props**
