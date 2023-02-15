@@ -4,6 +4,15 @@
   <img src='src/assets/domdev.png' height='60'>
 </a>
 
+[![NPM version][npm-image]][npm-url] [![Test coverage][coveralls-image]][coveralls-url] [![bundle size][bundlephobia-image]][bundlephobia-url]
+
+[npm-image]: https://img.shields.io/npm/v/infinite-image-slider.svg
+[npm-url]: http://npmjs.org/package/infinite-image-slider
+[coveralls-image]: https://img.shields.io/coveralls/react-component/slider.svg
+[coveralls-url]: https://coveralls.io/r/react-component/slider?branch=master
+[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/infinite-image-slider
+[bundlephobia-url]: https://bundlephobia.com/result?p=infinite-image-slider
+
 <p><b>The Infinity Image Slider</b> is a lightweight and compact slider optimized for mobile use. It's built with TypeScript and has a fast loading speed. It's also swappable, making it easy for users to switch slides with a swipe on their mobile device. Its mobile-friendly design and convenience make it a great choice for improving user experience.</p>
 
 ### Installation
@@ -19,13 +28,72 @@ npm install infinite-image-slider
 yarn add infinite-image-slider
 ```
 
-## 👉 [Demo with default settings](https://codesandbox.io/s/default-demo-g81knf) 👈
+## 👉 [Default](https://codesandbox.io/s/default-demo-g81knf) 👈
+```js
+import Slider from "infinite-image-slider";
+import pictures from "./constants";
+import { SliderWrapper, Image } from "./styles";
 
-## 👉 [Demo with custom arrows](https://codesandbox.io/s/demo-with-arrows-uqf4rf) 👈
+const App = () => (
+  <SliderWrapper>
+    <Slider>
+      {pictures.map((picture) => (
+        <Image key={picture.id} src={picture.src} alt={picture.alt} />
+      ))}
+    </Slider>
+  </SliderWrapper>
+);
+```
 
-## 👉 [Demo with custom arrows and dots](https://codesandbox.io/s/demo-with-arrows-dots-unqoph) 👈
+## 👉 [With arrows](https://codesandbox.io/s/demo-with-arrows-uqf4rf) 👈
+```js
+import Slider from "infinite-image-slider";
+import pictures from "./constants";
+import { SliderWrapper, Image } from "./styles";
+import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg";
+import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg";
 
-## 👉 [Demo with custom settings](https://codesandbox.io/s/all-custom-demo-vfxhtr) 👈
+const App = () => (
+  <SliderWrapper>
+    <Slider 
+      nextButton={<ArrowRight />}
+      prevButton={<ArrowLeft />}
+    >
+      {pictures.map((picture) => (
+        <Image key={picture.id} src={picture.src} alt={picture.alt} />
+      ))}
+    </Slider>
+  </SliderWrapper>
+);
+```
+
+## 👉 [With arrows and dots](https://codesandbox.io/s/demo-with-arrows-dots-unqoph) 👈
+```js
+import Slider from "infinite-image-slider";
+import pictures from "./constants";
+import { SliderWrapper, Image } from "./styles";
+import { Circle, Diamond } from "./customDots";
+import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg";
+import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg";
+
+const App = () => (
+  <SliderWrapper>
+    <Slider
+      showDots
+      customDot={<Circle />}
+      customActiveDot={<Diamond />}
+      nextButton={<ArrowRight />}
+      prevButton={<ArrowLeft />}
+    >
+      {pictures.map((picture) => (
+        <Image key={picture.id} src={picture.src} alt={picture.alt} />
+      ))}
+    </Slider>
+  </SliderWrapper>
+);
+```
+
+## 👉 [All custom settings](https://codesandbox.io/s/all-custom-demo-vfxhtr) 👈
 ```js
 import Slider from "infinite-image-slider"
 import pictures from "./constants"
@@ -57,9 +125,13 @@ const App = () => (
     </Slider>
   </SliderWrapper>
 );
-
-export default App
 ```
+
+## **Browsers support**
+
+| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Opera |
+| --------- | --------- | --------- | --------- | --------- |
+| IE11, Edge| last 3 versions| last 3 versions| last 3 versions| last 3 versions
 
 ## **Props**
 
@@ -197,9 +269,7 @@ ssh - $ git clone git@github.com:MaKs-Tkachyk/image_carousel.git
 
 $ cd infinite-image-slider
 
-$ git checkout default-demo
-Or
-$ git checkout custom-demo
+$ git checkout demo
 
 $ npm install
 or
