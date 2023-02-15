@@ -3,20 +3,16 @@
 import React from 'react';
 import { SliderProps } from './types';
 import { useSlider } from './useSlider';
-import { Box } from '../UI';
-import {
-  CarouselWrapper,
-  SliderButton,
-  SliderContainer,
-  SlidesContainer,
-  SlidesWrapper,
-  DotsWrapper,
-  Dot,
-} from './styles';
 import { defaultConfig } from './constants';
+import CarouselWrapper from '../ui/CarouselWrapper';
+import SliderContainer from '../ui/SliderContainer';
+import SliderButton from '../ui/SliderButton';
+import SlidesWrapper from '../ui/SlidesWrapper';
+import SlidesContainer from '../ui/SlidesContainer';
+import DotsWrapper from '../ui/DotsWrapper';
+import Dot from '../ui/Dot';
 
 const Slider = ({
-  sx = {},
   slidesNumber = 3,
   spaceBetweenSlides = 0,
   nextButton = 'ᐳ',
@@ -34,7 +30,7 @@ const Slider = ({
     animation,
     transform,
     slideWidth,
-    ref,
+    slidesWrapperRef,
     slides,
     isButton,
     spaceBetween,
@@ -57,47 +53,40 @@ const Slider = ({
 
   return (
     <CarouselWrapper>
-      <SliderContainer style={sx}>
+      <SliderContainer>
         <SliderButton
-          type="submit"
-          onClick={() => {
-            prevImg();
-          }}
+          nextButton={nextButton}
+          nextImg={nextImg}
+          prevImg={prevImg}
         >
           {isButton && prevButton}
         </SliderButton>
         <SlidesWrapper
-          ref={ref}
-          onTouchStart={(e) => startTouchByScreen(e.touches[0].clientX)}
-          onTouchMove={(e) => moveTouchScreen(e.touches[0].clientX)}
-          onTouchEnd={endTouchScreen}
-          onMouseDown={(e) => startTouchByScreen(e.clientX)}
-          onMouseMove={(e) => moveTouchScreen(e.clientX)}
-          onMouseUp={endTouchScreen}
-          onMouseLeave={endTouchScreen}
+          slidesWrapperRef={slidesWrapperRef}
+          startTouchByScreen={startTouchByScreen}
+          moveTouchScreen={moveTouchScreen}
+          endTouchScreen={endTouchScreen}
         >
-          <SlidesContainer
-            animation={animation}
-            transform={transform}
-            onDragStart={(e) => {
-              e.preventDefault();
-            }}
-          >
+          <SlidesContainer animation={animation} transform={transform}>
             {slides?.map(({ id }, index) => (
-              <Box
+              <div
                 key={id}
-                sx={{
+                style={{
                   boxSizing: 'border-box',
                   width: `${slideWidth}px`,
                   paddingRight: `${spaceBetween}px`,
                 }}
               >
                 {slides[index]}
-              </Box>
+              </div>
             ))}
           </SlidesContainer>
         </SlidesWrapper>
-        <SliderButton type="submit" onClick={nextImg}>
+        <SliderButton
+          nextButton={nextButton}
+          nextImg={nextImg}
+          prevImg={prevImg}
+        >
           {isButton && nextButton}
         </SliderButton>
       </SliderContainer>
@@ -114,11 +103,11 @@ const Slider = ({
                 returnCustomDots(index)
               ) : (
                 <Dot
+                  sizeForDefaultDot={sizeForDefaultDot}
                   slideIndex={slideIndex}
                   index={index}
-                  dotColor={dotColor}
                   activeDotColor={activeDotColor}
-                  sizeForDefaultDot={sizeForDefaultDot}
+                  dotColor={dotColor}
                 />
               )}
             </div>

@@ -26,10 +26,10 @@ export const useSlider = (
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [movePath, setMovePath] = useState<number>(0);
   const [transform, setTransform] = useState<number>(0);
-  const [currentRef, setCurrent] = useState<HTMLDivElement | null>(null);
+  const [currentRef, setCurrentRef] = useState<HTMLDivElement | null>(null);
   const [slideIndex, setSlideIndex] = useState(0);
   const [mouseDown, setMouseDown] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const slidesWrapperRef = useRef<HTMLDivElement>(null);
 
   const visibleCountSlides = returnCountSlides(
     config,
@@ -201,7 +201,7 @@ export const useSlider = (
 
   useEffect(() => {
     setWindowWidth(window.innerWidth);
-    setCurrent(ref.current);
+    setCurrentRef(slidesWrapperRef.current);
     window.addEventListener('resize', resizeHandler);
   }, []);
 
@@ -210,7 +210,7 @@ export const useSlider = (
     slides,
     transform,
     slideWidth,
-    ref,
+    slidesWrapperRef,
     isButton,
     spaceBetween,
     slideIndex,
