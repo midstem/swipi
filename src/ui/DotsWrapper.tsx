@@ -3,6 +3,7 @@ import { ComponentBasicProps } from './types';
 
 const DotsWrapper = ({ children }: ComponentBasicProps) => (
   <div
+    className="dots-wrapper"
     style={{
       display: 'flex',
       gap: '5px',

@@ -4,6 +4,7 @@ import { ComponentBasicProps } from './types';
 const CarouselWrapper = ({ children }: ComponentBasicProps) => (
   <div
     style={{
+      position: 'relative',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',

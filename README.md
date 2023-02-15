@@ -186,6 +186,12 @@ export default App
   </tr>
 </table>
 
+## **Styling**
+
+```css
+.dots-wrapper
+```
+
 <br/>
 
 ## **Welcome to suggestions**
