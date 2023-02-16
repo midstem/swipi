@@ -4,13 +4,13 @@ import React from 'react';
 import { SliderProps } from './types';
 import { useSlider } from './useSlider';
 import { defaultConfig } from './constants';
-import CarouselWrapper from '../ui/CarouselWrapper';
-import SliderContainer from '../ui/SliderContainer';
-import SliderButton from '../ui/SliderButton';
-import SlidesWrapper from '../ui/SlidesWrapper';
-import SlidesContainer from '../ui/SlidesContainer';
-import DotsWrapper from '../ui/DotsWrapper';
-import Dot from '../ui/Dot';
+import CarouselWrapper from '../UI/CarouselWrapper';
+import SliderContainer from '../UI/SliderContainer';
+import SliderButton from '../UI/SliderButton';
+import SlidesWrapper from '../UI/SlidesWrapper';
+import SlidesContainer from '../UI/SlidesContainer';
+import DotsWrapper from '../UI/DotsWrapper';
+import Dot from '../UI/Dot';
 
 const Slider = ({
   slidesNumber = 3,
@@ -54,13 +54,7 @@ const Slider = ({
   return (
     <CarouselWrapper>
       <SliderContainer>
-        <SliderButton
-          nextButton={nextButton}
-          nextImg={nextImg}
-          prevImg={prevImg}
-        >
-          {isButton && prevButton}
-        </SliderButton>
+        <SliderButton onClick={prevImg}>{isButton && prevButton}</SliderButton>
         <SlidesWrapper
           slidesWrapperRef={slidesWrapperRef}
           startTouchByScreen={startTouchByScreen}
@@ -82,13 +76,7 @@ const Slider = ({
             ))}
           </SlidesContainer>
         </SlidesWrapper>
-        <SliderButton
-          nextButton={nextButton}
-          nextImg={nextImg}
-          prevImg={prevImg}
-        >
-          {isButton && nextButton}
-        </SliderButton>
+        <SliderButton onClick={nextImg}>{isButton && nextButton}</SliderButton>
       </SliderContainer>
       {showDots && (
         <DotsWrapper>

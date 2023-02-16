@@ -6,9 +6,7 @@ export type ComponentBasicProps = {
 
 export type SliderButtonProps = {
   children: ReactNode;
-  nextButton: ReactNode;
-  nextImg: () => void;
-  prevImg: () => void;
+  onClick: () => void;
 };
 
 export type SlidesWrapperProps = {

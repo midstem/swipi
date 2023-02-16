@@ -6,11 +6,9 @@ const SlidesContainer = ({
   children,
   transform,
   animation,
-}: SlidesContainerProps) => {
-  const [isHovered, setIsHovered] = useState(false);
+}: SlidesContainerProps): JSX.Element => {
   const [isActive, setIsActive] = useState(false);
 
-  const toggleHovered = () => setIsHovered(!isHovered);
   const toggleActive = () => setIsActive(!isActive);
 
   return (
@@ -18,9 +16,7 @@ const SlidesContainer = ({
       onDragStart={(e) => {
         e.preventDefault();
       }}
-      onMouseEnter={toggleHovered}
       onMouseDown={toggleActive}
-      onMouseLeave={toggleHovered}
       onMouseUp={toggleActive}
       style={{
         display: 'flex',
@@ -28,7 +24,7 @@ const SlidesContainer = ({
         transform: `translate3d(${transform}px, 0, 0)`,
         transition: `${animation ? `all 0.3s ease-out 0s` : `0s`}`,
         height: '100%',
-        cursor: isHovered && isActive ? 'grabbing' : 'grab',
+        cursor: isActive ? 'grabbing' : 'grab',
       }}
     >
       {children}

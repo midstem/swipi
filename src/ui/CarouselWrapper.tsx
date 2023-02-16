@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentBasicProps } from './types';
 
-const CarouselWrapper = ({ children }: ComponentBasicProps) => (
+const CarouselWrapper = ({ children }: ComponentBasicProps): JSX.Element => (
   <div
     style={{
       position: 'relative',

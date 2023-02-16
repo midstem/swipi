@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentBasicProps } from './types';
 
-const SliderContainer = ({ children }: ComponentBasicProps) => (
+const SliderContainer = ({ children }: ComponentBasicProps): JSX.Element => (
   <div
     style={{
       display: 'flex',

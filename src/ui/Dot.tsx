@@ -7,7 +7,7 @@ const Dot = ({
   index,
   activeDotColor,
   dotColor,
-}: DotProps) => (
+}: DotProps): JSX.Element => (
   <div
     style={{
       aspectRatio: '1 / 1',
