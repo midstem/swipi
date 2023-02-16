@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { CSSProperties } from 'styled-components';
 
 export type AddUniqueIdReturnType = Array<{ id: string } & JSX.Element>;
 
@@ -11,7 +10,6 @@ export type ConfigType = {
 };
 
 export type SliderProps = {
-  sx?: CSSProperties;
   spaceBetweenSlides?: number;
   slidesNumber?: number;
   nextButton?: ReactNode;
@@ -28,23 +26,10 @@ export type SliderProps = {
   sizeForDefaultDot?: number;
 };
 
-export type SlidesContainerType = {
-  transform: number;
-  animation: boolean;
-};
-
 export type ReturnSlideWidthType = {
   visibleCountSlides: number;
   spaceBetween: number;
   current: HTMLDivElement | null;
-};
-
-export type DotType = {
-  slideIndex: number;
-  index: number;
-  dotColor?: string;
-  activeDotColor?: string;
-  sizeForDefaultDot?: number;
 };
 
 export type NextPrevDotType = {
