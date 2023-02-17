@@ -1,8 +1,9 @@
 {
   "name": "infinite-image-slider",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "license": "MIT",
   "author": "Maksym Tkachuk",
+  "description": "Lightweight TypeScript Slider",
   "main": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
   "peerDependencies": {
