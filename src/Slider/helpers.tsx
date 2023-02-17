@@ -1,4 +1,4 @@
-import { v4 as uuid } from 'uuid';
+import uniqid from 'uniqid';
 import {
   AddUniqueIdReturnType,
   ReturnSlideWidthType,
@@ -10,7 +10,7 @@ export const getSliderWidth = (current: HTMLDivElement | null): number =>
   current?.getBoundingClientRect().width ?? defaultSliderWidth;
 
 export const addUniqueId = (slides: JSX.Element[]): AddUniqueIdReturnType =>
-  slides.map((slide) => ({ ...slide, id: uuid() }));
+  slides.map((slide) => ({ ...slide, id: uniqid() }));
 
 export const getSliderUpdatesParam = <T extends keyof ConfigType>(
   config: ConfigType[],
