@@ -26,7 +26,7 @@ npm install infinite-image-slider
 yarn add infinite-image-slider
 ```
 
-## 👉 [Default](https://codesandbox.io/s/default-demo-g81knf) 👈
+## [Default](https://codesandbox.io/s/default-demo-g81knf)
 ```js
 import Slider from "infinite-image-slider";
 import pictures from "./constants";
@@ -43,7 +43,7 @@ const App = () => (
 );
 ```
 
-## 👉 [With arrows](https://codesandbox.io/s/demo-with-arrows-uqf4rf) 👈
+## [With arrows](https://codesandbox.io/s/demo-with-arrows-uqf4rf)
 ```js
 import Slider from "infinite-image-slider";
 import pictures from "./constants";
@@ -65,7 +65,7 @@ const App = () => (
 );
 ```
 
-## 👉 [With arrows and dots](https://codesandbox.io/s/demo-with-arrows-dots-unqoph) 👈
+## [With arrows and dots](https://codesandbox.io/s/demo-with-arrows-dots-unqoph)
 ```js
 import Slider from "infinite-image-slider";
 import pictures from "./constants";
@@ -91,7 +91,7 @@ const App = () => (
 );
 ```
 
-## 👉 [All custom settings](https://codesandbox.io/s/all-custom-demo-vfxhtr) 👈
+## [All custom settings](https://codesandbox.io/s/all-custom-demo-vfxhtr)
 ```js
 import Slider from "infinite-image-slider"
 import pictures from "./constants"
