@@ -1,17 +1,15 @@
 # Infinite Image Slider
 
-<a href='https://domdev.pro/'>
-  <img src='src/assets/domdev.png' height='60'>
-</a>
-
-[![NPM version][npm-image]][npm-url] [![Test coverage][coveralls-image]][coveralls-url] [![bundle size][bundlephobia-image]][bundlephobia-url]
+[![NPM version][npm-image]][npm-url] [![bundle size][bundlephobia-image]][bundlephobia-url]
 
 [npm-image]: https://img.shields.io/npm/v/infinite-image-slider.svg
 [npm-url]: http://npmjs.org/package/infinite-image-slider
-[coveralls-image]: https://img.shields.io/coveralls/react-component/slider.svg
-[coveralls-url]: https://coveralls.io/r/react-component/slider?branch=master
 [bundlephobia-image]: https://badgen.net/bundlephobia/minzip/infinite-image-slider
 [bundlephobia-url]: https://bundlephobia.com/result?p=infinite-image-slider
+
+<a href='https://domdev.pro/'>
+  <img src='src/assets/domdev.png' height='60'>
+</a>
 
 <p><b>The Infinity Image Slider</b> is a lightweight and compact slider optimized for mobile use. It's built with TypeScript and has a fast loading speed. It's also swappable, making it easy for users to switch slides with a swipe on their mobile device. Its mobile-friendly design and convenience make it a great choice for improving user experience.</p>
 
