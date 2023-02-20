@@ -1,5 +1,4 @@
 import React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { expect, describe, it } from 'vitest';
 import {
   getSliderWidth,

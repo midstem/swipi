@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { useEffect, useRef, useState, useMemo, ReactNode } from 'react';
 import { reduceSlide } from './constants';
 import { ReturnSlideWidthType, ConfigType, NextPrevDotType } from './types';
