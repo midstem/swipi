@@ -1,5 +1,5 @@
 import React from 'react';
-import { SliderButtonProps } from './types';
+import { SliderButtonProps } from 'UI/types';
 
 const SliderButton = ({
   children,
