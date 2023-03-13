@@ -116,6 +116,8 @@ const App = () => (
       config={configSettings}
       customDot={<Circle />}
       customActiveDot={<Diamond />}
+      autoplay
+      autoplaySpeed={5300}
     >
       {pictures.map((picture) => (
         <Image key={picture.id} src={picture.src} alt={picture.alt} />
@@ -201,6 +203,18 @@ const App = () => (
     <td>spaceBetweenSlides</td>
     <td>Space between slides.</td>
     <td>0</td>
+    <td>number</td>
+  </tr>
+  <tr>
+    <td>autoplay</td>
+    <td>A boolean that enables slides to slide automatically</td>
+    <td>false</td>
+    <td>boolean</td>
+  </tr>
+  <tr>
+    <td>autoplaySpeed</td>
+    <td>The interval in milliseconds with which the slides are changed</td>
+    <td>4000</td>
     <td>number</td>
   </tr>
   <tr>
