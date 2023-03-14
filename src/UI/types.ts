@@ -7,7 +7,6 @@ export type ComponentBasicProps = {
 export type SliderButtonProps = {
   children: ReactNode;
   onClick: () => void;
-  ref?: React.MutableRefObject<HTMLButtonElement>;
 };
 
 export type SlidesWrapperProps = {

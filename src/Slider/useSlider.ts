@@ -217,7 +217,7 @@ export const useSlider = (
   useEffect(() => {
     if (!autoplay) return;
     startAutoplay(autoplaySpeed, buttonRef);
-  }, [buttonRef]);
+  }, [buttonRef, autoplaySpeed, autoplay]);
 
   return {
     animation,
