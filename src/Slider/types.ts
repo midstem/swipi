@@ -24,6 +24,8 @@ export type SliderProps = {
   dotColor?: string;
   activeDotColor?: string;
   sizeForDefaultDot?: number;
+  autoplay?: boolean;
+  autoplaySpeed?: number;
 };
 
 export type ReturnSlideWidthType = {
