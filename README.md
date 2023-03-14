@@ -101,7 +101,7 @@ import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg"
 import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg"
 import "./styles.css"
 
-const configSettings = [
+const mediaSettings = [
   { maxWidth: 2200, slidesNumber: 3, spaceBetween: 5 },
   { maxWidth: 1400, slidesNumber: 2, spaceBetween: 4 },
   { maxWidth: 900, slidesNumber: 1, spaceBetween: 2 }
@@ -113,9 +113,11 @@ const App = () => (
       showDots
       prevButton={<ArrowLeft />}
       nextButton={<ArrowRight />}
-      config={configSettings}
+      config={mediaSettings}
       customDot={<Circle />}
       customActiveDot={<Diamond />}
+      autoplay
+      autoplaySpeed={5300}
     >
       {pictures.map((picture) => (
         <Image key={picture.id} src={picture.src} alt={picture.alt} />
@@ -201,6 +203,18 @@ const App = () => (
     <td>spaceBetweenSlides</td>
     <td>Space between slides.</td>
     <td>0</td>
+    <td>number</td>
+  </tr>
+  <tr>
+    <td>autoplay</td>
+    <td>A boolean that enables slides to slide automatically</td>
+    <td>false</td>
+    <td>boolean</td>
+  </tr>
+  <tr>
+    <td>autoplaySpeed</td>
+    <td>The interval in milliseconds with which the slides are changed</td>
+    <td>4000</td>
     <td>number</td>
   </tr>
   <tr>
