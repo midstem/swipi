@@ -7,6 +7,7 @@ export type ComponentBasicProps = {
 export type SliderButtonProps = {
   children: ReactNode;
   onClick: () => void;
+  className: string;
 };
 
 export type SlidesWrapperProps = {

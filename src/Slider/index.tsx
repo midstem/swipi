@@ -57,7 +57,9 @@ const Slider = ({
   return (
     <CarouselWrapper>
       <SliderContainer>
-        <SliderButton onClick={prevImg}>{isButton && prevButton}</SliderButton>
+        <SliderButton onClick={prevImg} className="right-button">
+          {isButton && prevButton}
+        </SliderButton>
         <SlidesWrapper
           slidesWrapperRef={slidesWrapperRef}
           startTouchByScreen={startTouchByScreen}
@@ -79,7 +81,7 @@ const Slider = ({
             ))}
           </SlidesContainer>
         </SlidesWrapper>
-        <SliderButton ref={buttonRef} onClick={nextImg}>
+        <SliderButton ref={buttonRef} onClick={nextImg} className="left-button">
           {isButton && nextButton}
         </SliderButton>
       </SliderContainer>
