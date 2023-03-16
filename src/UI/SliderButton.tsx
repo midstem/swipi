@@ -2,9 +2,9 @@ import React, { forwardRef, RefObject } from 'react';
 import { SliderButtonProps } from 'UI/types';
 
 const SliderButton = forwardRef<HTMLButtonElement, SliderButtonProps>(
-  ({ children, onClick }, ref): JSX.Element => (
+  ({ children, onClick, className }, ref): JSX.Element => (
     <button
-      className={ref ? 'right-button' : 'left-button'}
+      className={className}
       ref={ref as RefObject<HTMLButtonElement>}
       onClick={onClick}
       type="button"
