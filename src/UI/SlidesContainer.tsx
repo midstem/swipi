@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SlidesContainerProps } from './types';
+import { SlidesContainerProps } from 'UI/types';
 
 const SlidesContainer = ({
   children,

@@ -1,14 +1,14 @@
 import React from 'react';
-import { SliderProps } from './types';
-import { useSlider } from './useSlider';
-import { defaultConfig } from './constants';
-import CarouselWrapper from '../UI/CarouselWrapper';
-import SliderContainer from '../UI/SliderContainer';
-import SliderButton from '../UI/SliderButton';
-import SlidesWrapper from '../UI/SlidesWrapper';
-import SlidesContainer from '../UI/SlidesContainer';
-import DotsWrapper from '../UI/DotsWrapper';
-import Dot from '../UI/Dot';
+import { useSlider } from 'Slider/useSlider';
+import { SliderProps } from 'Slider/types';
+import { defaultConfig } from 'Slider/constants';
+import CarouselWrapper from 'UI/CarouselWrapper';
+import SliderContainer from 'UI/SliderContainer';
+import SliderButton from 'UI/SliderButton';
+import SlidesWrapper from 'UI/SlidesWrapper';
+import SlidesContainer from 'UI/SlidesContainer';
+import DotsWrapper from 'UI/DotsWrapper';
+import Dot from 'UI/Dot';
 
 const Slider = ({
   slidesNumber = 3,
@@ -23,6 +23,8 @@ const Slider = ({
   dotColor,
   activeDotColor,
   sizeForDefaultDot,
+  autoplay = true,
+  autoplaySpeed = 4000,
 }: SliderProps) => {
   const {
     animation,
@@ -33,6 +35,7 @@ const Slider = ({
     isButton,
     spaceBetween,
     slideIndex,
+    buttonRef,
     handleDotClick,
     nextImg,
     prevImg,
@@ -46,7 +49,9 @@ const Slider = ({
     customActiveDot,
     customDot,
     slidesNumber,
-    spaceBetweenSlides
+    spaceBetweenSlides,
+    autoplay,
+    autoplaySpeed
   );
 
   return (
@@ -74,7 +79,9 @@ const Slider = ({
             ))}
           </SlidesContainer>
         </SlidesWrapper>
-        <SliderButton onClick={nextImg}>{isButton && nextButton}</SliderButton>
+        <SliderButton ref={buttonRef} onClick={nextImg}>
+          {isButton && nextButton}
+        </SliderButton>
       </SliderContainer>
       {showDots && (
         <DotsWrapper>

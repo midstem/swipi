@@ -3,8 +3,8 @@ import {
   AddUniqueIdReturnType,
   ReturnSlideWidthType,
   ConfigType,
-} from './types';
-import { defaultSliderWidth } from './constants';
+} from 'Slider/types';
+import { defaultSliderWidth } from 'Slider/constants';
 
 export const getSliderWidth = (current: HTMLDivElement | null): number =>
   current?.getBoundingClientRect().width ?? defaultSliderWidth;
@@ -54,4 +54,12 @@ export const calculateSlideIndex = (
   const result = Math.round(Math.abs(transform / slideWidth));
 
   return Math.abs(result % children.length);
+};
+export const startAutoplay = (
+  autoplaySpeed: number,
+  buttonRef: React.RefObject<HTMLButtonElement>
+) => {
+  setInterval(() => {
+    buttonRef.current?.click();
+  }, autoplaySpeed);
 };

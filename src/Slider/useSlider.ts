@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState, useMemo, ReactNode } from 'react';
-import { reduceSlide } from './constants';
-import { ReturnSlideWidthType, ConfigType, NextPrevDotType } from './types';
+import { reduceSlide } from 'Slider/constants';
+import {
+  ReturnSlideWidthType,
+  ConfigType,
+  NextPrevDotType,
+} from 'Slider/types';
 import {
   addUniqueId,
   isCornerSlide,
@@ -8,7 +12,8 @@ import {
   returnSlideWidth,
   returnSpaceBetween,
   calculateSlideIndex,
-} from './helpers';
+  startAutoplay,
+} from 'Slider/helpers';
 
 export const useSlider = (
   children: JSX.Element[],
@@ -16,7 +21,9 @@ export const useSlider = (
   customActiveDot: JSX.Element | undefined,
   customDot: JSX.Element | undefined,
   slidesNumber: number,
-  spaceBetweenSlides: number
+  spaceBetweenSlides: number,
+  autoplay: boolean,
+  autoplaySpeed: number
 ) => {
   const [animation, setAnimation] = useState<boolean>(false);
   const [startX, setStartX] = useState<number>(0);
@@ -28,6 +35,7 @@ export const useSlider = (
   const [slideIndex, setSlideIndex] = useState(0);
   const [mouseDown, setMouseDown] = useState(false);
   const slidesWrapperRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const visibleCountSlides = returnCountSlides(
     config,
@@ -43,15 +51,22 @@ export const useSlider = (
 
   const isButton = children.length > visibleCountSlides;
 
-  const returnSlideWidthArgs: ReturnSlideWidthType = {
-    visibleCountSlides,
-    spaceBetween,
-    current: currentRef,
-  };
+  const returnSlideWidthArgs: ReturnSlideWidthType = useMemo(
+    () => ({
+      visibleCountSlides,
+      spaceBetween,
+      current: currentRef,
+    }),
+    [currentRef, spaceBetween, visibleCountSlides]
+  );
 
-  const slideWidth = isCornerSlide(config, windowWidth)
-    ? returnSlideWidth(returnSlideWidthArgs) * reduceSlide
-    : returnSlideWidth(returnSlideWidthArgs);
+  const slideWidth = useMemo(
+    () =>
+      isCornerSlide(config, windowWidth)
+        ? returnSlideWidth(returnSlideWidthArgs) * reduceSlide
+        : returnSlideWidth(returnSlideWidthArgs),
+    [config, returnSlideWidthArgs, windowWidth]
+  );
 
   const slides = useMemo(
     () =>
@@ -203,6 +218,11 @@ export const useSlider = (
     window.addEventListener('resize', resizeHandler);
   }, []);
 
+  useEffect(() => {
+    if (!autoplay) return;
+    startAutoplay(autoplaySpeed, buttonRef);
+  }, [buttonRef, autoplaySpeed, autoplay]);
+
   return {
     animation,
     slides,
@@ -212,6 +232,7 @@ export const useSlider = (
     isButton,
     spaceBetween,
     slideIndex,
+    buttonRef,
     nextImg,
     prevImg,
     setTransform,
