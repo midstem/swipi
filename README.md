@@ -28,9 +28,9 @@ yarn add infinite-image-slider
 
 ## [Default](https://codesandbox.io/s/default-demo-g81knf)
 ```js
-import Slider from "infinite-image-slider";
-import pictures from "./constants";
-import { SliderWrapper, Image } from "./styles";
+import Slider from "infinite-image-slider"
+import pictures from "./constants"
+import { SliderWrapper, Image } from "./styles"
 
 const App = () => (
   <SliderWrapper>
@@ -40,16 +40,16 @@ const App = () => (
       ))}
     </Slider>
   </SliderWrapper>
-);
+)
 ```
 
 ## [With arrows](https://codesandbox.io/s/demo-with-arrows-uqf4rf)
 ```js
-import Slider from "infinite-image-slider";
-import pictures from "./constants";
-import { SliderWrapper, Image } from "./styles";
-import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg";
-import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg";
+import Slider from "infinite-image-slider"
+import pictures from "./constants"
+import { SliderWrapper, Image } from "./styles"
+import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg"
+import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg"
 
 const App = () => (
   <SliderWrapper>
@@ -62,17 +62,17 @@ const App = () => (
       ))}
     </Slider>
   </SliderWrapper>
-);
+)
 ```
 
 ## [With arrows and dots](https://codesandbox.io/s/demo-with-arrows-dots-unqoph)
 ```js
-import Slider from "infinite-image-slider";
-import pictures from "./constants";
-import { SliderWrapper, Image } from "./styles";
-import { Circle, Diamond } from "./customDots";
-import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg";
-import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg";
+import Slider from "infinite-image-slider"
+import pictures from "./constants"
+import { SliderWrapper, Image } from "./styles"
+import { Circle, Diamond } from "./customDots"
+import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg"
+import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg"
 
 const App = () => (
   <SliderWrapper>
@@ -88,7 +88,7 @@ const App = () => (
       ))}
     </Slider>
   </SliderWrapper>
-);
+)
 ```
 
 ## [All custom settings](https://codesandbox.io/s/all-custom-demo-vfxhtr)
@@ -124,7 +124,7 @@ const App = () => (
       ))}
     </Slider>
   </SliderWrapper>
-);
+)
 ```
 
 ## **Browsers support**
@@ -274,6 +274,10 @@ const App = () => (
 
 ```css
 .dots-wrapper
+
+.left-button
+
+.right-button
 ```
 
 <br/>

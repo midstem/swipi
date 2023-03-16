@@ -23,7 +23,7 @@ const Slider = ({
   dotColor,
   activeDotColor,
   sizeForDefaultDot,
-  autoplay = true,
+  autoplay = false,
   autoplaySpeed = 4000,
 }: SliderProps) => {
   const {
