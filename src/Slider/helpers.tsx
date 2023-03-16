@@ -3,8 +3,8 @@ import {
   AddUniqueIdReturnType,
   ReturnSlideWidthType,
   ConfigType,
-} from './types';
-import { defaultSliderWidth } from './constants';
+} from 'Slider/types';
+import { defaultSliderWidth } from 'Slider/constants';
 
 export const getSliderWidth = (current: HTMLDivElement | null): number =>
   current?.getBoundingClientRect().width ?? defaultSliderWidth;

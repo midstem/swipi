@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 import React, { forwardRef, RefObject } from 'react';
-import { SliderButtonProps } from './types';
+import { SliderButtonProps } from 'UI/types';
 
 const SliderButton = forwardRef<HTMLButtonElement, SliderButtonProps>(
   ({ children, onClick }, ref): JSX.Element => (
