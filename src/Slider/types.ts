@@ -26,6 +26,7 @@ export type SliderProps = {
   sizeForDefaultDot?: number;
   autoplay?: boolean;
   autoplaySpeed?: number;
+  animationSpeed?: number;
 };
 
 export type ReturnSlideWidthType = {

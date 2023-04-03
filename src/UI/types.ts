@@ -22,6 +22,7 @@ export type SlidesContainerProps = {
   children: ReactNode;
   animation: boolean;
   transform: number;
+  animationSpeed: number;
 };
 
 export type DotProps = {
