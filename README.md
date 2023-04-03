@@ -11,7 +11,7 @@
   <img src='assets/domdev.png' height='60'>
 </a>
 
-<p><b>The Infinity Image Slider</b> is a lightweight and compact slider optimized for mobile use. It's built with TypeScript and has a fast loading speed. It's also swappable, making it easy for users to switch slides with a swipe on their mobile device. Its mobile-friendly design and convenience make it a great choice for improving user experience.</p>
+<p><b>The Infinite Image Slider</b> is a lightweight and compact slider optimized for mobile use. It's built with TypeScript and has a fast loading speed. It's also swappable, making it easy for users to switch slides with a swipe on their mobile device. Its mobile-friendly design and convenience make it a great choice for improving user experience.</p>
 
 ### Installation
 **npm**

@@ -5,8 +5,8 @@ import {
 } from 'Slider/types';
 import { defaultSliderWidth } from 'Slider/constants';
 
-const getUniqueID = () => {
-  const characters = 'abcdefghijklmnopqrstuvwxyz';
+const generateUniqueID = () => {
+  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
   return characters
     .split('')
     .map(() => characters.charAt(Math.floor(Math.random() * characters.length)))
@@ -17,7 +17,7 @@ export const getSliderWidth = (current: HTMLDivElement | null): number =>
   current?.getBoundingClientRect().width ?? defaultSliderWidth;
 
 export const addUniqueId = (slides: JSX.Element[]): AddUniqueIdReturnType =>
-  slides.map((slide) => ({ ...slide, id: getUniqueID() }));
+  slides.map((slide) => ({ ...slide, id: generateUniqueID() }));
 
 export const getSliderUpdatesParam = <T extends keyof ConfigType>(
   config: ConfigType[],
