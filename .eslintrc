@@ -24,6 +24,7 @@
         }
       },
       "plugins": ["html", "prettier", "react-hooks", "@typescript-eslint", "react", "import", "jsx-a11y"],
+      "ignorePatterns": ["vite.config.ts"],
       "rules": {
         // TypeScript only
         "@typescript-eslint/no-misused-promises": [
