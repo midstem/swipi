@@ -25,6 +25,7 @@ const Slider = ({
   sizeForDefaultDot,
   autoplay = false,
   autoplaySpeed = 4000,
+  animationSpeed = 300,
 }: SliderProps) => {
   const {
     animation,
@@ -66,7 +67,11 @@ const Slider = ({
           moveTouchScreen={moveTouchScreen}
           endTouchScreen={endTouchScreen}
         >
-          <SlidesContainer animation={animation} transform={transform}>
+          <SlidesContainer
+            animation={animation}
+            transform={transform}
+            animationSpeed={animationSpeed}
+          >
             {slides?.map(({ id }, index) => (
               <div
                 key={id}
