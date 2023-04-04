@@ -7,7 +7,7 @@
   "main": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
   "peerDependencies": {
-    "react": ">=16"
+    "react": ">=17"
   },
   "repository": {
     "type": "git",
@@ -37,8 +37,7 @@
     "prepare": "rm -rf dist && npm run build"
   },
   "dependencies": {
-    "react": ">=16",
-    "uniqid": "^5.4.0"
+    "react": ">=17"
   },
   "browserslist": {
     "production": [
