@@ -1,5 +1,5 @@
 import React from 'react';
-import { ComponentBasicProps } from 'UI/types';
+import { ComponentBasicProps } from './types';
 
 const CarouselWrapper = ({ children }: ComponentBasicProps): JSX.Element => (
   <div

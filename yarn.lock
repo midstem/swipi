@@ -1627,11 +1627,6 @@ globby@^11.1.0:
     merge2 "^1.4.1"
     slash "^3.0.0"
 
-globrex@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/globrex/-/globrex-0.1.2.tgz#dd5d9ec826232730cd6793a5e33a9302985e6098"
-  integrity sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==
-
 gopd@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/gopd/-/gopd-1.0.1.tgz#29ff76de69dac7489b7c0918a5788e56477c332c"
@@ -2632,11 +2627,6 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-tsconfck@^2.1.0:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/tsconfck/-/tsconfck-2.1.1.tgz#9b51603d2712d1f4740fa14748ca886a2e1893e5"
-  integrity sha512-ZPCkJBKASZBmBUNqGHmRhdhM8pJYDdOXp4nRgj/O0JwUwsMq50lCDRQP/M5GBNAA0elPrq4gAeu4dkaVCuKWww==
-
 tsconfig-paths@^3.14.1:
   version "3.14.2"
   resolved "https://registry.yarnpkg.com/tsconfig-paths/-/tsconfig-paths-3.14.2.tgz#6e32f1f79412decd261f92d633a9dc1cfa99f088"
@@ -2733,15 +2723,6 @@ vite-node@0.28.5:
     source-map "^0.6.1"
     source-map-support "^0.5.21"
     vite "^3.0.0 || ^4.0.0"
-
-vite-tsconfig-paths@^4.0.5:
-  version "4.0.8"
-  resolved "https://registry.yarnpkg.com/vite-tsconfig-paths/-/vite-tsconfig-paths-4.0.8.tgz#af5d3d074ae01c434713f7d81321ff3697af1b51"
-  integrity sha512-p04zH+Ey+NT78571x0pdX7nVRIJSlmKVvYryFglSWOK3Hc72eDL0+JJfbyQiugaIBApJkaEqbBQvqpsFZOSVGg==
-  dependencies:
-    debug "^4.1.1"
-    globrex "^0.1.2"
-    tsconfck "^2.1.0"
 
 "vite@^3.0.0 || ^4.0.0", vite@^4.0.4:
   version "4.2.1"

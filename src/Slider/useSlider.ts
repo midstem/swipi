@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState, useMemo, ReactNode } from 'react';
-import { reduceSlide } from 'Slider/constants';
+import { reduceSlide } from './constants';
 import {
   ReturnSlideWidthType,
   ConfigType,
   NextPrevDotType,
   AnimationsTypes,
-} from 'Slider/types';
+} from './types';
 import {
   addUniqueId,
   isCornerSlide,
@@ -14,9 +14,9 @@ import {
   returnSpaceBetween,
   calculateSlideIndex,
   startAutoplay,
-} from 'Slider/helpers';
-import Default from 'DotsAnimations/Default';
-import Sliding from 'DotsAnimations/Sliding';
+} from './helpers';
+import Default from '../DotsAnimations/Default';
+import Sliding from '../DotsAnimations/Sliding';
 
 export const useSlider = (
   children: JSX.Element[],

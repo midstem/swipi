@@ -1,12 +1,12 @@
 import React from 'react';
-import { useSlider } from 'Slider/useSlider';
-import { SliderProps } from 'Slider/types';
-import { defaultConfig } from 'Slider/constants';
-import CarouselWrapper from 'UI/CarouselWrapper';
-import SliderContainer from 'UI/SliderContainer';
-import SliderButton from 'UI/SliderButton';
-import SlidesWrapper from 'UI/SlidesWrapper';
-import SlidesContainer from 'UI/SlidesContainer';
+import { useSlider } from './useSlider';
+import { SliderProps } from './types';
+import { defaultConfig } from './constants';
+import CarouselWrapper from '../UI/CarouselWrapper';
+import SliderContainer from '../UI/SliderContainer';
+import SliderButton from '../UI/SliderButton';
+import SlidesWrapper from '../UI/SlidesWrapper';
+import SlidesContainer from '../UI/SlidesContainer';
 
 const Slider = ({
   slidesNumber = 3,
