@@ -1,5 +1,5 @@
 import React from 'react';
-import { DotProps } from 'UI/types';
+import { DotProps } from './types';
 
 const Dot = ({
   sizeForDefaultDot,

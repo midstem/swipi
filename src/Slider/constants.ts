@@ -1,4 +1,4 @@
-import { ConfigType } from 'Slider/types';
+import { ConfigType } from './types';
 
 const BREAKPOINTS = {
   sm: 576,

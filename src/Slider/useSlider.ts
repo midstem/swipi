@@ -1,10 +1,6 @@
 import { useEffect, useRef, useState, useMemo, ReactNode } from 'react';
-import { reduceSlide } from 'Slider/constants';
-import {
-  ReturnSlideWidthType,
-  ConfigType,
-  NextPrevDotType,
-} from 'Slider/types';
+import { reduceSlide } from './constants';
+import { ReturnSlideWidthType, ConfigType, NextPrevDotType } from './types';
 import {
   addUniqueId,
   isCornerSlide,
@@ -13,7 +9,7 @@ import {
   returnSpaceBetween,
   calculateSlideIndex,
   startAutoplay,
-} from 'Slider/helpers';
+} from './helpers';
 
 export const useSlider = (
   children: JSX.Element[],
