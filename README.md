@@ -154,7 +154,7 @@ const App = () => (
       If a custom dot is not provided but <code>showDots</code> is set to
       <code>true</code> then you can change the default dots color
     </td>
-    <td><code>'orange'</code></td>
+    <td><code>'#c7c7c7'</code></td>
     <td>string</td>
   </tr>
   <tr>
@@ -163,7 +163,7 @@ const App = () => (
       If a custom active dot is not provided but <code>showDots</code> is set
       to <code>true</code> then you can change the active dot color
     </td>
-    <td><code>'black'</code></td>
+    <td><code>'#000000'</code></td>
     <td>string</td>
   </tr>
   <tr>
@@ -274,6 +274,31 @@ const App = () => (
     <td><code>0</code>px</td>
     <td>number</td>
   </tr>
+  <tr>
+    <td colspan="4" align='center'>
+      <h3>Dots animations:</h3>
+    </td>
+  </tr>
+  <tr>
+    <td>dotsAnimation</td>
+    <td>Active dot behavior</td>
+    <td><code>'default'</code></td>
+    <td>string</td>
+  </tr>
+  <tr>
+    <td colspan="4" align='center'>
+      <h3>Options for dots animations:</h3>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" align='center'><code>'default'</code></td>
+    <td colspan="2">The active dot instantly moves with the corresponding slide without any animation</td>
+  </tr>
+  <tr>
+    <td colspan="2" align='center'><code>'sliding'</code></td>
+    <td colspan="2">The active dot smoothly slides to its new position, and the 'passive' dot smoothly fades away from the area it once occupied</td>
+  </tr>
+  <tr>
 </table>
 
 ## **Styling**

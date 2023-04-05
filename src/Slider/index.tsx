@@ -7,8 +7,6 @@ import SliderContainer from '../UI/SliderContainer';
 import SliderButton from '../UI/SliderButton';
 import SlidesWrapper from '../UI/SlidesWrapper';
 import SlidesContainer from '../UI/SlidesContainer';
-import DotsWrapper from '../UI/DotsWrapper';
-import Dot from '../UI/Dot';
 
 const Slider = ({
   slidesNumber = 3,
@@ -23,8 +21,10 @@ const Slider = ({
   dotColor,
   activeDotColor,
   sizeForDefaultDot,
+  sizeForDefaultActiveDot = 13,
   autoplay = false,
   autoplaySpeed = 4000,
+  dotsAnimation = 'default',
   animationSpeed = 300,
 }: SliderProps) => {
   const {
@@ -37,6 +37,7 @@ const Slider = ({
     spaceBetween,
     slideIndex,
     buttonRef,
+    Dots,
     handleDotClick,
     nextImg,
     prevImg,
@@ -52,7 +53,8 @@ const Slider = ({
     slidesNumber,
     spaceBetweenSlides,
     autoplay,
-    autoplaySpeed
+    autoplaySpeed,
+    dotsAnimation
   );
 
   return (
@@ -91,28 +93,19 @@ const Slider = ({
         </SliderButton>
       </SliderContainer>
       {showDots && (
-        <DotsWrapper>
-          {children.map((_, index) => (
-            <div
-              key={index}
-              onClick={() => {
-                handleDotClick(index);
-              }}
-            >
-              {customDot ? (
-                returnCustomDots(index)
-              ) : (
-                <Dot
-                  sizeForDefaultDot={sizeForDefaultDot}
-                  slideIndex={slideIndex}
-                  index={index}
-                  activeDotColor={activeDotColor}
-                  dotColor={dotColor}
-                />
-              )}
-            </div>
-          ))}
-        </DotsWrapper>
+        <Dots
+          children={children}
+          customDot={customDot}
+          customActiveDot={customActiveDot}
+          slideIndex={slideIndex}
+          sizeForDefaultDot={sizeForDefaultDot}
+          sizeForDefaultActiveDot={sizeForDefaultActiveDot}
+          activeDotColor={activeDotColor}
+          dotColor={dotColor}
+          animationSpeed={animationSpeed}
+          handleDotClick={handleDotClick}
+          returnCustomDots={returnCustomDots}
+        />
       )}
     </CarouselWrapper>
   );

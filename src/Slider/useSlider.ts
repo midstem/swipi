@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState, useMemo, ReactNode } from 'react';
 import { reduceSlide } from './constants';
-import { ReturnSlideWidthType, ConfigType, NextPrevDotType } from './types';
+import {
+  ReturnSlideWidthType,
+  ConfigType,
+  NextPrevDotType,
+  AnimationsTypes,
+} from './types';
 import {
   addUniqueId,
   isCornerSlide,
@@ -10,6 +15,8 @@ import {
   calculateSlideIndex,
   startAutoplay,
 } from './helpers';
+import Default from '../DotsAnimations/Default';
+import Sliding from '../DotsAnimations/Sliding';
 
 export const useSlider = (
   children: JSX.Element[],
@@ -19,7 +26,8 @@ export const useSlider = (
   slidesNumber: number,
   spaceBetweenSlides: number,
   autoplay: boolean,
-  autoplaySpeed: number
+  autoplaySpeed: number,
+  dotsAnimation: string
 ) => {
   const [animation, setAnimation] = useState<boolean>(false);
   const [startX, setStartX] = useState<number>(0);
@@ -73,6 +81,13 @@ export const useSlider = (
   );
 
   const startTransform = -slideWidth * children.length;
+
+  const ANIMATIONS: AnimationsTypes = {
+    default: Default,
+    sliding: Sliding,
+  };
+
+  const Dots = ANIMATIONS[dotsAnimation];
 
   const resetCoordinates = (): void => {
     setEndX(0);
@@ -229,6 +244,7 @@ export const useSlider = (
     spaceBetween,
     slideIndex,
     buttonRef,
+    Dots,
     nextImg,
     prevImg,
     setTransform,

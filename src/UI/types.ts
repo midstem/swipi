@@ -27,8 +27,13 @@ export type SlidesContainerProps = {
 
 export type DotProps = {
   sizeForDefaultDot?: number;
-  slideIndex: number;
-  index: number;
+  slideIndex?: number;
+  index?: number;
   activeDotColor?: string;
   dotColor?: string;
+};
+
+export type ActiveDotProps = {
+  sizeForDefaultActiveDot: number;
+  activeDotColor: string | undefined;
 };

@@ -1,4 +1,5 @@
-import { ReactNode } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
+import { DotsTypes } from 'types';
 
 export type AddUniqueIdReturnType = Array<{ id: string } & JSX.Element>;
 
@@ -24,8 +25,10 @@ export type SliderProps = {
   dotColor?: string;
   activeDotColor?: string;
   sizeForDefaultDot?: number;
+  sizeForDefaultActiveDot?: number;
   autoplay?: boolean;
   autoplaySpeed?: number;
+  dotsAnimation?: string;
   animationSpeed?: number;
 };
 
@@ -39,4 +42,8 @@ export type NextPrevDotType = {
   prev: number;
   slideWidth: number;
   children: JSX.Element[];
+};
+
+export type AnimationsTypes = {
+  [key: string]: FunctionComponent<DotsTypes>;
 };
