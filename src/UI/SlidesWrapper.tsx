@@ -1,5 +1,5 @@
 import React from 'react';
-import { SlidesWrapperProps } from 'UI/types';
+import { SlidesWrapperProps } from './types';
 
 const SlidesWrapper = ({
   children,

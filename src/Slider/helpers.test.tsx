@@ -9,8 +9,8 @@ import {
   returnSpaceBetween,
   returnSlideWidth,
   calculateSlideIndex,
-} from 'Slider/helpers';
-import { defaultSliderWidth } from 'Slider/constants';
+} from './helpers';
+import { defaultSliderWidth } from './constants';
 
 describe('getSliderWidth', () => {
   it(`returns default width ${defaultSliderWidth}`, () => {
