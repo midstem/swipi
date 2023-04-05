@@ -9,7 +9,7 @@ import { FirstDotType, DotsCoordinatesTypes } from './types';
 const useSliding = (slideIndex: number) => {
   const dotsRef = useRef<(HTMLDivElement | null)[]>([]);
   const activeDotRef = useRef<HTMLDivElement>(null);
-  const [activeDotLeft, setActiveDotLeft] = useState<number>();
+  const [activeDotLeft, setActiveDotLeft] = useState<number>(0);
   const [firstDot, setFirstDot] = useState<FirstDotType>({ left: 0 });
   const [dotWidth, setDotWidth] = useState<number>(0);
   const [activeDotWidth, setActiveDotWidth] = useState<number>(0);
@@ -25,14 +25,14 @@ const useSliding = (slideIndex: number) => {
   };
 
   const moveActiveDot = useCallback(() => {
-    const activeDotCoordinates = dotsCoordinates[slideIndex];
+    const activeDotIndent = dotsCoordinates[slideIndex].left;
+    const stepSize = activeDotIndent - firstDot.left;
 
-    setActiveDotLeft(
-      activeDotCoordinates.left -
-        firstDot.left +
-        getWidthDifference(dotWidth, activeDotWidth) +
-        getFirstPosition(slideIndex, dotWidth)
-    );
+    const dotAlignment =
+      getWidthDifference(dotWidth, activeDotWidth) +
+      getFirstPosition(slideIndex, dotWidth);
+
+    setActiveDotLeft(stepSize + dotAlignment);
   }, [activeDotWidth, dotWidth, dotsCoordinates, firstDot.left, slideIndex]);
 
   useEffect(() => {
