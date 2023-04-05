@@ -28,6 +28,7 @@ export type SliderProps = {
   autoplay?: boolean;
   autoplaySpeed?: number;
   dotsAnimation?: string;
+  animationSpeed?: number;
 };
 
 export type ReturnSlideWidthType = {

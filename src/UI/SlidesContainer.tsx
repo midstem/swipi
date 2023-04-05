@@ -5,6 +5,7 @@ const SlidesContainer = ({
   children,
   transform,
   animation,
+  animationSpeed,
 }: SlidesContainerProps): JSX.Element => {
   const [isActive, setIsActive] = useState(false);
 
@@ -21,7 +22,9 @@ const SlidesContainer = ({
         display: 'flex',
         width: 'fit-content',
         transform: `translate3d(${transform}px, 0, 0)`,
-        transition: `${animation ? `all 0.3s ease-out 0s` : `0s`}`,
+        transition: `${
+          animation ? `all ${animationSpeed}ms ease-out 0s` : `0s`
+        }`,
         height: '100%',
         cursor: isActive ? 'grabbing' : 'grab',
       }}

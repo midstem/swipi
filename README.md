@@ -11,7 +11,7 @@
   <img src='assets/domdev.png' height='60'>
 </a>
 
-<p><b>The Infinity Image Slider</b> is a lightweight and compact slider optimized for mobile use. It's built with TypeScript and has a fast loading speed. It's also swappable, making it easy for users to switch slides with a swipe on their mobile device. Its mobile-friendly design and convenience make it a great choice for improving user experience.</p>
+<p><b>The Infinite Image Slider</b> is a lightweight and compact slider optimized for mobile use. It's built with TypeScript and has a fast loading speed. It's also swappable, making it easy for users to switch slides with a swipe on their mobile device. Its mobile-friendly design and convenience make it a great choice for improving user experience.</p>
 
 ### Installation
 **npm**
@@ -144,7 +144,7 @@ const App = () => (
   </tr>
   <tr>
     <td>showDots</td>
-    <td>Enable/disable dots.</td>
+    <td>Enable/disable dots</td>
     <td><code>false</code></td>
     <td>boolean</td>
   </tr>
@@ -152,7 +152,7 @@ const App = () => (
     <td>dotColor</td>
     <td>
       If a custom dot is not provided but <code>showDots</code> is set to
-      <code>true</code> then you can change the default dots color.
+      <code>true</code> then you can change the default dots color
     </td>
     <td><code>'orange'</code></td>
     <td>string</td>
@@ -161,14 +161,14 @@ const App = () => (
     <td>activeDotColor</td>
     <td>
       If a custom active dot is not provided but <code>showDots</code> is set
-      to <code>true</code> then you can change the active dot color.
+      to <code>true</code> then you can change the active dot color
     </td>
     <td><code>'black'</code></td>
     <td>string</td>
   </tr>
   <tr>
     <td>customDot</td>
-    <td>Provide your custom JSX.Element.</td>
+    <td>Provide your custom JSX.Element</td>
     <td>-</td>
     <td>JSX.Element</td>
   </tr>
@@ -176,7 +176,7 @@ const App = () => (
     <td>customActiveDot</td>
     <td>
       Provide your your custom active dot. It will be
-      used to show to the user what slide he is at.
+      used to show to the user what slide he is at
     </td>
     <td>-</td>
     <td>JSX.Element</td>
@@ -195,14 +195,20 @@ const App = () => (
   </tr>
   <tr>
     <td>slidesNumber</td>
-    <td>Number of visible slides.</td>
+    <td>Number of visible slides</td>
     <td>3</td>
     <td>number</td>
   </tr>
   <tr>
     <td>spaceBetweenSlides</td>
-    <td>Space between slides.</td>
+    <td>Space between slides</td>
     <td>0</td>
+    <td>number</td>
+  </tr>
+  <tr>
+    <td>animationSpeed</td>
+    <td>Sets the duration (in milliseconds) for slide transitions</td>
+    <td>300</td>
     <td>number</td>
   </tr>
   <tr>
@@ -223,7 +229,7 @@ const App = () => (
       Takes an array of objects to manipulate slides:
       <code>slidesNumber, maxWidth, biasRight, spaceBetween</code>.
       If <code>config</code> is not provided then the default
-      settings of it's parameters are used.
+      settings of it's parameters are used
     </td>
     <td>
       <div>
@@ -239,7 +245,7 @@ const App = () => (
   </tr>
   <tr>
     <td>slidesNumber</td>
-    <td>Number of visible slides.</td>
+    <td>Number of visible slides</td>
     <td>
       <div>screen width > 992px: <code>3</code> slides</div>
       <div>screen width <= 992px: <code>2</code> slides</div>
@@ -249,13 +255,13 @@ const App = () => (
   </tr>
   <tr>
     <td>maxWidth</td>
-    <td>Defines a width after which the slides amount will change.</td>
+    <td>Defines a width after which the slides amount will change</td>
     <td><code>992</code>px and <code>450</code>px</td>
     <td>number</td>
   </tr>
   <tr>
     <td>biasRight</td>
-    <td>Show/hide a pice of an element that goes after visible slides.</td>
+    <td>Show/hide a pice of an element that goes after visible slides</td>
     <td>
       <div>screen width > 450: <code>false</code></div>
       <div>screen width <= 450px: <code>true</code></div>
@@ -264,7 +270,7 @@ const App = () => (
   </tr>
   <tr>
     <td>spaceBetween</td>
-    <td>Space between slides.</td>
+    <td>Space between slides</td>
     <td><code>0</code>px</td>
     <td>number</td>
   </tr>
