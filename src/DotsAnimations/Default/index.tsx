@@ -1,7 +1,7 @@
 import React from 'react';
-import DotsWrapper from 'UI/DotsWrapper';
-import Dot from 'UI/Dot';
-import { DotsTypes } from 'types';
+import DotsWrapper from '../../UI/DotsWrapper';
+import Dot from '../../UI/Dot';
+import { DotsTypes } from '../../types';
 
 const Default = ({
   children,

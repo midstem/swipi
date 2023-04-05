@@ -1,9 +1,9 @@
 import React from 'react';
 import useSliding from './useSliding';
-import DotsWrapper from 'UI/DotsWrapper';
-import Dot from 'UI/Dot';
-import ActiveDot from 'UI/ActiveDot';
-import { DotsTypes } from 'types';
+import DotsWrapper from '../../UI/DotsWrapper';
+import Dot from '../../UI/Dot';
+import ActiveDot from '../../UI/ActiveDot';
+import { DotsTypes } from '../../types';
 
 const Sliding = ({
   children,
