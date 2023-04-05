@@ -1,11 +1,11 @@
-# Infinite Image Slider
+# Swipi
 
 [![NPM version][npm-image]][npm-url] [![bundle size][bundlephobia-image]][bundlephobia-url]
 
-[npm-image]: https://img.shields.io/npm/v/infinite-image-slider.svg
-[npm-url]: http://npmjs.org/package/infinite-image-slider
-[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/infinite-image-slider
-[bundlephobia-url]: https://bundlephobia.com/result?p=infinite-image-slider
+[npm-image]: https://img.shields.io/npm/v/swipi.svg
+[npm-url]: http://npmjs.org/package/swipi
+[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/swipi
+[bundlephobia-url]: https://bundlephobia.com/result?p=swipi
 
 <a href='https://domdev.pro/'>
   <img src='assets/domdev.png' height='60'>
@@ -17,18 +17,18 @@
 **npm**
 
 ```bash
-npm install infinite-image-slider
+$ npm install swipi
 ```
 
 **yarn**
 
 ```bash
-yarn add infinite-image-slider
+$ yarn add swipi
 ```
 
 ## [Default](https://codesandbox.io/s/default-demo-g81knf)
 ```js
-import Slider from "infinite-image-slider"
+import Slider from "swipi"
 import pictures from "./constants"
 import { SliderWrapper, Image } from "./styles"
 
@@ -45,7 +45,7 @@ const App = () => (
 
 ## [With arrows](https://codesandbox.io/s/demo-with-arrows-uqf4rf)
 ```js
-import Slider from "infinite-image-slider"
+import Slider from "swipi"
 import pictures from "./constants"
 import { SliderWrapper, Image } from "./styles"
 import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg"
@@ -67,7 +67,7 @@ const App = () => (
 
 ## [With arrows and dots](https://codesandbox.io/s/demo-with-arrows-dots-unqoph)
 ```js
-import Slider from "infinite-image-slider"
+import Slider from "swipi"
 import pictures from "./constants"
 import { SliderWrapper, Image } from "./styles"
 import { Circle, Diamond } from "./customDots"
@@ -93,7 +93,7 @@ const App = () => (
 
 ## [All custom settings](https://codesandbox.io/s/all-custom-demo-vfxhtr)
 ```js
-import Slider from "infinite-image-slider"
+import Slider from "swipi"
 import pictures from "./constants"
 import { SliderWrapper, Image } from "./styles"
 import { Circle, Diamond } from "./customDots"
@@ -320,7 +320,7 @@ https - $ git clone https://github.com/MaKs-Tkachyk/image_carousel.git
 or
 ssh - $ git clone git@github.com:MaKs-Tkachyk/image_carousel.git
 
-$ cd infinite-image-slider
+$ cd swipi
 
 $ git checkout demo
 

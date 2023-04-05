@@ -1,6 +1,6 @@
 {
-  "name": "infinite-image-slider",
-  "version": "1.0.7",
+  "name": "swipi",
+  "version": "1.0.8",
   "license": "MIT",
   "author": "Maksym Tkachuk",
   "description": "Lightweight TypeScript Slider",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MaKs-Tkachyk/image_carousel.git"
+    "url": "git+https://github.com/MaKs-Tkachyk/swipi.git"
   },
   "files": [
     "dist",
@@ -25,9 +25,9 @@
     "image-carousel"
   ],
   "bugs": {
-    "url": "https://github.com/MaKs-Tkachyk/image_carousel/issues"
+    "url": "https://github.com/MaKs-Tkachyk/swipi/issues"
   },
-  "homepage": "https://github.com/MaKs-Tkachyk/image_carousel#readme",
+  "homepage": "https://github.com/MaKs-Tkachyk/swipi#readme",
   "scripts": {
     "start": "vite",
     "build": "tsc",
