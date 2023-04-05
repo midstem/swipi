@@ -1,9 +1,9 @@
 import React from 'react';
-import useSlidingEffect from './useSliding';
+import useSliding from './useSliding';
 import DotsWrapper from 'UI/DotsWrapper';
 import Dot from 'UI/Dot';
 import ActiveDot from 'UI/ActiveDot';
-import { DotsTypes } from 'Slider/types';
+import { DotsTypes } from 'types';
 
 const Sliding = ({
   children,
@@ -13,9 +13,10 @@ const Sliding = ({
   sizeForDefaultDot,
   sizeForDefaultActiveDot,
   activeDotColor,
+  animationSpeed,
   handleDotClick,
 }: DotsTypes): JSX.Element => {
-  const { dotsRef, activeDotRef, activeDotLeft } = useSlidingEffect(slideIndex);
+  const { dotsRef, activeDotRef, activeDotLeft } = useSliding(slideIndex);
 
   return (
     <DotsWrapper>
@@ -27,7 +28,7 @@ const Sliding = ({
             handleDotClick(index);
           }}
           style={{
-            transition: '0.3s',
+            transition: `${animationSpeed}ms`,
             transform: slideIndex === index ? 'scale(0)' : 'scale(1)',
           }}
         >
@@ -46,7 +47,7 @@ const Sliding = ({
           position: 'absolute',
           left: activeDotLeft,
           opacity: !activeDotLeft ? 0 : 1,
-          transition: 'left 0.3s',
+          transition: `left ${animationSpeed}ms`,
         }}
       >
         {customActiveDot ?? (

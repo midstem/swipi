@@ -102,6 +102,7 @@ const Slider = ({
           sizeForDefaultActiveDot={sizeForDefaultActiveDot}
           activeDotColor={activeDotColor}
           dotColor={dotColor}
+          animationSpeed={animationSpeed}
           handleDotClick={handleDotClick}
           returnCustomDots={returnCustomDots}
         />
