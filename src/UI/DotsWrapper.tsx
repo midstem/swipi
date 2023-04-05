@@ -5,8 +5,10 @@ const DotsWrapper = ({ children }: ComponentBasicProps): JSX.Element => (
   <div
     className="dots-wrapper"
     style={{
+      position: 'relative',
       display: 'flex',
-      gap: '5px',
+      alignItems: 'center',
+      gap: '10px',
     }}
   >
     {children}
