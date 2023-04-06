@@ -232,9 +232,7 @@ const App = () => (
       settings of it's parameters are used
     </td>
     <td>
-      <div>
-        <code>[{ slidesNumber: 2, maxWidth: 992 }, { slidesNumber: 1, maxWidth: 450, biasRight: true, spaceBetween: 3 }]</code>
-      </div>
+      -
     </td>
     <td>array</td>
   </tr>
@@ -245,33 +243,26 @@ const App = () => (
   </tr>
   <tr>
     <td>slidesNumber</td>
-    <td>Number of visible slides</td>
-    <td>
-      <div>screen width > 992px: <code>3</code> slides</div>
-      <div>screen width <= 992px: <code>2</code> slides</div>
-      <div>screen width <= 450px: <code>1</code> slide</div>
-    </td>
+    <td>Number of visible slides according to <code>maxWidth</code> prop</td>
+    <td>-</td>
     <td>number</td>
   </tr>
   <tr>
     <td>maxWidth</td>
     <td>Defines a width after which the slides amount will change</td>
-    <td><code>992</code>px and <code>450</code>px</td>
+    <td>-</td>
     <td>number</td>
   </tr>
   <tr>
     <td>biasRight</td>
     <td>Show/hide a pice of an element that goes after visible slides</td>
-    <td>
-      <div>screen width > 450: <code>false</code></div>
-      <div>screen width <= 450px: <code>true</code></div>
-    </td>
+    <td>-</td>
     <td>boolean</td>
   </tr>
   <tr>
     <td>spaceBetween</td>
-    <td>Space between slides</td>
-    <td><code>0</code>px</td>
+    <td>Space between slides that can be changed according <code>maxWidth</code></td>
+    <td>-</td>
     <td>number</td>
   </tr>
   <tr>
@@ -291,12 +282,12 @@ const App = () => (
     </td>
   </tr>
   <tr>
-    <td colspan="2" align='center'><code>'default'</code></td>
-    <td colspan="2">The active dot instantly moves with the corresponding slide without any animation</td>
+    <td><code>'default'</code></td>
+    <td colspan="3">The active dot instantly moves with the corresponding slide without any animation</td>
   </tr>
   <tr>
-    <td colspan="2" align='center'><code>'sliding'</code></td>
-    <td colspan="2">The active dot smoothly slides to its new position, and the 'passive' dot smoothly fades away from the area it once occupied</td>
+    <td><code>'sliding'</code></td>
+    <td colspan="3">The active dot smoothly slides to its new position, and the 'passive' dot smoothly fades away from the area it once occupied</td>
   </tr>
   <tr>
 </table>
