@@ -26,11 +26,12 @@ export type SlidesContainerProps = {
 };
 
 export type DotProps = {
-  sizeForDefaultDot?: number;
-  slideIndex?: number;
   index?: number;
-  activeDotColor?: string;
+  slideIndex?: number;
+  sizeForDefaultDot?: number;
+  sizeForDefaultActiveDot?: number;
   dotColor?: string;
+  activeDotColor?: string;
 };
 
 export type ActiveDotProps = {

@@ -5,11 +5,12 @@ import { DotsTypes } from '../../types';
 
 const Default = ({
   children,
+  slideIndex,
   customDot,
   sizeForDefaultDot,
-  slideIndex,
-  activeDotColor,
+  sizeForDefaultActiveDot,
   dotColor,
+  activeDotColor,
   handleDotClick,
   returnCustomDots,
 }: DotsTypes): JSX.Element => (
@@ -28,6 +29,7 @@ const Default = ({
             index={index}
             slideIndex={slideIndex}
             sizeForDefaultDot={sizeForDefaultDot}
+            sizeForDefaultActiveDot={sizeForDefaultActiveDot}
             dotColor={dotColor}
             activeDotColor={activeDotColor}
           />
