@@ -17,8 +17,6 @@ export type SliderProps = {
   prevButton?: ReactNode;
   children: JSX.Element[];
   config?: ConfigType[];
-  defaultSliderUpdates?: ConfigType[];
-  defaultSpaceBetween?: number;
   showDots?: boolean;
   customDot?: JSX.Element;
   customActiveDot?: JSX.Element;
@@ -28,8 +26,8 @@ export type SliderProps = {
   sizeForDefaultActiveDot?: number;
   autoplay?: boolean;
   autoplaySpeed?: number;
-  dotsAnimation?: string;
   animationSpeed?: number;
+  dotsAnimation?: string;
 };
 
 export type ReturnSlideWidthType = {

@@ -149,6 +149,18 @@ const App = () => (
     <td>boolean</td>
   </tr>
   <tr>
+    <td>sizeForDefaultDot</td>
+    <td>Sets the size for default dot</td>
+    <td><code>12</code></td>
+    <td>number</td>
+  </tr>
+  <tr>
+    <td>sizeForDefaultActiveDot</td>
+    <td>Sets the size for default active dot</td>
+    <td><code>12</code></td>
+    <td>number</td>
+  </tr>
+  <tr>
     <td>dotColor</td>
     <td>
       If a custom dot is not provided but <code>showDots</code> is set to
