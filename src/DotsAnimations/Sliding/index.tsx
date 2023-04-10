@@ -22,7 +22,6 @@ const Sliding = ({
     <DotsWrapper>
       {children.map((_, index) => (
         <div
-          className="passive-dot"
           key={index}
           ref={(el) => (dotsRef.current[index] = el)}
           onClick={() => {

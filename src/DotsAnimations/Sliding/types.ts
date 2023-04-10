@@ -1,1 +1,1 @@
-export type DotsCoordinatesTypes = { left: number };
+export type DotsLeftOffsetsTypes = { left: number };

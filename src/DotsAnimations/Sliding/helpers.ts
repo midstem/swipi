@@ -1,5 +1,5 @@
 import { MutableRefObject } from 'react';
-import { DotsCoordinatesTypes } from './types';
+import { DotsLeftOffsetsTypes } from './types';
 
 export const getWidthDifference = (
   dotWidth: number,
@@ -8,10 +8,7 @@ export const getWidthDifference = (
 
 export const getDotsCoordinates = (
   dotsRef: MutableRefObject<(HTMLDivElement | null)[]>
-): DotsCoordinatesTypes[] =>
-  dotsRef.current?.map(
-    (dot) =>
-      dot && {
-        left: dot.offsetLeft,
-      }
-  ) as DotsCoordinatesTypes[];
+): DotsLeftOffsetsTypes[] =>
+  dotsRef.current?.map((dot) => ({
+    left: dot?.offsetLeft ?? 0,
+  }));

@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 import { getWidthDifference, getDotsCoordinates } from './helpers';
-import { DotsCoordinatesTypes } from './types';
+import { DotsLeftOffsetsTypes } from './types';
 
 const useSliding = (slideIndex: number) => {
   const dotsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -8,25 +8,24 @@ const useSliding = (slideIndex: number) => {
   const [activeDotLeft, setActiveDotLeft] = useState<number>(0);
   const [dotWidth, setDotWidth] = useState<number>(0);
   const [activeDotWidth, setActiveDotWidth] = useState<number>(0);
-  const [dotsCoordinates, setDotsCoordinates] = useState<
-    DotsCoordinatesTypes[]
+  const [dotsLeftOffsets, setDotsLeftOffsets] = useState<
+    DotsLeftOffsetsTypes[]
   >([{ left: 0 }]);
 
   const initializeData = (): void => {
-    console.log(getDotsCoordinates(dotsRef)[0]);
-    setDotsCoordinates(getDotsCoordinates(dotsRef));
+    setDotsLeftOffsets(getDotsCoordinates(dotsRef));
     setDotWidth(dotsRef.current[0]?.clientWidth ?? 0);
     setActiveDotWidth(activeDotRef.current?.clientWidth ?? 0);
   };
 
   const moveActiveDot = useCallback(() => {
-    const activeDotIndent = dotsCoordinates[slideIndex].left;
+    const activeDotIndent = dotsLeftOffsets[slideIndex].left;
     const dotAlignment = getWidthDifference(dotWidth, activeDotWidth);
 
     if (!slideIndex) return setActiveDotLeft(activeDotIndent + dotAlignment);
 
     setActiveDotLeft(activeDotIndent + dotAlignment);
-  }, [activeDotWidth, dotWidth, dotsCoordinates, slideIndex]);
+  }, [activeDotWidth, dotWidth, dotsLeftOffsets, slideIndex]);
 
   useEffect(() => {
     initializeData();
