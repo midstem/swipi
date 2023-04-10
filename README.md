@@ -319,9 +319,9 @@ const App = () => (
 ## **Welcome to suggestions**
 
 ```
-https - $ git clone https://github.com/MaKs-Tkachyk/image_carousel.git
+https - $ git clone https://github.com/MaKs-Tkachyk/swipi.git
 or
-ssh - $ git clone git@github.com:MaKs-Tkachyk/image_carousel.git
+ssh - $ git clone git@github.com:MaKs-Tkachyk/swipi.git
 
 $ cd swipi
 

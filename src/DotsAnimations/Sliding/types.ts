@@ -1,3 +1,1 @@
-export type FirstDotType = { left: number };
-
-export type DotsCoordinatesTypes = { left: number; width: number };
+export type DotsLeftOffsetsTypes = { left: number };

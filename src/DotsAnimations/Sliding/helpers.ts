@@ -1,10 +1,5 @@
 import { MutableRefObject } from 'react';
-import { DotsCoordinatesTypes } from './types';
-
-export const getFirstPosition = (
-  slideIndex: number,
-  dotWidth: number
-): number => (slideIndex === 0 ? 0 : dotWidth / 2);
+import { DotsLeftOffsetsTypes } from './types';
 
 export const getWidthDifference = (
   dotWidth: number,
@@ -13,7 +8,7 @@ export const getWidthDifference = (
 
 export const getDotsCoordinates = (
   dotsRef: MutableRefObject<(HTMLDivElement | null)[]>
-): DotsCoordinatesTypes[] =>
-  dotsRef.current?.map(
-    (dot) => dot && dot.getBoundingClientRect()
-  ) as DotsCoordinatesTypes[];
+): DotsLeftOffsetsTypes[] =>
+  dotsRef.current?.map((dot) => ({
+    left: dot?.offsetLeft ?? 0,
+  }));
