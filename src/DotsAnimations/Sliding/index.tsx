@@ -4,7 +4,6 @@ import DotsWrapper from '../../UI/DotsWrapper';
 import Dot from '../../UI/Dot';
 import ActiveDot from '../../UI/ActiveDot';
 import { DotsTypes } from '../../types';
-import '../../index.css';
 
 const Sliding = ({
   children,
