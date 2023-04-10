@@ -26,11 +26,10 @@ const useSliding = (slideIndex: number) => {
 
   const moveActiveDot = useCallback(() => {
     const activeDotIndent = dotsCoordinates[slideIndex].left;
+    const dotAlignment = getWidthDifference(dotWidth, activeDotWidth);
     const stepSize = activeDotIndent - firstDot.left;
 
-    const dotAlignment =
-      getWidthDifference(dotWidth, activeDotWidth) +
-      getFirstPosition(slideIndex, dotWidth);
+    if (!slideIndex) return setActiveDotLeft(activeDotIndent + dotAlignment);
 
     setActiveDotLeft(stepSize + dotAlignment);
   }, [activeDotWidth, dotWidth, dotsCoordinates, firstDot.left, slideIndex]);

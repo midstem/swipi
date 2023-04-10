@@ -15,5 +15,10 @@ export const getDotsCoordinates = (
   dotsRef: MutableRefObject<(HTMLDivElement | null)[]>
 ): DotsCoordinatesTypes[] =>
   dotsRef.current?.map(
-    (dot) => dot && dot.getBoundingClientRect()
+    (dot) =>
+      dot && {
+        left: dot.offsetLeft,
+        width: dot.offsetWidth,
+        top: dot.offsetTop,
+      }
   ) as DotsCoordinatesTypes[];
