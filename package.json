@@ -41,7 +41,8 @@
     "@types/styled-components": "^5.1.26",
     "react": ">=17",
     "react-dom": "^18.2.0",
-    "styled-components": "^5.3.9"
+    "styled-components": "^5.3.9",
+    "vite-plugin-svgr": "^2.4.0"
   },
   "browserslist": {
     "production": [
