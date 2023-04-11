@@ -7,6 +7,7 @@ const Default = ({
   children,
   slideIndex,
   customDot,
+  customActiveDot,
   sizeForDefaultDot,
   sizeForDefaultActiveDot,
   dotColor,
@@ -22,7 +23,7 @@ const Default = ({
           handleDotClick(index);
         }}
       >
-        {customDot ? (
+        {customDot || customActiveDot ? (
           returnCustomDots(index)
         ) : (
           <Dot

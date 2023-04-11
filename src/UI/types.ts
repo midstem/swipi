@@ -35,6 +35,6 @@ export type DotProps = {
 };
 
 export type ActiveDotProps = {
-  sizeForDefaultActiveDot: number;
-  activeDotColor: string | undefined;
+  sizeForDefaultActiveDot?: number;
+  activeDotColor?: string | undefined;
 };

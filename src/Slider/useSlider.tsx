@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useMemo, ReactNode } from 'react';
+import React, { useEffect, useRef, useState, useMemo, ReactNode } from 'react';
 import { reduceSlide } from './constants';
 import {
   ReturnSlideWidthType,
@@ -17,6 +17,8 @@ import {
 } from './helpers';
 import Default from '../DotsAnimations/Default';
 import Sliding from '../DotsAnimations/Sliding';
+import Dot from '../UI/Dot';
+import ActiveDot from '../UI/ActiveDot';
 
 export const useSlider = (
   children: JSX.Element[],
@@ -27,7 +29,9 @@ export const useSlider = (
   spaceBetweenSlides: number,
   autoplay: boolean,
   autoplaySpeed: number,
-  dotsAnimation: string
+  dotsAnimation: string,
+  dotColor: string | undefined,
+  activeDotColor: string | undefined
 ) => {
   const [animation, setAnimation] = useState<boolean>(false);
   const [startX, setStartX] = useState<number>(0);
@@ -221,8 +225,11 @@ export const useSlider = (
   };
 
   const returnCustomDots = (index: number): ReactNode =>
-    slideIndex === index ? customActiveDot : customDot;
-
+    slideIndex === index
+      ? customActiveDot || <ActiveDot activeDotColor={activeDotColor} />
+      : customDot || (
+          <Dot index={index} slideIndex={slideIndex} dotColor={dotColor} />
+        );
   useEffect(() => {
     setWindowWidth(window.innerWidth);
     setCurrentRef(slidesWrapperRef.current);

@@ -53,7 +53,9 @@ const Slider = ({
     spaceBetweenSlides,
     autoplay,
     autoplaySpeed,
-    dotsAnimation
+    dotsAnimation,
+    dotColor,
+    activeDotColor
   );
 
   return (
