@@ -62,11 +62,13 @@ export const calculateSlideIndex = (
 
   return Math.abs(result % children.length);
 };
+
 export const startAutoplay = (
   autoplaySpeed: number,
-  buttonRef: React.RefObject<HTMLButtonElement>
+  buttonRef: React.RefObject<HTMLButtonElement>,
+  timeout: React.MutableRefObject<NodeJS.Timer | undefined>
 ) => {
-  setInterval(() => {
+  timeout.current = setTimeout(() => {
     buttonRef.current?.click();
   }, autoplaySpeed);
 };

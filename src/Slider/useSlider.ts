@@ -40,6 +40,7 @@ export const useSlider = (
   const [mouseDown, setMouseDown] = useState(false);
   const slidesWrapperRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const timeout = useRef<NodeJS.Timer>();
 
   const visibleCountSlides = returnCountSlides(
     config,
@@ -231,8 +232,9 @@ export const useSlider = (
 
   useEffect(() => {
     if (!autoplay) return;
-    startAutoplay(autoplaySpeed, buttonRef);
-  }, [buttonRef, autoplaySpeed, autoplay]);
+    clearTimeout(timeout.current);
+    startAutoplay(autoplaySpeed, buttonRef, timeout);
+  }, [buttonRef, autoplaySpeed, autoplay, slideIndex]);
 
   return {
     animation,
