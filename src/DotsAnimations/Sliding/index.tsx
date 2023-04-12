@@ -10,6 +10,7 @@ const Sliding = ({
   customDot,
   slideIndex,
   customActiveDot,
+  dotColor,
   sizeForDefaultDot,
   sizeForDefaultActiveDot,
   activeDotColor,
@@ -34,7 +35,8 @@ const Sliding = ({
         >
           {customDot ?? (
             <Dot
-              activeDotColor="#c7c7c7"
+              index={index}
+              dotColor={dotColor}
               sizeForDefaultDot={sizeForDefaultDot}
             />
           )}

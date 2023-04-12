@@ -7,12 +7,13 @@ const Default = ({
   children,
   slideIndex,
   customDot,
+  customActiveDot,
   sizeForDefaultDot,
   sizeForDefaultActiveDot,
   dotColor,
   activeDotColor,
   handleDotClick,
-  returnCustomDots,
+  returnDots,
 }: DotsTypes): JSX.Element => (
   <DotsWrapper>
     {children.map((_, index) => (
@@ -22,8 +23,8 @@ const Default = ({
           handleDotClick(index);
         }}
       >
-        {customDot ? (
-          returnCustomDots(index)
+        {customDot || customActiveDot ? (
+          returnDots(index)
         ) : (
           <Dot
             index={index}

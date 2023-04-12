@@ -1,13 +1,13 @@
 export type DotsTypes = {
   children: JSX.Element[];
-  customDot: JSX.Element | undefined;
+  customDot?: JSX.Element;
   slideIndex: number;
-  customActiveDot: JSX.Element | undefined;
-  sizeForDefaultDot: number | undefined;
+  customActiveDot?: JSX.Element;
+  sizeForDefaultDot?: number;
   sizeForDefaultActiveDot: number;
-  activeDotColor: string | undefined;
-  dotColor: string | undefined;
+  activeDotColor?: string;
+  dotColor?: string;
   animationSpeed: number;
   handleDotClick: (index: number) => void;
-  returnCustomDots: (index: number) => React.ReactNode;
+  returnDots: (index: number) => React.ReactNode;
 };

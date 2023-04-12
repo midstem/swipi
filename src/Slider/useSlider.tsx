@@ -24,6 +24,9 @@ import {
 } from './helpers';
 import Default from '../DotsAnimations/Default';
 import Sliding from '../DotsAnimations/Sliding';
+import Dot from '../UI/Dot';
+import ActiveDot from '../UI/ActiveDot';
+import React from 'react';
 
 export const useSlider = (
   children: JSX.Element[],
@@ -34,7 +37,9 @@ export const useSlider = (
   spaceBetweenSlides: number,
   autoplay: boolean,
   autoplaySpeed: number,
-  dotsAnimation: string
+  dotsAnimation: string,
+  dotColor?: string,
+  activeDotColor?: string
 ) => {
   const [animation, setAnimation] = useState<boolean>(false);
   const [startX, setStartX] = useState<number>(0);
@@ -227,8 +232,17 @@ export const useSlider = (
     setSlideIndex(index);
   };
 
-  const returnCustomDots = (index: number): ReactNode =>
-    slideIndex === index ? customActiveDot : customDot;
+  const returnDots = (index: number): ReactNode => {
+    if (slideIndex === index) {
+      return customActiveDot || <ActiveDot activeDotColor={activeDotColor} />;
+    }
+
+    return (
+      customDot || (
+        <Dot index={index} slideIndex={slideIndex} dotColor={dotColor} />
+      )
+    );
+  };
 
   const resizeHandler = useCallback((): void => {
     setWindowWidth(window.innerWidth);
@@ -274,7 +288,7 @@ export const useSlider = (
     setAnimation,
     handleDotClick,
     endTouchScreen,
-    returnCustomDots,
+    returnDots,
     moveTouchScreen: isButton ? moveTouchScreen : () => {},
     startTouchByScreen: isButton ? startTouchByScreen : () => {},
   };

@@ -2,7 +2,7 @@ import React from 'react';
 import { ActiveDotProps } from './types';
 
 const ActiveDot = ({
-  sizeForDefaultActiveDot,
+  sizeForDefaultActiveDot = 13,
   activeDotColor,
 }: ActiveDotProps): JSX.Element => (
   <div
