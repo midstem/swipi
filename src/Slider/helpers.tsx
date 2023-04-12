@@ -65,9 +65,10 @@ export const calculateSlideIndex = (
 
 export const startAutoplay = (
   autoplaySpeed: number,
-  buttonRef: React.RefObject<HTMLButtonElement>
+  timeout: React.MutableRefObject<NodeJS.Timeout | undefined>,
+  nextImg: () => void
 ) => {
-  setInterval(() => {
-    buttonRef.current?.click();
+  timeout.current = setTimeout(() => {
+    nextImg();
   }, autoplaySpeed);
 };
