@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, useMemo, ReactNode } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+  ReactNode,
+  useCallback,
+} from 'react';
 import { reduceSlide } from './constants';
 import {
   ReturnSlideWidthType,
@@ -39,7 +46,6 @@ export const useSlider = (
   const [slideIndex, setSlideIndex] = useState(0);
   const [mouseDown, setMouseDown] = useState(false);
   const slidesWrapperRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
   const timeout = useRef<NodeJS.Timer>();
 
   const visibleCountSlides = returnCountSlides(
@@ -96,22 +102,28 @@ export const useSlider = (
     setStartX(0);
   };
 
-  const checkSliderCorner = (): boolean =>
-    transform <= startTransform * 2 + slideWidth / 2 ||
-    transform >= -slideWidth / 2;
+  const checkSliderCorner = useCallback(
+    (): boolean =>
+      transform <= startTransform * 2 + slideWidth / 2 ||
+      transform >= -slideWidth / 2,
+    [slideWidth, startTransform, transform]
+  );
 
   const checkAreaWithoutSlides = (): boolean =>
     transform <= startTransform * 2 - slideWidth || transform >= slideWidth / 2;
 
-  const putInTheInitialPosition = (callback?: () => void): (() => void) => {
-    setTransform(startTransform);
-    setAnimation(false);
-    const timer = setTimeout(() => {
-      callback?.();
-      setAnimation(true);
-    }, 1);
-    return () => clearTimeout(timer);
-  };
+  const putInTheInitialPosition = useCallback(
+    (callback?: () => void): (() => void) => {
+      setTransform(startTransform);
+      setAnimation(false);
+      const timer = setTimeout(() => {
+        callback?.();
+        setAnimation(true);
+      }, 1);
+      return () => clearTimeout(timer);
+    },
+    [startTransform]
+  );
 
   const turnInitialPositionByTouched = (): void => {
     setAnimation(false);
@@ -150,7 +162,7 @@ export const useSlider = (
       )
     );
 
-  const nextImg = (): void => {
+  const nextImg = useCallback((): void => {
     setTransform((prev) => {
       nextDot({ prev, slideWidth, children });
 
@@ -165,7 +177,7 @@ export const useSlider = (
           return prev - slideWidth;
         })
       );
-  };
+  }, [checkSliderCorner, children, putInTheInitialPosition, slideWidth]);
 
   const prevImg = (): void => {
     setTransform((prev) => {
@@ -233,8 +245,8 @@ export const useSlider = (
   useEffect(() => {
     if (!autoplay) return;
     clearTimeout(timeout.current);
-    startAutoplay(autoplaySpeed, buttonRef, timeout);
-  }, [buttonRef, autoplaySpeed, autoplay, slideIndex]);
+    startAutoplay(autoplaySpeed, timeout, nextImg);
+  }, [autoplaySpeed, autoplay, slideIndex, nextImg]);
 
   return {
     animation,
@@ -245,7 +257,6 @@ export const useSlider = (
     isButton,
     spaceBetween,
     slideIndex,
-    buttonRef,
     Dots,
     nextImg,
     prevImg,

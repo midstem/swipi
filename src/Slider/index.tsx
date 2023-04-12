@@ -35,7 +35,6 @@ const Slider = ({
     isButton,
     spaceBetween,
     slideIndex,
-    buttonRef,
     Dots,
     handleDotClick,
     nextImg,
@@ -87,7 +86,7 @@ const Slider = ({
             ))}
           </SlidesContainer>
         </SlidesWrapper>
-        <SliderButton ref={buttonRef} onClick={nextImg} className="left-button">
+        <SliderButton onClick={nextImg} className="left-button">
           {isButton && nextButton}
         </SliderButton>
       </SliderContainer>
