@@ -224,16 +224,16 @@ export const useSlider = (
   const returnCustomDots = (index: number): ReactNode =>
     slideIndex === index ? customActiveDot : customDot;
 
-  useEffect(() => {
-    setWindowWidth(window.innerWidth);
-    setCurrentRef(slidesWrapperRef.current);
-  }, []);
-
   const resizeHandler = useCallback((): void => {
     setWindowWidth(window.innerWidth);
     setAnimation(true);
     setSlideIndex(0);
     setTransform(0);
+  }, []);
+
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+    setCurrentRef(slidesWrapperRef.current);
   }, []);
 
   useEffect(() => {
