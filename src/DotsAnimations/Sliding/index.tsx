@@ -46,7 +46,6 @@ const Sliding = ({
         style={{
           position: 'absolute',
           left: activeDotLeft,
-          opacity: !activeDotLeft ? 0 : 1,
           transition: `left ${animationSpeed}ms`,
         }}
       >
