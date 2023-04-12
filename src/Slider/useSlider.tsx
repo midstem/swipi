@@ -1,4 +1,11 @@
-import React, { useEffect, useRef, useState, useMemo, ReactNode } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+  ReactNode,
+  useCallback,
+} from 'react';
 import { reduceSlide } from './constants';
 import {
   ReturnSlideWidthType,
@@ -19,6 +26,7 @@ import Default from '../DotsAnimations/Default';
 import Sliding from '../DotsAnimations/Sliding';
 import Dot from '../UI/Dot';
 import ActiveDot from '../UI/ActiveDot';
+import React from 'react';
 
 export const useSlider = (
   children: JSX.Element[],
@@ -43,7 +51,7 @@ export const useSlider = (
   const [slideIndex, setSlideIndex] = useState(0);
   const [mouseDown, setMouseDown] = useState(false);
   const slidesWrapperRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const timeout = useRef<NodeJS.Timer>();
 
   const visibleCountSlides = returnCountSlides(
     config,
@@ -99,22 +107,28 @@ export const useSlider = (
     setStartX(0);
   };
 
-  const checkSliderCorner = (): boolean =>
-    transform <= startTransform * 2 + slideWidth / 2 ||
-    transform >= -slideWidth / 2;
+  const checkSliderCorner = useCallback(
+    (): boolean =>
+      transform <= startTransform * 2 + slideWidth / 2 ||
+      transform >= -slideWidth / 2,
+    [slideWidth, startTransform, transform]
+  );
 
   const checkAreaWithoutSlides = (): boolean =>
     transform <= startTransform * 2 - slideWidth || transform >= slideWidth / 2;
 
-  const putInTheInitialPosition = (callback?: () => void): (() => void) => {
-    setTransform(startTransform);
-    setAnimation(false);
-    const timer = setTimeout(() => {
-      callback?.();
-      setAnimation(true);
-    }, 1);
-    return () => clearTimeout(timer);
-  };
+  const putInTheInitialPosition = useCallback(
+    (callback?: () => void): (() => void) => {
+      setTransform(startTransform);
+      setAnimation(false);
+      const timer = setTimeout(() => {
+        callback?.();
+        setAnimation(true);
+      }, 1);
+      return () => clearTimeout(timer);
+    },
+    [startTransform]
+  );
 
   const turnInitialPositionByTouched = (): void => {
     setAnimation(false);
@@ -153,7 +167,7 @@ export const useSlider = (
       )
     );
 
-  const nextImg = (): void => {
+  const nextImg = useCallback((): void => {
     setTransform((prev) => {
       nextDot({ prev, slideWidth, children });
 
@@ -168,7 +182,7 @@ export const useSlider = (
           return prev - slideWidth;
         })
       );
-  };
+  }, [checkSliderCorner, children, putInTheInitialPosition, slideWidth]);
 
   const prevImg = (): void => {
     setTransform((prev) => {
@@ -212,12 +226,6 @@ export const useSlider = (
     setMouseDown(false);
   };
 
-  const resizeHandler = (): void => {
-    setWindowWidth(window.innerWidth);
-    setTransform(0);
-    setAnimation(false);
-  };
-
   const handleDotClick = (index: number): void => {
     setAnimation(true);
     setTransform(-index * slideWidth);
@@ -236,16 +244,33 @@ export const useSlider = (
     );
   };
 
-  useEffect(() => {
+  const resizeHandler = useCallback((): void => {
     setWindowWidth(window.innerWidth);
-    setCurrentRef(slidesWrapperRef.current);
-    window.addEventListener('resize', resizeHandler);
+    setAnimation(false);
+    setSlideIndex(0);
+    setTransform(0);
   }, []);
 
   useEffect(() => {
+    setWindowWidth(window.innerWidth);
+    setCurrentRef(slidesWrapperRef.current);
+  }, []);
+
+  useEffect(() => {
+    if (slideWidth) {
+      window.addEventListener('resize', resizeHandler);
+    }
+
+    return () => {
+      window.removeEventListener('resize', resizeHandler);
+    };
+  }, [slideWidth, resizeHandler]);
+
+  useEffect(() => {
     if (!autoplay) return;
-    startAutoplay(autoplaySpeed, buttonRef);
-  }, [buttonRef, autoplaySpeed, autoplay]);
+    clearTimeout(timeout.current);
+    startAutoplay(autoplaySpeed, timeout, nextImg);
+  }, [autoplaySpeed, autoplay, slideIndex, nextImg]);
 
   return {
     animation,
@@ -256,7 +281,6 @@ export const useSlider = (
     isButton,
     spaceBetween,
     slideIndex,
-    buttonRef,
     Dots,
     nextImg,
     prevImg,
