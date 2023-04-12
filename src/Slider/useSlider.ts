@@ -121,12 +121,12 @@ export const useSlider = (
 
   const turnInitialPositionByTouched = (): void => {
     setAnimation(false);
-    setTransform(prev => (prev ? prev - startTransform : startTransform));
+    setTransform((prev) => (prev ? prev - startTransform : startTransform));
   };
 
   const moveSlides = (): void => {
     const pathTaken = endX && startX - endX;
-    setTransform(prev => prev - pathTaken + movePath);
+    setTransform((prev) => prev - pathTaken + movePath);
     setMovePath(pathTaken);
   };
 
@@ -157,7 +157,7 @@ export const useSlider = (
     );
 
   const nextImg = (): void => {
-    setTransform(prev => {
+    setTransform((prev) => {
       nextDot({ prev, slideWidth, children });
 
       return prev - slideWidth;
@@ -166,7 +166,7 @@ export const useSlider = (
     setAnimation(true);
     checkSliderCorner() &&
       putInTheInitialPosition(() =>
-        setTransform(prev => {
+        setTransform((prev) => {
           nextDot({ prev, slideWidth, children });
           return prev - slideWidth;
         })
@@ -174,7 +174,7 @@ export const useSlider = (
   };
 
   const prevImg = (): void => {
-    setTransform(prev => {
+    setTransform((prev) => {
       previousDot({ prev, slideWidth, children });
       return prev + slideWidth;
     });
@@ -182,7 +182,7 @@ export const useSlider = (
     setAnimation(true);
     checkSliderCorner() &&
       putInTheInitialPosition(() =>
-        setTransform(prev => {
+        setTransform((prev) => {
           previousDot({ prev, slideWidth, children });
           return prev + slideWidth;
         })
@@ -190,7 +190,7 @@ export const useSlider = (
   };
 
   const onSwipe = (): void => {
-    setTransform(prev => Math.round(prev / slideWidth) * slideWidth);
+    setTransform((prev) => Math.round(prev / slideWidth) * slideWidth);
   };
 
   const startTouchByScreen = (X: number): void => {
@@ -226,7 +226,7 @@ export const useSlider = (
 
   const resizeHandler = useCallback((): void => {
     setWindowWidth(window.innerWidth);
-    setAnimation(true);
+    setAnimation(false);
     setSlideIndex(0);
     setTransform(0);
   }, []);
