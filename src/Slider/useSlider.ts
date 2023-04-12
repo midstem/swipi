@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, useMemo, ReactNode } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+  ReactNode,
+  useCallback,
+} from 'react';
 import { reduceSlide } from './constants';
 import {
   ReturnSlideWidthType,
@@ -114,12 +121,12 @@ export const useSlider = (
 
   const turnInitialPositionByTouched = (): void => {
     setAnimation(false);
-    setTransform((prev) => (prev ? prev - startTransform : startTransform));
+    setTransform(prev => (prev ? prev - startTransform : startTransform));
   };
 
   const moveSlides = (): void => {
     const pathTaken = endX && startX - endX;
-    setTransform((prev) => prev - pathTaken + movePath);
+    setTransform(prev => prev - pathTaken + movePath);
     setMovePath(pathTaken);
   };
 
@@ -150,7 +157,7 @@ export const useSlider = (
     );
 
   const nextImg = (): void => {
-    setTransform((prev) => {
+    setTransform(prev => {
       nextDot({ prev, slideWidth, children });
 
       return prev - slideWidth;
@@ -159,7 +166,7 @@ export const useSlider = (
     setAnimation(true);
     checkSliderCorner() &&
       putInTheInitialPosition(() =>
-        setTransform((prev) => {
+        setTransform(prev => {
           nextDot({ prev, slideWidth, children });
           return prev - slideWidth;
         })
@@ -167,7 +174,7 @@ export const useSlider = (
   };
 
   const prevImg = (): void => {
-    setTransform((prev) => {
+    setTransform(prev => {
       previousDot({ prev, slideWidth, children });
       return prev + slideWidth;
     });
@@ -175,7 +182,7 @@ export const useSlider = (
     setAnimation(true);
     checkSliderCorner() &&
       putInTheInitialPosition(() =>
-        setTransform((prev) => {
+        setTransform(prev => {
           previousDot({ prev, slideWidth, children });
           return prev + slideWidth;
         })
@@ -183,7 +190,7 @@ export const useSlider = (
   };
 
   const onSwipe = (): void => {
-    setTransform((prev) => Math.round(prev / slideWidth) * slideWidth);
+    setTransform(prev => Math.round(prev / slideWidth) * slideWidth);
   };
 
   const startTouchByScreen = (X: number): void => {
@@ -208,12 +215,6 @@ export const useSlider = (
     setMouseDown(false);
   };
 
-  const resizeHandler = (): void => {
-    setWindowWidth(window.innerWidth);
-    setTransform(0);
-    setAnimation(false);
-  };
-
   const handleDotClick = (index: number): void => {
     setAnimation(true);
     setTransform(-index * slideWidth);
@@ -226,8 +227,24 @@ export const useSlider = (
   useEffect(() => {
     setWindowWidth(window.innerWidth);
     setCurrentRef(slidesWrapperRef.current);
-    window.addEventListener('resize', resizeHandler);
   }, []);
+
+  const resizeHandler = useCallback((): void => {
+    setWindowWidth(window.innerWidth);
+    setAnimation(true);
+    setSlideIndex(0);
+    setTransform(0);
+  }, []);
+
+  useEffect(() => {
+    if (slideWidth) {
+      window.addEventListener('resize', resizeHandler);
+    }
+
+    return () => {
+      window.removeEventListener('resize', resizeHandler);
+    };
+  }, [slideWidth, resizeHandler]);
 
   useEffect(() => {
     if (!autoplay) return;
