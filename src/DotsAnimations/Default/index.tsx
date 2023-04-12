@@ -13,7 +13,7 @@ const Default = ({
   dotColor,
   activeDotColor,
   handleDotClick,
-  returnCustomDots,
+  returnDots,
 }: DotsTypes): JSX.Element => (
   <DotsWrapper>
     {children.map((_, index) => (
@@ -24,7 +24,7 @@ const Default = ({
         }}
       >
         {customDot || customActiveDot ? (
-          returnCustomDots(index)
+          returnDots(index)
         ) : (
           <Dot
             index={index}

@@ -30,8 +30,8 @@ export const useSlider = (
   autoplay: boolean,
   autoplaySpeed: number,
   dotsAnimation: string,
-  dotColor: string | undefined,
-  activeDotColor: string | undefined
+  dotColor?: string,
+  activeDotColor?: string
 ) => {
   const [animation, setAnimation] = useState<boolean>(false);
   const [startX, setStartX] = useState<number>(0);
@@ -224,12 +224,18 @@ export const useSlider = (
     setSlideIndex(index);
   };
 
-  const returnCustomDots = (index: number): ReactNode =>
-    slideIndex === index
-      ? customActiveDot || <ActiveDot activeDotColor={activeDotColor} />
-      : customDot || (
-          <Dot index={index} slideIndex={slideIndex} dotColor={dotColor} />
-        );
+  const returnDots = (index: number): ReactNode => {
+    if (slideIndex === index) {
+      return customActiveDot || <ActiveDot activeDotColor={activeDotColor} />;
+    }
+
+    return (
+      customDot || (
+        <Dot index={index} slideIndex={slideIndex} dotColor={dotColor} />
+      )
+    );
+  };
+
   useEffect(() => {
     setWindowWidth(window.innerWidth);
     setCurrentRef(slidesWrapperRef.current);
@@ -258,7 +264,7 @@ export const useSlider = (
     setAnimation,
     handleDotClick,
     endTouchScreen,
-    returnCustomDots,
+    returnDots,
     moveTouchScreen: isButton ? moveTouchScreen : () => {},
     startTouchByScreen: isButton ? startTouchByScreen : () => {},
   };

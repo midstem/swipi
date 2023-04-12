@@ -41,7 +41,7 @@ const Slider = ({
     nextImg,
     prevImg,
     endTouchScreen,
-    returnCustomDots,
+    returnDots,
     moveTouchScreen,
     startTouchByScreen,
   } = useSlider(
@@ -105,7 +105,7 @@ const Slider = ({
           dotColor={dotColor}
           animationSpeed={animationSpeed}
           handleDotClick={handleDotClick}
-          returnCustomDots={returnCustomDots}
+          returnDots={returnDots}
         />
       )}
     </CarouselWrapper>
