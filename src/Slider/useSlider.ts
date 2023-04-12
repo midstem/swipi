@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, useMemo, ReactNode } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+  ReactNode,
+  useCallback,
+} from 'react';
 import { reduceSlide } from './constants';
 import {
   ReturnSlideWidthType,
@@ -208,12 +215,6 @@ export const useSlider = (
     setMouseDown(false);
   };
 
-  const resizeHandler = (): void => {
-    setWindowWidth(window.innerWidth);
-    setTransform(0);
-    setAnimation(false);
-  };
-
   const handleDotClick = (index: number): void => {
     setAnimation(true);
     setTransform(-index * slideWidth);
@@ -223,11 +224,27 @@ export const useSlider = (
   const returnCustomDots = (index: number): ReactNode =>
     slideIndex === index ? customActiveDot : customDot;
 
+  const resizeHandler = useCallback((): void => {
+    setWindowWidth(window.innerWidth);
+    setAnimation(false);
+    setSlideIndex(0);
+    setTransform(0);
+  }, []);
+
   useEffect(() => {
     setWindowWidth(window.innerWidth);
     setCurrentRef(slidesWrapperRef.current);
-    window.addEventListener('resize', resizeHandler);
   }, []);
+
+  useEffect(() => {
+    if (slideWidth) {
+      window.addEventListener('resize', resizeHandler);
+    }
+
+    return () => {
+      window.removeEventListener('resize', resizeHandler);
+    };
+  }, [slideWidth, resizeHandler]);
 
   useEffect(() => {
     if (!autoplay) return;
