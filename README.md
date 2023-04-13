@@ -11,7 +11,7 @@
   <img src='assets/domdev.png' height='60'>
 </a>
 
-<p><b>The Infinite Image Slider</b> is a lightweight and compact slider optimized for mobile use. It's built with TypeScript and has a fast loading speed. It's also swappable, making it easy for users to switch slides with a swipe on their mobile device. Its mobile-friendly design and convenience make it a great choice for improving user experience.</p>
+<p><b>Swipi</b> is a lightweight and compact slider optimized for mobile use. It's built with TypeScript and has a fast loading speed. It's also swappable, making it easy for users to switch slides with a swipe on their mobile device. Its mobile-friendly design and convenience make it a great choice for improving user experience.</p>
 
 ### Installation
 **npm**
@@ -118,6 +118,7 @@ const App = () => (
       customActiveDot={<Diamond />}
       autoplay
       autoplaySpeed={5300}
+      dotsAnimation='sliding'
     >
       {pictures.map((picture) => (
         <Image key={picture.id} src={picture.src} alt={picture.alt} />
@@ -207,13 +208,13 @@ const App = () => (
   </tr>
   <tr>
     <td>slidesNumber</td>
-    <td>Number of visible slides</td>
+    <td>Number of visible slides (takes effect only if a user didn't set <code>slidesNumber</code> in the <code>config</code> or if the screen width is wider than what is stated in <code>maxWidth</code> in the <code>config</code>)</td>
     <td>3</td>
     <td>number</td>
   </tr>
   <tr>
     <td>spaceBetweenSlides</td>
-    <td>Space between slides</td>
+    <td>Space between slides (takes effect only if a user didn't set <code>spaceBetween</code> in the <code>config</code> or if the screen width is wider than what is stated in <code>maxWidth</code> in the <code>config</code>)</td>
     <td>0</td>
     <td>number</td>
   </tr>
