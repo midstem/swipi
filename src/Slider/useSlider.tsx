@@ -4,7 +4,7 @@ import {
   useState,
   useMemo,
   ReactNode,
-  useCallback,
+  useCallback
 } from 'react';
 import { reduceSlide } from './constants';
 import {
@@ -12,6 +12,7 @@ import {
   ConfigType,
   NextPrevDotType,
   AnimationsTypes,
+  DotsAnimation
 } from './types';
 import {
   addUniqueId,
@@ -21,12 +22,14 @@ import {
   returnSpaceBetween,
   calculateSlideIndex,
   startAutoplay,
+  setKeyToChildren
 } from './helpers';
 import Default from '../DotsAnimations/Default';
 import Sliding from '../DotsAnimations/Sliding';
 import Dot from '../UI/Dot';
 import ActiveDot from '../UI/ActiveDot';
 import React from 'react';
+import { cloneArray } from '../helpers';
 
 export const useSlider = (
   children: JSX.Element[],
@@ -37,7 +40,7 @@ export const useSlider = (
   spaceBetweenSlides: number,
   autoplay: boolean,
   autoplaySpeed: number,
-  dotsAnimation: string,
+  dotsAnimation: DotsAnimation,
   dotColor?: string,
   activeDotColor?: string
 ) => {
@@ -71,7 +74,7 @@ export const useSlider = (
     () => ({
       visibleCountSlides,
       spaceBetween,
-      current: currentRef,
+      current: currentRef
     }),
     [currentRef, spaceBetween, visibleCountSlides]
   );
@@ -84,19 +87,17 @@ export const useSlider = (
     [config, returnSlideWidthArgs, windowWidth]
   );
 
-  const slides = useMemo(
-    () =>
-      isButton
-        ? addUniqueId([...children, ...children, ...children])
-        : addUniqueId(children),
-    [isButton, children]
-  );
+  const slides = useMemo(() => {
+    return isButton
+      ? addUniqueId(cloneArray(setKeyToChildren(children), 3))
+      : addUniqueId(setKeyToChildren(children));
+  }, [isButton, children]);
 
   const startTransform = -slideWidth * children.length;
 
   const ANIMATIONS: AnimationsTypes = {
     default: Default,
-    sliding: Sliding,
+    sliding: Sliding
   };
 
   const Dots = ANIMATIONS[dotsAnimation];
@@ -284,12 +285,11 @@ export const useSlider = (
     Dots,
     nextImg,
     prevImg,
-    setTransform,
-    setAnimation,
     handleDotClick,
     endTouchScreen,
     returnDots,
     moveTouchScreen: isButton ? moveTouchScreen : () => {},
     startTouchByScreen: isButton ? startTouchByScreen : () => {},
+    visibleCountSlides
   };
 };

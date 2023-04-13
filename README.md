@@ -302,6 +302,31 @@ const App = () => (
     <td colspan="3">The active dot smoothly slides to its new position, and the 'passive' dot smoothly fades away from the area it once occupied</td>
   </tr>
   <tr>
+   <tr>
+    <td colspan="4" align='center'>
+      <h3>Slides animations:</h3>
+    </td>
+  </tr>
+  <tr>
+    <td>slidesAnimation</td>
+    <td>Animate while transitioning between slides. This feature only works when a single slide is visible</td>
+    <td><code>'default'</code></td>
+    <td>string</td>
+  </tr>
+  <tr>
+    <td colspan="4" align='center'>
+      <h3>Options for slides animations:</h3>
+    </td>
+  </tr>
+  <tr>
+    <td><code>'default'</code></td>
+    <td colspan="3">The slides transition smoothly and seamlessly, operating in a standard manner without any additional effects or animations</td>
+  </tr>
+  <tr>
+    <td><code>'fade-in'</code></td>
+    <td colspan="3">The 'fade-in' animation creates a smooth, visually appealing transition between slides by gradually increasing their opacity, enhancing user engagement and experience</td>
+  </tr>
+  <tr>
 </table>
 
 ## **Styling**

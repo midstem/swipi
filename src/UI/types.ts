@@ -38,3 +38,11 @@ export type ActiveDotProps = {
   sizeForDefaultActiveDot?: number;
   activeDotColor?: string | undefined;
 };
+
+export type SlideProps = {
+  slideWidth: number;
+  spaceBetween: number;
+  children: JSX.Element;
+  isAnimation?: boolean;
+  animation?: React.CSSProperties;
+};

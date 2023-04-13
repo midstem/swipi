@@ -11,3 +11,5 @@ export type DotsTypes = {
   handleDotClick: (index: number) => void;
   returnDots: (index: number) => React.ReactNode;
 };
+
+export type SlidesAnimation = 'fade-in' | 'default';
