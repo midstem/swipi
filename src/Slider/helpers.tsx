@@ -6,6 +6,7 @@ import {
   ConfigType
 } from './types';
 import { fadeIn } from '../SlidesAnimation/FadeIn';
+import { CSSProperties } from 'react';
 
 const generateUniqueID = () => {
   const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -86,7 +87,7 @@ export const isSlidesAnimation = (visibleCountSlides: number): boolean => {
 export const returnSlidesAnimation = (
   animation: SlidesAnimation,
   isVisible: boolean
-) => {
+): CSSProperties => {
   switch (animation) {
     case 'fade-in':
       return fadeIn(isVisible);
