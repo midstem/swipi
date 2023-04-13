@@ -45,3 +45,51 @@ export type NextPrevDotType = {
 export type AnimationsTypes = {
   [key: string]: FunctionComponent<DotsTypes>;
 };
+
+export type SetWithPrev = (value: number | ((prev: number) => number)) => void;
+
+export type TouchEvents = {
+  isButton: boolean;
+  transform: number;
+  slideWidth: number;
+  startTransform: number;
+  visibleCountSlides: number;
+  slides: AddUniqueIdReturnType;
+  children: JSX.Element[];
+  setAnimation: (animation: boolean) => void;
+  setTransform: SetWithPrev;
+  setSlideIndex: (index: number) => void;
+  checkSliderCorner: () => boolean;
+};
+
+export type Transform = {
+  children: JSX.Element[];
+  config: ConfigType[];
+  windowWidth: number;
+  slidesNumber: number;
+  spaceBetweenSlides: number;
+  currentRef: HTMLDivElement | null;
+};
+
+export type Navigation = {
+  putInTheInitialPosition: (callback?: () => void) => () => void;
+  nextDot: (prev: number, slideWidth: number, children: JSX.Element[]) => void;
+  previousDot: (
+    prev: number,
+    slideWidth: number,
+    children: JSX.Element[]
+  ) => void;
+  checkSliderCorner: () => boolean;
+  setTransform: SetWithPrev;
+  slideWidth: number;
+  children: JSX.Element[];
+};
+
+export type Dots = {
+  setTransform: SetWithPrev;
+  setSlideIndex: SetWithPrev;
+  slideIndex: number;
+  slideWidth: number;
+  customActiveDot?: JSX.Element;
+  customDot?: JSX.Element;
+};

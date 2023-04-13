@@ -1,9 +1,9 @@
-import { defaultSliderWidth } from './constants';
+import { defaultSliderWidth } from '../constants';
 import {
   AddUniqueIdReturnType,
   ReturnSlideWidthType,
   ConfigType,
-} from './types';
+} from '../types';
 
 const generateUniqueID = () => {
   const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';

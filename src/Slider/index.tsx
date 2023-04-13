@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSlider } from './useSlider';
+import { useSlider } from './hooks/useSlider';
 import { SliderProps } from './types';
 import CarouselWrapper from '../UI/CarouselWrapper';
 import SliderContainer from '../UI/SliderContainer';
