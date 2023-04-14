@@ -17,12 +17,12 @@ import {
 import {
   addUniqueId,
   isCornerSlide,
-  returnCountSlides,
   returnSlideWidth,
   returnSpaceBetween,
   calculateSlideIndex,
   startAutoplay,
-  setKeyToChildren
+  setKeyToChildren,
+  getRightSlidesCount
 } from './helpers';
 import Default from '../DotsAnimations/Default';
 import Sliding from '../DotsAnimations/Sliding';
@@ -30,6 +30,7 @@ import Dot from '../UI/Dot';
 import ActiveDot from '../UI/ActiveDot';
 import React from 'react';
 import { cloneArray } from '../helpers';
+import { SlidesAnimation, ValueOf } from 'types';
 
 export const useSlider = (
   children: JSX.Element[],
@@ -41,6 +42,7 @@ export const useSlider = (
   autoplay: boolean,
   autoplaySpeed: number,
   dotsAnimation: DotsAnimation,
+  slidesAnimation: ValueOf<SlidesAnimation>,
   dotColor?: string,
   activeDotColor?: string
 ) => {
@@ -56,10 +58,11 @@ export const useSlider = (
   const slidesWrapperRef = useRef<HTMLDivElement>(null);
   const timeout = useRef<NodeJS.Timer>();
 
-  const visibleCountSlides = returnCountSlides(
+  const visibleCountSlides = getRightSlidesCount(
     config,
     windowWidth,
-    slidesNumber
+    slidesNumber,
+    slidesAnimation
   );
 
   const spaceBetween = returnSpaceBetween(

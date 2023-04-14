@@ -5,7 +5,6 @@ export const Slide = ({
   slideWidth,
   spaceBetween,
   children,
-  isAnimation = false,
   animation = {}
 }: SlideProps): JSX.Element => {
   return (
@@ -14,7 +13,7 @@ export const Slide = ({
         boxSizing: 'border-box',
         width: `${slideWidth}px`,
         paddingRight: `${spaceBetween}px`,
-        ...(isAnimation && animation)
+        ...animation
       }}
     >
       {children}

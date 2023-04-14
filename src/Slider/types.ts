@@ -1,5 +1,5 @@
 import { FunctionComponent, ReactNode } from 'react';
-import { DotsTypes, SlidesAnimation } from 'types';
+import { DotsTypes, SlidesAnimation, ValueOf } from '../types';
 
 export type AddUniqueIdReturnType = Array<{ id: string } & JSX.Element>;
 
@@ -28,7 +28,7 @@ export type SliderProps = {
   autoplaySpeed?: number;
   animationSpeed?: number;
   dotsAnimation?: DotsAnimation;
-  slidesAnimation?: SlidesAnimation;
+  slidesAnimation?: ValueOf<SlidesAnimation>;
 };
 
 export type DotsAnimation = 'default' | 'sliding';

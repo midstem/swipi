@@ -12,4 +12,9 @@ export type DotsTypes = {
   returnDots: (index: number) => React.ReactNode;
 };
 
-export type SlidesAnimation = 'fade-in' | 'default';
+export enum SlidesAnimation {
+  DEFAULT = 'default',
+  FADE_IN = 'fade-in'
+}
+
+export type ValueOf<T extends string> = `${T}`;

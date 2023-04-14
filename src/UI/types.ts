@@ -43,6 +43,5 @@ export type SlideProps = {
   slideWidth: number;
   spaceBetween: number;
   children: JSX.Element;
-  isAnimation?: boolean;
   animation?: React.CSSProperties;
 };

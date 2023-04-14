@@ -309,7 +309,7 @@ const App = () => (
   </tr>
   <tr>
     <td>slidesAnimation</td>
-    <td>Animate while transitioning between slides. This feature only works when a single slide is visible</td>
+    <td>The animation while transitioning between slides</td>
     <td><code>'default'</code></td>
     <td>string</td>
   </tr>
@@ -320,11 +320,11 @@ const App = () => (
   </tr>
   <tr>
     <td><code>'default'</code></td>
-    <td colspan="3">The slides transition smoothly and seamlessly, operating in a standard manner without any additional effects or animations</td>
+    <td colspan="3">The slides change each other by sliding from left to right and vice verse, operating in a standard manner so to say</td>
   </tr>
   <tr>
     <td><code>'fade-in'</code></td>
-    <td colspan="3">The 'fade-in' animation creates a smooth, visually appealing transition between slides by gradually increasing their opacity, enhancing user engagement and experience</td>
+    <td colspan="3">The fade-in animation gradually brings an element into view, transitioning it from complete transparency to full opacity on the screen</td>
   </tr>
   <tr>
 </table>
