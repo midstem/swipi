@@ -6,6 +6,7 @@ import SliderContainer from '../UI/SliderContainer';
 import SliderButton from '../UI/SliderButton';
 import SlidesWrapper from '../UI/SlidesWrapper';
 import SlidesContainer from '../UI/SlidesContainer';
+import '../UI/styles.css';
 
 const Slider = ({
   slidesNumber = 3,
@@ -25,6 +26,7 @@ const Slider = ({
   autoplaySpeed = 4000,
   dotsAnimation = 'default',
   animationSpeed = 300,
+  ...props
 }: SliderProps) => {
   const {
     animation,
@@ -58,9 +60,9 @@ const Slider = ({
   );
 
   return (
-    <CarouselWrapper>
+    <CarouselWrapper {...props}>
       <SliderContainer>
-        <SliderButton onClick={prevImg} className="right-button">
+        <SliderButton onClick={prevImg} className="left-button">
           {isButton && prevButton}
         </SliderButton>
         <SlidesWrapper
@@ -88,7 +90,7 @@ const Slider = ({
             ))}
           </SlidesContainer>
         </SlidesWrapper>
-        <SliderButton onClick={nextImg} className="left-button">
+        <SliderButton onClick={nextImg} className="right-button">
           {isButton && nextButton}
         </SliderButton>
       </SliderContainer>

@@ -308,11 +308,13 @@ const App = () => (
 ## **Styling**
 
 ```css
-.dots-wrapper
+.slider - styles the container that wraps the slider
 
-.left-button
+.dots-wrapper - styles the container that wraps the dots
 
-.right-button
+.left-button - styles the left button that gets the user to the previous slide
+
+.right-button - styles the right button that gets the user to the next slide
 ```
 
 <br/>

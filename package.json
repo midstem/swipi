@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MaKs-Tkachyk/swipi.git"
+    "url": "git+https://github.com/Domdev-corporation/swipi.git"
   },
   "files": [
     "dist",
@@ -25,9 +25,9 @@
     "image-carousel"
   ],
   "bugs": {
-    "url": "https://github.com/MaKs-Tkachyk/swipi/issues"
+    "url": "https://github.com/Domdev-corporation/swipi/issues"
   },
-  "homepage": "https://github.com/MaKs-Tkachyk/swipi#readme",
+  "homepage": "https://github.com/Domdev-corporation/swipi#readme",
   "scripts": {
     "start": "vite",
     "build": "tsc",
