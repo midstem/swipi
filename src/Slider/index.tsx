@@ -1,11 +1,10 @@
-import React from 'react';
-import { useSlider } from './hooks/useSlider';
-import { SliderProps } from './types';
-import CarouselWrapper from '../UI/CarouselWrapper';
-import SliderContainer from '../UI/SliderContainer';
-import SliderButton from '../UI/SliderButton';
-import SlidesWrapper from '../UI/SlidesWrapper';
-import SlidesContainer from '../UI/SlidesContainer';
+import { useSlider } from 'src/Slider/hooks/useSlider'
+import { SliderProps } from 'src/Slider/types'
+import CarouselWrapper from 'src/UI/CarouselWrapper'
+import SliderContainer from 'src/UI/SliderContainer'
+import SliderButton from 'src/UI/SliderButton'
+import SlidesWrapper from 'src/UI/SlidesWrapper'
+import SlidesContainer from 'src/UI/SlidesContainer'
 
 const Slider = ({
   slidesNumber = 3,
@@ -24,7 +23,7 @@ const Slider = ({
   autoplay = false,
   autoplaySpeed = 4000,
   dotsAnimation = 'default',
-  animationSpeed = 300,
+  animationSpeed = 300
 }: SliderProps) => {
   const {
     animation,
@@ -35,15 +34,14 @@ const Slider = ({
     isButton,
     spaceBetween,
     slideIndex,
-    buttonRef,
     Dots,
     handleDotClick,
     nextImg,
     prevImg,
     endTouchScreen,
-    returnCustomDots,
+    returnDots,
     moveTouchScreen,
-    startTouchByScreen,
+    startTouchByScreen
   } = useSlider(
     children,
     config,
@@ -53,8 +51,10 @@ const Slider = ({
     spaceBetweenSlides,
     autoplay,
     autoplaySpeed,
-    dotsAnimation
-  );
+    dotsAnimation,
+    dotColor,
+    activeDotColor
+  )
 
   return (
     <CarouselWrapper>
@@ -79,7 +79,7 @@ const Slider = ({
                 style={{
                   boxSizing: 'border-box',
                   width: `${slideWidth}px`,
-                  paddingRight: `${spaceBetween}px`,
+                  paddingRight: `${spaceBetween}px`
                 }}
               >
                 {slides[index]}
@@ -87,7 +87,7 @@ const Slider = ({
             ))}
           </SlidesContainer>
         </SlidesWrapper>
-        <SliderButton ref={buttonRef} onClick={nextImg} className="left-button">
+        <SliderButton onClick={nextImg} className="left-button">
           {isButton && nextButton}
         </SliderButton>
       </SliderContainer>
@@ -103,11 +103,11 @@ const Slider = ({
           dotColor={dotColor}
           animationSpeed={animationSpeed}
           handleDotClick={handleDotClick}
-          returnCustomDots={returnCustomDots}
+          returnDots={returnDots}
         />
       )}
     </CarouselWrapper>
-  );
-};
+  )
+}
 
-export default Slider;
+export default Slider

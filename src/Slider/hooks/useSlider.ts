@@ -1,13 +1,12 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { ConfigType } from '../types';
-import { useTransform } from './useTransform';
-import { useAnimation } from './useAnimation';
-import { useWindowResize } from './useWindowResize';
-import { useAutoplay } from './useAutoplay';
-import { returnCountSlides } from '../helpers';
-import { useTouchEvents } from './useTouchEvents';
-import { useDots } from './useDots';
-import { useNavigation } from './useNavigation';
+import { useEffect, useRef, useState, useCallback } from 'react'
+import { useSlides } from 'src/Slider/hooks/useSlides'
+import { useWindowResize } from 'src/Slider/hooks/useWindowResize'
+import { useAutoplay } from 'src/Slider/hooks/useAutoplay'
+import { useTouch } from 'src/Slider/hooks/useTouch'
+import { useDots } from 'src/Slider/hooks/useDots'
+import { useNavigation } from 'src/Slider/hooks/useNavigation'
+import { ConfigType } from 'src/Slider/types'
+import { ANIMATIONS } from 'src/Slider/constants'
 
 export const useSlider = (
   children: JSX.Element[],
@@ -18,21 +17,20 @@ export const useSlider = (
   spaceBetweenSlides: number,
   autoplay: boolean,
   autoplaySpeed: number,
-  dotsAnimation: string
+  dotsAnimation: string,
+  dotColor?: string,
+  activeDotColor?: string
 ) => {
-  const [windowWidth, setWindowWidth] = useState<number>(0);
-  const [currentRef, setCurrentRef] = useState<HTMLDivElement | null>(null);
-  const slidesWrapperRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [animation, setAnimation] = useState<boolean>(false)
+  const [windowWidth, setWindowWidth] = useState<number>(0)
+  const [currentRef, setCurrentRef] = useState<HTMLDivElement | null>(null)
 
-  useWindowResize(() => {
-    setWindowWidth(window.innerWidth);
-    setAnimation(false);
-    setSlideIndex(0);
-    setTransform(0);
-  });
+  const [startX, setStartX] = useState<number>(0)
+  const [endX, setEndX] = useState<number>(0)
+  const [movePath, setMovePath] = useState<number>(0)
 
-  useAutoplay(autoplay, autoplaySpeed, buttonRef);
+  const slidesWrapperRef = useRef<HTMLDivElement>(null)
+  const timeout = useRef<NodeJS.Timer>()
 
   const {
     isButton,
@@ -41,93 +39,107 @@ export const useSlider = (
     slides,
     spaceBetween,
     transform,
-  } = useTransform({
+    startTransform,
+    checkAreaWithoutSlides,
+    jumpToTheLastSlide,
+    moveSlides
+  } = useSlides({
     children,
     config,
     windowWidth,
+    currentRef,
     slidesNumber,
     spaceBetweenSlides,
-    currentRef,
-  });
+    startX,
+    endX,
+    movePath,
+    setMovePath
+  })
 
   const {
-    animation,
+    handleDotClick,
+    slideIndex,
+    setSlideIndex,
+    returnDots,
     nextDot,
-    previousDot,
-    setAnimation,
-    setSlideIndex,
-    slideIndex,
-    Dots,
-  } = useAnimation(dotsAnimation);
-
-  const { handleDotClick, returnCustomDots } = useDots({
+    previousDot
+  } = useDots({
     setTransform,
-    setSlideIndex,
-    slideIndex,
     slideWidth,
+    dotsAnimation,
     customActiveDot,
     customDot,
-  });
-
-  const visibleCountSlides = returnCountSlides(
-    config,
-    windowWidth,
-    slidesNumber
-  );
-
-  const startTransform = -slideWidth * children.length;
+    setAnimation,
+    dotColor,
+    activeDotColor
+  })
 
   const checkSliderCorner = useCallback(
     (): boolean =>
       transform <= startTransform * 2 + slideWidth / 2 ||
       transform >= -slideWidth / 2,
     [transform, slideWidth, startTransform]
-  );
+  )
 
   const putInTheInitialPosition = useCallback(
     (callback?: () => void): (() => void) => {
-      setTransform(startTransform);
-      setAnimation(false);
+      setTransform(startTransform)
+      setAnimation(false)
 
       const timer = setTimeout(() => {
-        callback?.();
-        setAnimation(true);
-      }, 1);
+        callback?.()
+        setAnimation(true)
+      }, 1)
 
-      return () => clearTimeout(timer);
+      return () => clearTimeout(timer)
     },
     [startTransform, setAnimation, setTransform]
-  );
+  )
 
-  const { startTouchByScreen, moveTouchScreen, endTouchScreen } =
-    useTouchEvents({
-      isButton,
-      transform,
-      slideWidth,
-      children,
-      slides,
-      startTransform,
-      visibleCountSlides,
-      setAnimation,
-      setTransform,
-      setSlideIndex,
-      checkSliderCorner,
-    });
+  const { startTouchByScreen, moveTouchScreen, endTouchScreen } = useTouch({
+    isButton,
+    transform,
+    slideWidth,
+    startTransform,
+    children,
+    setAnimation,
+    setTransform,
+    setSlideIndex,
+    checkSliderCorner,
+    checkAreaWithoutSlides,
+    jumpToTheLastSlide,
+    moveSlides,
+    setStartX,
+    setEndX,
+    setMovePath
+  })
 
-  const { nextImg, prevImg } = useNavigation({
+  const { navigateSlide } = useNavigation({
     putInTheInitialPosition,
-    nextDot,
-    previousDot,
     checkSliderCorner,
     setTransform,
+    setAnimation,
     slideWidth,
-    children,
-  });
+    children
+  })
+
+  const nextImg = navigateSlide(nextDot, true)
+
+  const prevImg = navigateSlide(previousDot)
+
+  useAutoplay({ autoplay, autoplaySpeed, slideIndex, nextImg, timeout })
+
+  useWindowResize(() => {
+    setWindowWidth(window.innerWidth)
+    setAnimation(false)
+    setSlideIndex(0)
+    setTransform(0)
+  })
 
   useEffect(() => {
-    setWindowWidth(window.innerWidth);
-    setCurrentRef(slidesWrapperRef.current);
-  }, []);
+    setWindowWidth(window.innerWidth)
+    setCurrentRef(slidesWrapperRef.current)
+  }, [])
 
   return {
     animation,
@@ -138,16 +150,15 @@ export const useSlider = (
     isButton,
     spaceBetween,
     slideIndex,
-    buttonRef,
-    Dots,
+    Dots: ANIMATIONS[dotsAnimation],
+    returnDots,
     nextImg,
     prevImg,
     setTransform,
     setAnimation,
     handleDotClick,
     endTouchScreen,
-    returnCustomDots,
     moveTouchScreen,
-    startTouchByScreen,
-  };
-};
+    startTouchByScreen
+  }
+}

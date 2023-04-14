@@ -1,7 +1,6 @@
-import React from 'react';
-import DotsWrapper from '../../UI/DotsWrapper';
-import Dot from '../../UI/Dot';
-import { DotsTypes } from '../../types';
+import DotsWrapper from 'src/UI/DotsWrapper'
+import Dot from 'src/UI/Dot'
+import { DotsTypes } from 'src/types'
 
 const Default = ({
   children,
@@ -12,18 +11,18 @@ const Default = ({
   dotColor,
   activeDotColor,
   handleDotClick,
-  returnCustomDots,
+  returnDots
 }: DotsTypes): JSX.Element => (
   <DotsWrapper>
     {children.map((_, index) => (
       <div
         key={index}
         onClick={() => {
-          handleDotClick(index);
+          handleDotClick(index)
         }}
       >
         {customDot ? (
-          returnCustomDots(index)
+          returnDots(index)
         ) : (
           <Dot
             index={index}
@@ -37,6 +36,6 @@ const Default = ({
       </div>
     ))}
   </DotsWrapper>
-);
+)
 
-export default Default;
+export default Default

@@ -1,9 +1,8 @@
-import React from 'react';
-import useSliding from './useSliding';
-import DotsWrapper from '../../UI/DotsWrapper';
-import Dot from '../../UI/Dot';
-import ActiveDot from '../../UI/ActiveDot';
-import { DotsTypes } from '../../types';
+import useSliding from 'src/DotsAnimations/Sliding/useSliding'
+import DotsWrapper from 'src/UI/DotsWrapper'
+import Dot from 'src/UI/Dot'
+import ActiveDot from 'src/UI/ActiveDot'
+import { DotsTypes } from 'src/types'
 
 const Sliding = ({
   children,
@@ -14,9 +13,9 @@ const Sliding = ({
   sizeForDefaultActiveDot,
   activeDotColor,
   animationSpeed,
-  handleDotClick,
+  handleDotClick
 }: DotsTypes): JSX.Element => {
-  const { dotsRef, activeDotRef, activeDotLeft } = useSliding(slideIndex);
+  const { dotsRef, activeDotRef, activeDotLeft } = useSliding(slideIndex)
 
   return (
     <DotsWrapper>
@@ -25,11 +24,11 @@ const Sliding = ({
           key={index}
           ref={(el) => (dotsRef.current[index] = el)}
           onClick={() => {
-            handleDotClick(index);
+            handleDotClick(index)
           }}
           style={{
             transition: `${animationSpeed}ms`,
-            transform: slideIndex === index ? 'scale(0)' : 'scale(1)',
+            transform: slideIndex === index ? 'scale(0)' : 'scale(1)'
           }}
         >
           {customDot ?? (
@@ -40,14 +39,13 @@ const Sliding = ({
           )}
         </div>
       ))}
-
       <div
         ref={activeDotRef}
         style={{
           position: 'absolute',
           left: activeDotLeft,
           opacity: !activeDotLeft ? 0 : 1,
-          transition: `left ${animationSpeed}ms`,
+          transition: `left ${animationSpeed}ms`
         }}
       >
         {customActiveDot ?? (
@@ -58,6 +56,6 @@ const Sliding = ({
         )}
       </div>
     </DotsWrapper>
-  );
-};
-export default Sliding;
+  )
+}
+export default Sliding

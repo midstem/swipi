@@ -1,5 +1,5 @@
-import React, { forwardRef, RefObject } from 'react';
-import { SliderButtonProps } from './types';
+import { forwardRef, RefObject } from 'react'
+import { SliderButtonProps } from 'src/UI/types'
 
 const SliderButton = forwardRef<HTMLButtonElement, SliderButtonProps>(
   ({ children, onClick, className }, ref): JSX.Element => (
@@ -12,12 +12,12 @@ const SliderButton = forwardRef<HTMLButtonElement, SliderButtonProps>(
         background: 'transparent',
         border: 'none',
         cursor: 'pointer',
-        outline: 'none',
+        outline: 'none'
       }}
     >
       {children}
     </button>
   )
-);
+)
 
-export default SliderButton;
+export default SliderButton

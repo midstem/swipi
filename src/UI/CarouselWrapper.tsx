@@ -1,5 +1,4 @@
-import React from 'react';
-import { ComponentBasicProps } from './types';
+import { ComponentBasicProps } from 'src/UI/types'
 
 const CarouselWrapper = ({ children }: ComponentBasicProps): JSX.Element => (
   <div
@@ -8,11 +7,11 @@ const CarouselWrapper = ({ children }: ComponentBasicProps): JSX.Element => (
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      gap: '20px',
+      gap: '20px'
     }}
   >
     {children}
   </div>
-);
+)
 
-export default CarouselWrapper;
+export default CarouselWrapper

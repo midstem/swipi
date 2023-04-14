@@ -1,5 +1,4 @@
-import React from 'react';
-import { ComponentBasicProps } from './types';
+import { ComponentBasicProps } from 'src/UI/types'
 
 const DotsWrapper = ({ children }: ComponentBasicProps): JSX.Element => (
   <div
@@ -8,10 +7,10 @@ const DotsWrapper = ({ children }: ComponentBasicProps): JSX.Element => (
       position: 'relative',
       display: 'flex',
       alignItems: 'center',
-      gap: '10px',
+      gap: '10px'
     }}
   >
     {children}
   </div>
-);
-export default DotsWrapper;
+)
+export default DotsWrapper
