@@ -11,7 +11,7 @@
   <img src='assets/domdev.png' height='60'>
 </a>
 
-<p><b>The Infinite Image Slider</b> is a lightweight and compact slider optimized for mobile use. It's built with TypeScript and has a fast loading speed. It's also swappable, making it easy for users to switch slides with a swipe on their mobile device. Its mobile-friendly design and convenience make it a great choice for improving user experience.</p>
+<p><b>Swipi</b> is a lightweight and compact slider optimized for mobile use. It's built with TypeScript and has a fast loading speed. It's also swipeable, making it easy for users to switch slides with a swipe on their mobile device. Its mobile-friendly design and convenience make it a great choice for improving user experience.</p>
 
 ### Installation
 **npm**
@@ -118,6 +118,7 @@ const App = () => (
       customActiveDot={<Diamond />}
       autoplay
       autoplaySpeed={5300}
+      dotsAnimation='sliding'
     >
       {pictures.map((picture) => (
         <Image key={picture.id} src={picture.src} alt={picture.alt} />
@@ -187,8 +188,8 @@ const App = () => (
   <tr>
     <td>customActiveDot</td>
     <td>
-      Provide your your custom active dot. It will be
-      used to show to the user what slide he is at
+      Provide your custom active dot. It will be
+      used to show the user what slide he is at
     </td>
     <td>-</td>
     <td>JSX.Element</td>
@@ -207,13 +208,13 @@ const App = () => (
   </tr>
   <tr>
     <td>slidesNumber</td>
-    <td>Number of visible slides</td>
+    <td>Number of visible slides (takes effect only if a user didn't set <code>slidesNumber</code> in the <code>config</code> or if the screen width is wider than what is stated in <code>maxWidth</code> in the <code>config</code>)</td>
     <td>3</td>
     <td>number</td>
   </tr>
   <tr>
     <td>spaceBetweenSlides</td>
-    <td>Space between slides</td>
+    <td>Space between slides (takes effect only if a user didn't set <code>spaceBetween</code> in the <code>config</code> or if the screen width is wider than what is stated in <code>maxWidth</code> in the <code>config</code>)</td>
     <td>0</td>
     <td>number</td>
   </tr>
@@ -241,7 +242,7 @@ const App = () => (
       Takes an array of objects to manipulate slides:
       <code>slidesNumber, maxWidth, biasRight, spaceBetween</code>.
       If <code>config</code> is not provided then the default
-      settings of it's parameters are used
+      settings of its parameters are used
     </td>
     <td>
       -
@@ -261,13 +262,13 @@ const App = () => (
   </tr>
   <tr>
     <td>maxWidth</td>
-    <td>Defines a width after which the slides amount will change</td>
+    <td>Defines a width after which the number of slides will change</td>
     <td>-</td>
     <td>number</td>
   </tr>
   <tr>
     <td>biasRight</td>
-    <td>Show/hide a pice of an element that goes after visible slides</td>
+    <td>Show/hide a piece of an element that goes after visible slides</td>
     <td>-</td>
     <td>boolean</td>
   </tr>
