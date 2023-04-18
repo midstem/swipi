@@ -1,6 +1,6 @@
-import Default from 'src/DotsAnimations/Default'
-import Sliding from 'src/DotsAnimations/Sliding'
-import { AnimationsTypes } from 'src/Slider/types'
+import Default from '../DotsAnimations/Default'
+import Sliding from '../DotsAnimations/Sliding'
+import { AnimationsTypes } from './types'
 
 export const defaultSliderWidth = 934
 

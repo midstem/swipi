@@ -1,8 +1,8 @@
 import { ReactNode, useState, useCallback } from 'react'
-import { DotsProps } from 'src/Slider/hooks/useDots/types'
-import { calculateSlideIndex } from 'src/Slider/helpers'
-import ActiveDot from 'src/UI/ActiveDot'
-import Dot from 'src/UI/Dot'
+import { DotsProps } from './types'
+import ActiveDot from '../../../UI/ActiveDot'
+import Dot from '../../../UI/Dot'
+import { calculateSlideIndex } from '../../helpers'
 
 export const useDots = ({
   setTransform,
@@ -37,7 +37,7 @@ export const useDots = ({
     (next?: boolean) => (transform: number, children: JSX.Element[]) => {
       setSlideIndex(
         calculateSlideIndex(
-          next ? transform + slideWidth : transform - slideWidth,
+          next ? transform - slideWidth : transform + slideWidth,
           slideWidth,
           children
         )
@@ -45,6 +45,8 @@ export const useDots = ({
     },
     [slideWidth]
   )
+
+  console.log(slideIndex)
 
   return {
     handleDotClick,

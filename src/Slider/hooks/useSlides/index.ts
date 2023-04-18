@@ -1,12 +1,14 @@
 import { useState, useMemo } from 'react'
-import { Slides } from 'src/Slider/hooks/useSlides/types'
+import { Slides } from './types'
+import { ConfigService } from '../../configService'
 import {
-  returnSlideWidth,
   addUniqueId,
-  isButton as isButtonFn
-} from 'src/Slider/helpers'
-import { ConfigService } from 'src/Slider/configService'
-import { reduceSlide } from 'src/Slider/constants'
+  isButtonFn,
+  returnSlideWidth,
+  setKeyToChildren
+} from '../../helpers'
+import { cloneArray } from '../../../helpers'
+import { reduceSlide } from '../../constants'
 
 export const useSlides = ({
   children,
@@ -18,16 +20,17 @@ export const useSlides = ({
   startX,
   endX,
   movePath,
-  setMovePath
+  setMovePath,
+  slidesAnimation
 }: Slides) => {
   const [transform, setTransform] = useState<number>(0)
 
-  const { returnCountSlides, returnSpaceBetween, getSliderUpdatesParam } =
+  const { returnSpaceBetween, getSliderUpdatesParam, getRightSlidesCount } =
     ConfigService(config, windowWidth)
 
-  const visibleCountSlides = returnCountSlides(slidesNumber)
+  const visibleCountSlides = getRightSlidesCount(slidesNumber, slidesAnimation)
   const spaceBetween = returnSpaceBetween(spaceBetweenSlides)
-  const isButton = isButtonFn(children, returnCountSlides(slidesNumber))
+  const isButton = isButtonFn(children, visibleCountSlides)
   const isCornerSlide = !!getSliderUpdatesParam('biasRight')
 
   const returnSlideWidthArgs = useMemo(
@@ -44,16 +47,14 @@ export const useSlides = ({
       isCornerSlide
         ? returnSlideWidth(returnSlideWidthArgs) * reduceSlide
         : returnSlideWidth(returnSlideWidthArgs),
-    [returnSlideWidthArgs, , isCornerSlide]
+    [returnSlideWidthArgs, isCornerSlide]
   )
 
-  const slides = useMemo(
-    () =>
-      isButton
-        ? addUniqueId([...children, ...children, ...children])
-        : addUniqueId(children),
-    [isButton, children]
-  )
+  const slides = useMemo(() => {
+    return isButton
+      ? addUniqueId(cloneArray(setKeyToChildren(children), 3))
+      : addUniqueId(setKeyToChildren(children))
+  }, [isButton, children])
 
   const startTransform = -slideWidth * children.length
 
@@ -72,6 +73,7 @@ export const useSlides = ({
     const rightJump = -(lineLengthOfSlides - slideWidth * numberOfSlidesBack)
     setTransform(movePath > 0 ? rightJump : 0)
   }
+  console.log(transform)
 
   return {
     transform,

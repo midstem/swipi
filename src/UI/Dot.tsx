@@ -1,4 +1,4 @@
-import { DotProps } from 'src/UI/types'
+import { DotProps } from './types'
 
 const Dot = ({
   index,

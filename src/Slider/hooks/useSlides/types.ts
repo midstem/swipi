@@ -1,4 +1,5 @@
-import { ConfigType } from 'src/Slider/types'
+import { SlidesAnimation, ValueOf } from '../../../types'
+import { ConfigType } from '../../types'
 
 export type Slides = {
   children: JSX.Element[]
@@ -11,4 +12,5 @@ export type Slides = {
   endX: number
   movePath: number
   setMovePath: (value: number) => void
+  slidesAnimation: ValueOf<SlidesAnimation>
 }

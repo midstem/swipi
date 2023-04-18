@@ -1,11 +1,11 @@
 import { expect, describe, it } from 'vitest'
+import { defaultSliderWidth } from '../constants'
 import {
-  getSliderWidth,
   addUniqueId,
-  returnSlideWidth,
-  calculateSlideIndex
-} from 'src/Slider/helpers'
-import { defaultSliderWidth } from 'src/Slider/constants'
+  calculateSlideIndex,
+  getSliderWidth,
+  returnSlideWidth
+} from './index'
 
 describe('getSliderWidth', () => {
   it(`returns default width ${defaultSliderWidth}`, () => {

@@ -1,4 +1,4 @@
-import { Navigation } from 'src/Slider/hooks/useNavigation/types'
+import { Navigation } from './types'
 
 export const useNavigation = ({
   putInTheInitialPosition,
@@ -10,21 +10,21 @@ export const useNavigation = ({
 }: Navigation) => {
   const navigateSlide =
     (nextSlide?: boolean) =>
-    (callback: (prev: number, children: JSX.Element[]) => void) => {
-      setTransform((prev) => {
-        callback(prev, children)
+    (callback: (transform: number, children: JSX.Element[]) => void) => {
+      setTransform((transform) => {
+        callback(transform, children)
 
-        return nextSlide ? prev - slideWidth : prev + slideWidth
+        return nextSlide ? transform - slideWidth : transform + slideWidth
       })
 
       setAnimation(true)
 
       checkSliderCorner() &&
         putInTheInitialPosition(() =>
-          setTransform((prev) => {
-            callback(prev, children)
+          setTransform((transform) => {
+            callback(transform, children)
 
-            return nextSlide ? prev - slideWidth : prev + slideWidth
+            return nextSlide ? transform - slideWidth : transform + slideWidth
           })
         )
     }

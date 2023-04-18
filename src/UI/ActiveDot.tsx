@@ -1,4 +1,4 @@
-import { ActiveDotProps } from 'src/UI/types'
+import { ActiveDotProps } from './types'
 
 const ActiveDot = ({
   sizeForDefaultActiveDot = 13,

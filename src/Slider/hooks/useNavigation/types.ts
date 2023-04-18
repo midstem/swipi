@@ -1,4 +1,4 @@
-import { SetWithPrev } from 'src/Slider/types'
+import { SetWithPrev } from '../../types'
 
 export type Navigation = {
   putInTheInitialPosition: (callback?: () => void) => () => void
@@ -7,6 +7,4 @@ export type Navigation = {
   setTransform: SetWithPrev
   slideWidth: number
   children: JSX.Element[]
-  nextDot: (prev: number, children: JSX.Element[]) => void
-  prevDot: (prev: number, children: JSX.Element[]) => void
 }

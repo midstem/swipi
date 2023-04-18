@@ -1,14 +1,15 @@
-import useSliding from 'src/DotsAnimations/Sliding/useSliding'
-import DotsWrapper from 'src/UI/DotsWrapper'
-import Dot from 'src/UI/Dot'
-import ActiveDot from 'src/UI/ActiveDot'
-import { DotsTypes } from 'src/types'
+import ActiveDot from '../../UI/ActiveDot'
+import Dot from '../../UI/Dot'
+import DotsWrapper from '../../UI/DotsWrapper'
+import { DotsTypes } from '../../types'
+import useSliding from './useSliding'
 
 const Sliding = ({
   children,
   customDot,
   slideIndex,
   customActiveDot,
+  dotColor,
   sizeForDefaultDot,
   sizeForDefaultActiveDot,
   activeDotColor,
@@ -33,7 +34,8 @@ const Sliding = ({
         >
           {customDot ?? (
             <Dot
-              activeDotColor="#c7c7c7"
+              index={index}
+              dotColor={dotColor}
               sizeForDefaultDot={sizeForDefaultDot}
             />
           )}
@@ -44,7 +46,6 @@ const Sliding = ({
         style={{
           position: 'absolute',
           left: activeDotLeft,
-          opacity: !activeDotLeft ? 0 : 1,
           transition: `left ${animationSpeed}ms`
         }}
       >

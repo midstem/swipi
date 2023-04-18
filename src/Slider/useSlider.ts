@@ -1,26 +1,43 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
-import { useSlides } from 'src/Slider/hooks/useSlides'
-import { useWindowResize } from 'src/Slider/hooks/useWindowResize'
-import { useAutoplay } from 'src/Slider/hooks/useAutoplay'
-import { useEvents } from 'src/Slider/hooks/useEvents'
-import { useDots } from 'src/Slider/hooks/useDots'
-import { useNavigation } from 'src/Slider/hooks/useNavigation'
-import { ConfigType } from 'src/Slider/types'
-import { ANIMATIONS } from 'src/Slider/constants'
+import { ConfigType, DotsAnimation } from './types'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useSlides } from './hooks/useSlides'
+import { useDots } from './hooks/useDots'
+import { useEvents } from './hooks/useEvents'
+import { useNavigation } from './hooks/useNavigation'
+import { useAutoplay } from './hooks/useAutoplay'
+import { useWindowResize } from './hooks/useWindowResize'
+import { ANIMATIONS } from './constants'
+import { SlidesAnimation, ValueOf } from '../types'
 
-export const useSlider = (
-  children: JSX.Element[],
-  config: ConfigType[],
-  customActiveDot: JSX.Element | undefined,
-  customDot: JSX.Element | undefined,
-  slidesNumber: number,
-  spaceBetweenSlides: number,
-  autoplay: boolean,
-  autoplaySpeed: number,
-  dotsAnimation: string,
-  dotColor?: string,
+export type Slider = {
+  children: JSX.Element[]
+  config: ConfigType[]
+  customActiveDot: JSX.Element | undefined
+  customDot: JSX.Element | undefined
+  slidesNumber: number
+  spaceBetweenSlides: number
+  autoplay: boolean
+  autoplaySpeed: number
+  dotsAnimation: DotsAnimation
+  slidesAnimation: ValueOf<SlidesAnimation>
+  dotColor?: string
   activeDotColor?: string
-) => {
+}
+
+export const useSlider = ({
+  children,
+  config,
+  customActiveDot,
+  customDot,
+  slidesNumber,
+  spaceBetweenSlides,
+  autoplay,
+  autoplaySpeed,
+  dotsAnimation,
+  slidesAnimation,
+  dotColor,
+  activeDotColor
+}: Slider) => {
   const [animation, setAnimation] = useState<boolean>(false)
   const [windowWidth, setWindowWidth] = useState<number>(0)
   const [currentRef, setCurrentRef] = useState<HTMLDivElement | null>(null)
@@ -50,6 +67,7 @@ export const useSlider = (
     currentRef,
     slidesNumber,
     spaceBetweenSlides,
+    slidesAnimation,
     startX,
     endX,
     movePath,
@@ -120,9 +138,7 @@ export const useSlider = (
     setTransform,
     setAnimation,
     slideWidth,
-    children,
-    nextDot,
-    prevDot
+    children
   })
 
   useAutoplay({

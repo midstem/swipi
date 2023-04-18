@@ -1,16 +1,7 @@
-import { ComponentBasicProps } from 'src/UI/types'
+import { ComponentBasicProps } from './types'
+import './styles.css'
 
 const DotsWrapper = ({ children }: ComponentBasicProps): JSX.Element => (
-  <div
-    className="dots-wrapper"
-    style={{
-      position: 'relative',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '10px'
-    }}
-  >
-    {children}
-  </div>
+  <div className="dots-wrapper">{children}</div>
 )
 export default DotsWrapper

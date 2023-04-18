@@ -1,10 +1,7 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
-import {
-  getWidthDifference,
-  getDotsLeftOffsets
-} from 'src/DotsAnimations/Sliding/helpers'
-import { DotsLeftOffsetsTypes } from 'src/DotsAnimations/Sliding/types'
-import { defaultDotsLeftOffsets } from 'src/DotsAnimations/Sliding/constants'
+import { defaultDotsLeftOffsets } from './constants'
+import { DotsLeftOffsetsTypes } from './types'
+import { getDotsLeftOffsets, getWidthDifference } from './helpers'
 
 const useSliding = (slideIndex: number) => {
   const dotsRef = useRef<(HTMLDivElement | null)[]>([])

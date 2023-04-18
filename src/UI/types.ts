@@ -2,6 +2,7 @@ import { ReactNode, RefObject } from 'react'
 
 export type ComponentBasicProps = {
   children: React.ReactNode
+  className?: string
 }
 
 export type SliderButtonProps = {
@@ -36,5 +37,12 @@ export type DotProps = {
 
 export type ActiveDotProps = {
   sizeForDefaultActiveDot?: number
-  activeDotColor: string | undefined
+  activeDotColor?: string | undefined
+}
+
+export type SlideProps = {
+  slideWidth: number
+  spaceBetween: number
+  children: JSX.Element
+  animation?: React.CSSProperties
 }

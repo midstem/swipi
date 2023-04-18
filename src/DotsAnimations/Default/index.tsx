@@ -1,11 +1,12 @@
-import DotsWrapper from 'src/UI/DotsWrapper'
-import Dot from 'src/UI/Dot'
-import { DotsTypes } from 'src/types'
+import Dot from '../../UI/Dot'
+import DotsWrapper from '../../UI/DotsWrapper'
+import { DotsTypes } from '../../types'
 
 const Default = ({
   children,
   slideIndex,
   customDot,
+  customActiveDot,
   sizeForDefaultDot,
   sizeForDefaultActiveDot,
   dotColor,
@@ -21,7 +22,7 @@ const Default = ({
           handleDotClick(index)
         }}
       >
-        {customDot ? (
+        {customDot || customActiveDot ? (
           returnDots(index)
         ) : (
           <Dot

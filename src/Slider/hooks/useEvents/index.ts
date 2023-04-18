@@ -1,6 +1,6 @@
-import { TouchEvents } from 'src/Slider/hooks/useEvents/types'
-import { calculateSlideIndex } from 'src/Slider/helpers'
 import { useState } from 'react'
+import { TouchEvents } from './types'
+import { calculateSlideIndex } from '../../helpers'
 
 export const useEvents = ({
   isButton,

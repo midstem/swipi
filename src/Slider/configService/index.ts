@@ -1,4 +1,6 @@
-import { ConfigType } from 'src/Slider/types'
+import { SlidesAnimation, ValueOf } from '../../types'
+import { isFadeInAnimation } from '../helpers'
+import { ConfigType } from '../types'
 
 export const ConfigService = (config: ConfigType[], windowWidth: number) => {
   const getSliderUpdatesParam = <T extends keyof ConfigType>(
@@ -12,9 +14,19 @@ export const ConfigService = (config: ConfigType[], windowWidth: number) => {
   const returnSpaceBetween = (spaceBetweenSlides: number): number =>
     getSliderUpdatesParam('spaceBetween') || spaceBetweenSlides
 
+  const getRightSlidesCount = (
+    slidesNumber: number,
+    animation: ValueOf<SlidesAnimation>
+  ) => {
+    if (isFadeInAnimation(animation)) return 1
+
+    return returnCountSlides(slidesNumber)
+  }
+
   return {
     getSliderUpdatesParam,
     returnCountSlides,
-    returnSpaceBetween
+    returnSpaceBetween,
+    getRightSlidesCount
   }
 }

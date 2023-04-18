@@ -1,4 +1,4 @@
-import { SlidesWrapperProps } from 'src/UI/types'
+import { SlidesWrapperProps } from './types'
 
 const SlidesWrapper = ({
   children,

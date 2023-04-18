@@ -1,4 +1,4 @@
-import { ComponentBasicProps } from 'src/UI/types'
+import { ComponentBasicProps } from './types'
 
 const SliderContainer = ({ children }: ComponentBasicProps): JSX.Element => (
   <div

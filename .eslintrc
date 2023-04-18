@@ -15,7 +15,14 @@
     "sourceType": "module",
     "project": "tsconfig.json"
   },
-
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
   "plugins": [
     "html",
     "prettier",
@@ -66,7 +73,7 @@
         "destructuring": "all"
       }
     ],
-    "arrow-body-style": [2, "as-needed"],
+
     "no-unused-expressions": [
       "error",
       {
@@ -115,21 +122,6 @@
       }
     ],
     "radix": 0,
-    "quotes": [
-      2,
-      "single",
-      {
-        "avoidEscape": true,
-        "allowTemplateLiterals": true
-      }
-    ],
-    "prettier/prettier": [
-      "error",
-      {
-        "singleQuote": true,
-        "endOfLine": "auto"
-      }
-    ],
     "jsx-a11y/href-no-hash": "off",
     "jsx-a11y/anchor-is-valid": [
       "warn",
@@ -141,12 +133,6 @@
     "react-hooks/exhaustive-deps": "warn",
     "@typescript-eslint/comma-dangle": ["off"],
     "react/jsx-props-no-spreading": "off",
-    "import/order": [
-      "warn",
-      {
-        "groups": ["external"],
-        "newlines-between": "always"
-      }
-    ]
+    "@typescript-eslint/ban-types": "off"
   }
 }

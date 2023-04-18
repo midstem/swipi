@@ -1,15 +1,12 @@
-import { ComponentBasicProps } from 'src/UI/types'
+import { ComponentBasicProps } from './types'
+import './styles.css'
 
-const CarouselWrapper = ({ children }: ComponentBasicProps): JSX.Element => (
-  <div
-    style={{
-      position: 'relative',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      gap: '20px'
-    }}
-  >
+const CarouselWrapper = ({
+  children,
+  className = '',
+  ...props
+}: ComponentBasicProps): JSX.Element => (
+  <div className={`slider ${className}`} {...props}>
     {children}
   </div>
 )

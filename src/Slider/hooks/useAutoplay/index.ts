@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import { startAutoplay } from 'src/Slider/helpers'
-import { Autoplay } from 'src/Slider/hooks/useAutoplay/types'
+import { Autoplay } from './types'
+import { startAutoplay } from '../../helpers'
 
 export const useAutoplay = ({
   autoplay,

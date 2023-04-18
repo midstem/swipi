@@ -1,4 +1,4 @@
-import { SetWithPrev } from 'src/Slider/types'
+import { SetWithPrev } from '../../types'
 
 export type DotsProps = {
   setTransform: SetWithPrev

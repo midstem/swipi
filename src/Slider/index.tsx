@@ -1,10 +1,12 @@
-import { useSlider } from 'src/Slider/useSlider'
-import { SliderProps } from 'src/Slider/types'
-import CarouselWrapper from 'src/UI/CarouselWrapper'
-import SliderContainer from 'src/UI/SliderContainer'
-import SliderButton from 'src/UI/SliderButton'
-import SlidesWrapper from 'src/UI/SlidesWrapper'
-import SlidesContainer from 'src/UI/SlidesContainer'
+import { Slide } from '../UI/Slide'
+import { returnSlidesAnimation } from './helpers'
+import { SliderProps } from './types'
+import { useSlider } from './useSlider'
+import SliderContainer from '../UI/SliderContainer'
+import SliderButton from '../UI/SliderButton'
+import SlidesWrapper from '../UI/SlidesWrapper'
+import SlidesContainer from '../UI/SlidesContainer'
+import CarouselWrapper from '../UI/CarouselWrapper'
 
 const Slider = ({
   slidesNumber = 3,
@@ -23,7 +25,9 @@ const Slider = ({
   autoplay = false,
   autoplaySpeed = 4000,
   dotsAnimation = 'default',
-  animationSpeed = 300
+  animationSpeed = 300,
+  slidesAnimation = 'default',
+  className
 }: SliderProps) => {
   const {
     animation,
@@ -42,7 +46,7 @@ const Slider = ({
     returnDots,
     onMove,
     onStart
-  } = useSlider(
+  } = useSlider({
     children,
     config,
     customActiveDot,
@@ -53,13 +57,14 @@ const Slider = ({
     autoplaySpeed,
     dotsAnimation,
     dotColor,
-    activeDotColor
-  )
+    activeDotColor,
+    slidesAnimation
+  })
 
   return (
-    <CarouselWrapper>
+    <CarouselWrapper className={className}>
       <SliderContainer>
-        <SliderButton onClick={prevImg} className="right-button">
+        <SliderButton onClick={prevImg} className="left-button">
           {isButton && prevButton}
         </SliderButton>
         <SlidesWrapper
@@ -73,17 +78,18 @@ const Slider = ({
             transform={transform}
             animationSpeed={animationSpeed}
           >
-            {slides?.map(({ id }, index) => (
-              <div
+            {slides?.map(({ id, key }, index) => (
+              <Slide
                 key={id}
-                style={{
-                  boxSizing: 'border-box',
-                  width: `${slideWidth}px`,
-                  paddingRight: `${spaceBetween}px`
-                }}
+                slideWidth={slideWidth}
+                spaceBetween={spaceBetween}
+                animation={returnSlidesAnimation(
+                  slidesAnimation,
+                  key === slideIndex
+                )}
               >
                 {slides[index]}
-              </div>
+              </Slide>
             ))}
           </SlidesContainer>
         </SlidesWrapper>
