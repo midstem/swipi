@@ -6,6 +6,8 @@ import SliderContainer from '../UI/SliderContainer';
 import SliderButton from '../UI/SliderButton';
 import SlidesWrapper from '../UI/SlidesWrapper';
 import SlidesContainer from '../UI/SlidesContainer';
+import { Slide } from '../UI/Slide';
+import { returnSlidesAnimation } from './helpers';
 
 const Slider = ({
   slidesNumber = 3,
@@ -25,6 +27,7 @@ const Slider = ({
   autoplaySpeed = 4000,
   dotsAnimation = 'default',
   animationSpeed = 300,
+  slidesAnimation = 'default'
 }: SliderProps) => {
   const {
     animation,
@@ -42,7 +45,7 @@ const Slider = ({
     endTouchScreen,
     returnDots,
     moveTouchScreen,
-    startTouchByScreen,
+    startTouchByScreen
   } = useSlider(
     children,
     config,
@@ -53,6 +56,7 @@ const Slider = ({
     autoplay,
     autoplaySpeed,
     dotsAnimation,
+    slidesAnimation,
     dotColor,
     activeDotColor
   );
@@ -74,17 +78,18 @@ const Slider = ({
             transform={transform}
             animationSpeed={animationSpeed}
           >
-            {slides?.map(({ id }, index) => (
-              <div
+            {slides?.map(({ id, key }, index) => (
+              <Slide
                 key={id}
-                style={{
-                  boxSizing: 'border-box',
-                  width: `${slideWidth}px`,
-                  paddingRight: `${spaceBetween}px`,
-                }}
+                slideWidth={slideWidth}
+                spaceBetween={spaceBetween}
+                animation={returnSlidesAnimation(
+                  slidesAnimation,
+                  key === slideIndex
+                )}
               >
                 {slides[index]}
-              </div>
+              </Slide>
             ))}
           </SlidesContainer>
         </SlidesWrapper>

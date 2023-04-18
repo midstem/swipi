@@ -1,9 +1,12 @@
+import { CSSProperties } from 'react';
+import { SlidesAnimation, ValueOf } from '../types';
 import { defaultSliderWidth } from './constants';
 import {
   AddUniqueIdReturnType,
   ReturnSlideWidthType,
-  ConfigType,
+  ConfigType
 } from './types';
+import { fadeIn } from '../SlidesAnimation/FadeIn';
 
 const generateUniqueID = () => {
   const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -49,7 +52,7 @@ export const returnSpaceBetween = (
 export const returnSlideWidth = ({
   visibleCountSlides,
   current,
-  spaceBetween,
+  spaceBetween
 }: ReturnSlideWidthType): number =>
   (getSliderWidth(current) + spaceBetween) / visibleCountSlides;
 
@@ -71,4 +74,35 @@ export const startAutoplay = (
   timeout.current = setTimeout(() => {
     nextImg();
   }, autoplaySpeed);
+};
+
+export const setKeyToChildren = (children: JSX.Element[]): JSX.Element[] => {
+  return children.map((child, index) => ({ ...child, key: index }));
+};
+
+export const returnSlidesAnimation = (
+  animation: ValueOf<SlidesAnimation>,
+  isVisible: boolean
+): CSSProperties => {
+  switch (animation) {
+    case SlidesAnimation.FADE_IN:
+      return fadeIn(isVisible);
+    default:
+      return {};
+  }
+};
+
+export const isFadeInAnimation = (animation: ValueOf<SlidesAnimation>) => {
+  return animation === SlidesAnimation.FADE_IN;
+};
+
+export const getRightSlidesCount = (
+  config: ConfigType[],
+  windowWidth: number,
+  slidesNumber: number,
+  animation: ValueOf<SlidesAnimation>
+) => {
+  if (isFadeInAnimation(animation)) return 1;
+
+  return returnCountSlides(config, windowWidth, slidesNumber);
 };
