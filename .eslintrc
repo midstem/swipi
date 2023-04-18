@@ -127,9 +127,7 @@
       "error",
       {
         "singleQuote": true,
-        "endOfLine": "auto",
-        "semi": false,
-        "trailingComma": "none"
+        "endOfLine": "auto"
       }
     ],
     "jsx-a11y/href-no-hash": "off",
