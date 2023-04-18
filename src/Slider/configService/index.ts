@@ -6,8 +6,6 @@ export const ConfigService = (config: ConfigType[], windowWidth: number) => {
   ): ConfigType[T] | undefined =>
     config.filter((item) => item.maxWidth >= windowWidth).at(-1)?.[param]
 
-  const isCornerSlide = (): boolean => !!getSliderUpdatesParam('biasRight')
-
   const returnCountSlides = (slidesNumber: number): number =>
     getSliderUpdatesParam('slidesNumber') || slidesNumber
 
@@ -16,7 +14,6 @@ export const ConfigService = (config: ConfigType[], windowWidth: number) => {
 
   return {
     getSliderUpdatesParam,
-    isCornerSlide,
     returnCountSlides,
     returnSpaceBetween
   }

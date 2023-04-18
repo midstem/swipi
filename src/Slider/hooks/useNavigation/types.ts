@@ -7,4 +7,6 @@ export type Navigation = {
   setTransform: SetWithPrev
   slideWidth: number
   children: JSX.Element[]
+  nextDot: (prev: number, children: JSX.Element[]) => void
+  prevDot: (prev: number, children: JSX.Element[]) => void
 }

@@ -33,19 +33,14 @@ export const useDots = ({
     )
   }
 
-  const nextDot = useCallback(
-    (prev: number, children: JSX.Element[]): void => {
+  const changeDot = useCallback(
+    (next?: boolean) => (transform: number, children: JSX.Element[]) => {
       setSlideIndex(
-        calculateSlideIndex(prev - slideWidth, slideWidth, children)
-      )
-    },
-    [slideWidth]
-  )
-
-  const previousDot = useCallback(
-    (prev: number, children: JSX.Element[]): void => {
-      setSlideIndex(
-        calculateSlideIndex(prev + slideWidth, slideWidth, children)
+        calculateSlideIndex(
+          next ? transform + slideWidth : transform - slideWidth,
+          slideWidth,
+          children
+        )
       )
     },
     [slideWidth]
@@ -56,7 +51,7 @@ export const useDots = ({
     returnDots,
     slideIndex,
     setSlideIndex,
-    nextDot,
-    previousDot
+    nextDot: changeDot(true),
+    prevDot: changeDot()
   }
 }

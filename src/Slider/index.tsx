@@ -1,4 +1,4 @@
-import { useSlider } from 'src/Slider/hooks/useSlider'
+import { useSlider } from 'src/Slider/useSlider'
 import { SliderProps } from 'src/Slider/types'
 import CarouselWrapper from 'src/UI/CarouselWrapper'
 import SliderContainer from 'src/UI/SliderContainer'

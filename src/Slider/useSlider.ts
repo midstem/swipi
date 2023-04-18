@@ -40,7 +40,7 @@ export const useSlider = (
     spaceBetween,
     transform,
     startTransform,
-    checkAreaWithoutSlides,
+    checkAreaBeyondSlider,
     jumpToTheLastSlide,
     moveSlides
   } = useSlides({
@@ -62,7 +62,7 @@ export const useSlider = (
     setSlideIndex,
     returnDots,
     nextDot,
-    previousDot
+    prevDot
   } = useDots({
     setTransform,
     slideWidth,
@@ -106,7 +106,7 @@ export const useSlider = (
     setTransform,
     setSlideIndex,
     checkSliderCorner,
-    checkAreaWithoutSlides,
+    checkAreaBeyondSlider,
     jumpToTheLastSlide,
     moveSlides,
     setStartX,
@@ -114,20 +114,24 @@ export const useSlider = (
     setMovePath
   })
 
-  const { navigateSlide } = useNavigation({
+  const { nextImg, prevImg } = useNavigation({
     putInTheInitialPosition,
     checkSliderCorner,
     setTransform,
     setAnimation,
     slideWidth,
-    children
+    children,
+    nextDot,
+    prevDot
   })
 
-  const nextImg = navigateSlide(nextDot, true)
-
-  const prevImg = navigateSlide(previousDot)
-
-  useAutoplay({ autoplay, autoplaySpeed, slideIndex, nextImg, timeout })
+  useAutoplay({
+    autoplay,
+    autoplaySpeed,
+    slideIndex,
+    nextImg: () => nextImg(nextDot),
+    timeout
+  })
 
   useWindowResize(() => {
     setWindowWidth(window.innerWidth)
@@ -152,8 +156,8 @@ export const useSlider = (
     slideIndex,
     Dots: ANIMATIONS[dotsAnimation],
     returnDots,
-    nextImg,
-    prevImg,
+    nextImg: () => nextImg(nextDot),
+    prevImg: () => prevImg(prevDot),
     setTransform,
     setAnimation,
     handleDotClick,

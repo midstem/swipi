@@ -6,6 +6,7 @@ import {
   isButton as isButtonFn
 } from 'src/Slider/helpers'
 import { ConfigService } from 'src/Slider/configService'
+import { reduceSlide } from 'src/Slider/constants'
 
 export const useSlides = ({
   children,
@@ -21,12 +22,13 @@ export const useSlides = ({
 }: Slides) => {
   const [transform, setTransform] = useState<number>(0)
 
-  const { isCornerSlide, returnCountSlides, returnSpaceBetween } =
+  const { returnCountSlides, returnSpaceBetween, getSliderUpdatesParam } =
     ConfigService(config, windowWidth)
 
   const visibleCountSlides = returnCountSlides(slidesNumber)
   const spaceBetween = returnSpaceBetween(spaceBetweenSlides)
   const isButton = isButtonFn(children, returnCountSlides(slidesNumber))
+  const isCornerSlide = !!getSliderUpdatesParam('biasRight')
 
   const returnSlideWidthArgs = useMemo(
     () => ({
@@ -39,8 +41,8 @@ export const useSlides = ({
 
   const slideWidth = useMemo(
     () =>
-      isCornerSlide()
-        ? returnSlideWidth(returnSlideWidthArgs) * 0.85
+      isCornerSlide
+        ? returnSlideWidth(returnSlideWidthArgs) * reduceSlide
         : returnSlideWidth(returnSlideWidthArgs),
     [returnSlideWidthArgs, , isCornerSlide]
   )
@@ -55,7 +57,7 @@ export const useSlides = ({
 
   const startTransform = -slideWidth * children.length
 
-  const checkAreaWithoutSlides = (): boolean =>
+  const checkAreaBeyondSlider = (): boolean =>
     transform <= startTransform * 2 - slideWidth || transform >= slideWidth / 2
 
   const moveSlides = (): void => {
@@ -78,7 +80,7 @@ export const useSlides = ({
     spaceBetween,
     isButton,
     slides,
-    checkAreaWithoutSlides,
+    checkAreaBeyondSlider,
     jumpToTheLastSlide,
     moveSlides,
     startTransform

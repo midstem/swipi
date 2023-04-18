@@ -10,7 +10,7 @@ export type TouchEvents = {
   setTransform: SetWithPrev
   setSlideIndex: (index: number) => void
   checkSliderCorner: () => boolean
-  checkAreaWithoutSlides: () => boolean
+  checkAreaBeyondSlider: () => boolean
   jumpToTheLastSlide: () => void
   moveSlides: () => void
   setStartX: (value: number) => void

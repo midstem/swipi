@@ -9,15 +9,12 @@ export const useNavigation = ({
   children
 }: Navigation) => {
   const navigateSlide =
-    (
-      callback: (prev: number, children: JSX.Element[]) => void,
-      nexSlide?: boolean
-    ) =>
-    () => {
+    (nextSlide?: boolean) =>
+    (callback: (prev: number, children: JSX.Element[]) => void) => {
       setTransform((prev) => {
         callback(prev, children)
 
-        return nexSlide ? prev - slideWidth : prev + slideWidth
+        return nextSlide ? prev - slideWidth : prev + slideWidth
       })
 
       setAnimation(true)
@@ -27,10 +24,13 @@ export const useNavigation = ({
           setTransform((prev) => {
             callback(prev, children)
 
-            return nexSlide ? prev - slideWidth : prev + slideWidth
+            return nextSlide ? prev - slideWidth : prev + slideWidth
           })
         )
     }
 
-  return { navigateSlide }
+  return {
+    nextImg: navigateSlide(true),
+    prevImg: navigateSlide()
+  }
 }

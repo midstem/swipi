@@ -12,7 +12,7 @@ export const useEvents = ({
   setTransform,
   setSlideIndex,
   checkSliderCorner,
-  checkAreaWithoutSlides,
+  checkAreaBeyondSlider,
   jumpToTheLastSlide,
   moveSlides,
   setStartX,
@@ -53,7 +53,7 @@ export const useEvents = ({
   const onEnd = (): void => {
     setAnimation(true)
     onSwipe()
-    checkAreaWithoutSlides() && jumpToTheLastSlide()
+    checkAreaBeyondSlider() && jumpToTheLastSlide()
     resetCoordinates()
     setMouseDown(false)
   }
