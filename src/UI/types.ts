@@ -2,6 +2,7 @@ import { ReactNode, RefObject } from 'react';
 
 export type ComponentBasicProps = {
   children: React.ReactNode;
+  className?: string;
 };
 
 export type SliderButtonProps = {

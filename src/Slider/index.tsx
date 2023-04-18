@@ -27,6 +27,7 @@ const Slider = ({
   autoplaySpeed = 4000,
   dotsAnimation = 'default',
   animationSpeed = 300,
+  className,
   slidesAnimation = 'default'
 }: SliderProps) => {
   const {
@@ -62,9 +63,9 @@ const Slider = ({
   );
 
   return (
-    <CarouselWrapper>
+    <CarouselWrapper className={className}>
       <SliderContainer>
-        <SliderButton onClick={prevImg} className="right-button">
+        <SliderButton onClick={prevImg} className="left-button">
           {isButton && prevButton}
         </SliderButton>
         <SlidesWrapper
@@ -93,7 +94,7 @@ const Slider = ({
             ))}
           </SlidesContainer>
         </SlidesWrapper>
-        <SliderButton onClick={nextImg} className="left-button">
+        <SliderButton onClick={nextImg} className="right-button">
           {isButton && nextButton}
         </SliderButton>
       </SliderContainer>

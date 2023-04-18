@@ -29,6 +29,7 @@ export type SliderProps = {
   animationSpeed?: number;
   dotsAnimation?: DotsAnimation;
   slidesAnimation?: ValueOf<SlidesAnimation>;
+  className?: string;
 };
 
 export type DotsAnimation = 'default' | 'sliding';

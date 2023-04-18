@@ -8,12 +8,6 @@ const SliderButton = forwardRef<HTMLButtonElement, SliderButtonProps>(
       ref={ref as RefObject<HTMLButtonElement>}
       onClick={onClick}
       type="button"
-      style={{
-        background: 'transparent',
-        border: 'none',
-        cursor: 'pointer',
-        outline: 'none',
-      }}
     >
       {children}
     </button>
