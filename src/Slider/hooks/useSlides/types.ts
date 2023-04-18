@@ -1,4 +1,4 @@
-import { ConfigType } from 'Slider/types'
+import { ConfigType } from 'src/Slider/types'
 
 export type Slides = {
   children: JSX.Element[]

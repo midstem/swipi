@@ -38,10 +38,10 @@ const Slider = ({
     handleDotClick,
     nextImg,
     prevImg,
-    endTouchScreen,
+    onEnd,
     returnDots,
-    moveTouchScreen,
-    startTouchByScreen
+    onMove,
+    onStart
   } = useSlider(
     children,
     config,
@@ -64,9 +64,9 @@ const Slider = ({
         </SliderButton>
         <SlidesWrapper
           slidesWrapperRef={slidesWrapperRef}
-          startTouchByScreen={startTouchByScreen}
-          moveTouchScreen={moveTouchScreen}
-          endTouchScreen={endTouchScreen}
+          startTouchByScreen={onStart}
+          moveTouchScreen={onMove}
+          endTouchScreen={onEnd}
         >
           <SlidesContainer
             animation={animation}

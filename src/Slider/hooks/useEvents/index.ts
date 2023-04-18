@@ -1,8 +1,8 @@
-import { TouchEvents } from 'src/Slider/hooks/useTouch/types'
+import { TouchEvents } from 'src/Slider/hooks/useEvents/types'
 import { calculateSlideIndex } from 'src/Slider/helpers'
 import { useState } from 'react'
 
-export const useTouch = ({
+export const useEvents = ({
   isButton,
   transform,
   slideWidth,
@@ -27,7 +27,7 @@ export const useTouch = ({
     setStartX(0)
   }
 
-  const turnInitialPositionByTouched = (): void => {
+  const turnInitialPosition = (): void => {
     setAnimation(false)
     setTransform((prev) => (prev ? prev - startTransform : startTransform))
   }
@@ -36,13 +36,13 @@ export const useTouch = ({
     setTransform((prev) => Math.round(prev / slideWidth) * slideWidth)
   }
 
-  const startTouchByScreen = (X: number): void => {
-    checkSliderCorner() && turnInitialPositionByTouched()
+  const onStart = (X: number): void => {
+    checkSliderCorner() && turnInitialPosition()
     setStartX(X)
     setMouseDown(true)
   }
 
-  const moveTouchScreen = (X: number): void => {
+  const onMove = (X: number): void => {
     if (!mouseDown) return
     setAnimation(false)
     moveSlides()
@@ -50,7 +50,7 @@ export const useTouch = ({
     setSlideIndex(calculateSlideIndex(transform, slideWidth, children))
   }
 
-  const endTouchScreen = (): void => {
+  const onEnd = (): void => {
     setAnimation(true)
     onSwipe()
     checkAreaWithoutSlides() && jumpToTheLastSlide()
@@ -59,8 +59,8 @@ export const useTouch = ({
   }
 
   return {
-    startTouchByScreen: isButton ? startTouchByScreen : () => {},
-    moveTouchScreen: isButton ? moveTouchScreen : () => {},
-    endTouchScreen
+    onStart: isButton ? onStart : () => {},
+    onMove: isButton ? onMove : () => {},
+    onEnd
   }
 }

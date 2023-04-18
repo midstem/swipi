@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { useSlides } from 'src/Slider/hooks/useSlides'
 import { useWindowResize } from 'src/Slider/hooks/useWindowResize'
 import { useAutoplay } from 'src/Slider/hooks/useAutoplay'
-import { useTouch } from 'src/Slider/hooks/useTouch'
+import { useEvents } from 'src/Slider/hooks/useEvents'
 import { useDots } from 'src/Slider/hooks/useDots'
 import { useNavigation } from 'src/Slider/hooks/useNavigation'
 import { ConfigType } from 'src/Slider/types'
@@ -96,7 +96,7 @@ export const useSlider = (
     [startTransform, setAnimation, setTransform]
   )
 
-  const { startTouchByScreen, moveTouchScreen, endTouchScreen } = useTouch({
+  const { onEnd, onMove, onStart } = useEvents({
     isButton,
     transform,
     slideWidth,
@@ -157,8 +157,8 @@ export const useSlider = (
     setTransform,
     setAnimation,
     handleDotClick,
-    endTouchScreen,
-    moveTouchScreen,
-    startTouchByScreen
+    onEnd,
+    onMove,
+    onStart
   }
 }
