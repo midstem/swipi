@@ -3,10 +3,10 @@ import { ComponentBasicProps } from './types';
 
 const CarouselWrapper = ({
   children,
-  className,
+  className = '',
   ...props
 }: ComponentBasicProps): JSX.Element => (
-  <div className={`slider ${className ?? ''}`} {...props}>
+  <div className={`slider ${className}`} {...props}>
     {children}
   </div>
 );

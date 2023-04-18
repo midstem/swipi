@@ -26,7 +26,7 @@ const Slider = ({
   autoplaySpeed = 4000,
   dotsAnimation = 'default',
   animationSpeed = 300,
-  ...props
+  className,
 }: SliderProps) => {
   const {
     animation,
@@ -60,7 +60,7 @@ const Slider = ({
   );
 
   return (
-    <CarouselWrapper {...props}>
+    <CarouselWrapper className={className}>
       <SliderContainer>
         <SliderButton onClick={prevImg} className="left-button">
           {isButton && prevButton}
