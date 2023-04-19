@@ -1,5 +1,5 @@
-import React from 'react';
-import { ComponentBasicProps } from './types';
+import { ComponentBasicProps } from './types'
+import './styles.css'
 
 const CarouselWrapper = ({
   children,
@@ -9,6 +9,6 @@ const CarouselWrapper = ({
   <div className={`slider ${className}`} {...props}>
     {children}
   </div>
-);
+)
 
-export default CarouselWrapper;
+export default CarouselWrapper

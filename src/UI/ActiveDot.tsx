@@ -1,9 +1,8 @@
-import React from 'react';
-import { ActiveDotProps } from './types';
+import { ActiveDotProps } from './types'
 
 const ActiveDot = ({
   sizeForDefaultActiveDot = 13,
-  activeDotColor,
+  activeDotColor
 }: ActiveDotProps): JSX.Element => (
   <div
     style={{
@@ -11,9 +10,9 @@ const ActiveDot = ({
       width: `${sizeForDefaultActiveDot}px`,
       backgroundColor: activeDotColor || 'black',
       borderRadius: '50%',
-      cursor: 'pointer',
+      cursor: 'pointer'
     }}
   />
-);
+)
 
-export default ActiveDot;
+export default ActiveDot

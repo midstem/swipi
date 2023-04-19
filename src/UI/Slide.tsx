@@ -1,5 +1,4 @@
-import React from 'react';
-import { SlideProps } from './types';
+import { SlideProps } from './types'
 
 export const Slide = ({
   slideWidth,
@@ -18,5 +17,5 @@ export const Slide = ({
     >
       {children}
     </div>
-  );
-};
+  )
+}
