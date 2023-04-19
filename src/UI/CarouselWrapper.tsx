@@ -1,5 +1,4 @@
 import { ComponentBasicProps } from './types'
-import './styles.css'
 
 const CarouselWrapper = ({
   children,

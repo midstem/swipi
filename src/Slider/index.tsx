@@ -7,6 +7,7 @@ import SliderButton from '../UI/SliderButton'
 import SlidesWrapper from '../UI/SlidesWrapper'
 import SlidesContainer from '../UI/SlidesContainer'
 import CarouselWrapper from '../UI/CarouselWrapper'
+import '../UI/styles.css'
 
 const Slider = ({
   slidesNumber = 3,
