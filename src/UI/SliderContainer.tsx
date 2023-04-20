@@ -1,16 +1,15 @@
-import React from 'react';
-import { ComponentBasicProps } from './types';
+import { ComponentBasicProps } from './types'
 
 const SliderContainer = ({ children }: ComponentBasicProps): JSX.Element => (
   <div
     style={{
       display: 'flex',
       alignItems: 'center',
-      width: '100%',
+      width: '100%'
     }}
   >
     {children}
   </div>
-);
+)
 
-export default SliderContainer;
+export default SliderContainer

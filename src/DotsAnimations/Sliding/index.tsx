@@ -1,22 +1,22 @@
-import React from 'react';
-import useSliding from './useSliding';
-import DotsWrapper from '../../UI/DotsWrapper';
-import Dot from '../../UI/Dot';
-import ActiveDot from '../../UI/ActiveDot';
-import { DotsTypes } from '../../types';
+import ActiveDot from '../../UI/ActiveDot'
+import Dot from '../../UI/Dot'
+import DotsWrapper from '../../UI/DotsWrapper'
+import { DotsTypes } from '../../types'
+import useSliding from './useSliding'
 
 const Sliding = ({
   children,
   customDot,
   slideIndex,
   customActiveDot,
+  dotColor,
   sizeForDefaultDot,
   sizeForDefaultActiveDot,
   activeDotColor,
   animationSpeed,
-  handleDotClick,
+  handleDotClick
 }: DotsTypes): JSX.Element => {
-  const { dotsRef, activeDotRef, activeDotLeft } = useSliding(slideIndex);
+  const { dotsRef, activeDotRef, activeDotLeft } = useSliding(slideIndex)
 
   return (
     <DotsWrapper>
@@ -25,29 +25,28 @@ const Sliding = ({
           key={index}
           ref={(el) => (dotsRef.current[index] = el)}
           onClick={() => {
-            handleDotClick(index);
+            handleDotClick(index)
           }}
           style={{
             transition: `${animationSpeed}ms`,
-            transform: slideIndex === index ? 'scale(0)' : 'scale(1)',
+            transform: slideIndex === index ? 'scale(0)' : 'scale(1)'
           }}
         >
           {customDot ?? (
             <Dot
-              activeDotColor="#c7c7c7"
+              index={index}
+              dotColor={dotColor}
               sizeForDefaultDot={sizeForDefaultDot}
             />
           )}
         </div>
       ))}
-
       <div
         ref={activeDotRef}
         style={{
           position: 'absolute',
           left: activeDotLeft,
-          opacity: !activeDotLeft ? 0 : 1,
-          transition: `left ${animationSpeed}ms`,
+          transition: `left ${animationSpeed}ms`
         }}
       >
         {customActiveDot ?? (
@@ -58,6 +57,6 @@ const Sliding = ({
         )}
       </div>
     </DotsWrapper>
-  );
-};
-export default Sliding;
+  )
+}
+export default Sliding

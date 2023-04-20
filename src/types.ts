@@ -1,13 +1,20 @@
 export type DotsTypes = {
-  children: JSX.Element[];
-  customDot: JSX.Element | undefined;
-  slideIndex: number;
-  customActiveDot: JSX.Element | undefined;
-  sizeForDefaultDot: number | undefined;
-  sizeForDefaultActiveDot: number;
-  activeDotColor: string | undefined;
-  dotColor: string | undefined;
-  animationSpeed: number;
-  handleDotClick: (index: number) => void;
-  returnCustomDots: (index: number) => React.ReactNode;
-};
+  children: JSX.Element[]
+  customDot?: JSX.Element
+  slideIndex: number
+  customActiveDot?: JSX.Element
+  sizeForDefaultDot?: number
+  sizeForDefaultActiveDot: number
+  activeDotColor?: string
+  dotColor?: string
+  animationSpeed: number
+  handleDotClick: (index: number) => void
+  returnDots: (index: number) => React.ReactNode
+}
+
+export enum SlidesAnimation {
+  DEFAULT = 'default',
+  FADE_IN = 'fade-in'
+}
+
+export type ValueOf<T extends string> = `${T}`

@@ -1,23 +1,25 @@
-import React, { useState } from 'react';
-import { SlidesContainerProps } from './types';
+import { useState } from 'react'
+import { SlidesContainerProps } from './types'
 
 const SlidesContainer = ({
   children,
   transform,
   animation,
-  animationSpeed,
+  animationSpeed
 }: SlidesContainerProps): JSX.Element => {
-  const [isActive, setIsActive] = useState(false);
+  const [isDragging, setIsDragging] = useState<boolean>(false)
 
-  const toggleActive = () => setIsActive(!isActive);
+  const startDragging = () => setIsDragging(true)
+  const stopDragging = () => setIsDragging(false)
 
   return (
     <div
       onDragStart={(e) => {
-        e.preventDefault();
+        e.preventDefault()
       }}
-      onMouseDown={toggleActive}
-      onMouseUp={toggleActive}
+      onMouseDown={startDragging}
+      onMouseUp={stopDragging}
+      onMouseLeave={stopDragging}
       style={{
         display: 'flex',
         width: 'fit-content',
@@ -26,12 +28,12 @@ const SlidesContainer = ({
           animation ? `all ${animationSpeed}ms ease-out 0s` : `0s`
         }`,
         height: '100%',
-        cursor: isActive ? 'grabbing' : 'grab',
+        cursor: isDragging ? 'grabbing' : 'grab'
       }}
     >
       {children}
     </div>
-  );
-};
+  )
+}
 
-export default SlidesContainer;
+export default SlidesContainer

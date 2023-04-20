@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-  max-width: 1300px;
+  width: min(90vw, 1000px);
+  margin-top: 20px;
 
   svg {
     height: 30px;

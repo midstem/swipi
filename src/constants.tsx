@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const divs = [
   { element: <div style={{ height: '300px', backgroundColor: 'red' }} /> },
   { element: <div style={{ height: '300px', backgroundColor: 'black' }} /> },

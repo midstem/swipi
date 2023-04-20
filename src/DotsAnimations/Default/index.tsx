@@ -1,29 +1,29 @@
-import React from 'react';
-import DotsWrapper from '../../UI/DotsWrapper';
-import Dot from '../../UI/Dot';
-import { DotsTypes } from '../../types';
+import Dot from '../../UI/Dot'
+import DotsWrapper from '../../UI/DotsWrapper'
+import { DotsTypes } from '../../types'
 
 const Default = ({
   children,
   slideIndex,
   customDot,
+  customActiveDot,
   sizeForDefaultDot,
   sizeForDefaultActiveDot,
   dotColor,
   activeDotColor,
   handleDotClick,
-  returnCustomDots,
+  returnDots
 }: DotsTypes): JSX.Element => (
   <DotsWrapper>
     {children.map((_, index) => (
       <div
         key={index}
         onClick={() => {
-          handleDotClick(index);
+          handleDotClick(index)
         }}
       >
-        {customDot ? (
-          returnCustomDots(index)
+        {customDot || customActiveDot ? (
+          returnDots(index)
         ) : (
           <Dot
             index={index}
@@ -37,6 +37,6 @@ const Default = ({
       </div>
     ))}
   </DotsWrapper>
-);
+)
 
-export default Default;
+export default Default

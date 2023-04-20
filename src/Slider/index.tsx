@@ -1,11 +1,13 @@
-import React from 'react';
-import { useSlider } from './useSlider';
-import { SliderProps } from './types';
-import CarouselWrapper from '../UI/CarouselWrapper';
-import SliderContainer from '../UI/SliderContainer';
-import SliderButton from '../UI/SliderButton';
-import SlidesWrapper from '../UI/SlidesWrapper';
-import SlidesContainer from '../UI/SlidesContainer';
+import { Slide } from '../UI/Slide'
+import { returnSlidesAnimation } from './helpers'
+import { SliderProps } from './types'
+import { useSlider } from './useSlider'
+import SliderContainer from '../UI/SliderContainer'
+import SliderButton from '../UI/SliderButton'
+import SlidesWrapper from '../UI/SlidesWrapper'
+import SlidesContainer from '../UI/SlidesContainer'
+import CarouselWrapper from '../UI/CarouselWrapper'
+import '../UI/styles.css'
 
 const Slider = ({
   slidesNumber = 3,
@@ -25,6 +27,8 @@ const Slider = ({
   autoplaySpeed = 4000,
   dotsAnimation = 'default',
   animationSpeed = 300,
+  slidesAnimation = 'default',
+  className
 }: SliderProps) => {
   const {
     animation,
@@ -35,16 +39,15 @@ const Slider = ({
     isButton,
     spaceBetween,
     slideIndex,
-    buttonRef,
     Dots,
     handleDotClick,
     nextImg,
     prevImg,
-    endTouchScreen,
-    returnCustomDots,
-    moveTouchScreen,
-    startTouchByScreen,
-  } = useSlider(
+    onEnd,
+    returnDots,
+    onMove,
+    onStart
+  } = useSlider({
     children,
     config,
     customActiveDot,
@@ -53,41 +56,45 @@ const Slider = ({
     spaceBetweenSlides,
     autoplay,
     autoplaySpeed,
-    dotsAnimation
-  );
+    dotsAnimation,
+    dotColor,
+    activeDotColor,
+    slidesAnimation
+  })
 
   return (
-    <CarouselWrapper>
+    <CarouselWrapper className={className}>
       <SliderContainer>
-        <SliderButton onClick={prevImg} className="right-button">
+        <SliderButton onClick={prevImg} className="left-button">
           {isButton && prevButton}
         </SliderButton>
         <SlidesWrapper
           slidesWrapperRef={slidesWrapperRef}
-          startTouchByScreen={startTouchByScreen}
-          moveTouchScreen={moveTouchScreen}
-          endTouchScreen={endTouchScreen}
+          startTouchByScreen={onStart}
+          moveTouchScreen={onMove}
+          endTouchScreen={onEnd}
         >
           <SlidesContainer
             animation={animation}
             transform={transform}
             animationSpeed={animationSpeed}
           >
-            {slides?.map(({ id }, index) => (
-              <div
+            {slides?.map(({ id, key }, index) => (
+              <Slide
                 key={id}
-                style={{
-                  boxSizing: 'border-box',
-                  width: `${slideWidth}px`,
-                  paddingRight: `${spaceBetween}px`,
-                }}
+                slideWidth={slideWidth}
+                spaceBetween={spaceBetween}
+                animation={returnSlidesAnimation(
+                  slidesAnimation,
+                  key === slideIndex
+                )}
               >
                 {slides[index]}
-              </div>
+              </Slide>
             ))}
           </SlidesContainer>
         </SlidesWrapper>
-        <SliderButton ref={buttonRef} onClick={nextImg} className="left-button">
+        <SliderButton onClick={nextImg} className="left-button">
           {isButton && nextButton}
         </SliderButton>
       </SliderContainer>
@@ -103,11 +110,11 @@ const Slider = ({
           dotColor={dotColor}
           animationSpeed={animationSpeed}
           handleDotClick={handleDotClick}
-          returnCustomDots={returnCustomDots}
+          returnDots={returnDots}
         />
       )}
     </CarouselWrapper>
-  );
-};
+  )
+}
 
-export default Slider;
+export default Slider

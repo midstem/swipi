@@ -1,5 +1,4 @@
-import React from 'react';
-import { DotProps } from './types';
+import { DotProps } from './types'
 
 const Dot = ({
   index,
@@ -7,7 +6,7 @@ const Dot = ({
   sizeForDefaultDot = 12,
   sizeForDefaultActiveDot = 12,
   dotColor = '#c7c7c7',
-  activeDotColor = 'black',
+  activeDotColor = 'black'
 }: DotProps): JSX.Element => (
   <div
     style={{
@@ -15,9 +14,9 @@ const Dot = ({
       width: slideIndex === index ? sizeForDefaultActiveDot : sizeForDefaultDot,
       backgroundColor: slideIndex === index ? activeDotColor : dotColor,
       borderRadius: '50%',
-      cursor: 'pointer',
+      cursor: 'pointer'
     }}
   />
-);
+)
 
-export default Dot;
+export default Dot

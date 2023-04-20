@@ -1,12 +1,11 @@
-import React from 'react';
-import { SlidesWrapperProps } from './types';
+import { SlidesWrapperProps } from './types'
 
 const SlidesWrapper = ({
   children,
   slidesWrapperRef,
   startTouchByScreen,
   moveTouchScreen,
-  endTouchScreen,
+  endTouchScreen
 }: SlidesWrapperProps): JSX.Element => (
   <div
     ref={slidesWrapperRef}
@@ -20,11 +19,11 @@ const SlidesWrapper = ({
     style={{
       height: '100%',
       width: '100%',
-      overflow: 'hidden',
+      overflow: 'hidden'
     }}
   >
     {children}
   </div>
-);
+)
 
-export default SlidesWrapper;
+export default SlidesWrapper
