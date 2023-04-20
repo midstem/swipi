@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect, useCallback } from 'react'
-import { SlideWidthArgs, Slides } from './types'
+import { useState, useMemo } from 'react'
+import { Slides } from './types'
 import { ConfigService } from '../../configService'
 import {
   addUniqueId,
@@ -9,7 +9,6 @@ import {
 } from '../../helpers'
 import { cloneArray } from '../../../helpers'
 import { reduceSlide } from '../../constants'
-import { defaultSlideWidthArgs } from './constants'
 
 export const useSlides = ({
   children,
@@ -25,9 +24,6 @@ export const useSlides = ({
   slidesAnimation
 }: Slides) => {
   const [transform, setTransform] = useState<number>(0)
-  const [slideWidthArgs, setSlideWidthArgs] = useState<SlideWidthArgs>(
-    defaultSlideWidthArgs
-  )
 
   const { returnSpaceBetween, getSliderUpdatesParam, getRightSlidesCount } =
     ConfigService(config, windowWidth)
@@ -39,21 +35,22 @@ export const useSlides = ({
 
   const currentRefWidth = currentRef?.getBoundingClientRect().width
 
+  const updateSlideWidthArgs = useMemo(
+    () => ({
+      visibleCountSlides,
+      spaceBetween,
+      current: currentRefWidth
+    }),
+    [spaceBetween, visibleCountSlides, currentRefWidth]
+  )
+
   const slideWidth = useMemo(
     () =>
       isCornerSlide
-        ? returnSlideWidth(slideWidthArgs) * reduceSlide
-        : returnSlideWidth(slideWidthArgs),
-    [slideWidthArgs, isCornerSlide]
+        ? returnSlideWidth(updateSlideWidthArgs) * reduceSlide
+        : returnSlideWidth(updateSlideWidthArgs),
+    [isCornerSlide, updateSlideWidthArgs]
   )
-
-  const updateSlideWidthArgs = useCallback(() => {
-    setSlideWidthArgs({
-      visibleCountSlides,
-      spaceBetween,
-      current: currentRef
-    })
-  }, [currentRef, spaceBetween, visibleCountSlides])
 
   const slides = useMemo(() => {
     return isButton
@@ -78,10 +75,6 @@ export const useSlides = ({
     const rightJump = -(lineLengthOfSlides - slideWidth * numberOfSlidesBack)
     setTransform(movePath > 0 ? rightJump : 0)
   }
-
-  useEffect(() => {
-    updateSlideWidthArgs()
-  }, [currentRefWidth, updateSlideWidthArgs])
 
   return {
     transform,

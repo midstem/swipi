@@ -5,18 +5,15 @@ import { SlidesAnimation, ValueOf } from '../../types'
 import { fadeIn } from '../../SlidesAnimation/FadeIn'
 import { defaultSliderWidth } from '../constants'
 
-export const getSliderWidth = (current: HTMLDivElement | null): number =>
-  current?.getBoundingClientRect().width ?? defaultSliderWidth
-
 export const addUniqueId = (slides: JSX.Element[]): AddUniqueIdReturnType =>
   slides.map((slide) => ({ ...slide, id: generateUniqueID() }))
 
 export const returnSlideWidth = ({
   visibleCountSlides,
-  current,
+  current = defaultSliderWidth,
   spaceBetween
 }: ReturnSlideWidthType): number =>
-  (getSliderWidth(current) + spaceBetween) / visibleCountSlides
+  (current + spaceBetween) / visibleCountSlides
 
 export const calculateSlideIndex = (
   transform: number,
