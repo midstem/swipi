@@ -50,11 +50,13 @@ export const useSlides = ({
     [returnSlideWidthArgs, isCornerSlide]
   )
 
-  const slides = useMemo(() => {
-    return isButton
-      ? addUniqueId(cloneArray(setKeyToChildren(children), 3))
-      : addUniqueId(setKeyToChildren(children))
-  }, [isButton, children])
+  const slides = useMemo(
+    () =>
+      isButton
+        ? addUniqueId(cloneArray(setKeyToChildren(children), 3))
+        : addUniqueId(setKeyToChildren(children)),
+    [isButton, children]
+  )
 
   const startTransform = -slideWidth * children.length
 
@@ -73,7 +75,6 @@ export const useSlides = ({
     const rightJump = -(lineLengthOfSlides - slideWidth * numberOfSlidesBack)
     setTransform(movePath > 0 ? rightJump : 0)
   }
-  console.log(transform)
 
   return {
     transform,
