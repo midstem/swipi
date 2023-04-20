@@ -46,8 +46,6 @@ export const useDots = ({
     [slideWidth]
   )
 
-  console.log(slideIndex)
-
   return {
     handleDotClick,
     returnDots,
