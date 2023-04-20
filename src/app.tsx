@@ -7,6 +7,7 @@ import { DotsAnimation } from './Slider/types'
 import { Dot, ActiveDot } from './styles'
 import { ReactComponent as Unicorn } from './assets/unicorn.svg'
 import './styles/normalize.css'
+import { SlidesAnimation, ValueOf } from './types'
 
 const App = () => {
   const [showDots, setShowDots] = useState<boolean>(false)
@@ -62,7 +63,11 @@ const App = () => {
         animationSpeed={animationSpeed === 0 ? undefined : animationSpeed}
         autoplay={autoplay}
         autoplaySpeed={autoplaySpeed === 0 ? undefined : autoplaySpeed}
-        slidesAnimation={slidesAnimation === '' ? undefined : slidesAnimation}
+        slidesAnimation={
+          slidesAnimation === ''
+            ? undefined
+            : (slidesAnimation as ValueOf<SlidesAnimation>)
+        }
       >
         {dives.map((div) => (
           <>{div.element}</>
