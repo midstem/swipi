@@ -30,6 +30,23 @@ export type SliderProps = {
   dotsAnimation?: DotsAnimation
   slidesAnimation?: ValueOf<SlidesAnimation>
   className?: string
+  loop?: boolean
+}
+
+export type Slider = {
+  children: JSX.Element[]
+  config: ConfigType[]
+  customActiveDot: JSX.Element | undefined
+  customDot: JSX.Element | undefined
+  slidesNumber: number
+  spaceBetweenSlides: number
+  autoplay: boolean
+  autoplaySpeed: number
+  dotsAnimation: DotsAnimation
+  slidesAnimation: ValueOf<SlidesAnimation>
+  dotColor?: string
+  activeDotColor?: string
+  loop?: boolean
 }
 
 export type DotsAnimation = 'default' | 'sliding'

@@ -73,7 +73,6 @@ export const useSlides = ({
     const rightJump = -(lineLengthOfSlides - slideWidth * numberOfSlidesBack)
     setTransform(movePath > 0 ? rightJump : 0)
   }
-  console.log(transform)
 
   return {
     transform,

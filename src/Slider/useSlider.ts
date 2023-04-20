@@ -1,4 +1,4 @@
-import { ConfigType, DotsAnimation } from './types'
+import { Slider } from './types'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useSlides } from './hooks/useSlides'
 import { useDots } from './hooks/useDots'
@@ -7,22 +7,6 @@ import { useNavigation } from './hooks/useNavigation'
 import { useAutoplay } from './hooks/useAutoplay'
 import { useWindowResize } from './hooks/useWindowResize'
 import { ANIMATIONS } from './constants'
-import { SlidesAnimation, ValueOf } from '../types'
-
-export type Slider = {
-  children: JSX.Element[]
-  config: ConfigType[]
-  customActiveDot: JSX.Element | undefined
-  customDot: JSX.Element | undefined
-  slidesNumber: number
-  spaceBetweenSlides: number
-  autoplay: boolean
-  autoplaySpeed: number
-  dotsAnimation: DotsAnimation
-  slidesAnimation: ValueOf<SlidesAnimation>
-  dotColor?: string
-  activeDotColor?: string
-}
 
 export const useSlider = ({
   children,
@@ -36,7 +20,8 @@ export const useSlider = ({
   dotsAnimation,
   slidesAnimation,
   dotColor,
-  activeDotColor
+  activeDotColor,
+  loop
 }: Slider) => {
   const [animation, setAnimation] = useState<boolean>(false)
   const [windowWidth, setWindowWidth] = useState<number>(0)

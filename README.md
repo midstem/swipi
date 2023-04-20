@@ -14,6 +14,7 @@
 <p><b>Swipi</b> is a lightweight and compact slider optimized for mobile use. It's built with TypeScript and has a fast loading speed. It's also swipeable, making it easy for users to switch slides with a swipe on their mobile device. Its mobile-friendly design and convenience make it a great choice for improving user experience.</p>
 
 ### Installation
+
 **npm**
 
 ```bash
@@ -27,10 +28,11 @@ $ yarn add swipi
 ```
 
 ## [Default](https://codesandbox.io/s/default-demo-g81knf)
+
 ```js
-import Slider from "swipi"
-import pictures from "./constants"
-import { SliderWrapper, Image } from "./styles"
+import Slider from 'swipi'
+import pictures from './constants'
+import { SliderWrapper, Image } from './styles'
 
 const App = () => (
   <SliderWrapper>
@@ -44,19 +46,17 @@ const App = () => (
 ```
 
 ## [With arrows](https://codesandbox.io/s/demo-with-arrows-uqf4rf)
+
 ```js
-import Slider from "swipi"
-import pictures from "./constants"
-import { SliderWrapper, Image } from "./styles"
-import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg"
-import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg"
+import Slider from 'swipi'
+import pictures from './constants'
+import { SliderWrapper, Image } from './styles'
+import { ReactComponent as ArrowLeft } from './assets/arrow-left.svg'
+import { ReactComponent as ArrowRight } from './assets/arrow-right.svg'
 
 const App = () => (
   <SliderWrapper>
-    <Slider 
-      nextButton={<ArrowRight />}
-      prevButton={<ArrowLeft />}
-    >
+    <Slider nextButton={<ArrowRight />} prevButton={<ArrowLeft />}>
       {pictures.map((picture) => (
         <Image key={picture.id} src={picture.src} alt={picture.alt} />
       ))}
@@ -66,13 +66,14 @@ const App = () => (
 ```
 
 ## [With arrows and dots](https://codesandbox.io/s/demo-with-arrows-dots-unqoph)
+
 ```js
-import Slider from "swipi"
-import pictures from "./constants"
-import { SliderWrapper, Image } from "./styles"
-import { Circle, Diamond } from "./customDots"
-import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg"
-import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg"
+import Slider from 'swipi'
+import pictures from './constants'
+import { SliderWrapper, Image } from './styles'
+import { Circle, Diamond } from './customDots'
+import { ReactComponent as ArrowLeft } from './assets/arrow-left.svg'
+import { ReactComponent as ArrowRight } from './assets/arrow-right.svg'
 
 const App = () => (
   <SliderWrapper>
@@ -92,14 +93,15 @@ const App = () => (
 ```
 
 ## [All custom settings](https://codesandbox.io/s/all-custom-demo-vfxhtr)
+
 ```js
-import Slider from "swipi"
-import pictures from "./constants"
-import { SliderWrapper, Image } from "./styles"
-import { Circle, Diamond } from "./customDots"
-import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg"
-import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg"
-import "./styles.css"
+import Slider from 'swipi'
+import pictures from './constants'
+import { SliderWrapper, Image } from './styles'
+import { Circle, Diamond } from './customDots'
+import { ReactComponent as ArrowLeft } from './assets/arrow-left.svg'
+import { ReactComponent as ArrowRight } from './assets/arrow-right.svg'
+import './styles.css'
 
 const mediaSettings = [
   { maxWidth: 2200, slidesNumber: 3, spaceBetween: 5 },
@@ -118,7 +120,7 @@ const App = () => (
       customActiveDot={<Diamond />}
       autoplay
       autoplaySpeed={5300}
-      dotsAnimation='sliding'
+      dotsAnimation="sliding"
     >
       {pictures.map((picture) => (
         <Image key={picture.id} src={picture.src} alt={picture.alt} />
@@ -131,8 +133,8 @@ const App = () => (
 ## **Browsers support**
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Opera |
-| --------- | --------- | --------- | --------- | --------- |
-| IE11, Edge| last 3 versions| last 3 versions| last 3 versions| last 3 versions
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| IE11, Edge                                                                                                                                                                                                      | last 3 versions                                                                                                                                                                                                   | last 3 versions                                                                                                                                                                                               | last 3 versions                                                                                                                                                                                               | last 3 versions                                                                                                                                                                                           |
 
 ## **Props**
 
@@ -228,6 +230,12 @@ const App = () => (
     <td>autoplay</td>
     <td>A boolean that enables slides to slide automatically</td>
     <td>false</td>
+    <td>boolean</td>
+  </tr>
+  <tr>
+    <td>infinite</td>
+    <td>A boolean option that allows the slider to loop infinitely</td>
+    <td>true</td>
     <td>boolean</td>
   </tr>
   <tr>
@@ -333,13 +341,52 @@ const App = () => (
 ## **Styling**
 
 ```css
-.slider - styles the container that wraps the slider
-
-.dots-wrapper - styles the container that wraps the dots
-
-.left-button - styles the left button that gets the user to the previous slide
-
-.right-button - styles the right button that gets the user to the next slide
+.slider
+  -
+  styles
+  the
+  container
+  that
+  wraps
+  the
+  slider
+  .dots-wrapper
+  -
+  styles
+  the
+  container
+  that
+  wraps
+  the
+  dots
+  .left-button
+  -
+  styles
+  the
+  left
+  button
+  that
+  gets
+  the
+  user
+  to
+  the
+  previous
+  slide
+  .right-button
+  -
+  styles
+  the
+  right
+  button
+  that
+  gets
+  the
+  user
+  to
+  the
+  next
+  slide;
 ```
 
 <br/>

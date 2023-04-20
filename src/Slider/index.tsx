@@ -24,6 +24,7 @@ const Slider = ({
   sizeForDefaultDot,
   sizeForDefaultActiveDot = 13,
   autoplay = false,
+  loop = true,
   autoplaySpeed = 4000,
   dotsAnimation = 'default',
   animationSpeed = 300,
@@ -59,7 +60,8 @@ const Slider = ({
     dotsAnimation,
     dotColor,
     activeDotColor,
-    slidesAnimation
+    slidesAnimation,
+    loop
   })
 
   return (
