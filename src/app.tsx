@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Slider from './Slider'
 import DotsForm from './components/DotsForm'
+import SlidesForm from './components/SlidesForm'
 import { dives } from './constants'
 import { DotsAnimation } from './Slider/types'
 import { Dot, ActiveDot } from './styles'
@@ -15,9 +16,14 @@ const App = () => {
   const [dotColor, setDotColor] = useState<string>('')
   const [activeDotColor, setActiveDotColor] = useState<string>('')
   const [dotsAnimation, setDotsAnimation] = useState<string>('')
-  const [dotsAnimationText, setDotsAnimationText] = useState<string>('')
   const [customDot, setCustomDot] = useState<string>('none')
   const [customActiveDot, setCustomActiveDot] = useState<string>('none')
+  const [slidesNumber, setSlidesNumber] = useState<number>(0)
+  const [spaceBetweenSlides, setSpaceBetweenSlides] = useState<number>(0)
+  const [animationSpeed, setAnimationSpeed] = useState<number>(0)
+  const [autoplay, setAutoplay] = useState<boolean>(false)
+  const [autoplaySpeed, setAutoplaySpeed] = useState<number>(0)
+  const [slidesAnimation, setSlidesAnimation] = useState<string>('none')
 
   return (
     <>
@@ -49,6 +55,14 @@ const App = () => {
             <ActiveDot />
           )
         }
+        slidesNumber={slidesNumber === 0 ? undefined : slidesNumber}
+        spaceBetweenSlides={
+          spaceBetweenSlides === 0 ? undefined : spaceBetweenSlides
+        }
+        animationSpeed={animationSpeed === 0 ? undefined : animationSpeed}
+        autoplay={autoplay}
+        autoplaySpeed={autoplaySpeed === 0 ? undefined : autoplaySpeed}
+        slidesAnimation={slidesAnimation === '' ? undefined : slidesAnimation}
       >
         {dives.map((div) => (
           <>{div.element}</>
@@ -57,7 +71,6 @@ const App = () => {
       <DotsForm
         showDots={showDots}
         sizeForDefaultDot={sizeForDefaultDot}
-        dotsAnimationText={dotsAnimationText}
         customDot={customDot}
         customActiveDot={customActiveDot}
         setShowDots={setShowDots}
@@ -66,9 +79,17 @@ const App = () => {
         setDotColor={setDotColor}
         setActiveDotColor={setActiveDotColor}
         setDotsAnimation={setDotsAnimation}
-        setDotsAnimationText={setDotsAnimationText}
         setCustomDot={setCustomDot}
         setCustomActiveDot={setCustomActiveDot}
+      />
+      <SlidesForm
+        autoplay={autoplay}
+        setSlidesNumber={setSlidesNumber}
+        setSpaceBetweenSlides={setSpaceBetweenSlides}
+        setAnimationSpeed={setAnimationSpeed}
+        setAutoplay={setAutoplay}
+        setAutoplaySpeed={setAutoplaySpeed}
+        setSlidesAnimation={setSlidesAnimation}
       />
     </>
   )

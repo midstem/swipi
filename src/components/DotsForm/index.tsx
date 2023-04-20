@@ -7,12 +7,11 @@ import {
   Field,
   TextInput
 } from './styles'
-import { ChangeEvent, FormEvent } from 'react'
+import { ChangeEvent } from 'react'
 
 const DotsForm = ({
   showDots,
   sizeForDefaultDot,
-  dotsAnimationText,
   customDot,
   customActiveDot,
   setShowDots,
@@ -21,15 +20,9 @@ const DotsForm = ({
   setDotColor,
   setActiveDotColor,
   setDotsAnimation,
-  setDotsAnimationText,
   setCustomDot,
   setCustomActiveDot
 }: DotsFormProps) => {
-  const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setDotsAnimation(dotsAnimationText)
-  }
-
   const handleTextInput = (
     e: ChangeEvent<HTMLInputElement>,
     setValue: (a: string) => void
@@ -39,7 +32,7 @@ const DotsForm = ({
   }
 
   return (
-    <Form onSubmit={handleOnSubmit}>
+    <Form>
       <Fieldset>
         <Legend>Dots</Legend>
         <BooleanValue>
@@ -95,7 +88,7 @@ const DotsForm = ({
             <label htmlFor="dotColor">dotColor</label>
             <TextInput
               id="dotColor"
-              type="text"
+              type="color"
               placeholder="#c7c7c7"
               onChange={(e) => handleTextInput(e, setDotColor)}
             />
@@ -104,7 +97,7 @@ const DotsForm = ({
             <label htmlFor="activeDotColor">activeDotColor</label>
             <TextInput
               id="activeDotColor"
-              type="text"
+              type="color"
               placeholder="#000000"
               onChange={(e) => setActiveDotColor(e.target.value)}
             />
@@ -185,13 +178,11 @@ const DotsForm = ({
         <Field>
           <div>
             <label htmlFor="dotsAnimation">dotsAnimation</label>
-            <TextInput
-              id="dotsAnimation"
-              type="text"
-              placeholder="default/sliding"
-              onChange={(e) => setDotsAnimationText(e.target.value)}
-            />
-            <button type="submit">Add animation</button>
+            <select onChange={(e) => setDotsAnimation(e.target.value)}>
+              <option value="">-- Please select --</option>
+              <option value="default">default</option>
+              <option value="sliding">sliding</option>
+            </select>
           </div>
         </Field>
       </Fieldset>
