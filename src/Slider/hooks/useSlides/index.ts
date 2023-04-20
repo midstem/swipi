@@ -33,7 +33,7 @@ export const useSlides = ({
   const isButton = isButtonFn(children, visibleCountSlides)
   const isCornerSlide = !!getSliderUpdatesParam('biasRight')
 
-  const currentRefWidth = currentRef?.getBoundingClientRect().width
+  const currentRefWidth = currentRef?.clientWidth
 
   const updateSlideWidthArgs = useMemo(
     () => ({

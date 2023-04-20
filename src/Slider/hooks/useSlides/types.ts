@@ -14,9 +14,3 @@ export type Slides = {
   setMovePath: (value: number) => void
   slidesAnimation: ValueOf<SlidesAnimation>
 }
-
-export type SlideWidthArgs = {
-  visibleCountSlides: number
-  spaceBetween: number
-  current: HTMLDivElement | null
-}
