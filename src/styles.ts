@@ -10,6 +10,73 @@ export const Wrapper = styled.div`
     fill: black;
   }
 `
+export const FormsWrapper = styled.div`
+  display: flex;
+  gap: 20px;
+`
+
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+  gap: 25px;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+`
+
+export const FormName = styled.h2`
+  margin: 0;
+  text-align: center;
+`
+
+export const BooleanProperty = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+
+  div {
+    display: flex;
+    gap: 15px;
+  }
+
+  p {
+    margin: 0;
+  }
+`
+
+export const RadioLabel = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`
+
+export const Property = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+`
+
+export const NumberInput = styled.input.attrs(() => ({ type: 'number' }))`
+  width: 50px;
+  padding: 5px 10px;
+  background-color: rgb(247, 247, 247);
+  text-align: center;
+  border: none;
+  border: 1px solid rgb(234, 234, 234);
+  border-radius: 8px;
+  -moz-appearance: textfield;
+  appearance: none;
+  outline: none;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+  }
+`
 
 export const Dot = styled.div`
   height: 20px;

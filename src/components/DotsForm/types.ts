@@ -1,6 +1,7 @@
 export type DotsFormProps = {
   showDots: boolean
   sizeForDefaultDot: number
+  dotColor: string
   customDot: string
   customActiveDot: string
   setShowDots: (a: boolean) => void

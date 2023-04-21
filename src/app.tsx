@@ -6,7 +6,7 @@ import ArrowsForm from './components/ArrowsForm'
 import { dives } from './constants'
 import { DotsAnimation } from './Slider/types'
 import { SlidesAnimation, ValueOf } from './types'
-import { Dot, ActiveDot } from './styles'
+import { Dot, ActiveDot, FormsWrapper } from './styles'
 import './styles/normalize.css'
 import { ReactComponent as Unicorn } from './assets/unicorn.svg'
 import { ReactComponent as ArrowLeft } from './assets/chevron-left.svg'
@@ -17,7 +17,7 @@ const App = () => {
   const [sizeForDefaultDot, setSizeForDefaultDot] = useState<number>(0)
   const [sizeForDefaultActiveDot, setSizeForDefaultActiveDot] =
     useState<number>(0)
-  const [dotColor, setDotColor] = useState<string>('')
+  const [dotColor, setDotColor] = useState<string>('#c7c7c7')
   const [activeDotColor, setActiveDotColor] = useState<string>('')
   const [dotsAnimation, setDotsAnimation] = useState<string>('')
   const [customDot, setCustomDot] = useState<string>('none')
@@ -45,7 +45,7 @@ const App = () => {
         sizeForDefaultActiveDot={
           sizeForDefaultActiveDot === 0 ? undefined : sizeForDefaultActiveDot
         }
-        dotColor={dotColor === '' ? undefined : dotColor}
+        dotColor={dotColor === '#c7c7c7' ? undefined : dotColor}
         activeDotColor={activeDotColor === '' ? undefined : activeDotColor}
         dotsAnimation={
           dotsAnimation === '' ? undefined : (dotsAnimation as DotsAnimation)
@@ -92,34 +92,37 @@ const App = () => {
           <>{div.element}</>
         ))}
       </Slider>
-      <DotsForm
-        showDots={showDots}
-        sizeForDefaultDot={sizeForDefaultDot}
-        customDot={customDot}
-        customActiveDot={customActiveDot}
-        setShowDots={setShowDots}
-        setSizeForDefaultDot={setSizeForDefaultDot}
-        setSizeForDefaultActiveDot={setSizeForDefaultActiveDot}
-        setDotColor={setDotColor}
-        setActiveDotColor={setActiveDotColor}
-        setDotsAnimation={setDotsAnimation}
-        setCustomDot={setCustomDot}
-        setCustomActiveDot={setCustomActiveDot}
-      />
-      <SlidesForm
-        autoplay={autoplay}
-        biasRight={biasRight}
-        setSlidesNumber={setSlidesNumber}
-        setSpaceBetweenSlides={setSpaceBetweenSlides}
-        setAnimationSpeed={setAnimationSpeed}
-        setAutoplay={setAutoplay}
-        setAutoplaySpeed={setAutoplaySpeed}
-        setSlidesAnimation={setSlidesAnimation}
-        setMaxWidth={setMaxWidth}
-        setConfigSlidesNumber={setConfigSlidesNumber}
-        setSpaceBetween={setSpaceBetween}
-        setBiasRight={setBiasRight}
-      />
+      <FormsWrapper>
+        <DotsForm
+          showDots={showDots}
+          sizeForDefaultDot={sizeForDefaultDot}
+          dotColor={dotColor}
+          customDot={customDot}
+          customActiveDot={customActiveDot}
+          setShowDots={setShowDots}
+          setSizeForDefaultDot={setSizeForDefaultDot}
+          setSizeForDefaultActiveDot={setSizeForDefaultActiveDot}
+          setDotColor={setDotColor}
+          setActiveDotColor={setActiveDotColor}
+          setDotsAnimation={setDotsAnimation}
+          setCustomDot={setCustomDot}
+          setCustomActiveDot={setCustomActiveDot}
+        />
+        <SlidesForm
+          autoplay={autoplay}
+          biasRight={biasRight}
+          setSlidesNumber={setSlidesNumber}
+          setSpaceBetweenSlides={setSpaceBetweenSlides}
+          setAnimationSpeed={setAnimationSpeed}
+          setAutoplay={setAutoplay}
+          setAutoplaySpeed={setAutoplaySpeed}
+          setSlidesAnimation={setSlidesAnimation}
+          setMaxWidth={setMaxWidth}
+          setConfigSlidesNumber={setConfigSlidesNumber}
+          setSpaceBetween={setSpaceBetween}
+          setBiasRight={setBiasRight}
+        />
+      </FormsWrapper>
       <ArrowsForm
         prevButton={prevButton}
         nextButton={nextButton}
