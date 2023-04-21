@@ -12,7 +12,7 @@ export const useNavigation = ({
   const navigateSlide =
     (nextSlide?: boolean) =>
     (callback: (transform: number, children: JSX.Element[]) => void) => {
-      if (isNavigationAllowed(nextSlide)) {
+      if (isNavigationAllowed(false, nextSlide)) {
         setTransform((transform) => {
           callback(transform, children)
 

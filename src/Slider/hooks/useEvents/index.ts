@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { TouchEvents } from './types'
-import { calculateSlideIndex, getDragDirection } from '../../helpers'
+import { calculateSlideIndex } from '../../helpers'
 
 export const useEvents = ({
   isButton,
@@ -18,19 +18,9 @@ export const useEvents = ({
   setStartX,
   setEndX,
   setMovePath,
-  isNavigationAllowed,
-  endX,
-  startX
+  isNavigationAllowed
 }: TouchEvents) => {
   const [mouseDown, setMouseDown] = useState(false)
-
-  const isDragAllowed = (end: number, start: number): boolean => {
-    const dragDirection = getDragDirection(end, start)
-    const isLeftDrag = dragDirection === 'left' && isNavigationAllowed(true)
-    const isRightDrag = dragDirection === 'right' && isNavigationAllowed()
-
-    return isLeftDrag || isRightDrag
-  }
 
   const resetCoordinates = (): void => {
     setEndX(0)
@@ -56,7 +46,7 @@ export const useEvents = ({
   const onMove = (X: number): void => {
     setEndX(X)
 
-    if (mouseDown && isDragAllowed(endX, startX)) {
+    if (mouseDown && isNavigationAllowed(true)) {
       setAnimation(false)
       moveSlides()
       setSlideIndex(calculateSlideIndex(transform, slideWidth, children))

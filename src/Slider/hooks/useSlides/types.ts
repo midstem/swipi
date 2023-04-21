@@ -11,6 +11,7 @@ export type Slides = {
   startX: number
   endX: number
   movePath: number
+  loop: boolean
   setMovePath: (value: number) => void
   slidesAnimation: ValueOf<SlidesAnimation>
 }

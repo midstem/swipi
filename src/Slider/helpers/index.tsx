@@ -4,7 +4,6 @@ import { generateUniqueID } from '../../helpers'
 import { SlidesAnimation, ValueOf } from '../../types'
 import { fadeIn } from '../../SlidesAnimation/FadeIn'
 import { defaultSliderWidth } from '../constants'
-import { NavigationAllowed } from './types'
 
 export const getSliderWidth = (current: HTMLDivElement | null): number =>
   current?.getBoundingClientRect().width ?? defaultSliderWidth
@@ -64,23 +63,11 @@ export const isFadeInAnimation = (animation: ValueOf<SlidesAnimation>) => {
   return animation === SlidesAnimation.FADE_IN
 }
 
-export const isNavigationAllowed: NavigationAllowed =
-  (loop, slideIndex, children) => (nextSlide) => {
-    if (loop) return true
-    if (nextSlide && slideIndex !== children.length - 1) return true
-    if (!nextSlide && slideIndex !== 0) return true
-    return false
-  }
-
-export const getDragDirection = (
-  endX: number,
-  startX: number
-): 'left' | 'right' | null => {
-  if (endX > startX) {
-    return 'right'
-  } else if (endX < startX) {
-    return 'left'
-  }
-
-  return null
-}
+export const getSliderBorders = (
+  slideWidth: number,
+  childrenCount: number,
+  visibleCountSlides: number
+) => ({
+  left: -childrenCount * slideWidth,
+  right: -childrenCount * 2 * slideWidth + visibleCountSlides * slideWidth
+})

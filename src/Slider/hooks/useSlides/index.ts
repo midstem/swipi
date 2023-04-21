@@ -3,6 +3,7 @@ import { Slides } from './types'
 import { ConfigService } from '../../configService'
 import {
   addUniqueId,
+  getSliderBorders,
   isButtonFn,
   returnSlideWidth,
   setKeyToChildren
@@ -21,12 +22,13 @@ export const useSlides = ({
   endX,
   movePath,
   setMovePath,
-  slidesAnimation
+  slidesAnimation,
+  loop
 }: Slides) => {
   const [transform, setTransform] = useState<number>(0)
 
   const { returnSpaceBetween, getSliderUpdatesParam, getRightSlidesCount } =
-    ConfigService(config, windowWidth)
+    ConfigService(config, windowWidth, children)
 
   const visibleCountSlides = getRightSlidesCount(slidesNumber, slidesAnimation)
   const spaceBetween = returnSpaceBetween(spaceBetweenSlides)
@@ -63,7 +65,27 @@ export const useSlides = ({
 
   const moveSlides = (): void => {
     const pathTaken = endX && startX - endX
-    setTransform((prev) => prev - pathTaken + movePath)
+
+    setTransform((prev) => {
+      const newTransform = prev - pathTaken + movePath
+
+      const { left, right } = getSliderBorders(
+        slideWidth,
+        children.length,
+        getRightSlidesCount(children.length, slidesAnimation)
+      )
+
+      if (loop) {
+        return newTransform
+      }
+      if (newTransform <= right) {
+        return right
+      }
+      if (newTransform >= left) {
+        return left
+      }
+      return newTransform
+    })
     setMovePath(pathTaken)
   }
 

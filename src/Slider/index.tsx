@@ -47,7 +47,8 @@ const Slider = ({
     onEnd,
     returnDots,
     onMove,
-    onStart
+    onStart,
+    dotsChildren
   } = useSlider({
     children,
     config,
@@ -102,7 +103,7 @@ const Slider = ({
       </SliderContainer>
       {showDots && (
         <Dots
-          children={children}
+          children={dotsChildren}
           customDot={customDot}
           customActiveDot={customActiveDot}
           slideIndex={slideIndex}

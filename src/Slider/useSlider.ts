@@ -7,7 +7,7 @@ import { useNavigation } from './hooks/useNavigation'
 import { useAutoplay } from './hooks/useAutoplay'
 import { useWindowResize } from './hooks/useWindowResize'
 import { ANIMATIONS } from './constants'
-import { isNavigationAllowed as isNavigationAllowedFn } from './helpers'
+import { ConfigService } from './configService'
 
 export const useSlider = ({
   children,
@@ -36,8 +36,6 @@ export const useSlider = ({
   const slidesWrapperRef = useRef<HTMLDivElement>(null)
   const timeout = useRef<NodeJS.Timer>()
 
-  const isNavigationAllowed = isNavigationAllowedFn(loop, slideIndex, children)
-
   const {
     isButton,
     setTransform,
@@ -60,8 +58,21 @@ export const useSlider = ({
     startX,
     endX,
     movePath,
-    setMovePath
+    setMovePath,
+    loop
   })
+
+  const isNavigationAllowed = ConfigService(
+    config,
+    windowWidth,
+    children
+  ).isNavigationAllowed(loop, transform, slideWidth)
+
+  const childrenFinite = ConfigService(
+    config,
+    windowWidth,
+    children
+  ).getFiniteSlides()
 
   const { handleDotClick, returnDots, nextDot, prevDot } = useDots({
     setTransform,
@@ -166,6 +177,7 @@ export const useSlider = ({
     handleDotClick,
     onEnd,
     onMove,
-    onStart
+    onStart,
+    dotsChildren: loop ? children : childrenFinite
   }
 }
