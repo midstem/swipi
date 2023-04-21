@@ -37,9 +37,7 @@ export const ConfigService = (
     (loop, transform, slideWidth) => (isGrab, nextSlide) => {
       let newTransform = transform
 
-      if (isGrab) {
-        newTransform = transform
-      } else {
+      if (!isGrab) {
         newTransform = nextSlide
           ? transform - slideWidth
           : transform + slideWidth
