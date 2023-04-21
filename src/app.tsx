@@ -30,6 +30,10 @@ const App = () => {
   const [slidesAnimation, setSlidesAnimation] = useState<string>('none')
   const [prevButton, setPrevButton] = useState<string>('none')
   const [nextButton, setNextButton] = useState<string>('none')
+  const [maxWidth, setMaxWidth] = useState<number>(0)
+  const [configSlidesNumber, setConfigSlidesNumber] = useState<number>(0)
+  const [spaceBetween, setSpaceBetween] = useState<number>(0)
+  const [biasRight, setBiasRight] = useState<boolean>(false)
 
   return (
     <>
@@ -73,6 +77,14 @@ const App = () => {
             ? undefined
             : (slidesAnimation as ValueOf<SlidesAnimation>)
         }
+        config={[
+          {
+            maxWidth,
+            slidesNumber: configSlidesNumber,
+            spaceBetween,
+            biasRight
+          }
+        ]}
         prevButton={prevButton === 'none' ? undefined : <ArrowLeft />}
         nextButton={nextButton === 'none' ? undefined : <ArrowRight />}
       >
@@ -96,12 +108,17 @@ const App = () => {
       />
       <SlidesForm
         autoplay={autoplay}
+        biasRight={biasRight}
         setSlidesNumber={setSlidesNumber}
         setSpaceBetweenSlides={setSpaceBetweenSlides}
         setAnimationSpeed={setAnimationSpeed}
         setAutoplay={setAutoplay}
         setAutoplaySpeed={setAutoplaySpeed}
         setSlidesAnimation={setSlidesAnimation}
+        setMaxWidth={setMaxWidth}
+        setConfigSlidesNumber={setConfigSlidesNumber}
+        setSpaceBetween={setSpaceBetween}
+        setBiasRight={setBiasRight}
       />
       <ArrowsForm
         prevButton={prevButton}

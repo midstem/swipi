@@ -10,12 +10,17 @@ import {
 
 const SlidesForm = ({
   autoplay,
+  biasRight,
   setSlidesNumber,
   setSpaceBetweenSlides,
   setAnimationSpeed,
   setAutoplay,
   setAutoplaySpeed,
-  setSlidesAnimation
+  setSlidesAnimation,
+  setMaxWidth,
+  setConfigSlidesNumber,
+  setSpaceBetween,
+  setBiasRight
 }: SlidesFormProps): JSX.Element => (
   <Form>
     <Fieldset>
@@ -99,6 +104,63 @@ const SlidesForm = ({
           </select>
         </div>
       </Field>
+      <Fieldset>
+        <Legend>config</Legend>
+        <Field>
+          <div>
+            <label htmlFor="maxWidth">maxWidth</label>
+            <TextInput
+              id="maxWidth"
+              type="number"
+              placeholder="1200"
+              onChange={(e) => setMaxWidth(+e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="slidesNumber">slidesNumber</label>
+            <TextInput
+              id="slidesNumber"
+              type="number"
+              placeholder="3"
+              onChange={(e) => setConfigSlidesNumber(+e.target.value)}
+            />
+          </div>
+        </Field>
+        <Field>
+          <div>
+            <label htmlFor="spaceBetween">spaceBetween</label>
+            <TextInput
+              id="spaceBetween"
+              type="number"
+              placeholder="4000"
+              onChange={(e) => setSpaceBetween(+e.target.value)}
+            />
+          </div>
+          <BooleanValue>
+            <p>biasRight</p>
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  name="biasRight"
+                  checked={biasRight}
+                  onChange={() => setBiasRight(true)}
+                />
+                Yes
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="biasRight"
+                  checked={!biasRight}
+                  onChange={() => setBiasRight(false)}
+                />
+                No
+              </label>
+            </div>
+          </BooleanValue>
+        </Field>
+      </Fieldset>
     </Fieldset>
   </Form>
 )
