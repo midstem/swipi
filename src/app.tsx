@@ -2,12 +2,15 @@ import { useState } from 'react'
 import Slider from './Slider'
 import DotsForm from './components/DotsForm'
 import SlidesForm from './components/SlidesForm'
+import ArrowsForm from './components/ArrowsForm'
 import { dives } from './constants'
 import { DotsAnimation } from './Slider/types'
-import { Dot, ActiveDot } from './styles'
-import { ReactComponent as Unicorn } from './assets/unicorn.svg'
-import './styles/normalize.css'
 import { SlidesAnimation, ValueOf } from './types'
+import { Dot, ActiveDot } from './styles'
+import './styles/normalize.css'
+import { ReactComponent as Unicorn } from './assets/unicorn.svg'
+import { ReactComponent as ArrowLeft } from './assets/chevron-left.svg'
+import { ReactComponent as ArrowRight } from './assets/chevron-right.svg'
 
 const App = () => {
   const [showDots, setShowDots] = useState<boolean>(false)
@@ -25,6 +28,8 @@ const App = () => {
   const [autoplay, setAutoplay] = useState<boolean>(false)
   const [autoplaySpeed, setAutoplaySpeed] = useState<number>(0)
   const [slidesAnimation, setSlidesAnimation] = useState<string>('none')
+  const [prevButton, setPrevButton] = useState<string>('none')
+  const [nextButton, setNextButton] = useState<string>('none')
 
   return (
     <>
@@ -68,6 +73,8 @@ const App = () => {
             ? undefined
             : (slidesAnimation as ValueOf<SlidesAnimation>)
         }
+        prevButton={prevButton === 'none' ? undefined : <ArrowLeft />}
+        nextButton={nextButton === 'none' ? undefined : <ArrowRight />}
       >
         {dives.map((div) => (
           <>{div.element}</>
@@ -95,6 +102,12 @@ const App = () => {
         setAutoplay={setAutoplay}
         setAutoplaySpeed={setAutoplaySpeed}
         setSlidesAnimation={setSlidesAnimation}
+      />
+      <ArrowsForm
+        prevButton={prevButton}
+        nextButton={nextButton}
+        setPrevButton={setPrevButton}
+        setNextButton={setNextButton}
       />
     </>
   )

@@ -2,8 +2,6 @@ import ReactDOM from 'react-dom/client'
 import App from './app'
 import GlobalStyle from './styles/GlobalStyle'
 import { Wrapper } from './styles'
-// import { ReactComponent as ArrowLeft } from './assets/chevron-left.svg'
-// import { ReactComponent as ArrowRight } from './assets/chevron-right.svg'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
