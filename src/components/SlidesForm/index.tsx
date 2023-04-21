@@ -1,12 +1,12 @@
 import { SlidesFormProps } from './types'
 import {
   Form,
-  Legend,
-  Fieldset,
-  BooleanValue,
-  Field,
-  TextInput
-} from './styles'
+  FormName,
+  BooleanProperty,
+  RadioLabel,
+  Property,
+  NumberInput
+} from '../../styles'
 
 const SlidesForm = ({
   autoplay,
@@ -23,145 +23,124 @@ const SlidesForm = ({
   setBiasRight
 }: SlidesFormProps): JSX.Element => (
   <Form>
-    <Fieldset>
-      <Legend>Slides</Legend>
-      <Field>
-        <div>
-          <label htmlFor="slidesNumber">slidesNumber</label>
-          <TextInput
-            id="slidesNumber"
-            type="number"
-            placeholder="3"
-            onChange={(e) => {
-              setSlidesNumber(+e.target.value)
-            }}
+    <FormName>Slides</FormName>
+    <Property>
+      <label htmlFor="slidesNumber">slidesNumber</label>
+      <NumberInput
+        id="slidesNumber"
+        placeholder="3"
+        onChange={(e) => {
+          setSlidesNumber(+e.target.value)
+        }}
+      />
+    </Property>
+    <Property>
+      <label htmlFor="spaceBetweenSlides">spaceBetweenSlides</label>
+      <NumberInput
+        id="spaceBetweenSlides"
+        placeholder="0"
+        onChange={(e) => setSpaceBetweenSlides(+e.target.value)}
+      />
+    </Property>
+    <Property>
+      <label htmlFor="animationSpeed">animationSpeed</label>
+      <NumberInput
+        id="animationSpeed"
+        placeholder="300"
+        onChange={(e) => setAnimationSpeed(+e.target.value)}
+      />
+    </Property>
+    <BooleanProperty>
+      <p>autoplay</p>
+      <div>
+        <RadioLabel>
+          <input
+            type="radio"
+            name="autoplay"
+            checked={autoplay}
+            onChange={() => setAutoplay(true)}
           />
-        </div>
-        <div>
-          <label htmlFor="spaceBetweenSlides">spaceBetweenSlides</label>
-          <TextInput
-            id="spaceBetweenSlides"
-            type="number"
-            placeholder="0"
-            onChange={(e) => setSpaceBetweenSlides(+e.target.value)}
+          Yes
+        </RadioLabel>
+        <RadioLabel>
+          <input
+            type="radio"
+            name="autoplay"
+            checked={!autoplay}
+            onChange={() => setAutoplay(false)}
           />
-        </div>
-      </Field>
-      <Field>
+          No
+        </RadioLabel>
+      </div>
+    </BooleanProperty>
+    <Property>
+      <label htmlFor="autoplaySpeed">autoplaySpeed</label>
+      <NumberInput
+        id="autoplaySpeed"
+        placeholder="4000"
+        onChange={(e) => setAutoplaySpeed(+e.target.value)}
+      />
+    </Property>
+    <Property>
+      <label htmlFor="dotsAnimation">slidesAnimation</label>
+      <select onChange={(e) => setSlidesAnimation(e.target.value)}>
+        <option value="">-- Please select --</option>
+        <option value="default">default</option>
+        <option value="fade-in">fade-in</option>
+      </select>
+    </Property>
+    <Form>
+      <FormName>config</FormName>
+      <Property>
+        <label htmlFor="maxWidth">maxWidth</label>
+        <NumberInput
+          id="maxWidth"
+          placeholder="1200"
+          onChange={(e) => setMaxWidth(+e.target.value)}
+        />
+      </Property>
+      <Property>
+        <label htmlFor="slidesNumber">slidesNumber</label>
+        <NumberInput
+          id="slidesNumber"
+          type="number"
+          placeholder="3"
+          onChange={(e) => setConfigSlidesNumber(+e.target.value)}
+        />
+      </Property>
+      <Property>
+        <label htmlFor="spaceBetween">spaceBetween</label>
+        <NumberInput
+          id="spaceBetween"
+          type="number"
+          placeholder="4000"
+          onChange={(e) => setSpaceBetween(+e.target.value)}
+        />
+      </Property>
+      <BooleanProperty>
+        <p>biasRight</p>
         <div>
-          <label htmlFor="animationSpeed">animationSpeed</label>
-          <TextInput
-            id="animationSpeed"
-            type="number"
-            placeholder="300"
-            onChange={(e) => setAnimationSpeed(+e.target.value)}
-          />
+          <RadioLabel>
+            <input
+              type="radio"
+              name="biasRight"
+              checked={biasRight}
+              onChange={() => setBiasRight(true)}
+            />
+            Yes
+          </RadioLabel>
+          <RadioLabel>
+            <input
+              type="radio"
+              name="biasRight"
+              checked={!biasRight}
+              onChange={() => setBiasRight(false)}
+            />
+            No
+          </RadioLabel>
         </div>
-      </Field>
-      <Field>
-        <BooleanValue>
-          <p>autoplay</p>
-          <div>
-            <label>
-              <input
-                type="radio"
-                name="autoplay"
-                checked={autoplay}
-                onChange={() => setAutoplay(true)}
-              />
-              Yes
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="autoplay"
-                checked={!autoplay}
-                onChange={() => setAutoplay(false)}
-              />
-              No
-            </label>
-          </div>
-        </BooleanValue>
-        <Field>
-          <div>
-            <label htmlFor="autoplaySpeed">autoplaySpeed</label>
-            <TextInput
-              id="autoplaySpeed"
-              type="number"
-              placeholder="4000"
-              onChange={(e) => setAutoplaySpeed(+e.target.value)}
-            />
-          </div>
-        </Field>
-      </Field>
-      <Field>
-        <div>
-          <label htmlFor="dotsAnimation">slidesAnimation</label>
-          <select onChange={(e) => setSlidesAnimation(e.target.value)}>
-            <option value="">-- Please select --</option>
-            <option value="default">default</option>
-            <option value="fade-in">fade-in</option>
-          </select>
-        </div>
-      </Field>
-      <Fieldset>
-        <Legend>config</Legend>
-        <Field>
-          <div>
-            <label htmlFor="maxWidth">maxWidth</label>
-            <TextInput
-              id="maxWidth"
-              type="number"
-              placeholder="1200"
-              onChange={(e) => setMaxWidth(+e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="slidesNumber">slidesNumber</label>
-            <TextInput
-              id="slidesNumber"
-              type="number"
-              placeholder="3"
-              onChange={(e) => setConfigSlidesNumber(+e.target.value)}
-            />
-          </div>
-        </Field>
-        <Field>
-          <div>
-            <label htmlFor="spaceBetween">spaceBetween</label>
-            <TextInput
-              id="spaceBetween"
-              type="number"
-              placeholder="4000"
-              onChange={(e) => setSpaceBetween(+e.target.value)}
-            />
-          </div>
-          <BooleanValue>
-            <p>biasRight</p>
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  name="biasRight"
-                  checked={biasRight}
-                  onChange={() => setBiasRight(true)}
-                />
-                Yes
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="biasRight"
-                  checked={!biasRight}
-                  onChange={() => setBiasRight(false)}
-                />
-                No
-              </label>
-            </div>
-          </BooleanValue>
-        </Field>
-      </Fieldset>
-    </Fieldset>
+      </BooleanProperty>
+    </Form>
   </Form>
 )
 

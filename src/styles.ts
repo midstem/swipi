@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
 `
 export const FormsWrapper = styled.div`
   display: flex;
-  gap: 20px;
+  justify-content: space-around;
 `
 
 export const Form = styled.form`
@@ -60,7 +60,7 @@ export const Property = styled.div`
 `
 
 export const NumberInput = styled.input.attrs(() => ({ type: 'number' }))`
-  width: 50px;
+  width: 65px;
   padding: 5px 10px;
   background-color: rgb(247, 247, 247);
   text-align: center;
