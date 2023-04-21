@@ -44,9 +44,9 @@ export type Slider = {
   autoplaySpeed: number
   dotsAnimation: DotsAnimation
   slidesAnimation: ValueOf<SlidesAnimation>
+  loop: boolean
   dotColor?: string
   activeDotColor?: string
-  loop?: boolean
 }
 
 export type DotsAnimation = 'default' | 'sliding'

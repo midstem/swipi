@@ -1,4 +1,4 @@
-import { ReactNode, useState, useCallback } from 'react'
+import { ReactNode, useCallback } from 'react'
 import { DotsProps } from './types'
 import ActiveDot from '../../../UI/ActiveDot'
 import Dot from '../../../UI/Dot'
@@ -11,10 +11,10 @@ export const useDots = ({
   customDot,
   setAnimation,
   activeDotColor,
-  dotColor
+  dotColor,
+  setSlideIndex,
+  slideIndex
 }: DotsProps) => {
-  const [slideIndex, setSlideIndex] = useState(0)
-
   const handleDotClick = (index: number): void => {
     setAnimation(true)
     setTransform(-index * slideWidth)
@@ -43,7 +43,7 @@ export const useDots = ({
         )
       )
     },
-    [slideWidth]
+    [slideWidth, setSlideIndex]
   )
 
   return {

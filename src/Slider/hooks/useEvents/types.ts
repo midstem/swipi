@@ -6,6 +6,8 @@ export type TouchEvents = {
   slideWidth: number
   startTransform: number
   children: JSX.Element[]
+  startX: number
+  endX: number
   setAnimation: (animation: boolean) => void
   setTransform: SetWithPrev
   setSlideIndex: (index: number) => void
@@ -16,4 +18,5 @@ export type TouchEvents = {
   setStartX: (value: number) => void
   setEndX: (value: number) => void
   setMovePath: (value: number) => void
+  isNavigationAllowed: (nextSlide?: boolean) => boolean
 }

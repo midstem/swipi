@@ -7,4 +7,5 @@ export type Navigation = {
   setTransform: SetWithPrev
   slideWidth: number
   children: JSX.Element[]
+  isNavigationAllowed: (nextSlide?: boolean) => boolean
 }

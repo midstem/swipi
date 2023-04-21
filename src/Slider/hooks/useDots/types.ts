@@ -3,7 +3,8 @@ import { SetWithPrev } from '../../types'
 export type DotsProps = {
   setTransform: SetWithPrev
   slideWidth: number
-  dotsAnimation: string
+  slideIndex: number
+  setSlideIndex: (index: number) => void
   customActiveDot?: JSX.Element
   customDot?: JSX.Element
   setAnimation: (value: boolean) => void

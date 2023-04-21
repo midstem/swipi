@@ -6,27 +6,30 @@ export const useNavigation = ({
   setTransform,
   setAnimation,
   slideWidth,
-  children
+  children,
+  isNavigationAllowed
 }: Navigation) => {
   const navigateSlide =
     (nextSlide?: boolean) =>
     (callback: (transform: number, children: JSX.Element[]) => void) => {
-      setTransform((transform) => {
-        callback(transform, children)
+      if (isNavigationAllowed(nextSlide)) {
+        setTransform((transform) => {
+          callback(transform, children)
 
-        return nextSlide ? transform - slideWidth : transform + slideWidth
-      })
+          return nextSlide ? transform - slideWidth : transform + slideWidth
+        })
 
-      setAnimation(true)
+        setAnimation(true)
 
-      checkSliderCorner() &&
-        putInTheInitialPosition(() =>
-          setTransform((transform) => {
-            callback(transform, children)
+        checkSliderCorner() &&
+          putInTheInitialPosition(() =>
+            setTransform((transform) => {
+              callback(transform, children)
 
-            return nextSlide ? transform - slideWidth : transform + slideWidth
-          })
-        )
+              return nextSlide ? transform - slideWidth : transform + slideWidth
+            })
+          )
+      }
     }
 
   return {

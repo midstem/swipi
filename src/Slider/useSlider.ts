@@ -7,6 +7,7 @@ import { useNavigation } from './hooks/useNavigation'
 import { useAutoplay } from './hooks/useAutoplay'
 import { useWindowResize } from './hooks/useWindowResize'
 import { ANIMATIONS } from './constants'
+import { isNavigationAllowed as isNavigationAllowedFn } from './helpers'
 
 export const useSlider = ({
   children,
@@ -24,6 +25,7 @@ export const useSlider = ({
   loop
 }: Slider) => {
   const [animation, setAnimation] = useState<boolean>(false)
+  const [slideIndex, setSlideIndex] = useState(0)
   const [windowWidth, setWindowWidth] = useState<number>(0)
   const [currentRef, setCurrentRef] = useState<HTMLDivElement | null>(null)
 
@@ -33,6 +35,8 @@ export const useSlider = ({
 
   const slidesWrapperRef = useRef<HTMLDivElement>(null)
   const timeout = useRef<NodeJS.Timer>()
+
+  const isNavigationAllowed = isNavigationAllowedFn(loop, slideIndex, children)
 
   const {
     isButton,
@@ -59,22 +63,16 @@ export const useSlider = ({
     setMovePath
   })
 
-  const {
-    handleDotClick,
-    slideIndex,
-    setSlideIndex,
-    returnDots,
-    nextDot,
-    prevDot
-  } = useDots({
+  const { handleDotClick, returnDots, nextDot, prevDot } = useDots({
     setTransform,
     slideWidth,
-    dotsAnimation,
     customActiveDot,
     customDot,
     setAnimation,
     dotColor,
-    activeDotColor
+    activeDotColor,
+    slideIndex,
+    setSlideIndex
   })
 
   const checkSliderCorner = useCallback(
@@ -114,7 +112,10 @@ export const useSlider = ({
     moveSlides,
     setStartX,
     setEndX,
-    setMovePath
+    setMovePath,
+    isNavigationAllowed,
+    startX,
+    endX
   })
 
   const { nextImg, prevImg } = useNavigation({
@@ -123,7 +124,8 @@ export const useSlider = ({
     setTransform,
     setAnimation,
     slideWidth,
-    children
+    children,
+    isNavigationAllowed
   })
 
   useAutoplay({
