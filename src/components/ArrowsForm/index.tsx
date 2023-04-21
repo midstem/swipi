@@ -1,4 +1,4 @@
-import { Form, Legend, Fieldset, BooleanValue, Field } from './styles'
+import { Form, FormName, BooleanProperty, RadioLabel } from '../../styles'
 import { ArrowsFormProps } from './types'
 
 const ArrowsForm = ({
@@ -8,61 +8,57 @@ const ArrowsForm = ({
   setNextButton
 }: ArrowsFormProps) => (
   <Form>
-    <Fieldset>
-      <Legend>Arrows</Legend>
-      <Field>
-        <BooleanValue>
-          <p>prevButton</p>
-          <div>
-            <label>
-              <input
-                type="radio"
-                name="prevButton"
-                value="left-arrow"
-                checked={prevButton === 'left-arrow'}
-                onChange={(e) => setPrevButton(e.target.value)}
-              />
-              Arrow left
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="prevButton"
-                value="none"
-                checked={prevButton === 'none'}
-                onChange={(e) => setPrevButton(e.target.value)}
-              />
-              None
-            </label>
-          </div>
-        </BooleanValue>
-        <BooleanValue>
-          <p>nextButton</p>
-          <div>
-            <label>
-              <input
-                type="radio"
-                name="nextButton"
-                value="right-arrow"
-                checked={nextButton === 'right-arrow'}
-                onChange={(e) => setNextButton(e.target.value)}
-              />
-              Arrow right
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="nextButton"
-                value="none"
-                checked={nextButton === 'none'}
-                onChange={(e) => setNextButton(e.target.value)}
-              />
-              None
-            </label>
-          </div>
-        </BooleanValue>
-      </Field>
-    </Fieldset>
+    <FormName>Arrows</FormName>
+    <BooleanProperty>
+      <p>prevButton</p>
+      <div>
+        <RadioLabel>
+          <input
+            type="radio"
+            name="prevButton"
+            value="left-arrow"
+            checked={prevButton === 'left-arrow'}
+            onChange={(e) => setPrevButton(e.target.value)}
+          />
+          Arrow left
+        </RadioLabel>
+        <RadioLabel>
+          <input
+            type="radio"
+            name="prevButton"
+            value="none"
+            checked={prevButton === 'none'}
+            onChange={(e) => setPrevButton(e.target.value)}
+          />
+          None
+        </RadioLabel>
+      </div>
+    </BooleanProperty>
+    <BooleanProperty>
+      <p>nextButton</p>
+      <div>
+        <RadioLabel>
+          <input
+            type="radio"
+            name="nextButton"
+            value="right-arrow"
+            checked={nextButton === 'right-arrow'}
+            onChange={(e) => setNextButton(e.target.value)}
+          />
+          Arrow right
+        </RadioLabel>
+        <RadioLabel>
+          <input
+            type="radio"
+            name="nextButton"
+            value="none"
+            checked={nextButton === 'none'}
+            onChange={(e) => setNextButton(e.target.value)}
+          />
+          None
+        </RadioLabel>
+      </div>
+    </BooleanProperty>
   </Form>
 )
 

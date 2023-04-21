@@ -93,21 +93,29 @@ const App = () => {
         ))}
       </Slider>
       <FormsWrapper>
-        <DotsForm
-          showDots={showDots}
-          sizeForDefaultDot={sizeForDefaultDot}
-          dotColor={dotColor}
-          customDot={customDot}
-          customActiveDot={customActiveDot}
-          setShowDots={setShowDots}
-          setSizeForDefaultDot={setSizeForDefaultDot}
-          setSizeForDefaultActiveDot={setSizeForDefaultActiveDot}
-          setDotColor={setDotColor}
-          setActiveDotColor={setActiveDotColor}
-          setDotsAnimation={setDotsAnimation}
-          setCustomDot={setCustomDot}
-          setCustomActiveDot={setCustomActiveDot}
-        />
+        <div>
+          <DotsForm
+            showDots={showDots}
+            sizeForDefaultDot={sizeForDefaultDot}
+            dotColor={dotColor}
+            customDot={customDot}
+            customActiveDot={customActiveDot}
+            setShowDots={setShowDots}
+            setSizeForDefaultDot={setSizeForDefaultDot}
+            setSizeForDefaultActiveDot={setSizeForDefaultActiveDot}
+            setDotColor={setDotColor}
+            setActiveDotColor={setActiveDotColor}
+            setDotsAnimation={setDotsAnimation}
+            setCustomDot={setCustomDot}
+            setCustomActiveDot={setCustomActiveDot}
+          />
+          <ArrowsForm
+            prevButton={prevButton}
+            nextButton={nextButton}
+            setPrevButton={setPrevButton}
+            setNextButton={setNextButton}
+          />
+        </div>
         <SlidesForm
           autoplay={autoplay}
           biasRight={biasRight}
@@ -123,12 +131,6 @@ const App = () => {
           setBiasRight={setBiasRight}
         />
       </FormsWrapper>
-      <ArrowsForm
-        prevButton={prevButton}
-        nextButton={nextButton}
-        setPrevButton={setPrevButton}
-        setNextButton={setNextButton}
-      />
     </>
   )
 }

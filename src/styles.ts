@@ -13,6 +13,7 @@ export const Wrapper = styled.div`
 export const FormsWrapper = styled.div`
   display: flex;
   justify-content: space-around;
+  margin-bottom: 30px;
 `
 
 export const Form = styled.form`
