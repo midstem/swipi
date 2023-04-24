@@ -30,7 +30,7 @@
   "homepage": "https://github.com/Domdev-corporation/swipi#readme",
   "scripts": {
     "start": "vite",
-    "build": "tsc && cp src/UI/styles.css dist/esm/UI",
+    "build": "cp src/UI/styles.css dist/esm/UI && vite build",
     "test": "vitest",
     "lint": "eslint .",
     "lint:fix": "eslint --cache ./src --ext .jsx,.js,.ts,.tsx --quiet --fix --ignore-path ./.gitignore ",
