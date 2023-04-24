@@ -33,21 +33,23 @@ export const useSlides = ({
   const isButton = isButtonFn(children, visibleCountSlides)
   const isCornerSlide = !!getSliderUpdatesParam('biasRight')
 
-  const returnSlideWidthArgs = useMemo(
+  const currentRefWidth = currentRef?.clientWidth
+
+  const updateSlideWidthArgs = useMemo(
     () => ({
       visibleCountSlides,
       spaceBetween,
-      current: currentRef
+      current: currentRefWidth
     }),
-    [currentRef, spaceBetween, visibleCountSlides]
+    [spaceBetween, visibleCountSlides, currentRefWidth]
   )
 
   const slideWidth = useMemo(
     () =>
       isCornerSlide
-        ? returnSlideWidth(returnSlideWidthArgs) * reduceSlide
-        : returnSlideWidth(returnSlideWidthArgs),
-    [returnSlideWidthArgs, isCornerSlide]
+        ? returnSlideWidth(updateSlideWidthArgs) * reduceSlide
+        : returnSlideWidth(updateSlideWidthArgs),
+    [isCornerSlide, updateSlideWidthArgs]
   )
 
   const slides = useMemo(

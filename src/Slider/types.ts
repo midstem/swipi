@@ -37,7 +37,7 @@ export type DotsAnimation = 'default' | 'sliding'
 export type ReturnSlideWidthType = {
   visibleCountSlides: number
   spaceBetween: number
-  current: HTMLDivElement | null
+  current?: number
 }
 
 export type NextPrevDotType = {
