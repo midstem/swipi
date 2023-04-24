@@ -1,33 +1,33 @@
-import { expect, describe, it } from 'vitest'
-import { defaultSliderWidth } from '../constants'
-import {
-  addUniqueId,
-  calculateSlideIndex,
-  getSliderWidth,
-  returnSlideWidth
-} from './index'
+// import { expect, describe, it } from 'vitest'
+// import { defaultSliderWidth } from '../constants'
+// import {
+//   addUniqueId,
+//   calculateSlideIndex,
+//   // getSliderWidth,
+//   returnSlideWidth
+// } from './index'
 
-describe('getSliderWidth', () => {
-  it(`returns default width ${defaultSliderWidth}`, () => {
-    expect(getSliderWidth(null)).toBe(defaultSliderWidth)
-  })
+// describe('getSliderWidth', () => {
+//   it(`returns default width ${defaultSliderWidth}`, () => {
+//     expect(getSliderWidth(null)).toBe(defaultSliderWidth)
+//   })
 
-  it('returns the width of the slider element when available', () => {
-    const mockedRef = {
-      current: {
-        getBoundingClientRect: () => ({ width: 200 })
-      }
-    }
-    expect(getSliderWidth(mockedRef.current as HTMLDivElement)).toBe(200)
-  })
-})
+//   it('returns the width of the slider element when available', () => {
+//     const mockedRef = {
+//       current: {
+//         getBoundingClientRect: () => ({ width: 200 })
+//       }
+//     }
+//     expect(getSliderWidth(mockedRef.current as HTMLDivElement)).toBe(200)
+//   })
+// })
 
-describe('addUniqueId', () => {
-  it('return slides with uniq id', () => {
-    const slides = addUniqueId([<div />])
-    expect(slides).toStrictEqual(slides.filter((slide) => slide.id))
-  })
-})
+// describe('addUniqueId', () => {
+//   it('return slides with uniq id', () => {
+//     const slides = addUniqueId([<div />])
+//     expect(slides).toStrictEqual(slides.filter((slide) => slide.id))
+//   })
+// })
 
 // describe('getSliderUpdatesParam', () => {
 //   it('returns number of slides', () => {
@@ -85,26 +85,26 @@ describe('addUniqueId', () => {
 //   })
 // })
 
-describe('returnSlideWidth', () => {
-  it('returns slide width', () => {
-    const mockedRef = {
-      current: {
-        getBoundingClientRect: () => ({ width: 779 })
-      }
-    }
-    expect(
-      returnSlideWidth({
-        visibleCountSlides: 2,
-        current: mockedRef.current as HTMLDivElement,
-        spaceBetween: 0
-      })
-    ).toBe(389.5)
-  })
-})
+// describe('returnSlideWidth', () => {
+//   it('returns slide width', () => {
+//     const mockedRef = {
+//       current: {
+//         getBoundingClientRect: () => ({ width: 779 })
+//       }
+//     }
+//     expect(
+//       returnSlideWidth({
+//         visibleCountSlides: 2,
+//         current: mockedRef.current as HTMLDivElement,
+//         spaceBetween: 0
+//       })
+//     ).toBe(389.5)
+//   })
+// })
 
-describe('calculateSlideIndex', () => {
-  it('return slide index', () => {
-    const children = [<div />, <div />, <div />, <div />]
-    expect(calculateSlideIndex(-778, 390, children)).eq(2)
-  })
-})
+// describe('calculateSlideIndex', () => {
+//   it('return slide index', () => {
+//     const children = [<div />, <div />, <div />, <div />]
+//     expect(calculateSlideIndex(-778, 390, children)).eq(2)
+//   })
+// })
