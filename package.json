@@ -36,7 +36,7 @@
     "lint:fix": "eslint --cache ./src --ext .jsx,.js,.ts,.tsx --quiet --fix --ignore-path ./.gitignore ",
     "lint:format": "prettier --write  --loglevel warn  \"./**/*.{js,jsx,ts,tsx,css,md,json}\"",
     "tsc": "tsc --incremental",
-    "lint-tsc": "yarn tsc && yarn lint:format && yarn lint:fix"
+    "lint-tsc": "yarn tsc && yarn lint:format && yarn lint:fix && yarn vitest run"
   },
   "dependencies": {
     "react": ">=17"
