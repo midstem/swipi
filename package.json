@@ -30,11 +30,13 @@
   "homepage": "https://github.com/Domdev-corporation/swipi#readme",
   "scripts": {
     "start": "vite",
-    "build": "tsc && cp src/UI/styles.css dist/esm/UI",
+    "build": "tsc && ncp src/UI/styles.css dist/esm/UI",
     "test": "vitest",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "prepare": "rm -rf dist && npm run build"
+    "lint:fix": "eslint --cache ./src --ext .jsx,.js,.ts,.tsx --quiet --fix --ignore-path ./.gitignore ",
+    "lint:format": "prettier --write  --loglevel warn  \"./**/*.{js,jsx,ts,tsx,css,md,json}\"",
+    "tsc": "tsc --incremental",
+    "lint-tsc": "yarn tsc && yarn lint:format && yarn lint:fix && yarn vitest run"
   },
   "dependencies": {
     "react": ">=17"
@@ -66,9 +68,12 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "ncp": "^2.0.0",
+    "pre-commit": "^1.2.2",
     "prettier": "^2.7.1",
     "typescript": "^4.8.4",
     "vite": "^4.0.4",
     "vitest": "^0.28.4"
-  }
+  },
+  "pre-commit": "lint-tsc"
 }
