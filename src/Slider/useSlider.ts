@@ -6,8 +6,9 @@ import { useEvents } from './hooks/useEvents'
 import { useNavigation } from './hooks/useNavigation'
 import { useAutoplay } from './hooks/useAutoplay'
 import { useWindowResize } from './hooks/useWindowResize'
-import { ANIMATIONS } from './constants'
+import { ANIMATIONS, navigationDebounceDelay } from './constants'
 import { SlidesAnimation, ValueOf } from '../types'
+import { useDebounce } from './hooks/useDebounce'
 
 export type Slider = {
   children: JSX.Element[]
@@ -172,8 +173,8 @@ export const useSlider = ({
     slideIndex,
     Dots: ANIMATIONS[dotsAnimation],
     returnDots,
-    nextImg: () => nextImg(nextDot),
-    prevImg: () => prevImg(prevDot),
+    nextImg: useDebounce(() => nextImg(nextDot), navigationDebounceDelay),
+    prevImg: useDebounce(() => prevImg(prevDot), navigationDebounceDelay),
     setTransform,
     setAnimation,
     handleDotClick,
