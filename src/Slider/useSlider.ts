@@ -8,6 +8,7 @@ import { useAutoplay } from './hooks/useAutoplay'
 import { useWindowResize } from './hooks/useWindowResize'
 import { ANIMATIONS } from './constants'
 import { SlidesAnimation, ValueOf } from '../types'
+import useDebounce from './hooks/useDebounce'
 
 export type Slider = {
   children: JSX.Element[]
@@ -172,8 +173,8 @@ export const useSlider = ({
     slideIndex,
     Dots: ANIMATIONS[dotsAnimation],
     returnDots,
-    nextImg: () => nextImg(nextDot),
-    prevImg: () => prevImg(prevDot),
+    nextImg: useDebounce(() => nextImg(nextDot), 300),
+    prevImg: useDebounce(() => prevImg(prevDot), 300),
     setTransform,
     setAnimation,
     handleDotClick,
