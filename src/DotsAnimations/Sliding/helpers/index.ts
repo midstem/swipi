@@ -1,5 +1,5 @@
 import { MutableRefObject } from 'react'
-import { DotsLeftOffsetsTypes } from './types'
+import { DotsLeftOffsetsTypes } from '../types'
 
 export const getWidthDifference = (
   dotWidth: number,
