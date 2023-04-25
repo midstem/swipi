@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 
-const useDebounce = (callback: () => void, delay: number) => {
+export const useDebounce = (callback: () => void, delay: number) => {
   const [isDisabled, setIsDisabled] = useState(false)
   const timer = useRef<NodeJS.Timer>()
 
@@ -23,5 +23,3 @@ const useDebounce = (callback: () => void, delay: number) => {
 
   return debounce
 }
-
-export default useDebounce

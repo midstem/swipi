@@ -6,6 +6,8 @@ export const defaultSliderWidth = 934
 
 export const reduceSlide = 0.75
 
+export const navigationDebounceDelay = 300
+
 export const ANIMATIONS: AnimationsTypes = {
   default: Default,
   sliding: Sliding
