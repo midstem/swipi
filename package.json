@@ -1,6 +1,6 @@
 {
-  "name": "swipi",
-  "version": "1.1.2",
+  "name": "swipi-testing",
+  "version": "0.0.3",
   "license": "MIT",
   "author": "Maksym Tkachuk",
   "description": "Lightweight TypeScript Slider",
@@ -18,40 +18,19 @@
     "LICENSE",
     "README.md"
   ],
-  "keywords": [
-    "react",
-    "typescript",
-    "infinite-carousel",
-    "image-carousel"
-  ],
-  "bugs": {
-    "url": "https://github.com/Domdev-corporation/swipi/issues"
-  },
-  "homepage": "https://Domdev-corporation.github.io/swipi",
   "scripts": {
     "start": "vite",
     "build": "vite build",
     "test": "vitest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "deploy": "vite build && gh-pages -d dist"
+    "deploy": "vite build && gh-pages -d dist",
+    "cypress": "cypress open"
   },
   "dependencies": {
     "react": ">=17",
     "react-dom": "^18.2.0",
     "styled-components": "^5.3.9"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "@types/react": "^18.0.26",
@@ -61,6 +40,7 @@
     "@typescript-eslint/eslint-plugin": "^5.54.1",
     "@typescript-eslint/parser": "^5.54.1",
     "@vitejs/plugin-react": "^3.1.0",
+    "cypress": "^12.10.0",
     "eslint": "^8.36.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.7.0",

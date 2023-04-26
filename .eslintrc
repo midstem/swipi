@@ -18,6 +18,7 @@
   "plugins": ["html", "prettier", "react-hooks", "@typescript-eslint", "react", "import", "jsx-a11y"],
   "rules": {
     // TypeScript only
+    "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/no-misused-promises": [
       "error",
       {

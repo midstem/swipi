@@ -52,17 +52,17 @@ const App = () => {
         }
         customDot={
           customDot === 'none' ? undefined : customDot === 'circle' ? (
-            <Dot />
+            <Dot data-cy="default-custom-dot" />
           ) : (
-            <Unicorn />
+            <Unicorn data-cy="black-unicorn" />
           )
         }
         customActiveDot={
           customActiveDot === 'none' ? undefined : customActiveDot ===
             'red-unicorn' ? (
-            <Unicorn style={{ fill: 'red' }} />
+            <Unicorn data-cy="red-unicorn" style={{ fill: 'red' }} />
           ) : (
-            <ActiveDot />
+            <ActiveDot data-cy="custom-active-dot" />
           )
         }
         slidesNumber={slidesNumber === 0 ? undefined : slidesNumber}
@@ -85,8 +85,14 @@ const App = () => {
             biasRight
           }
         ]}
-        prevButton={prevButton === 'none' ? undefined : <ArrowLeft />}
-        nextButton={nextButton === 'none' ? undefined : <ArrowRight />}
+        prevButton={
+          prevButton === 'none' ? undefined : <ArrowLeft data-cy="left-arrow" />
+        }
+        nextButton={
+          nextButton === 'none' ? undefined : (
+            <ArrowRight data-cy="right-arrow" />
+          )
+        }
       >
         {dives.map((div) => (
           <>{div.element}</>

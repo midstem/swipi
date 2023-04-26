@@ -23,7 +23,7 @@ export const Form = styled.form`
   gap: 25px;
   padding: 20px;
   border-radius: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 `
 
 export const FormName = styled.h2`

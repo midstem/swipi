@@ -15,6 +15,13 @@ export const ColorPane = styled.input.attrs(() => ({ type: 'color' }))`
   &::-webkit-color-swatch {
     border: none;
     border-radius: 50%;
+    padding: 0;
+  }
+
+  &::-webkit-color-swatch-wrapper {
+    border: none;
+    border-radius: 50%;
+    padding: 0;
   }
 
   &::-moz-color-swatch {

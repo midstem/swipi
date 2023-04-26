@@ -9,6 +9,7 @@ const Dot = ({
   activeDotColor = 'black'
 }: DotProps): JSX.Element => (
   <div
+    data-cy="default-dot"
     style={{
       aspectRatio: '1 / 1',
       width: slideIndex === index ? sizeForDefaultActiveDot : sizeForDefaultDot,

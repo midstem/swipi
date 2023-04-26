@@ -11,128 +11,7 @@
   <img src='src/assets/domdev.png' height='60'>
 </a>
 
-<p><b>Swipi</b> is a lightweight and compact slider optimized for mobile use. It's built with TypeScript and has a fast loading speed. It's also swipeable, making it easy for users to switch slides with a swipe on their mobile device. Its mobile-friendly design and convenience make it a great choice for improving user experience.</p>
-
-### Installation
-**npm**
-
-```bash
-$ npm install swipi
-```
-
-**yarn**
-
-```bash
-$ yarn add swipi
-```
-
-## [Default](https://codesandbox.io/s/default-demo-g81knf)
-```js
-import Slider from "swipi"
-import pictures from "./constants"
-import { SliderWrapper, Image } from "./styles"
-
-const App = () => (
-  <SliderWrapper>
-    <Slider>
-      {pictures.map((picture) => (
-        <Image key={picture.id} src={picture.src} alt={picture.alt} />
-      ))}
-    </Slider>
-  </SliderWrapper>
-)
-```
-
-## [With arrows](https://codesandbox.io/s/demo-with-arrows-uqf4rf)
-```js
-import Slider from "swipi"
-import pictures from "./constants"
-import { SliderWrapper, Image } from "./styles"
-import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg"
-import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg"
-
-const App = () => (
-  <SliderWrapper>
-    <Slider 
-      nextButton={<ArrowRight />}
-      prevButton={<ArrowLeft />}
-    >
-      {pictures.map((picture) => (
-        <Image key={picture.id} src={picture.src} alt={picture.alt} />
-      ))}
-    </Slider>
-  </SliderWrapper>
-)
-```
-
-## [With arrows and dots](https://codesandbox.io/s/demo-with-arrows-dots-unqoph)
-```js
-import Slider from "swipi"
-import pictures from "./constants"
-import { SliderWrapper, Image } from "./styles"
-import { Circle, Diamond } from "./customDots"
-import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg"
-import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg"
-
-const App = () => (
-  <SliderWrapper>
-    <Slider
-      showDots
-      customDot={<Circle />}
-      customActiveDot={<Diamond />}
-      nextButton={<ArrowRight />}
-      prevButton={<ArrowLeft />}
-    >
-      {pictures.map((picture) => (
-        <Image key={picture.id} src={picture.src} alt={picture.alt} />
-      ))}
-    </Slider>
-  </SliderWrapper>
-)
-```
-
-## [All custom settings](https://codesandbox.io/s/all-custom-demo-vfxhtr)
-```js
-import Slider from "swipi"
-import pictures from "./constants"
-import { SliderWrapper, Image } from "./styles"
-import { Circle, Diamond } from "./customDots"
-import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg"
-import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg"
-import "./styles.css"
-
-const mediaSettings = [
-  { maxWidth: 2200, slidesNumber: 3, spaceBetween: 5 },
-  { maxWidth: 1400, slidesNumber: 2, spaceBetween: 4 },
-  { maxWidth: 900, slidesNumber: 1, spaceBetween: 2 }
-]
-
-const App = () => (
-  <SliderWrapper>
-    <Slider
-      showDots
-      prevButton={<ArrowLeft />}
-      nextButton={<ArrowRight />}
-      config={mediaSettings}
-      customDot={<Circle />}
-      customActiveDot={<Diamond />}
-      autoplay
-      autoplaySpeed={5300}
-      dotsAnimation='sliding'
-    >
-      {pictures.map((picture) => (
-        <Image key={picture.id} src={picture.src} alt={picture.alt} />
-      ))}
-    </Slider>
-  </SliderWrapper>
-)
-```
-
-## **Browsers support**
-
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Opera |
-| --------- | --------- | --------- | --------- | --------- |
-| IE11, Edge| last 3 versions| last 3 versions| last 3 versions| last 3 versions
+<h2>It's a testing branch we  use for testing Swipi before publishing it to npm</h2>
 
 ## **Props**
 
@@ -344,7 +223,7 @@ const App = () => (
 
 <br/>
 
-## **Welcome to suggestions**
+## **Local testing**
 
 ```
 https - $ git clone https://github.com/MaKs-Tkachyk/swipi.git
@@ -353,7 +232,7 @@ ssh - $ git clone git@github.com:MaKs-Tkachyk/swipi.git
 
 $ cd swipi
 
-$ git checkout demo
+$ git checkout testing
 
 $ npm install
 or
@@ -363,5 +242,5 @@ $ npm start
 or
 $ yarn start
 
-Open: http://localhost:5173/
+Open: http://localhost:3000/
 ```

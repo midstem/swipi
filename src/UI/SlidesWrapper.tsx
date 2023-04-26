@@ -8,6 +8,7 @@ const SlidesWrapper = ({
   endTouchScreen
 }: SlidesWrapperProps): JSX.Element => (
   <div
+    data-cy="slides-wrapper"
     ref={slidesWrapperRef}
     onTouchStart={(e) => startTouchByScreen(e.touches[0].clientX)}
     onTouchMove={(e) => moveTouchScreen(e.touches[0].clientX)}

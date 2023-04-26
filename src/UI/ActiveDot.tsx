@@ -5,6 +5,7 @@ const ActiveDot = ({
   activeDotColor
 }: ActiveDotProps): JSX.Element => (
   <div
+    className="what-i-need"
     style={{
       aspectRatio: '1 / 1',
       width: `${sizeForDefaultActiveDot}px`,

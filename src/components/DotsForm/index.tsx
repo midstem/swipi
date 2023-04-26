@@ -33,6 +33,7 @@ const DotsForm = ({
           <input
             type="radio"
             name="showDots"
+            value="Yes"
             checked={showDots}
             onChange={() => setShowDots(true)}
           />
@@ -41,6 +42,7 @@ const DotsForm = ({
         <RadioLabel>
           <input
             type="radio"
+            value="No"
             name="showDots"
             checked={!showDots}
             onChange={() => setShowDots(false)}
@@ -63,6 +65,7 @@ const DotsForm = ({
     <Property>
       <label htmlFor="sizeForDefaultDot">sizeForDefaultDot</label>
       <NumberInput
+        data-cy="default-dot-size-input"
         id="sizeForDefaultDot"
         placeholder="12"
         onChange={(e) => {
@@ -74,6 +77,7 @@ const DotsForm = ({
     <Property>
       <label htmlFor="sizeForDefaultActiveDot">sizeForDefaultActiveDot</label>
       <NumberInput
+        data-cy="default-active-dot-size-input"
         id="sizeForDefaultActiveDot"
         placeholder="12"
         onChange={(e) => setSizeForDefaultActiveDot(+e.target.value)}
@@ -82,6 +86,7 @@ const DotsForm = ({
     <Property>
       <label htmlFor="dotColor">dotColor</label>
       <ColorPane
+        data-cy="dot-color-input"
         id="dotColor"
         type="color"
         value={dotColor}
@@ -91,6 +96,7 @@ const DotsForm = ({
     <Property>
       <label htmlFor="activeDotColor">activeDotColor</label>
       <ColorPane
+        data-cy="active-dot-color-input"
         id="activeDotColor"
         type="color"
         onChange={(e) => setActiveDotColor(e.target.value)}

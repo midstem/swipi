@@ -27,6 +27,7 @@ const SlidesForm = ({
     <Property>
       <label htmlFor="slidesNumber">slidesNumber</label>
       <NumberInput
+        data-cy="slides-number-input"
         id="slidesNumber"
         placeholder="3"
         onChange={(e) => {
@@ -37,6 +38,7 @@ const SlidesForm = ({
     <Property>
       <label htmlFor="spaceBetweenSlides">spaceBetweenSlides</label>
       <NumberInput
+        data-cy="space-between-slides-input"
         id="spaceBetweenSlides"
         placeholder="0"
         onChange={(e) => setSpaceBetweenSlides(+e.target.value)}
@@ -45,6 +47,7 @@ const SlidesForm = ({
     <Property>
       <label htmlFor="animationSpeed">animationSpeed</label>
       <NumberInput
+        data-cy="animation-speed-input"
         id="animationSpeed"
         placeholder="300"
         onChange={(e) => setAnimationSpeed(+e.target.value)}
@@ -89,11 +92,12 @@ const SlidesForm = ({
         <option value="fade-in">fade-in</option>
       </select>
     </Property>
-    <Form>
+    <Form as="div" style={{ boxShadow: 'none' }}>
       <FormName>config</FormName>
       <Property>
         <label htmlFor="maxWidth">maxWidth</label>
         <NumberInput
+          data-cy="max-number-input"
           id="maxWidth"
           placeholder="1200"
           onChange={(e) => setMaxWidth(+e.target.value)}
@@ -102,6 +106,7 @@ const SlidesForm = ({
       <Property>
         <label htmlFor="slidesNumber">slidesNumber</label>
         <NumberInput
+          data-cy="config-slides-number-input"
           id="slidesNumber"
           type="number"
           placeholder="3"
@@ -111,6 +116,7 @@ const SlidesForm = ({
       <Property>
         <label htmlFor="spaceBetween">spaceBetween</label>
         <NumberInput
+          data-cy="space-between-input"
           id="spaceBetween"
           type="number"
           placeholder="4000"
@@ -124,6 +130,7 @@ const SlidesForm = ({
             <input
               type="radio"
               name="biasRight"
+              value="yes"
               checked={biasRight}
               onChange={() => setBiasRight(true)}
             />
@@ -133,6 +140,7 @@ const SlidesForm = ({
             <input
               type="radio"
               name="biasRight"
+              value="no"
               checked={!biasRight}
               onChange={() => setBiasRight(false)}
             />

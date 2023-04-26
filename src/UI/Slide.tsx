@@ -5,17 +5,16 @@ export const Slide = ({
   spaceBetween,
   children,
   animation = {}
-}: SlideProps): JSX.Element => {
-  return (
-    <div
-      style={{
-        boxSizing: 'border-box',
-        width: `${slideWidth}px`,
-        paddingRight: `${spaceBetween}px`,
-        ...animation
-      }}
-    >
-      {children}
-    </div>
-  )
-}
+}: SlideProps): JSX.Element => (
+  <div
+    data-cy="slide"
+    style={{
+      boxSizing: 'border-box',
+      width: `${slideWidth}px`,
+      paddingRight: `${spaceBetween}px`,
+      ...animation
+    }}
+  >
+    {children}
+  </div>
+)

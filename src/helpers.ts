@@ -5,9 +5,5 @@ export const generateUniqueID = () => {
     .map(() => characters.charAt(Math.floor(Math.random() * characters.length)))
     .join('')
 }
-export const cloneArray = <T extends Object>(
-  array: T[],
-  count: number
-): T[] => {
-  return new Array(count).fill(array).flat() as T[]
-}
+export const cloneArray = <T extends Object>(array: T[], count: number): T[] =>
+  new Array(count).fill(array).flat() as T[]

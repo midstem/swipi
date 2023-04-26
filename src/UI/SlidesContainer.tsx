@@ -11,6 +11,7 @@ const SlidesContainer = ({
 
   const startDragging = () => setIsDragging(true)
   const stopDragging = () => setIsDragging(false)
+  console.log(children)
 
   return (
     <div

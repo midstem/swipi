@@ -1,15 +1,11 @@
 {
-  "include": ["src"],
-  "exclude": ["dist", "node_modules"],
   "compilerOptions": {
-    "target": "ES6",
-    "module": "CommonJS",
+    "target": "esnext",
+    "module": "esnext",
     "lib": ["dom", "esnext"],
     "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
-    "rootDir": "./src",
-    "outDir": "./dist/esm",
     "strict": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
@@ -20,5 +16,12 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "include": [
+    "src",
+    "vite.config.ts",
+    "cypress",
+    "cypress.config.ts"
+  ],
+  "exclude": ["dist", "node_modules"],
 }
