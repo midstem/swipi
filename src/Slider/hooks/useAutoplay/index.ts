@@ -15,6 +15,8 @@ export const useAutoplay = ({
     clearTimeout(timeout.current)
     startAutoplay(autoplaySpeed, timeout, nextImg)
 
-    return clearTimeout(timeout.current)
+    const currentTimeout = timeout.current
+
+    return () => clearTimeout(currentTimeout)
   }, [autoplaySpeed, autoplay, slideIndex, nextImg, timeout])
 }
