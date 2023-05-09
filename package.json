@@ -2,8 +2,6 @@
   "name": "swipi-testing",
   "version": "0.0.3",
   "license": "MIT",
-  "author": "Maksym Tkachuk",
-  "description": "Lightweight TypeScript Slider",
   "main": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
   "peerDependencies": {
