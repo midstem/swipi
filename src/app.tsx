@@ -70,7 +70,7 @@ const App = () => {
           spaceBetweenSlides === 0 ? undefined : spaceBetweenSlides
         }
         animationSpeed={animationSpeed === 0 ? undefined : animationSpeed}
-        autoplay={autoplay}
+        autoplay={!autoplay ? undefined : autoplay}
         autoplaySpeed={autoplaySpeed === 0 ? undefined : autoplaySpeed}
         slidesAnimation={
           slidesAnimation === ''

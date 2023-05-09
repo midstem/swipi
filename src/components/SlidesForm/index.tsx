@@ -40,7 +40,7 @@ const SlidesForm = ({
       <NumberInput
         data-cy="space-between-slides-input"
         id="spaceBetweenSlides"
-        placeholder="0"
+        placeholder="10"
         onChange={(e) => setSpaceBetweenSlides(+e.target.value)}
       />
     </Property>
@@ -119,7 +119,7 @@ const SlidesForm = ({
           data-cy="space-between-input"
           id="spaceBetween"
           type="number"
-          placeholder="4000"
+          placeholder="10"
           onChange={(e) => setSpaceBetween(+e.target.value)}
         />
       </Property>
