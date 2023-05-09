@@ -24,6 +24,10 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: Add import statement
+        run: |
+          echo "import './style.css'" | cat - dist/index.js > temp && mv temp dist/index.js
+
       - name: Publish
         run: yarn publish
 

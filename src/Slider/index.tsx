@@ -94,7 +94,7 @@ const Slider = ({
             ))}
           </SlidesContainer>
         </SlidesWrapper>
-        <SliderButton onClick={nextImg} className="left-button">
+        <SliderButton onClick={nextImg} className="right-button">
           {isButton && nextButton}
         </SliderButton>
       </SliderContainer>

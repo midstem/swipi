@@ -14,6 +14,7 @@
 <p><b>Swipi</b> is a lightweight and compact slider optimized for mobile use. It's built with TypeScript and has a fast loading speed. It's also swipeable, making it easy for users to switch slides with a swipe on their mobile device. Its mobile-friendly design and convenience make it a great choice for improving user experience.</p>
 
 ### Installation
+
 **npm**
 
 ```bash
@@ -26,107 +27,7 @@ $ npm install swipi
 $ yarn add swipi
 ```
 
-## [Default](https://codesandbox.io/s/default-demo-g81knf)
-```js
-import Slider from "swipi"
-import pictures from "./constants"
-import { SliderWrapper, Image } from "./styles"
-
-const App = () => (
-  <SliderWrapper>
-    <Slider>
-      {pictures.map((picture) => (
-        <Image key={picture.id} src={picture.src} alt={picture.alt} />
-      ))}
-    </Slider>
-  </SliderWrapper>
-)
-```
-
-## [With arrows](https://codesandbox.io/s/demo-with-arrows-uqf4rf)
-```js
-import Slider from "swipi"
-import pictures from "./constants"
-import { SliderWrapper, Image } from "./styles"
-import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg"
-import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg"
-
-const App = () => (
-  <SliderWrapper>
-    <Slider 
-      nextButton={<ArrowRight />}
-      prevButton={<ArrowLeft />}
-    >
-      {pictures.map((picture) => (
-        <Image key={picture.id} src={picture.src} alt={picture.alt} />
-      ))}
-    </Slider>
-  </SliderWrapper>
-)
-```
-
-## [With arrows and dots](https://codesandbox.io/s/demo-with-arrows-dots-unqoph)
-```js
-import Slider from "swipi"
-import pictures from "./constants"
-import { SliderWrapper, Image } from "./styles"
-import { Circle, Diamond } from "./customDots"
-import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg"
-import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg"
-
-const App = () => (
-  <SliderWrapper>
-    <Slider
-      showDots
-      customDot={<Circle />}
-      customActiveDot={<Diamond />}
-      nextButton={<ArrowRight />}
-      prevButton={<ArrowLeft />}
-    >
-      {pictures.map((picture) => (
-        <Image key={picture.id} src={picture.src} alt={picture.alt} />
-      ))}
-    </Slider>
-  </SliderWrapper>
-)
-```
-
-## [All custom settings](https://codesandbox.io/s/all-custom-demo-vfxhtr)
-```js
-import Slider from "swipi"
-import pictures from "./constants"
-import { SliderWrapper, Image } from "./styles"
-import { Circle, Diamond } from "./customDots"
-import { ReactComponent as ArrowLeft } from "./assets/arrow-left.svg"
-import { ReactComponent as ArrowRight } from "./assets/arrow-right.svg"
-import "./styles.css"
-
-const mediaSettings = [
-  { maxWidth: 2200, slidesNumber: 3, spaceBetween: 5 },
-  { maxWidth: 1400, slidesNumber: 2, spaceBetween: 4 },
-  { maxWidth: 900, slidesNumber: 1, spaceBetween: 2 }
-]
-
-const App = () => (
-  <SliderWrapper>
-    <Slider
-      showDots
-      prevButton={<ArrowLeft />}
-      nextButton={<ArrowRight />}
-      config={mediaSettings}
-      customDot={<Circle />}
-      customActiveDot={<Diamond />}
-      autoplay
-      autoplaySpeed={5300}
-      dotsAnimation='sliding'
-    >
-      {pictures.map((picture) => (
-        <Image key={picture.id} src={picture.src} alt={picture.alt} />
-      ))}
-    </Slider>
-  </SliderWrapper>
-)
-```
+## To see and play with examples follow the <a href='https://midstem.github.io/swipi-landing/'>link</a>
 
 ## **Browsers support**
 
@@ -340,28 +241,4 @@ const App = () => (
 .left-button - styles the left button that gets the user to the previous slide
 
 .right-button - styles the right button that gets the user to the next slide
-```
-
-<br/>
-
-## **Welcome to suggestions**
-
-```
-https - $ git clone https://github.com/MaKs-Tkachyk/swipi.git
-or
-ssh - $ git clone git@github.com:MaKs-Tkachyk/swipi.git
-
-$ cd swipi
-
-$ git checkout demo
-
-$ npm install
-or
-$ yarn
-
-$ npm start
-or
-$ yarn start
-
-Open: http://localhost:5173/
 ```
