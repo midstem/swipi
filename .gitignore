@@ -12,6 +12,8 @@ dist
 build
 dist-ssr
 *.local
+.eslintcache
+tsconfig.tsbuildinfo
 
 # Editor directories and files
 .vscode/*
