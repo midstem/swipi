@@ -7,8 +7,8 @@
 [bundlephobia-image]: https://badgen.net/bundlephobia/minzip/swipi
 [bundlephobia-url]: https://bundlephobia.com/result?p=swipi
 
-<a href='https://domdev.pro/'>
-  <img src='assets/domdev.png' height='60'>
+<a href='https://midstem.net'>
+  <img src='assets/midstem.png' height='60'>
 </a>
 
 <p><b>Swipi</b> is a lightweight and compact slider optimized for mobile use. It's built with TypeScript and has a fast loading speed. It's also swipeable, making it easy for users to switch slides with a swipe on their mobile device. Its mobile-friendly design and convenience make it a great choice for improving user experience.</p>
