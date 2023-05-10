@@ -11,8 +11,8 @@ export const useEvents = ({
   setAnimation,
   setTransform,
   setSlideIndex,
-  checkSliderCorner,
-  checkAreaBeyondSlider,
+  checkSwipiCorner,
+  checkAreaBeyondSwipi,
   jumpToTheLastSlide,
   moveSlides,
   setStartX,
@@ -37,7 +37,7 @@ export const useEvents = ({
   }
 
   const onStart = (X: number): void => {
-    checkSliderCorner() && turnInitialPosition()
+    checkSwipiCorner() && turnInitialPosition()
     setStartX(X)
     setMouseDown(true)
   }
@@ -53,7 +53,7 @@ export const useEvents = ({
   const onEnd = (): void => {
     setAnimation(true)
     onSwipe()
-    checkAreaBeyondSlider() && jumpToTheLastSlide()
+    checkAreaBeyondSwipi() && jumpToTheLastSlide()
     resetCoordinates()
     setMouseDown(false)
   }

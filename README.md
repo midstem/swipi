@@ -234,7 +234,7 @@ $ yarn add swipi
 ## **Styling**
 
 ```css
-.slider - styles the container that wraps the slider
+.swipi - styles the container that wraps the slider
 
 .dots-wrapper - styles the container that wraps the dots
 

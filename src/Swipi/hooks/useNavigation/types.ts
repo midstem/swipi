@@ -2,7 +2,7 @@ import { SetWithPrev } from '../../types'
 
 export type Navigation = {
   putInTheInitialPosition: (callback?: () => void) => () => void
-  checkSliderCorner: () => boolean
+  checkSwipiCorner: () => boolean
   setAnimation: (animation: boolean) => void
   setTransform: SetWithPrev
   slideWidth: number

@@ -9,8 +9,8 @@ export type TouchEvents = {
   setAnimation: (animation: boolean) => void
   setTransform: SetWithPrev
   setSlideIndex: (index: number) => void
-  checkSliderCorner: () => boolean
-  checkAreaBeyondSlider: () => boolean
+  checkSwipiCorner: () => boolean
+  checkAreaBeyondSwipi: () => boolean
   jumpToTheLastSlide: () => void
   moveSlides: () => void
   setStartX: (value: number) => void

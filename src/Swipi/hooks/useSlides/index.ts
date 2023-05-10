@@ -25,13 +25,13 @@ export const useSlides = ({
 }: Slides) => {
   const [transform, setTransform] = useState<number>(0)
 
-  const { returnSpaceBetween, getSliderUpdatesParam, getRightSlidesCount } =
+  const { returnSpaceBetween, getSwipiUpdatesParam, getRightSlidesCount } =
     ConfigService(config, windowWidth)
 
   const visibleCountSlides = getRightSlidesCount(slidesNumber, slidesAnimation)
   const spaceBetween = returnSpaceBetween(spaceBetweenSlides)
   const isButton = isButtonFn(children, visibleCountSlides)
-  const isCornerSlide = !!getSliderUpdatesParam('biasRight')
+  const isCornerSlide = !!getSwipiUpdatesParam('biasRight')
 
   const currentRefWidth = currentRef?.clientWidth
 
@@ -60,7 +60,7 @@ export const useSlides = ({
 
   const startTransform = -slideWidth * children.length
 
-  const checkAreaBeyondSlider = (): boolean =>
+  const checkAreaBeyondSwipi = (): boolean =>
     transform <= startTransform * 2 - slideWidth || transform >= slideWidth / 2
 
   const moveSlides = (): void => {
@@ -83,7 +83,7 @@ export const useSlides = ({
     spaceBetween,
     isButton,
     slides,
-    checkAreaBeyondSlider,
+    checkAreaBeyondSwipi,
     jumpToTheLastSlide,
     moveSlides,
     startTransform

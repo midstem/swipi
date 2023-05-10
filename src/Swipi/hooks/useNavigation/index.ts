@@ -2,7 +2,7 @@ import { Navigation } from './types'
 
 export const useNavigation = ({
   putInTheInitialPosition,
-  checkSliderCorner,
+  checkSwipiCorner,
   setTransform,
   setAnimation,
   slideWidth,
@@ -19,7 +19,7 @@ export const useNavigation = ({
 
       setAnimation(true)
 
-      checkSliderCorner() &&
+      checkSwipiCorner() &&
         putInTheInitialPosition(() =>
           setTransform((transform) => {
             callback(transform, children)

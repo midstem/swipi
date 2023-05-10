@@ -15,9 +15,9 @@ export default defineConfig(() => ({
       include: ['src'],
       exclude: [
         'src/UI',
-        'src/Slider/hooks',
-        'src/Slider/helpers',
-        'src/Slider/constants.ts',
+        'src/Swipi/hooks',
+        'src/Swipi/helpers',
+        'src/Swipi/constants.ts',
         'src/helpers'
       ]
     })
