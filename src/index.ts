@@ -1,3 +1,3 @@
-import Slider from './Slider'
+import Swipi from './Swipi'
 
-export default Slider
+export default Swipi

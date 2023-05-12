@@ -10,7 +10,7 @@ import { ANIMATIONS, navigationDebounceDelay } from './constants'
 import { SlidesAnimation, ValueOf } from '../types'
 import { useDebounce } from './hooks/useDebounce'
 
-export type Slider = {
+export type Swipi = {
   children: JSX.Element[]
   config: ConfigType[]
   customActiveDot: JSX.Element | undefined
@@ -25,7 +25,7 @@ export type Slider = {
   activeDotColor?: string
 }
 
-export const useSlider = ({
+export const useSwipi = ({
   children,
   config,
   customActiveDot,
@@ -38,7 +38,7 @@ export const useSlider = ({
   slidesAnimation,
   dotColor,
   activeDotColor
-}: Slider) => {
+}: Swipi) => {
   const [animation, setAnimation] = useState<boolean>(false)
   const [windowWidth, setWindowWidth] = useState<number>(0)
   const [currentRef, setCurrentRef] = useState<HTMLDivElement | null>(null)
@@ -58,7 +58,7 @@ export const useSlider = ({
     spaceBetween,
     transform,
     startTransform,
-    checkAreaBeyondSlider,
+    checkAreaBeyondSwipi,
     jumpToTheLastSlide,
     moveSlides
   } = useSlides({
@@ -93,7 +93,7 @@ export const useSlider = ({
     activeDotColor
   })
 
-  const checkSliderCorner = useCallback(
+  const checkSwipiCorner = useCallback(
     (): boolean =>
       transform <= startTransform * 2 + slideWidth / 2 ||
       transform >= -slideWidth / 2,
@@ -124,8 +124,8 @@ export const useSlider = ({
     setAnimation,
     setTransform,
     setSlideIndex,
-    checkSliderCorner,
-    checkAreaBeyondSlider,
+    checkSwipiCorner,
+    checkAreaBeyondSwipi,
     jumpToTheLastSlide,
     moveSlides,
     setStartX,
@@ -135,7 +135,7 @@ export const useSlider = ({
 
   const { nextImg, prevImg } = useNavigation({
     putInTheInitialPosition,
-    checkSliderCorner,
+    checkSwipiCorner,
     setTransform,
     setAnimation,
     slideWidth,

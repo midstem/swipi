@@ -10,7 +10,7 @@ export type ConfigType = {
   spaceBetween?: number
 }
 
-export type SliderProps = {
+export type SwipiProps = {
   spaceBetweenSlides?: number
   slidesNumber?: number
   nextButton?: ReactNode

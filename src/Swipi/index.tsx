@@ -1,15 +1,15 @@
 import { Slide } from '../UI/Slide'
 import { returnSlidesAnimation } from './helpers'
-import { SliderProps } from './types'
-import { useSlider } from './useSlider'
-import SliderContainer from '../UI/SliderContainer'
-import SliderButton from '../UI/SliderButton'
+import { SwipiProps } from './types'
+import { useSwipi } from './useSwipi'
+import SwipiContainer from '../UI/SwipiContainer'
+import SwipiButton from '../UI/SwipiButton'
 import SlidesWrapper from '../UI/SlidesWrapper'
 import SlidesContainer from '../UI/SlidesContainer'
 import CarouselWrapper from '../UI/CarouselWrapper'
 import '../UI/styles.css'
 
-const Slider = ({
+const Swipi = ({
   slidesNumber = 3,
   spaceBetweenSlides = 0,
   nextButton = 'ᐳ',
@@ -29,7 +29,7 @@ const Slider = ({
   animationSpeed = 300,
   slidesAnimation = 'default',
   className
-}: SliderProps) => {
+}: SwipiProps) => {
   const {
     animation,
     transform,
@@ -47,7 +47,7 @@ const Slider = ({
     returnDots,
     onMove,
     onStart
-  } = useSlider({
+  } = useSwipi({
     children,
     config,
     customActiveDot,
@@ -64,10 +64,10 @@ const Slider = ({
 
   return (
     <CarouselWrapper className={className}>
-      <SliderContainer>
-        <SliderButton onClick={prevImg} className="left-button">
+      <SwipiContainer>
+        <SwipiButton onClick={prevImg} className="left-button">
           {isButton && prevButton}
-        </SliderButton>
+        </SwipiButton>
         <SlidesWrapper
           slidesWrapperRef={slidesWrapperRef}
           startTouchByScreen={onStart}
@@ -94,10 +94,10 @@ const Slider = ({
             ))}
           </SlidesContainer>
         </SlidesWrapper>
-        <SliderButton onClick={nextImg} className="right-button">
+        <SwipiButton onClick={nextImg} className="right-button">
           {isButton && nextButton}
-        </SliderButton>
-      </SliderContainer>
+        </SwipiButton>
+      </SwipiContainer>
       {showDots && (
         <Dots
           children={children}
@@ -117,4 +117,4 @@ const Slider = ({
   )
 }
 
-export default Slider
+export default Swipi

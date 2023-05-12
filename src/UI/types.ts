@@ -5,7 +5,7 @@ export type ComponentBasicProps = {
   className?: string
 }
 
-export type SliderButtonProps = {
+export type SwipiButtonProps = {
   children: ReactNode
   onClick: () => void
   className: string

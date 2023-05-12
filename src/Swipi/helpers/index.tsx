@@ -3,14 +3,14 @@ import { AddUniqueIdReturnType, ReturnSlideWidthType } from '../types'
 import { generateUniqueID } from '../../helpers'
 import { SlidesAnimation, ValueOf } from '../../types'
 import { fadeIn } from '../../SlidesAnimation/FadeIn'
-import { defaultSliderWidth } from '../constants'
+import { defaultSwipiWidth } from '../constants'
 
 export const addUniqueId = (slides: JSX.Element[]): AddUniqueIdReturnType =>
   slides.map((slide) => ({ ...slide, id: generateUniqueID() }))
 
 export const returnSlideWidth = ({
   visibleCountSlides,
-  current = defaultSliderWidth,
+  current = defaultSwipiWidth,
   spaceBetween
 }: ReturnSlideWidthType): number =>
   (current + spaceBetween) / visibleCountSlides
