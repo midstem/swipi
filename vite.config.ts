@@ -23,8 +23,6 @@ export default defineConfig(() => ({
     })
   ],
   build: {
-    // emptyOutDir: true,
-    // cssCodeSplit: true,
     lib: {
       entry: resolve('src', 'index.ts'),
       formats: ['es'],
