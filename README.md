@@ -45,6 +45,12 @@ $ yarn add swipi
     <th><h3><b>Type</b></h3></th>
   </tr>
   <tr>
+    <td>showArrows</td>
+    <td>Enable/disable arrows</td>
+    <td><code>true</code></td>
+    <td>boolean</td>
+  </tr>
+  <tr>
     <td>showDots</td>
     <td>Enable/disable dots</td>
     <td><code>false</code></td>

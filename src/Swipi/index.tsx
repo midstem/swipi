@@ -1,72 +1,74 @@
-import { Slide } from '../UI/Slide'
-import { returnSlidesAnimation } from './helpers'
-import { SwipiProps } from './types'
 import { useSwipi } from './useSwipi'
-import SwipiContainer from '../UI/SwipiContainer'
+import { SwipiProps } from './types'
+import { returnSlidesAnimation } from './helpers'
+import { Slide } from '../UI/Slide'
 import SwipiButton from '../UI/SwipiButton'
 import SlidesWrapper from '../UI/SlidesWrapper'
+import SwipiContainer from '../UI/SwipiContainer'
 import SlidesContainer from '../UI/SlidesContainer'
 import CarouselWrapper from '../UI/CarouselWrapper'
 import '../UI/styles.css'
 
 const Swipi = ({
+  showDots,
+  dotColor,
+  customDot,
+  config = [],
+  children = [],
+  activeDotColor,
+  customActiveDot,
   slidesNumber = 3,
-  spaceBetweenSlides = 0,
   nextButton = 'ᐳ',
   prevButton = 'ᐸ',
-  children = [],
-  config = [],
-  showDots,
-  customDot,
-  customActiveDot,
-  dotColor,
-  activeDotColor,
-  sizeForDefaultDot,
-  sizeForDefaultActiveDot = 13,
   autoplay = false,
+  sizeForDefaultDot,
+  showArrows = true,
   autoplaySpeed = 4000,
-  dotsAnimation = 'default',
   animationSpeed = 300,
+  spaceBetweenSlides = 0,
+  dotsAnimation = 'default',
   slidesAnimation = 'default',
+  sizeForDefaultActiveDot = 13,
   className
 }: SwipiProps) => {
   const {
+    Dots,
+    slides,
     animation,
     transform,
     slideWidth,
-    slidesWrapperRef,
-    slides,
-    isButton,
-    spaceBetween,
     slideIndex,
-    Dots,
-    handleDotClick,
+    spaceBetween,
+    isShowArrows,
+    slidesWrapperRef,
+    onEnd,
+    onMove,
     nextImg,
     prevImg,
-    onEnd,
+    onStart,
     returnDots,
-    onMove,
-    onStart
+    handleDotClick,
   } = useSwipi({
-    children,
     config,
-    customActiveDot,
-    customDot,
-    slidesNumber,
-    spaceBetweenSlides,
+    children,
+    dotColor,
     autoplay,
+    customDot,
+    showArrows,
+    slidesNumber,
     autoplaySpeed,
     dotsAnimation,
-    dotColor,
     activeDotColor,
-    slidesAnimation
+    customActiveDot,
+    slidesAnimation,
+    spaceBetweenSlides,
   })
 
   return (
     <CarouselWrapper className={className}>
       <SwipiContainer>
         <SwipiButton onClick={prevImg} className="left-button">
-          {isButton && prevButton}
+          {isShowArrows && prevButton}
         </SwipiButton>
         <SlidesWrapper
           slidesWrapperRef={slidesWrapperRef}
@@ -95,20 +97,20 @@ const Swipi = ({
           </SlidesContainer>
         </SlidesWrapper>
         <SwipiButton onClick={nextImg} className="right-button">
-          {isButton && nextButton}
+          {isShowArrows && nextButton}
         </SwipiButton>
       </SwipiContainer>
       {showDots && (
         <Dots
           children={children}
+          dotColor={dotColor}
           customDot={customDot}
-          customActiveDot={customActiveDot}
           slideIndex={slideIndex}
+          activeDotColor={activeDotColor}
+          animationSpeed={animationSpeed}
+          customActiveDot={customActiveDot}
           sizeForDefaultDot={sizeForDefaultDot}
           sizeForDefaultActiveDot={sizeForDefaultActiveDot}
-          activeDotColor={activeDotColor}
-          dotColor={dotColor}
-          animationSpeed={animationSpeed}
           handleDotClick={handleDotClick}
           returnDots={returnDots}
         />

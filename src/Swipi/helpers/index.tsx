@@ -35,10 +35,11 @@ export const startAutoplay = (
   }, autoplaySpeed)
 }
 
-export const isButtonFn = (
+export const isShowArrowsFn = (
   children: JSX.Element[],
-  visibleCountSlides: number
-) => children.length > visibleCountSlides
+  visibleCountSlides: number,
+  showArrows: boolean
+) => showArrows ? children.length > visibleCountSlides : showArrows
 
 export const setKeyToChildren = (children: JSX.Element[]): JSX.Element[] => {
   return children.map((child, index) => ({ ...child, key: index }))

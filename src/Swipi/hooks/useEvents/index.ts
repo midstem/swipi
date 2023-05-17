@@ -3,21 +3,21 @@ import { TouchEvents } from './types'
 import { calculateSlideIndex } from '../../helpers'
 
 export const useEvents = ({
-  isButton,
+  children,
   transform,
   slideWidth,
+  isShowArrows,
   startTransform,
-  children,
+  setEndX,
+  setStartX,
+  moveSlides,
+  setMovePath,
   setAnimation,
   setTransform,
   setSlideIndex,
   checkSwipiCorner,
-  checkAreaBeyondSwipi,
   jumpToTheLastSlide,
-  moveSlides,
-  setStartX,
-  setEndX,
-  setMovePath
+  checkAreaBeyondSwipi,
 }: TouchEvents) => {
   const [mouseDown, setMouseDown] = useState(false)
 
@@ -59,8 +59,8 @@ export const useEvents = ({
   }
 
   return {
-    onStart: isButton ? onStart : () => {},
-    onMove: isButton ? onMove : () => {},
+    onStart: isShowArrows ? onStart : () => {},
+    onMove: isShowArrows ? onMove : () => {},
     onEnd
   }
 }

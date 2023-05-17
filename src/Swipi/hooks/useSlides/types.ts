@@ -1,16 +1,17 @@
-import { SlidesAnimation, ValueOf } from '../../../types'
 import { ConfigType } from '../../types'
+import { SlidesAnimation, ValueOf } from '../../../types'
 
 export type Slides = {
-  children: JSX.Element[]
-  config: ConfigType[]
-  windowWidth: number
-  currentRef: HTMLDivElement | null
-  slidesNumber: number
-  spaceBetweenSlides: number
-  startX: number
   endX: number
+  startX: number
   movePath: number
-  setMovePath: (value: number) => void
+  showArrows: boolean
+  windowWidth: number
+  config: ConfigType[]
+  slidesNumber: number
+  children: JSX.Element[]
+  spaceBetweenSlides: number
+  currentRef: HTMLDivElement | null
   slidesAnimation: ValueOf<SlidesAnimation>
+  setMovePath: (value: number) => void
 }

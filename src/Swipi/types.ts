@@ -4,40 +4,57 @@ import { DotsTypes, SlidesAnimation, ValueOf } from '../types'
 export type AddUniqueIdReturnType = Array<{ id: string } & JSX.Element>
 
 export type ConfigType = {
-  slidesNumber: number
   maxWidth: number
   biasRight?: boolean
+  slidesNumber: number
   spaceBetween?: number
 }
 
+export type UseSwipiType = {
+  autoplay: boolean
+  dotColor?: string
+  showArrows: boolean
+  config: ConfigType[]
+  slidesNumber: number
+  autoplaySpeed: number
+  children: JSX.Element[]
+  activeDotColor?: string
+  customDot?: JSX.Element
+  spaceBetweenSlides: number
+  dotsAnimation: DotsAnimation
+  customActiveDot?: JSX.Element
+  slidesAnimation: ValueOf<SlidesAnimation>
+}
+
 export type SwipiProps = {
-  spaceBetweenSlides?: number
+  dotColor?: string
+  showDots?: boolean
+  autoplay?: boolean
+  className?: string
+  showArrows?: boolean
   slidesNumber?: number
+  config?: ConfigType[]
   nextButton?: ReactNode
   prevButton?: ReactNode
+  autoplaySpeed?: number
   children: JSX.Element[]
-  config?: ConfigType[]
-  showDots?: boolean
   customDot?: JSX.Element
-  customActiveDot?: JSX.Element
-  dotColor?: string
+  animationSpeed?: number
   activeDotColor?: string
   sizeForDefaultDot?: number
-  sizeForDefaultActiveDot?: number
-  autoplay?: boolean
-  autoplaySpeed?: number
-  animationSpeed?: number
+  spaceBetweenSlides?: number
+  customActiveDot?: JSX.Element
   dotsAnimation?: DotsAnimation
+  sizeForDefaultActiveDot?: number
   slidesAnimation?: ValueOf<SlidesAnimation>
-  className?: string
 }
 
 export type DotsAnimation = 'default' | 'sliding'
 
 export type ReturnSlideWidthType = {
-  visibleCountSlides: number
-  spaceBetween: number
   current?: number
+  spaceBetween: number
+  visibleCountSlides: number
 }
 
 export type NextPrevDotType = {
