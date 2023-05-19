@@ -30,7 +30,7 @@ const Swipi = ({
   slidesAnimation = 'default',
   sizeForDefaultActiveDot = 13,
   className,
-  loop = true
+  loop = false
 }: SwipiProps) => {
   const {
     Dots,

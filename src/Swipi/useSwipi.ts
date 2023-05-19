@@ -83,11 +83,11 @@ export const useSwipi = ({
     loop
   })
 
-  const isLastSlide = () => {
+  const isLastSlide = (): boolean => {
     return slideIndex + visibleCountSlides === children.length
   }
 
-  const isFirstSlide = () => {
+  const isFirstSlide = (): boolean => {
     return slideIndex === 0
   }
 

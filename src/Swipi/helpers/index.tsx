@@ -86,12 +86,3 @@ export const returnCountOfDots = (
 
   return Math.round(children.length / visibleCountSlides) + 1
 }
-
-export const isDisableButton =
-  (isFirstSlide: boolean, isLastSlide: boolean, loop: boolean) =>
-  (next?: boolean): boolean => {
-    if (next && isLastSlide && !loop) return true
-    if (!next && isFirstSlide && !loop) return true
-
-    return false
-  }
