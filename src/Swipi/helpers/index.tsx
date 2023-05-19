@@ -7,7 +7,11 @@ import {
 import { generateUniqueID } from '../../helpers'
 import { SlidesAnimation, ValueOf } from '../../types'
 import { fadeIn } from '../../SlidesAnimation/FadeIn'
-import { defaultSwipiWidth } from '../constants'
+import {
+  DISTANCE,
+  FIRST_SLIDE_IDENTIFIER,
+  defaultSwipiWidth
+} from '../constants'
 import { SwipeDirections } from '../constants'
 
 export const addUniqueId = (slides: JSX.Element[]): AddUniqueIdReturnType =>
@@ -70,9 +74,9 @@ export const getSwipeDirection = ({
   touchEndX,
   touchStartX
 }: TouchCoordsType): SwipeDirections | null => {
-  if (touchEndX - touchStartX > 1) return SwipeDirections.RIGHT
+  if (touchEndX - touchStartX > DISTANCE) return SwipeDirections.RIGHT
 
-  if (touchStartX - touchEndX > 1) return SwipeDirections.LEFT
+  if (touchStartX - touchEndX > DISTANCE) return SwipeDirections.LEFT
 
   return null
 }
@@ -84,5 +88,7 @@ export const returnCountOfDots = (
 ): number => {
   if (loop) return children.length
 
-  return Math.round(children.length / visibleCountSlides) + 1
+  return (
+    Math.round(children.length / visibleCountSlides) + FIRST_SLIDE_IDENTIFIER
+  )
 }

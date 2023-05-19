@@ -19,3 +19,7 @@ export enum SwipeDirections {
   RIGHT = 'right',
   BOTTOM = 'bottom'
 }
+
+export const FIRST_SLIDE_IDENTIFIER = 1
+
+export const DISTANCE = 1

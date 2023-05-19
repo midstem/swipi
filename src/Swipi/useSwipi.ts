@@ -93,9 +93,9 @@ export const useSwipi = ({
 
   const isDisableMove =
     () =>
-    (next?: boolean): boolean => {
-      if (next && isLastSlide() && !loop) return true
-      if (!next && isFirstSlide() && !loop) return true
+    (isNext?: boolean): boolean => {
+      if (isNext && isLastSlide() && !loop) return true
+      if (!isNext && isFirstSlide() && !loop) return true
 
       return false
     }
