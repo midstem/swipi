@@ -6,9 +6,16 @@ export const defaultSwipiWidth = 934
 
 export const reduceSlide = 0.75
 
-export const navigationDebounceDelay = 300
+export const navigationDebounceDelay = 100
 
 export const ANIMATIONS: AnimationsTypes = {
   default: Default,
   sliding: Sliding
+}
+
+export enum SwipeDirections {
+  TOP = 'top',
+  LEFT = 'left',
+  RIGHT = 'right',
+  BOTTOM = 'bottom'
 }

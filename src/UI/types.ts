@@ -9,6 +9,7 @@ export type SwipiButtonProps = {
   children: ReactNode
   onClick: () => void
   className: string
+  disabled: boolean
 }
 
 export type SlidesWrapperProps = {

@@ -22,7 +22,7 @@ export const useSlides = ({
   slidesNumber,
   slidesAnimation,
   spaceBetweenSlides,
-  setMovePath,
+  setMovePath
 }: Slides) => {
   const [transform, setTransform] = useState<number>(0)
 
@@ -88,5 +88,6 @@ export const useSlides = ({
     setTransform,
     jumpToTheLastSlide,
     checkAreaBeyondSwipi,
+    visibleCountSlides
   }
 }

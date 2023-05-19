@@ -1,9 +1,14 @@
 import { CSSProperties, MutableRefObject } from 'react'
-import { AddUniqueIdReturnType, ReturnSlideWidthType } from '../types'
+import {
+  AddUniqueIdReturnType,
+  ReturnSlideWidthType,
+  TouchCoordsType
+} from '../types'
 import { generateUniqueID } from '../../helpers'
 import { SlidesAnimation, ValueOf } from '../../types'
 import { fadeIn } from '../../SlidesAnimation/FadeIn'
 import { defaultSwipiWidth } from '../constants'
+import { SwipeDirections } from '../constants'
 
 export const addUniqueId = (slides: JSX.Element[]): AddUniqueIdReturnType =>
   slides.map((slide) => ({ ...slide, id: generateUniqueID() }))
@@ -39,7 +44,7 @@ export const isShowArrowsFn = (
   children: JSX.Element[],
   visibleCountSlides: number,
   showArrows: boolean
-) => showArrows ? children.length > visibleCountSlides : showArrows
+) => (showArrows ? children.length > visibleCountSlides : showArrows)
 
 export const setKeyToChildren = (children: JSX.Element[]): JSX.Element[] => {
   return children.map((child, index) => ({ ...child, key: index }))
@@ -60,3 +65,33 @@ export const returnSlidesAnimation = (
 export const isFadeInAnimation = (animation: ValueOf<SlidesAnimation>) => {
   return animation === SlidesAnimation.FADE_IN
 }
+
+export const getSwipeDirection = ({
+  touchEndX,
+  touchStartX
+}: TouchCoordsType): SwipeDirections | null => {
+  if (touchEndX - touchStartX > 1) return SwipeDirections.RIGHT
+
+  if (touchStartX - touchEndX > 1) return SwipeDirections.LEFT
+
+  return null
+}
+
+export const returnCountOfDots = (
+  children: JSX.Element[],
+  visibleCountSlides: number,
+  loop: boolean
+): number => {
+  if (loop) return children.length
+
+  return Math.round(children.length / visibleCountSlides) + 1
+}
+
+export const isDisableButton =
+  (isFirstSlide: boolean, isLastSlide: boolean, loop: boolean) =>
+  (next?: boolean): boolean => {
+    if (next && isLastSlide && !loop) return true
+    if (!next && isFirstSlide && !loop) return true
+
+    return false
+  }

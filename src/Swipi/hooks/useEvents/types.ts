@@ -16,4 +16,6 @@ export type TouchEvents = {
   setMovePath: (value: number) => void
   setSlideIndex: (index: number) => void
   setAnimation: (animation: boolean) => void
+  isDisableMove: (value: boolean) => boolean
+  startX: number
 }

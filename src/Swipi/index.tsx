@@ -29,7 +29,8 @@ const Swipi = ({
   dotsAnimation = 'default',
   slidesAnimation = 'default',
   sizeForDefaultActiveDot = 13,
-  className
+  className,
+  loop = true
 }: SwipiProps) => {
   const {
     Dots,
@@ -48,6 +49,8 @@ const Swipi = ({
     onStart,
     returnDots,
     handleDotClick,
+    countShowDots,
+    isDisableButton
   } = useSwipi({
     config,
     children,
@@ -62,12 +65,17 @@ const Swipi = ({
     customActiveDot,
     slidesAnimation,
     spaceBetweenSlides,
+    loop
   })
 
   return (
     <CarouselWrapper className={className}>
       <SwipiContainer>
-        <SwipiButton onClick={prevImg} className="left-button">
+        <SwipiButton
+          disabled={isDisableButton()}
+          onClick={prevImg}
+          className="left-button"
+        >
           {isShowArrows && prevButton}
         </SwipiButton>
         <SlidesWrapper
@@ -96,13 +104,17 @@ const Swipi = ({
             ))}
           </SlidesContainer>
         </SlidesWrapper>
-        <SwipiButton onClick={nextImg} className="right-button">
+        <SwipiButton
+          disabled={isDisableButton(true)}
+          onClick={nextImg}
+          className="right-button"
+        >
           {isShowArrows && nextButton}
         </SwipiButton>
       </SwipiContainer>
       {showDots && (
         <Dots
-          children={children}
+          countShowDots={countShowDots}
           dotColor={dotColor}
           customDot={customDot}
           slideIndex={slideIndex}

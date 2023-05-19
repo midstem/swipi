@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { TouchEvents } from './types'
-import { calculateSlideIndex } from '../../helpers'
+import { calculateSlideIndex, getSwipeDirection } from '../../helpers'
+import { SwipeDirections } from '../../constants'
 
 export const useEvents = ({
   children,
@@ -18,6 +19,8 @@ export const useEvents = ({
   checkSwipiCorner,
   jumpToTheLastSlide,
   checkAreaBeyondSwipi,
+  startX,
+  isDisableMove
 }: TouchEvents) => {
   const [mouseDown, setMouseDown] = useState(false)
 
@@ -44,6 +47,11 @@ export const useEvents = ({
 
   const onMove = (X: number): void => {
     if (!mouseDown) return
+
+    const swipedSide = getSwipeDirection({ touchEndX: X, touchStartX: startX })
+
+    if (isDisableMove(swipedSide === SwipeDirections.LEFT)) return
+
     setAnimation(false)
     moveSlides()
     setEndX(X)

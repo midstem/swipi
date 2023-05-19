@@ -2,8 +2,9 @@ import { forwardRef, RefObject } from 'react'
 import { SwipiButtonProps } from './types'
 
 const SwipiButton = forwardRef<HTMLButtonElement, SwipiButtonProps>(
-  ({ children, onClick, className }, ref): JSX.Element => (
+  ({ children, onClick, className, disabled }, ref): JSX.Element => (
     <button
+      disabled={disabled}
       className={className}
       ref={ref as RefObject<HTMLButtonElement>}
       onClick={onClick}
