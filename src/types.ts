@@ -1,5 +1,4 @@
 export type DotsTypes = {
-  children: JSX.Element[]
   customDot?: JSX.Element
   slideIndex: number
   customActiveDot?: JSX.Element
@@ -10,6 +9,7 @@ export type DotsTypes = {
   animationSpeed: number
   handleDotClick: (index: number) => void
   returnDots: (index: number) => React.ReactNode
+  countShowDots: number
 }
 
 export enum SlidesAnimation {

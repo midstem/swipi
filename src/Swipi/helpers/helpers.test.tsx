@@ -10,7 +10,7 @@ import {
   returnSlidesAnimation,
   isFadeInAnimation
 } from '.'
-import { defaultSwipiWidth } from '../constants'
+import { DEFAULT_SWIPI_WIDTH } from '../constants'
 import { SlidesAnimation, ValueOf } from '../../types'
 
 describe('addUniqueId', () => {
@@ -38,7 +38,7 @@ describe('returnSlideWidth', () => {
       visibleCountSlides: 3,
       spaceBetween: 20
     })
-    expect(slideWidth).toEqual((defaultSwipiWidth + 20) / 3)
+    expect(slideWidth).toEqual((DEFAULT_SWIPI_WIDTH + 20) / 3)
   })
 })
 

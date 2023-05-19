@@ -9,4 +9,5 @@ export type DotsProps = {
   setAnimation: (value: boolean) => void
   dotColor?: string
   activeDotColor?: string
+  loop: boolean
 }

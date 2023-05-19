@@ -24,6 +24,7 @@ export type UseSwipiType = {
   dotsAnimation: DotsAnimation
   customActiveDot?: JSX.Element
   slidesAnimation: ValueOf<SlidesAnimation>
+  loop: boolean
 }
 
 export type SwipiProps = {
@@ -47,6 +48,7 @@ export type SwipiProps = {
   dotsAnimation?: DotsAnimation
   sizeForDefaultActiveDot?: number
   slidesAnimation?: ValueOf<SlidesAnimation>
+  loop?: boolean
 }
 
 export type DotsAnimation = 'default' | 'sliding'
@@ -68,3 +70,8 @@ export type AnimationsTypes = {
 }
 
 export type SetWithPrev = (value: number | ((prev: number) => number)) => void
+
+export type TouchCoordsType = {
+  touchStartX: number
+  touchEndX: number
+}

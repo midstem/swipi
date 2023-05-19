@@ -6,8 +6,9 @@ import { useDebounce } from './hooks/useDebounce'
 import { useAutoplay } from './hooks/useAutoplay'
 import { useNavigation } from './hooks/useNavigation'
 import { useWindowResize } from './hooks/useWindowResize'
-import { ANIMATIONS, navigationDebounceDelay } from './constants'
+import { ANIMATIONS, NAVIGATION_DEBOUNCE_DELAY } from './constants'
 import { UseSwipiType } from './types'
+import { returnCountOfDots } from './helpers'
 
 export const useSwipi = ({
   config,
@@ -23,6 +24,7 @@ export const useSwipi = ({
   slidesAnimation,
   customActiveDot,
   spaceBetweenSlides,
+  loop
 }: UseSwipiType) => {
   const [windowWidth, setWindowWidth] = useState<number>(0)
   const [animation, setAnimation] = useState<boolean>(false)
@@ -46,6 +48,7 @@ export const useSwipi = ({
     setTransform,
     jumpToTheLastSlide,
     checkAreaBeyondSwipi,
+    visibleCountSlides
   } = useSlides({
     endX,
     startX,
@@ -67,7 +70,7 @@ export const useSwipi = ({
     prevDot,
     returnDots,
     setSlideIndex,
-    handleDotClick,
+    handleDotClick
   } = useDots({
     dotColor,
     customDot,
@@ -77,7 +80,25 @@ export const useSwipi = ({
     customActiveDot,
     setAnimation,
     setTransform,
+    loop
   })
+
+  const isLastSlide = (): boolean => {
+    return slideIndex + visibleCountSlides === children.length
+  }
+
+  const isFirstSlide = (): boolean => {
+    return slideIndex === 0
+  }
+
+  const isDisableMove =
+    () =>
+    (isNext?: boolean): boolean => {
+      if (isNext && isLastSlide() && !loop) return true
+      if (!isNext && isFirstSlide() && !loop) return true
+
+      return false
+    }
 
   const checkSwipiCorner = useCallback(
     (): boolean =>
@@ -117,6 +138,8 @@ export const useSwipi = ({
     checkSwipiCorner,
     jumpToTheLastSlide,
     checkAreaBeyondSwipi,
+    isDisableMove: isDisableMove(),
+    startX
   })
 
   const { nextImg, prevImg } = useNavigation({
@@ -126,6 +149,7 @@ export const useSwipi = ({
     setAnimation,
     checkSwipiCorner,
     putInTheInitialPosition,
+    isDisableMove: isDisableMove()
   })
 
   useAutoplay({
@@ -133,7 +157,7 @@ export const useSwipi = ({
     autoplay,
     slideIndex,
     autoplaySpeed,
-    nextImg: () => nextImg(nextDot),
+    nextImg: () => nextImg(nextDot)
   })
 
   useWindowResize(() => {
@@ -165,7 +189,9 @@ export const useSwipi = ({
     setTransform,
     setAnimation,
     handleDotClick,
-    nextImg: useDebounce(() => nextImg(nextDot), navigationDebounceDelay),
-    prevImg: useDebounce(() => prevImg(prevDot), navigationDebounceDelay),
+    nextImg: useDebounce(() => nextImg(nextDot), NAVIGATION_DEBOUNCE_DELAY),
+    prevImg: useDebounce(() => prevImg(prevDot), NAVIGATION_DEBOUNCE_DELAY),
+    countShowDots: returnCountOfDots(children, visibleCountSlides, loop),
+    isDisableButton: isDisableMove()
   }
 }

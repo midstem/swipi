@@ -11,3 +11,7 @@ export const cloneArray = <T extends Object>(
 ): T[] => {
   return new Array(count).fill(array).flat() as T[]
 }
+
+export const generateArray = (count: number): string[] => {
+  return Array.from({ length: count }, () => '')
+}
