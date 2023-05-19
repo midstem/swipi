@@ -10,7 +10,7 @@ import { fadeIn } from '../../SlidesAnimation/FadeIn'
 import {
   DISTANCE,
   FIRST_SLIDE_IDENTIFIER,
-  defaultSwipiWidth
+  DEFAULT_SWIPI_WIDTH
 } from '../constants'
 import { SwipeDirections } from '../constants'
 
@@ -19,7 +19,7 @@ export const addUniqueId = (slides: JSX.Element[]): AddUniqueIdReturnType =>
 
 export const returnSlideWidth = ({
   visibleCountSlides,
-  current = defaultSwipiWidth,
+  current = DEFAULT_SWIPI_WIDTH,
   spaceBetween
 }: ReturnSlideWidthType): number =>
   (current + spaceBetween) / visibleCountSlides

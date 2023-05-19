@@ -7,7 +7,7 @@ import {
   setKeyToChildren
 } from '../../helpers'
 import { cloneArray } from '../../../helpers'
-import { reduceSlide } from '../../constants'
+import { REDUCE_SLIDE } from '../../constants'
 import { Slides } from './types'
 
 export const useSlides = ({
@@ -48,7 +48,7 @@ export const useSlides = ({
   const slideWidth = useMemo(
     () =>
       isCornerSlide
-        ? returnSlideWidth(updateSlideWidthArgs) * reduceSlide
+        ? returnSlideWidth(updateSlideWidthArgs) * REDUCE_SLIDE
         : returnSlideWidth(updateSlideWidthArgs),
     [isCornerSlide, updateSlideWidthArgs]
   )

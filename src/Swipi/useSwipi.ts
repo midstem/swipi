@@ -6,7 +6,7 @@ import { useDebounce } from './hooks/useDebounce'
 import { useAutoplay } from './hooks/useAutoplay'
 import { useNavigation } from './hooks/useNavigation'
 import { useWindowResize } from './hooks/useWindowResize'
-import { ANIMATIONS, navigationDebounceDelay } from './constants'
+import { ANIMATIONS, NAVIGATION_DEBOUNCE_DELAY } from './constants'
 import { UseSwipiType } from './types'
 import { returnCountOfDots } from './helpers'
 
@@ -189,8 +189,8 @@ export const useSwipi = ({
     setTransform,
     setAnimation,
     handleDotClick,
-    nextImg: useDebounce(() => nextImg(nextDot), navigationDebounceDelay),
-    prevImg: useDebounce(() => prevImg(prevDot), navigationDebounceDelay),
+    nextImg: useDebounce(() => nextImg(nextDot), NAVIGATION_DEBOUNCE_DELAY),
+    prevImg: useDebounce(() => prevImg(prevDot), NAVIGATION_DEBOUNCE_DELAY),
     countShowDots: returnCountOfDots(children, visibleCountSlides, loop),
     isDisableButton: isDisableMove()
   }
