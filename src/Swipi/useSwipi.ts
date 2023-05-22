@@ -123,6 +123,8 @@ export const useSwipi = ({
   )
 
   const { onEnd, onMove, onStart } = useEvents({
+    startX,
+    endX,
     children,
     transform,
     slideWidth,
@@ -138,8 +140,7 @@ export const useSwipi = ({
     checkSwipiCorner,
     jumpToTheLastSlide,
     checkAreaBeyondSwipi,
-    isDisableMove: isDisableMove(),
-    startX
+    isDisableMove: isDisableMove()
   })
 
   const { nextImg, prevImg } = useNavigation({

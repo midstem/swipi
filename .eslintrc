@@ -56,7 +56,7 @@
     // All
     "no-undef": "off",
     "no-shadow": "off",
-    "no-debugger": 0,
+    "no-debugger": 1,
     "no-use-before-define": "off",
     "no-alert": 0,
     "no-await-in-loop": 0,
