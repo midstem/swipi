@@ -1,5 +1,6 @@
 import { FunctionComponent, ReactNode } from 'react'
 import { DotsTypes, SlidesAnimation, ValueOf } from '../types'
+import { SwipeDirections } from './constants'
 
 export type AddUniqueIdReturnType = Array<{ id: string } & JSX.Element>
 
@@ -74,4 +75,12 @@ export type SetWithPrev = (value: number | ((prev: number) => number)) => void
 export type TouchCoordsType = {
   touchStartX: number
   touchEndX: number
+}
+
+export type CalculateSliderTransformT = {
+  transform: number
+  slideWidth: number
+  swipedSide: SwipeDirections | null
+  timeTouch: Date
+  isDisableMove: boolean
 }

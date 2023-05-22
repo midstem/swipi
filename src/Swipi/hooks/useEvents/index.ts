@@ -1,9 +1,15 @@
 import { useState } from 'react'
 import { TouchEvents } from './types'
-import { calculateSlideIndex, getSwipeDirection } from '../../helpers'
+import {
+  calculateSlideIndex,
+  calculateSliderTransform,
+  getSwipeDirection
+} from '../../helpers'
 import { SwipeDirections } from '../../constants'
 
 export const useEvents = ({
+  endX: touchEndX,
+  startX: touchStartX,
   children,
   transform,
   slideWidth,
@@ -19,10 +25,10 @@ export const useEvents = ({
   checkSwipiCorner,
   jumpToTheLastSlide,
   checkAreaBeyondSwipi,
-  startX,
   isDisableMove
 }: TouchEvents) => {
   const [mouseDown, setMouseDown] = useState(false)
+  const [timeTouch, setTimeTouch] = useState<Date>(new Date())
 
   const resetCoordinates = (): void => {
     setEndX(0)
@@ -36,10 +42,25 @@ export const useEvents = ({
   }
 
   const onSwipe = (): void => {
-    setTransform((prev) => Math.round(prev / slideWidth) * slideWidth)
+    const swipedSide = getSwipeDirection({ touchEndX, touchStartX })
+
+    setTransform((prev) => {
+      const newTransform = calculateSliderTransform({
+        transform: prev,
+        isDisableMove: isDisableMove(swipedSide === SwipeDirections.LEFT),
+        slideWidth,
+        timeTouch,
+        swipedSide
+      })
+
+      setSlideIndex(calculateSlideIndex(newTransform, slideWidth, children))
+
+      return newTransform
+    })
   }
 
   const onStart = (X: number): void => {
+    setTimeTouch(new Date())
     checkSwipiCorner() && turnInitialPosition()
     setStartX(X)
     setMouseDown(true)
@@ -48,7 +69,7 @@ export const useEvents = ({
   const onMove = (X: number): void => {
     if (!mouseDown) return
 
-    const swipedSide = getSwipeDirection({ touchEndX: X, touchStartX: startX })
+    const swipedSide = getSwipeDirection({ touchEndX: X, touchStartX })
 
     if (isDisableMove(swipedSide === SwipeDirections.LEFT)) return
 

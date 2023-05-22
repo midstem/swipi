@@ -1,16 +1,18 @@
 import { CSSProperties, MutableRefObject } from 'react'
 import {
   AddUniqueIdReturnType,
+  CalculateSliderTransformT,
   ReturnSlideWidthType,
   TouchCoordsType
 } from '../types'
-import { generateUniqueID } from '../../helpers'
+import { generateUniqueID, returnTimeDifference } from '../../helpers'
 import { SlidesAnimation, ValueOf } from '../../types'
 import { fadeIn } from '../../SlidesAnimation/FadeIn'
 import {
   DISTANCE,
   FIRST_SLIDE_IDENTIFIER,
-  DEFAULT_SWIPI_WIDTH
+  DEFAULT_SWIPI_WIDTH,
+  FAST_SWIPE_TIME
 } from '../constants'
 import { SwipeDirections } from '../constants'
 
@@ -86,9 +88,37 @@ export const returnCountOfDots = (
   visibleCountSlides: number,
   loop: boolean
 ): number => {
-  if (loop) return children.length
+  if (loop || visibleCountSlides === 1) return children.length
 
   return (
     Math.round(children.length / visibleCountSlides) + FIRST_SLIDE_IDENTIFIER
   )
+}
+
+export const calculateSliderTransform = ({
+  transform,
+  slideWidth,
+  swipedSide,
+  timeTouch,
+  isDisableMove
+}: CalculateSliderTransformT): number => {
+  const currentSlide = transform / slideWidth
+  const currentTransform = Math.round(currentSlide) * slideWidth
+
+  if (isDisableMove) {
+    return currentTransform
+  }
+
+  if (returnTimeDifference(timeTouch, new Date()) > FAST_SWIPE_TIME) {
+    return currentTransform
+  }
+
+  if (swipedSide === SwipeDirections.LEFT) {
+    return Math.floor(currentSlide) * slideWidth
+  }
+
+  if (swipedSide === SwipeDirections.RIGHT)
+    return Math.ceil(currentSlide) * slideWidth
+
+  return currentTransform
 }

@@ -23,3 +23,5 @@ export enum SwipeDirections {
 export const FIRST_SLIDE_IDENTIFIER = 1
 
 export const DISTANCE = 1
+
+export const FAST_SWIPE_TIME = 200
