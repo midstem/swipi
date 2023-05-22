@@ -5,7 +5,7 @@ const CarouselWrapper = ({
   className = '',
   ...props
 }: ComponentBasicProps): JSX.Element => (
-  <div className={`slider ${className}`} {...props}>
+  <div className={`swipi ${className}`} {...props}>
     {children}
   </div>
 )

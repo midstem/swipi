@@ -1,99 +1,106 @@
-import { ConfigType, DotsAnimation } from './types'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useSlides } from './hooks/useSlides'
 import { useDots } from './hooks/useDots'
+import { useSlides } from './hooks/useSlides'
 import { useEvents } from './hooks/useEvents'
-import { useNavigation } from './hooks/useNavigation'
-import { useAutoplay } from './hooks/useAutoplay'
-import { useWindowResize } from './hooks/useWindowResize'
-import { ANIMATIONS, navigationDebounceDelay } from './constants'
-import { SlidesAnimation, ValueOf } from '../types'
 import { useDebounce } from './hooks/useDebounce'
+import { useAutoplay } from './hooks/useAutoplay'
+import { useNavigation } from './hooks/useNavigation'
+import { useWindowResize } from './hooks/useWindowResize'
+import { ANIMATIONS, NAVIGATION_DEBOUNCE_DELAY } from './constants'
+import { UseSwipiType } from './types'
+import { returnCountOfDots } from './helpers'
 
-export type Slider = {
-  children: JSX.Element[]
-  config: ConfigType[]
-  customActiveDot: JSX.Element | undefined
-  customDot: JSX.Element | undefined
-  slidesNumber: number
-  spaceBetweenSlides: number
-  autoplay: boolean
-  autoplaySpeed: number
-  dotsAnimation: DotsAnimation
-  slidesAnimation: ValueOf<SlidesAnimation>
-  dotColor?: string
-  activeDotColor?: string
-}
-
-export const useSlider = ({
-  children,
+export const useSwipi = ({
   config,
-  customActiveDot,
-  customDot,
-  slidesNumber,
-  spaceBetweenSlides,
+  children,
   autoplay,
+  dotColor,
+  customDot,
+  showArrows,
+  slidesNumber,
   autoplaySpeed,
   dotsAnimation,
+  activeDotColor,
   slidesAnimation,
-  dotColor,
-  activeDotColor
-}: Slider) => {
-  const [animation, setAnimation] = useState<boolean>(false)
+  customActiveDot,
+  spaceBetweenSlides,
+  loop
+}: UseSwipiType) => {
   const [windowWidth, setWindowWidth] = useState<number>(0)
+  const [animation, setAnimation] = useState<boolean>(false)
   const [currentRef, setCurrentRef] = useState<HTMLDivElement | null>(null)
 
-  const [startX, setStartX] = useState<number>(0)
   const [endX, setEndX] = useState<number>(0)
+  const [startX, setStartX] = useState<number>(0)
   const [movePath, setMovePath] = useState<number>(0)
 
-  const slidesWrapperRef = useRef<HTMLDivElement>(null)
   const timeout = useRef<NodeJS.Timer>()
+  const slidesWrapperRef = useRef<HTMLDivElement>(null)
 
   const {
-    isButton,
-    setTransform,
-    slideWidth,
     slides,
-    spaceBetween,
     transform,
+    slideWidth,
+    isShowArrows,
+    spaceBetween,
     startTransform,
-    checkAreaBeyondSlider,
+    moveSlides,
+    setTransform,
     jumpToTheLastSlide,
-    moveSlides
+    checkAreaBeyondSwipi,
+    visibleCountSlides
   } = useSlides({
-    children,
-    config,
-    windowWidth,
-    currentRef,
-    slidesNumber,
-    spaceBetweenSlides,
-    slidesAnimation,
-    startX,
     endX,
+    startX,
+    config,
+    children,
     movePath,
+    currentRef,
+    showArrows,
+    windowWidth,
+    slidesNumber,
+    slidesAnimation,
+    spaceBetweenSlides,
     setMovePath
   })
 
   const {
-    handleDotClick,
     slideIndex,
-    setSlideIndex,
-    returnDots,
     nextDot,
-    prevDot
+    prevDot,
+    returnDots,
+    setSlideIndex,
+    handleDotClick
   } = useDots({
-    setTransform,
+    dotColor,
+    customDot,
     slideWidth,
     dotsAnimation,
+    activeDotColor,
     customActiveDot,
-    customDot,
     setAnimation,
-    dotColor,
-    activeDotColor
+    setTransform,
+    loop
   })
 
-  const checkSliderCorner = useCallback(
+  const isLastSlide = (): boolean => {
+    return slideIndex + visibleCountSlides === children.length
+  }
+
+  const isFirstSlide = (): boolean => {
+    return slideIndex === 0
+  }
+
+  const isDisableMove =
+    () =>
+    (isNext?: boolean): boolean => {
+      if (isNext && isLastSlide() && !loop) return true
+      if (!isNext && isFirstSlide() && !loop) return true
+
+      return false
+    }
+
+  const checkSwipiCorner = useCallback(
     (): boolean =>
       transform <= startTransform * 2 + slideWidth / 2 ||
       transform >= -slideWidth / 2,
@@ -116,38 +123,42 @@ export const useSlider = ({
   )
 
   const { onEnd, onMove, onStart } = useEvents({
-    isButton,
+    startX,
+    endX,
+    children,
     transform,
     slideWidth,
+    isShowArrows,
     startTransform,
-    children,
+    setEndX,
+    setStartX,
+    moveSlides,
+    setMovePath,
     setAnimation,
     setTransform,
     setSlideIndex,
-    checkSliderCorner,
-    checkAreaBeyondSlider,
+    checkSwipiCorner,
     jumpToTheLastSlide,
-    moveSlides,
-    setStartX,
-    setEndX,
-    setMovePath
+    checkAreaBeyondSwipi,
+    isDisableMove: isDisableMove()
   })
 
   const { nextImg, prevImg } = useNavigation({
-    putInTheInitialPosition,
-    checkSliderCorner,
+    children,
+    slideWidth,
     setTransform,
     setAnimation,
-    slideWidth,
-    children
+    checkSwipiCorner,
+    putInTheInitialPosition,
+    isDisableMove: isDisableMove()
   })
 
   useAutoplay({
+    timeout,
     autoplay,
-    autoplaySpeed,
     slideIndex,
-    nextImg: () => nextImg(nextDot),
-    timeout
+    autoplaySpeed,
+    nextImg: () => nextImg(nextDot)
   })
 
   useWindowResize(() => {
@@ -163,23 +174,25 @@ export const useSlider = ({
   }, [])
 
   return {
-    animation,
     slides,
+    animation,
     transform,
-    slideWidth,
-    slidesWrapperRef,
-    isButton,
-    spaceBetween,
     slideIndex,
+    slideWidth,
+    isShowArrows,
+    spaceBetween,
+    slidesWrapperRef,
     Dots: ANIMATIONS[dotsAnimation],
+    onEnd,
+    onMove,
+    onStart,
     returnDots,
-    nextImg: useDebounce(() => nextImg(nextDot), navigationDebounceDelay),
-    prevImg: useDebounce(() => prevImg(prevDot), navigationDebounceDelay),
     setTransform,
     setAnimation,
     handleDotClick,
-    onEnd,
-    onMove,
-    onStart
+    nextImg: useDebounce(() => nextImg(nextDot), NAVIGATION_DEBOUNCE_DELAY),
+    prevImg: useDebounce(() => prevImg(prevDot), NAVIGATION_DEBOUNCE_DELAY),
+    countShowDots: returnCountOfDots(children, visibleCountSlides, loop),
+    isDisableButton: isDisableMove()
   }
 }

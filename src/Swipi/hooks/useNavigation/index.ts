@@ -2,15 +2,18 @@ import { Navigation } from './types'
 
 export const useNavigation = ({
   putInTheInitialPosition,
-  checkSliderCorner,
+  checkSwipiCorner,
   setTransform,
   setAnimation,
   slideWidth,
-  children
+  children,
+  isDisableMove
 }: Navigation) => {
   const navigateSlide =
     (nextSlide?: boolean) =>
     (callback: (transform: number, children: JSX.Element[]) => void) => {
+      if (isDisableMove(!!nextSlide)) return
+
       setTransform((transform) => {
         callback(transform, children)
 
@@ -19,7 +22,7 @@ export const useNavigation = ({
 
       setAnimation(true)
 
-      checkSliderCorner() &&
+      checkSwipiCorner() &&
         putInTheInitialPosition(() =>
           setTransform((transform) => {
             callback(transform, children)

@@ -7,3 +7,11 @@ export const generateUniqueID = () => {
 }
 export const cloneArray = <T extends Object>(array: T[], count: number): T[] =>
   new Array(count).fill(array).flat() as T[]
+
+export const generateArray = (count: number): string[] =>
+  Array.from({ length: count }, () => '')
+
+export const returnTimeDifference = (
+  firstDate: Date,
+  secondDate: Date
+): number => Math.abs(firstDate.getTime() - secondDate.getTime())

@@ -10,15 +10,15 @@ const config = [
 
 describe('ConfigService when we have maxWidth >= windowWidth', () => {
   const {
-    getSliderUpdatesParam,
+    getSwipiUpdatesParam,
     returnCountSlides,
     returnSpaceBetween,
     getRightSlidesCount
   } = ConfigService(config, 1000)
 
-  test('getSliderUpdatesParam', () => {
-    expect(getSliderUpdatesParam('slidesNumber')).toBe(3)
-    expect(getSliderUpdatesParam('spaceBetween')).toBe(30)
+  test('getSwipiUpdatesParam', () => {
+    expect(getSwipiUpdatesParam('slidesNumber')).toBe(3)
+    expect(getSwipiUpdatesParam('spaceBetween')).toBe(30)
   })
 
   test('returnCountSlides', () => {
@@ -43,15 +43,15 @@ describe('ConfigService when we have maxWidth >= windowWidth', () => {
 
 describe("ConfigService when we don't have maxWidth >= windowWidth", () => {
   const {
-    getSliderUpdatesParam,
+    getSwipiUpdatesParam,
     returnCountSlides,
     returnSpaceBetween,
     getRightSlidesCount
   } = ConfigService(config, 1300)
 
-  test('getSliderUpdatesParam', () => {
-    expect(getSliderUpdatesParam('slidesNumber')).toBe(undefined)
-    expect(getSliderUpdatesParam('spaceBetween')).toBe(undefined)
+  test('getSwipiUpdatesParam', () => {
+    expect(getSwipiUpdatesParam('slidesNumber')).toBe(undefined)
+    expect(getSwipiUpdatesParam('spaceBetween')).toBe(undefined)
   })
 
   test('returnCountSlides', () => {

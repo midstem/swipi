@@ -7,11 +7,33 @@
 [bundlephobia-image]: https://badgen.net/bundlephobia/minzip/swipi
 [bundlephobia-url]: https://bundlephobia.com/result?p=swipi
 
-<a href='https://domdev.pro/'>
-  <img src='src/assets/domdev.png' height='60'>
+<a href='https://midstem.net'>
+  <img src='assets/midstem.png' height='60'>
 </a>
 
-<h2>It's a testing branch we  use for testing Swipi before publishing it to npm</h2>
+<p><b>Swipi</b> is a lightweight and compact slider optimized for mobile use. It's built with TypeScript and has a fast loading speed. It's also swipeable, making it easy for users to switch slides with a swipe on their mobile device. Its mobile-friendly design and convenience make it a great choice for improving user experience.</p>
+
+### Installation
+
+**npm**
+
+```bash
+$ npm install swipi
+```
+
+**yarn**
+
+```bash
+$ yarn add swipi
+```
+
+## To see and play with examples follow the <a href='https://midstem.github.io/swipi-landing/'>link</a>
+
+## **Browsers support**
+
+| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Opera |
+| --------- | --------- | --------- | --------- | --------- |
+| IE11, Edge| last 3 versions| last 3 versions| last 3 versions| last 3 versions
 
 ## **Props**
 
@@ -21,6 +43,12 @@
     <th><h3><b>Description</b></h3></th>
     <th><h3><b>Default</b></h3></th>
     <th><h3><b>Type</b></h3></th>
+  </tr>
+  <tr>
+    <td>showArrows</td>
+    <td>Enable/disable arrows</td>
+    <td><code>true</code></td>
+    <td>boolean</td>
   </tr>
   <tr>
     <td>showDots</td>
@@ -212,7 +240,7 @@
 ## **Styling**
 
 ```css
-.slider - styles the container that wraps the slider
+.swipi - styles the container that wraps the slider
 
 .dots-wrapper - styles the container that wraps the dots
 

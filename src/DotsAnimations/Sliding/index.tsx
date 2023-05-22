@@ -1,11 +1,11 @@
 import ActiveDot from '../../UI/ActiveDot'
 import Dot from '../../UI/Dot'
 import DotsWrapper from '../../UI/DotsWrapper'
+import { generateArray } from '../../helpers'
 import { DotsTypes } from '../../types'
 import useSliding from './useSliding'
 
 const Sliding = ({
-  children,
   customDot,
   slideIndex,
   customActiveDot,
@@ -14,13 +14,14 @@ const Sliding = ({
   sizeForDefaultActiveDot,
   activeDotColor,
   animationSpeed,
-  handleDotClick
+  handleDotClick,
+  countShowDots
 }: DotsTypes): JSX.Element => {
   const { dotsRef, activeDotRef, activeDotLeft } = useSliding(slideIndex)
 
   return (
     <DotsWrapper>
-      {children.map((_, index) => (
+      {generateArray(countShowDots).map((_, index) => (
         <div
           key={index}
           ref={(el) => (dotsRef.current[index] = el)}

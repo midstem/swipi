@@ -5,4 +5,5 @@ const DotsWrapper = ({ children }: ComponentBasicProps): JSX.Element => (
     {children}
   </div>
 )
+
 export default DotsWrapper

@@ -3,16 +3,16 @@ import { isFadeInAnimation } from '../helpers'
 import { ConfigType } from '../types'
 
 export const ConfigService = (config: ConfigType[], windowWidth: number) => {
-  const getSliderUpdatesParam = <T extends keyof ConfigType>(
+  const getSwipiUpdatesParam = <T extends keyof ConfigType>(
     param: T
   ): ConfigType[T] | undefined =>
     config.filter((item) => item.maxWidth >= windowWidth).at(-1)?.[param]
 
   const returnCountSlides = (slidesNumber: number): number =>
-    getSliderUpdatesParam('slidesNumber') || slidesNumber
+    getSwipiUpdatesParam('slidesNumber') || slidesNumber
 
   const returnSpaceBetween = (spaceBetweenSlides: number): number =>
-    getSliderUpdatesParam('spaceBetween') || spaceBetweenSlides
+    getSwipiUpdatesParam('spaceBetween') || spaceBetweenSlides
 
   const getRightSlidesCount = (
     slidesNumber: number,
@@ -24,9 +24,9 @@ export const ConfigService = (config: ConfigType[], windowWidth: number) => {
   }
 
   return {
-    getSliderUpdatesParam,
     returnCountSlides,
     returnSpaceBetween,
-    getRightSlidesCount
+    getRightSlidesCount,
+    getSwipiUpdatesParam,
   }
 }

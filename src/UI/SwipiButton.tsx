@@ -1,9 +1,10 @@
 import { forwardRef, RefObject } from 'react'
-import { SliderButtonProps } from './types'
+import { SwipiButtonProps } from './types'
 
-const SliderButton = forwardRef<HTMLButtonElement, SliderButtonProps>(
-  ({ children, onClick, className }, ref): JSX.Element => (
+const SwipiButton = forwardRef<HTMLButtonElement, SwipiButtonProps>(
+  ({ children, onClick, className, disabled }, ref): JSX.Element => (
     <button
+      disabled={disabled}
       className={className}
       ref={ref as RefObject<HTMLButtonElement>}
       onClick={onClick}
@@ -20,4 +21,4 @@ const SliderButton = forwardRef<HTMLButtonElement, SliderButtonProps>(
   )
 )
 
-export default SliderButton
+export default SwipiButton

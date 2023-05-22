@@ -5,12 +5,12 @@ import {
   returnSlideWidth,
   calculateSlideIndex,
   startAutoplay,
-  isButtonFn,
+  isShowArrowsFn,
   setKeyToChildren,
   returnSlidesAnimation,
   isFadeInAnimation
 } from '.'
-import { defaultSliderWidth } from '../constants'
+import { DEFAULT_SWIPI_WIDTH } from '../constants'
 import { SlidesAnimation, ValueOf } from '../../types'
 
 describe('addUniqueId', () => {
@@ -38,7 +38,7 @@ describe('returnSlideWidth', () => {
       visibleCountSlides: 3,
       spaceBetween: 20
     })
-    expect(slideWidth).toEqual((defaultSliderWidth + 20) / 3)
+    expect(slideWidth).toEqual((DEFAULT_SWIPI_WIDTH + 20) / 3)
   })
 })
 
@@ -69,13 +69,13 @@ describe('isButtonFn', () => {
   test('should return true if children length is greater than visibleCountSlides', () => {
     const children = [<div />, <div />, <div />]
     const visibleCountSlides = 2
-    expect(isButtonFn(children, visibleCountSlides)).toBe(true)
+    expect(isShowArrowsFn(children, visibleCountSlides, true)).toBe(true)
   })
 
   test('should return false if children length is less than or equal to visibleCountSlides', () => {
     const children = [<div />, <div />]
     const visibleCountSlides = 2
-    expect(isButtonFn(children, visibleCountSlides)).toBe(false)
+    expect(isShowArrowsFn(children, visibleCountSlides, true)).toBe(false)
   })
 })
 

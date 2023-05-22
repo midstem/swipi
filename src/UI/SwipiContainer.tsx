@@ -1,6 +1,6 @@
 import { ComponentBasicProps } from './types'
 
-const SliderContainer = ({ children }: ComponentBasicProps): JSX.Element => (
+const SwipiContainer = ({ children }: ComponentBasicProps): JSX.Element => (
   <div
     style={{
       display: 'flex',
@@ -12,4 +12,4 @@ const SliderContainer = ({ children }: ComponentBasicProps): JSX.Element => (
   </div>
 )
 
-export default SliderContainer
+export default SwipiContainer

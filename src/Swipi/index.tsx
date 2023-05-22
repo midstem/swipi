@@ -1,73 +1,83 @@
-import { Slide } from '../UI/Slide'
+import { useSwipi } from './useSwipi'
+import { SwipiProps } from './types'
 import { returnSlidesAnimation } from './helpers'
-import { SliderProps } from './types'
-import { useSlider } from './useSlider'
-import SliderContainer from '../UI/SliderContainer'
-import SliderButton from '../UI/SliderButton'
+import { Slide } from '../UI/Slide'
+import SwipiButton from '../UI/SwipiButton'
 import SlidesWrapper from '../UI/SlidesWrapper'
+import SwipiContainer from '../UI/SwipiContainer'
 import SlidesContainer from '../UI/SlidesContainer'
 import CarouselWrapper from '../UI/CarouselWrapper'
 import '../UI/styles.css'
 
-const Slider = ({
+const Swipi = ({
+  showDots,
+  dotColor,
+  customDot,
+  config = [],
+  children = [],
+  activeDotColor,
+  customActiveDot,
   slidesNumber = 3,
-  spaceBetweenSlides = 0,
   nextButton = 'ᐳ',
   prevButton = 'ᐸ',
-  children = [],
-  config = [],
-  showDots,
-  customDot,
-  customActiveDot,
-  dotColor,
-  activeDotColor,
-  sizeForDefaultDot,
-  sizeForDefaultActiveDot = 13,
   autoplay = false,
+  sizeForDefaultDot,
+  showArrows = true,
   autoplaySpeed = 4000,
-  dotsAnimation = 'default',
   animationSpeed = 300,
+  spaceBetweenSlides = 0,
+  dotsAnimation = 'default',
   slidesAnimation = 'default',
-  className
-}: SliderProps) => {
+  sizeForDefaultActiveDot = 13,
+  className,
+  loop = false
+}: SwipiProps) => {
   const {
+    Dots,
+    slides,
     animation,
     transform,
     slideWidth,
-    slidesWrapperRef,
-    slides,
-    isButton,
-    spaceBetween,
     slideIndex,
-    Dots,
-    handleDotClick,
+    spaceBetween,
+    isShowArrows,
+    slidesWrapperRef,
+    onEnd,
+    onMove,
     nextImg,
     prevImg,
-    onEnd,
+    onStart,
     returnDots,
-    onMove,
-    onStart
-  } = useSlider({
-    children,
+    handleDotClick,
+    countShowDots,
+    isDisableButton
+  } = useSwipi({
     config,
-    customActiveDot,
-    customDot,
-    slidesNumber,
-    spaceBetweenSlides,
+    children,
+    dotColor,
     autoplay,
+    customDot,
+    showArrows,
+    slidesNumber,
     autoplaySpeed,
     dotsAnimation,
-    dotColor,
     activeDotColor,
-    slidesAnimation
+    customActiveDot,
+    slidesAnimation,
+    spaceBetweenSlides,
+    loop
   })
 
   return (
     <CarouselWrapper className={className}>
-      <SliderContainer>
-        <SliderButton onClick={prevImg} className="left-button">
-          {isButton && prevButton}
-        </SliderButton>
+      <SwipiContainer>
+        <SwipiButton
+          disabled={isDisableButton()}
+          onClick={prevImg}
+          className="left-button"
+        >
+          {isShowArrows && prevButton}
+        </SwipiButton>
         <SlidesWrapper
           slidesWrapperRef={slidesWrapperRef}
           startTouchByScreen={onStart}
@@ -94,21 +104,25 @@ const Slider = ({
             ))}
           </SlidesContainer>
         </SlidesWrapper>
-        <SliderButton onClick={nextImg} className="right-button">
-          {isButton && nextButton}
-        </SliderButton>
-      </SliderContainer>
+        <SwipiButton
+          disabled={isDisableButton(true)}
+          onClick={nextImg}
+          className="right-button"
+        >
+          {isShowArrows && nextButton}
+        </SwipiButton>
+      </SwipiContainer>
       {showDots && (
         <Dots
-          children={children}
+          countShowDots={countShowDots}
+          dotColor={dotColor}
           customDot={customDot}
-          customActiveDot={customActiveDot}
           slideIndex={slideIndex}
+          activeDotColor={activeDotColor}
+          animationSpeed={animationSpeed}
+          customActiveDot={customActiveDot}
           sizeForDefaultDot={sizeForDefaultDot}
           sizeForDefaultActiveDot={sizeForDefaultActiveDot}
-          activeDotColor={activeDotColor}
-          dotColor={dotColor}
-          animationSpeed={animationSpeed}
           handleDotClick={handleDotClick}
           returnDots={returnDots}
         />
@@ -117,4 +131,4 @@ const Slider = ({
   )
 }
 
-export default Slider
+export default Swipi
