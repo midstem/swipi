@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react'
 import { ConfigService } from '../../configService'
 import {
   addUniqueId,
-  isShowArrowsFn,
+  isHideArrowsFn,
   returnSlideWidth,
   setKeyToChildren
 } from '../../helpers'
@@ -16,7 +16,6 @@ export const useSlides = ({
   config,
   movePath,
   children,
-  showArrows,
   currentRef,
   windowWidth,
   slidesNumber,
@@ -31,7 +30,7 @@ export const useSlides = ({
 
   const visibleCountSlides = getRightSlidesCount(slidesNumber, slidesAnimation)
   const spaceBetween = returnSpaceBetween(spaceBetweenSlides)
-  const isShowArrows = isShowArrowsFn(children, visibleCountSlides, showArrows)
+  const isHideArrows = isHideArrowsFn(children, visibleCountSlides)
   const isCornerSlide = !!getSwipiUpdatesParam('biasRight')
 
   const currentRefWidth = currentRef?.clientWidth
@@ -54,10 +53,10 @@ export const useSlides = ({
   )
 
   const slides = useMemo(() => {
-    return isShowArrows
+    return isHideArrows
       ? addUniqueId(cloneArray(setKeyToChildren(children), 3))
       : addUniqueId(setKeyToChildren(children))
-  }, [isShowArrows, children])
+  }, [isHideArrows, children])
 
   const startTransform = -slideWidth * children.length
 
@@ -81,7 +80,7 @@ export const useSlides = ({
     slides,
     transform,
     slideWidth,
-    isShowArrows,
+    isHideArrows,
     spaceBetween,
     startTransform,
     moveSlides,

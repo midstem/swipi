@@ -12,7 +12,8 @@ import {
   DISTANCE,
   FIRST_SLIDE_IDENTIFIER,
   DEFAULT_SWIPI_WIDTH,
-  FAST_SWIPE_TIME
+  FAST_SWIPE_TIME,
+  ONE_SLIDE
 } from '../constants'
 import { SwipeDirections } from '../constants'
 
@@ -46,11 +47,10 @@ export const startAutoplay = (
   }, autoplaySpeed)
 }
 
-export const isShowArrowsFn = (
+export const isHideArrowsFn = (
   children: JSX.Element[],
-  visibleCountSlides: number,
-  showArrows: boolean
-) => (showArrows ? children.length > visibleCountSlides : showArrows)
+  visibleCountSlides: number
+) => children.length > visibleCountSlides
 
 export const setKeyToChildren = (children: JSX.Element[]): JSX.Element[] => {
   return children.map((child, index) => ({ ...child, key: index }))
@@ -88,7 +88,11 @@ export const returnCountOfDots = (
   visibleCountSlides: number,
   loop: boolean
 ): number => {
-  if (loop || visibleCountSlides === 1) return children.length
+  if (children.length / visibleCountSlides === ONE_SLIDE) return 1
+
+  if (!loop) return Math.round(children.length / visibleCountSlides)
+
+  if (visibleCountSlides === ONE_SLIDE) return children.length
 
   return (
     Math.round(children.length / visibleCountSlides) + FIRST_SLIDE_IDENTIFIER
