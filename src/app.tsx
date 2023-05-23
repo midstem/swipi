@@ -1,12 +1,13 @@
 import { useState } from 'react'
-import Slider from './Slider'
+import Swipi from './Swipi'
+import Slide from './components/Slide'
 import DotsForm from './components/DotsForm'
 import SlidesForm from './components/SlidesForm'
 import ArrowsForm from './components/ArrowsForm'
 import { dives } from './constants'
-import { DotsAnimation } from './Slider/types'
+import { DotsAnimation } from './Swipi/types'
 import { SlidesAnimation, ValueOf } from './types'
-import { Dot, ActiveDot, FormsWrapper } from './styles'
+import { Wrapper, Dot, ActiveDot, FormsWrapper } from './styles'
 import './styles/normalize.css'
 import { ReactComponent as Unicorn } from './assets/unicorn.svg'
 import { ReactComponent as ArrowLeft } from './assets/chevron-left.svg'
@@ -14,6 +15,8 @@ import { ReactComponent as ArrowRight } from './assets/chevron-right.svg'
 
 const App = () => {
   const [showDots, setShowDots] = useState<boolean>(false)
+  const [loop, setLoop] = useState<boolean>(false)
+  const [showArrows, setShowArrows] = useState<boolean>(false)
   const [sizeForDefaultDot, setSizeForDefaultDot] = useState<number>(0)
   const [sizeForDefaultActiveDot, setSizeForDefaultActiveDot] =
     useState<number>(0)
@@ -36,9 +39,11 @@ const App = () => {
   const [biasRight, setBiasRight] = useState<boolean>(false)
 
   return (
-    <>
-      <Slider
-        showDots={showDots}
+    <Wrapper>
+      <Swipi
+        loop={loop || undefined}
+        showArrows={showArrows}
+        showDots={showDots || undefined}
         sizeForDefaultDot={
           sizeForDefaultDot === 0 ? undefined : sizeForDefaultDot
         }
@@ -70,7 +75,7 @@ const App = () => {
           spaceBetweenSlides === 0 ? undefined : spaceBetweenSlides
         }
         animationSpeed={animationSpeed === 0 ? undefined : animationSpeed}
-        autoplay={!autoplay ? undefined : autoplay}
+        autoplay={autoplay || undefined}
         autoplaySpeed={autoplaySpeed === 0 ? undefined : autoplaySpeed}
         slidesAnimation={
           slidesAnimation === ''
@@ -94,10 +99,10 @@ const App = () => {
           )
         }
       >
-        {dives.map((div) => (
-          <>{div.element}</>
+        {dives.map((child) => (
+          <Slide child={child} />
         ))}
-      </Slider>
+      </Swipi>
       <FormsWrapper>
         <div>
           <DotsForm
@@ -118,6 +123,8 @@ const App = () => {
           <ArrowsForm
             prevButton={prevButton}
             nextButton={nextButton}
+            showArrows={showArrows}
+            setShowArrows={setShowArrows}
             setPrevButton={setPrevButton}
             setNextButton={setNextButton}
           />
@@ -125,6 +132,8 @@ const App = () => {
         <SlidesForm
           autoplay={autoplay}
           biasRight={biasRight}
+          loop={loop}
+          setLoop={setLoop}
           setSlidesNumber={setSlidesNumber}
           setSpaceBetweenSlides={setSpaceBetweenSlides}
           setAnimationSpeed={setAnimationSpeed}
@@ -137,7 +146,7 @@ const App = () => {
           setBiasRight={setBiasRight}
         />
       </FormsWrapper>
-    </>
+    </Wrapper>
   )
 }
 

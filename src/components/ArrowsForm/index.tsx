@@ -4,11 +4,38 @@ import { ArrowsFormProps } from './types'
 const ArrowsForm = ({
   prevButton,
   nextButton,
+  showArrows,
+  setShowArrows,
   setPrevButton,
   setNextButton
 }: ArrowsFormProps) => (
   <Form>
     <FormName>Arrows</FormName>
+    <BooleanProperty>
+      <p>showArrows</p>
+      <div>
+        <RadioLabel>
+          <input
+            type="radio"
+            name="showArrows"
+            value="Yes"
+            checked={showArrows}
+            onChange={() => setShowArrows(true)}
+          />
+          Yes
+        </RadioLabel>
+        <RadioLabel>
+          <input
+            type="radio"
+            value="No"
+            name="showArrows"
+            checked={!showArrows}
+            onChange={() => setShowArrows(false)}
+          />
+          No
+        </RadioLabel>
+      </div>
+    </BooleanProperty>
     <BooleanProperty>
       <p>prevButton</p>
       <div>

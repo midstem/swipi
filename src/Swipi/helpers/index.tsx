@@ -52,9 +52,8 @@ export const isShowArrowsFn = (
   showArrows: boolean
 ) => (showArrows ? children.length > visibleCountSlides : showArrows)
 
-export const setKeyToChildren = (children: JSX.Element[]): JSX.Element[] => {
-  return children.map((child, index) => ({ ...child, key: index }))
-}
+export const setKeyToChildren = (children: JSX.Element[]): JSX.Element[] =>
+  children.map((child, index) => ({ ...child, key: index }))
 
 export const returnSlidesAnimation = (
   animation: ValueOf<SlidesAnimation>,
@@ -68,9 +67,8 @@ export const returnSlidesAnimation = (
   }
 }
 
-export const isFadeInAnimation = (animation: ValueOf<SlidesAnimation>) => {
-  return animation === SlidesAnimation.FADE_IN
-}
+export const isFadeInAnimation = (animation: ValueOf<SlidesAnimation>) =>
+  animation === SlidesAnimation.FADE_IN
 
 export const getSwipeDirection = ({
   touchEndX,

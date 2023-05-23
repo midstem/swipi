@@ -1,6 +1,8 @@
 export type SlidesFormProps = {
   autoplay: boolean
   biasRight: boolean
+  loop: boolean
+  setLoop: (a: boolean) => void
   setSlidesNumber: (a: number) => void
   setSpaceBetweenSlides: (a: number) => void
   setAnimationSpeed: (a: number) => void

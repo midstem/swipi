@@ -11,6 +11,8 @@ import {
 const SlidesForm = ({
   autoplay,
   biasRight,
+  loop,
+  setLoop,
   setSlidesNumber,
   setSpaceBetweenSlides,
   setAnimationSpeed,
@@ -24,6 +26,29 @@ const SlidesForm = ({
 }: SlidesFormProps): JSX.Element => (
   <Form>
     <FormName>Slides</FormName>
+    <BooleanProperty>
+      <p>loop</p>
+      <div>
+        <RadioLabel>
+          <input
+            type="radio"
+            name="loop"
+            checked={loop}
+            onChange={() => setLoop(true)}
+          />
+          Yes
+        </RadioLabel>
+        <RadioLabel>
+          <input
+            type="radio"
+            name="loop"
+            checked={!loop}
+            onChange={() => setLoop(false)}
+          />
+          No
+        </RadioLabel>
+      </div>
+    </BooleanProperty>
     <Property>
       <label htmlFor="slidesNumber">slidesNumber</label>
       <NumberInput
