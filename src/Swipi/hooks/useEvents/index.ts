@@ -71,7 +71,11 @@ export const useEvents = ({
 
     const swipedSide = getSwipeDirection({ touchEndX: X, touchStartX })
 
-    if (isDisableMove(swipedSide === SwipeDirections.LEFT)) return
+    if (isDisableMove(swipedSide === SwipeDirections.LEFT)) {
+      setAnimation(true)
+      onSwipe()
+      return
+    }
 
     setAnimation(false)
     moveSlides()
