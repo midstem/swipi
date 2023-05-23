@@ -92,11 +92,11 @@ export const returnCountOfDots = (
 
   if (countOfSlides === visibleCountSlides) return 1
 
-  if (!loop) return Math.round(countOfSlides / visibleCountSlides)
+  if (loop) return countOfSlides
 
   if (visibleCountSlides === ONE_SLIDE) return countOfSlides
 
-  return Math.round(countOfSlides / visibleCountSlides) + FIRST_SLIDE_IDENTIFIER
+  return countOfSlides - visibleCountSlides + FIRST_SLIDE_IDENTIFIER
 }
 
 export const calculateSliderTransform = ({

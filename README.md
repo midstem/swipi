@@ -143,6 +143,12 @@ $ yarn add swipi
     <td>4000</td>
     <td>number</td>
   </tr>
+    <tr>
+    <td>loop</td>
+    <td>Make the slider infinity</td>
+    <td>false</td>
+    <td>boolean</td>
+  </tr>
   <tr>
     <td>config</td>
     <td>
