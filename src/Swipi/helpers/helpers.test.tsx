@@ -5,7 +5,7 @@ import {
   returnSlideWidth,
   calculateSlideIndex,
   startAutoplay,
-  isShowArrowsFn,
+  isHideArrowsFn,
   setKeyToChildren,
   returnSlidesAnimation,
   isFadeInAnimation
@@ -69,13 +69,13 @@ describe('isButtonFn', () => {
   test('should return true if children length is greater than visibleCountSlides', () => {
     const children = [<div />, <div />, <div />]
     const visibleCountSlides = 2
-    expect(isShowArrowsFn(children, visibleCountSlides, true)).toBe(true)
+    expect(isHideArrowsFn(children, visibleCountSlides)).toBe(true)
   })
 
   test('should return false if children length is less than or equal to visibleCountSlides', () => {
     const children = [<div />, <div />]
     const visibleCountSlides = 2
-    expect(isShowArrowsFn(children, visibleCountSlides, true)).toBe(false)
+    expect(isHideArrowsFn(children, visibleCountSlides)).toBe(false)
   })
 })
 

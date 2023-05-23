@@ -5,7 +5,6 @@ export type Slides = {
   endX: number
   startX: number
   movePath: number
-  showArrows: boolean
   windowWidth: number
   config: ConfigType[]
   slidesNumber: number
