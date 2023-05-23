@@ -13,7 +13,7 @@ export const useEvents = ({
   children,
   transform,
   slideWidth,
-  isShowArrows,
+  isHideArrows,
   startTransform,
   setEndX,
   setStartX,
@@ -92,8 +92,8 @@ export const useEvents = ({
   }
 
   return {
-    onStart: isShowArrows ? onStart : () => {},
-    onMove: isShowArrows ? onMove : () => {},
+    onStart: isHideArrows ? onStart : () => {},
+    onMove: isHideArrows ? onMove : () => {},
     onEnd
   }
 }

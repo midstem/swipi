@@ -5,7 +5,7 @@ export type TouchEvents = {
   startX: number
   transform: number
   slideWidth: number
-  isShowArrows: boolean
+  isHideArrows: boolean
   startTransform: number
   children: JSX.Element[]
   moveSlides: () => void
