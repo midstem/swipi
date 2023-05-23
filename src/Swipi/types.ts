@@ -17,6 +17,7 @@ export type UseSwipiType = {
   showArrows: boolean
   config: ConfigType[]
   slidesNumber: number
+  initialSlide: number
   autoplaySpeed: number
   children: JSX.Element[]
   activeDotColor?: string
@@ -34,6 +35,7 @@ export type SwipiProps = {
   autoplay?: boolean
   className?: string
   showArrows?: boolean
+  initialSlide?: number
   slidesNumber?: number
   config?: ConfigType[]
   nextButton?: ReactNode

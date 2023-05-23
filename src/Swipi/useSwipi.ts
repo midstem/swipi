@@ -18,6 +18,7 @@ export const useSwipi = ({
   customDot,
   showArrows,
   slidesNumber,
+  initialSlide,
   autoplaySpeed,
   dotsAnimation,
   activeDotColor,
@@ -172,6 +173,13 @@ export const useSwipi = ({
     setWindowWidth(window.innerWidth)
     setCurrentRef(slidesWrapperRef.current)
   }, [])
+
+  useEffect(() => {
+    const adjustedSlideIndex = Math.max(1, Math.min(initialSlide, children.length)) - 1
+
+    setTransform(slideWidth * -(children.length + adjustedSlideIndex))
+    setSlideIndex(adjustedSlideIndex)
+  }, [children.length, initialSlide, setSlideIndex, setTransform, slideWidth])
 
   return {
     slides,
