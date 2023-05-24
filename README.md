@@ -45,10 +45,28 @@ $ yarn add swipi
     <th><h3><b>Type</b></h3></th>
   </tr>
   <tr>
-    <td>showArrows</td>
-    <td>Enable/disable arrows</td>
-    <td><code>true</code></td>
-    <td>boolean</td>
+    <td>initialSlide</td>
+    <td>Sets the initial slide</td>
+    <td>1</td>
+    <td>number</td>
+  </tr>
+  <tr>
+    <td>slidesNumber</td>
+    <td>Number of visible slides (takes effect only if a user didn't set <code>slidesNumber</code> in the <code>config</code> or if the screen width is wider than what is stated in <code>maxWidth</code> in the <code>config</code>)</td>
+    <td>3</td>
+    <td>number</td>
+  </tr>
+  <tr>
+    <td>spaceBetweenSlides</td>
+    <td>Space between slides (takes effect only if a user didn't set <code>spaceBetween</code> in the <code>config</code> or if the screen width is wider than what is stated in <code>maxWidth</code> in the <code>config</code>)</td>
+    <td>0</td>
+    <td>number</td>
+  </tr>
+  <tr>
+    <td>animationSpeed</td>
+    <td>Sets the duration (in milliseconds) for slide transitions</td>
+    <td>300</td>
+    <td>number</td>
   </tr>
   <tr>
     <td>showDots</td>
@@ -102,6 +120,12 @@ $ yarn add swipi
     <td>JSX.Element</td>
   </tr>
   <tr>
+    <td>showArrows</td>
+    <td>Enable/disable arrows</td>
+    <td><code>true</code></td>
+    <td>boolean</td>
+  </tr>
+  <tr>
     <td>prevButton</td>
     <td>Custom element to move slides back</td>
     <td>ᐸ</td>
@@ -112,24 +136,6 @@ $ yarn add swipi
     <td>Custom element to move slides forward</td>
     <td>ᐳ</td>
     <td>ReactNode</td>
-  </tr>
-  <tr>
-    <td>slidesNumber</td>
-    <td>Number of visible slides (takes effect only if a user didn't set <code>slidesNumber</code> in the <code>config</code> or if the screen width is wider than what is stated in <code>maxWidth</code> in the <code>config</code>)</td>
-    <td>3</td>
-    <td>number</td>
-  </tr>
-  <tr>
-    <td>spaceBetweenSlides</td>
-    <td>Space between slides (takes effect only if a user didn't set <code>spaceBetween</code> in the <code>config</code> or if the screen width is wider than what is stated in <code>maxWidth</code> in the <code>config</code>)</td>
-    <td>0</td>
-    <td>number</td>
-  </tr>
-  <tr>
-    <td>animationSpeed</td>
-    <td>Sets the duration (in milliseconds) for slide transitions</td>
-    <td>300</td>
-    <td>number</td>
   </tr>
   <tr>
     <td>autoplay</td>

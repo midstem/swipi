@@ -18,6 +18,7 @@ const Swipi = ({
   activeDotColor,
   customActiveDot,
   slidesNumber = 3,
+  initialSlide = 1,
   nextButton = 'ᐳ',
   prevButton = 'ᐸ',
   autoplay = false,
@@ -41,6 +42,7 @@ const Swipi = ({
     slideIndex,
     spaceBetween,
     isShowArrows,
+    countShowDots,
     slidesWrapperRef,
     onEnd,
     onMove,
@@ -49,7 +51,6 @@ const Swipi = ({
     onStart,
     returnDots,
     handleDotClick,
-    countShowDots,
     isDisableButton
   } = useSwipi({
     config,
@@ -59,6 +60,7 @@ const Swipi = ({
     customDot,
     showArrows,
     slidesNumber,
+    initialSlide,
     autoplaySpeed,
     dotsAnimation,
     activeDotColor,

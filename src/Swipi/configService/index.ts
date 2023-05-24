@@ -27,6 +27,6 @@ export const ConfigService = (config: ConfigType[], windowWidth: number) => {
     returnCountSlides,
     returnSpaceBetween,
     getRightSlidesCount,
-    getSwipiUpdatesParam,
+    getSwipiUpdatesParam
   }
 }
