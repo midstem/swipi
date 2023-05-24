@@ -145,7 +145,7 @@ $ yarn add swipi
   </tr>
     <tr>
     <td>loop</td>
-    <td>Make the slider infinite</td>
+    <td>Makes the slider infinite</td>
     <td>false</td>
     <td>boolean</td>
   </tr>
