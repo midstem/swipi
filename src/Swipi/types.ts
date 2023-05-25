@@ -27,6 +27,7 @@ export type UseSwipiType = {
   customActiveDot?: JSX.Element
   slidesAnimation: ValueOf<SlidesAnimation>
   loop: boolean
+  onChange: (value: SlidePositions) => void
 }
 
 export type SwipiProps = {
@@ -52,6 +53,7 @@ export type SwipiProps = {
   sizeForDefaultActiveDot?: number
   slidesAnimation?: ValueOf<SlidesAnimation>
   loop?: boolean
+  onChange?: (value: SlidePositions) => void
 }
 
 export type DotsAnimation = 'default' | 'sliding'
@@ -85,4 +87,10 @@ export type CalculateSliderTransformT = {
   swipedSide: SwipeDirections | null
   timeTouch: Date
   isDisableMove: boolean
+}
+
+export type SlidePositions = {
+  prev: number
+  current: number
+  next: number
 }

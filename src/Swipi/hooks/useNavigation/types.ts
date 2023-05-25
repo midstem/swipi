@@ -6,6 +6,5 @@ export type Navigation = {
   setAnimation: (animation: boolean) => void
   setTransform: SetWithPrev
   slideWidth: number
-  children: JSX.Element[]
   isDisableMove: (value: boolean) => boolean
 }

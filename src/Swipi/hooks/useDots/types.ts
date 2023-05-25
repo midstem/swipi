@@ -10,4 +10,6 @@ export type DotsProps = {
   dotColor?: string
   activeDotColor?: string
   loop: boolean
+  children: JSX.Element[]
+  visibleCountSlides: number
 }

@@ -155,6 +155,12 @@ $ yarn add swipi
     <td>false</td>
     <td>boolean</td>
   </tr>
+    <tr>
+    <td>onChange</td>
+    <td>The onChange function is called every time the current index changes and returns an object with the current, previous and next indices</td>
+    <td>() => {}</td>
+    <td>({ prev: number, current: number, next: number }) => void</td>
+  </tr>
   <tr>
     <td>config</td>
     <td>

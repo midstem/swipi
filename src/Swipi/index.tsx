@@ -31,7 +31,8 @@ const Swipi = ({
   slidesAnimation = 'default',
   sizeForDefaultActiveDot = 13,
   className,
-  loop = false
+  loop = false,
+  onChange = () => {}
 }: SwipiProps) => {
   const {
     Dots,
@@ -67,7 +68,8 @@ const Swipi = ({
     customActiveDot,
     slidesAnimation,
     spaceBetweenSlides,
-    loop
+    loop,
+    onChange
   })
 
   return (
