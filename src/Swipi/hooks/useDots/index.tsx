@@ -2,7 +2,7 @@ import { ReactNode, useState, useCallback } from 'react'
 import { DotsProps } from './types'
 import ActiveDot from '../../../UI/ActiveDot'
 import Dot from '../../../UI/Dot'
-import { calculateSlideIndex } from '../../helpers'
+import { calculateSlideIndex, returnCountOfDots } from '../../helpers'
 
 export const useDots = ({
   setTransform,
@@ -11,7 +11,10 @@ export const useDots = ({
   customDot,
   setAnimation,
   activeDotColor,
-  dotColor
+  dotColor,
+  loop,
+  children,
+  visibleCountSlides
 }: DotsProps) => {
   const [slideIndex, setSlideIndex] = useState(0)
 
@@ -34,7 +37,7 @@ export const useDots = ({
   }
 
   const changeDot = useCallback(
-    (next?: boolean) => (transform: number, children: JSX.Element[]) => {
+    (next?: boolean) => (transform: number) => {
       setSlideIndex(
         calculateSlideIndex(
           next ? transform - slideWidth : transform + slideWidth,
@@ -43,7 +46,7 @@ export const useDots = ({
         )
       )
     },
-    [slideWidth]
+    [slideWidth, children]
   )
 
   return {
@@ -52,6 +55,7 @@ export const useDots = ({
     slideIndex,
     setSlideIndex,
     nextDot: changeDot(true),
-    prevDot: changeDot()
+    prevDot: changeDot(),
+    countShowDots: returnCountOfDots(children, visibleCountSlides, loop)
   }
 }

@@ -28,6 +28,7 @@ export type UseSwipiType = {
   slidesAnimation: ValueOf<SlidesAnimation>
   loop: boolean
   biasRight?: boolean
+  onChange: (value: SlidePositions) => void
 }
 
 export type SwipiProps = {
@@ -54,6 +55,7 @@ export type SwipiProps = {
   dotsAnimation?: DotsAnimation
   sizeForDefaultActiveDot?: number
   slidesAnimation?: ValueOf<SlidesAnimation>
+  onChange?: (value: SlidePositions) => void
 }
 
 export type DotsAnimation = 'default' | 'sliding'
@@ -87,4 +89,10 @@ export type CalculateSliderTransformT = {
   swipedSide: SwipeDirections | null
   timeTouch: Date
   isDisableMove: boolean
+}
+
+export type SlidePositions = {
+  prev: number
+  current: number
+  next: number
 }

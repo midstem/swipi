@@ -8,7 +8,7 @@ import { useNavigation } from './hooks/useNavigation'
 import { useWindowResize } from './hooks/useWindowResize'
 import { ANIMATIONS, NAVIGATION_DEBOUNCE_DELAY } from './constants'
 import { UseSwipiType } from './types'
-import { returnCountOfDots } from './helpers'
+import { getSlidePositions } from './helpers'
 
 export const useSwipi = ({
   loop,
@@ -26,7 +26,8 @@ export const useSwipi = ({
   activeDotColor,
   slidesAnimation,
   customActiveDot,
-  spaceBetweenSlides
+  spaceBetweenSlides,
+  onChange
 }: UseSwipiType) => {
   const [windowWidth, setWindowWidth] = useState<number>(0)
   const [animation, setAnimation] = useState<boolean>(false)
@@ -72,7 +73,8 @@ export const useSwipi = ({
     prevDot,
     returnDots,
     setSlideIndex,
-    handleDotClick
+    handleDotClick,
+    countShowDots
   } = useDots({
     dotColor,
     customDot,
@@ -82,7 +84,9 @@ export const useSwipi = ({
     customActiveDot,
     setAnimation,
     setTransform,
-    loop
+    loop,
+    children,
+    visibleCountSlides
   })
 
   const isLastSlide = (): boolean => {
@@ -146,7 +150,6 @@ export const useSwipi = ({
   })
 
   const { nextImg, prevImg } = useNavigation({
-    children,
     slideWidth,
     setTransform,
     setAnimation,
@@ -169,6 +172,10 @@ export const useSwipi = ({
     setSlideIndex(0)
     setTransform(0)
   })
+
+  useEffect(() => {
+    onChange(getSlidePositions(slideIndex, countShowDots, loop))
+  }, [countShowDots, loop, onChange, slideIndex])
 
   useEffect(() => {
     setWindowWidth(window.innerWidth)
@@ -202,7 +209,7 @@ export const useSwipi = ({
     handleDotClick,
     nextImg: useDebounce(() => nextImg(nextDot), NAVIGATION_DEBOUNCE_DELAY),
     prevImg: useDebounce(() => prevImg(prevDot), NAVIGATION_DEBOUNCE_DELAY),
-    countShowDots: returnCountOfDots(children, visibleCountSlides, loop),
+    countShowDots,
     isDisableButton: isDisableMove()
   }
 }

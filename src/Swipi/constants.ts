@@ -27,3 +27,7 @@ export const DISTANCE = 1
 export const FAST_SWIPE_TIME = 200
 
 export const ONE_SLIDE = 1
+
+export const ONE_STEP = 1
+
+export const FIRST_SLIDE = 1

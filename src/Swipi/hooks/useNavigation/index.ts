@@ -6,16 +6,14 @@ export const useNavigation = ({
   setTransform,
   setAnimation,
   slideWidth,
-  children,
   isDisableMove
 }: Navigation) => {
   const navigateSlide =
-    (nextSlide?: boolean) =>
-    (callback: (transform: number, children: JSX.Element[]) => void) => {
+    (nextSlide?: boolean) => (callback: (transform: number) => void) => {
       if (isDisableMove(!!nextSlide)) return
 
       setTransform((transform) => {
-        callback(transform, children)
+        callback(transform)
 
         return nextSlide ? transform - slideWidth : transform + slideWidth
       })
@@ -25,7 +23,7 @@ export const useNavigation = ({
       checkSwipiCorner() &&
         putInTheInitialPosition(() =>
           setTransform((transform) => {
-            callback(transform, children)
+            callback(transform)
 
             return nextSlide ? transform - slideWidth : transform + slideWidth
           })

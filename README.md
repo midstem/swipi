@@ -27,7 +27,29 @@ $ npm install swipi
 $ yarn add swipi
 ```
 
-## To see and play with examples follow the <a href='https://midstem.github.io/swipi-landing/'>link</a>
+## **Usage**
+
+```jsx
+import Swipi from 'swipi'
+
+const styles = { height: '250px', backgroundColor: '#dadada' }
+
+export const App = () => (
+  <Swipi
+    loop
+    showDots
+    spaceBetweenSlides={15}
+  >
+    <div style={styles} />
+    <div style={styles} />
+    <div style={styles} />
+    <div style={styles} />
+    <div style={styles} />
+  </Swipi>
+)
+```
+
+## 🔥 <a href='https://midstem.github.io/swipi-landing/'>View more examples and create a custom slider</a>
 
 ## **Browsers support**
 
@@ -47,25 +69,25 @@ $ yarn add swipi
   <tr>
     <td>initialSlide</td>
     <td>Sets the initial slide</td>
-    <td>1</td>
+    <td><code>1</code></td>
     <td>number</td>
   </tr>
   <tr>
     <td>slidesNumber</td>
     <td>Number of visible slides (takes effect only if a user didn't set <code>slidesNumber</code> in the <code>config</code> or if the screen width is wider than what is stated in <code>maxWidth</code> in the <code>config</code>)</td>
-    <td>3</td>
+    <td><code>3</code></td>
     <td>number</td>
   </tr>
   <tr>
     <td>spaceBetweenSlides</td>
     <td>Space between slides (takes effect only if a user didn't set <code>spaceBetween</code> in the <code>config</code> or if the screen width is wider than what is stated in <code>maxWidth</code> in the <code>config</code>)</td>
-    <td>0</td>
+    <td><code>0</code></td>
     <td>number</td>
   </tr>
   <tr>
     <td>animationSpeed</td>
     <td>Sets the duration (in milliseconds) for slide transitions</td>
-    <td>300</td>
+    <td><code>300</code></td>
     <td>number</td>
   </tr>
   <tr>
@@ -128,25 +150,25 @@ $ yarn add swipi
   <tr>
     <td>prevButton</td>
     <td>Custom element to move slides back</td>
-    <td>ᐸ</td>
+    <td><code>ᐸ</code></td>
     <td>ReactNode</td>
   </tr>
   <tr>
     <td>nextButton</td>
     <td>Custom element to move slides forward</td>
-    <td>ᐳ</td>
+    <td><code>ᐳ</code></td>
     <td>ReactNode</td>
   </tr>
   <tr>
     <td>autoplay</td>
     <td>A boolean that enables slides to slide automatically</td>
-    <td>false</td>
+    <td><code>false</code></td>
     <td>boolean</td>
   </tr>
   <tr>
     <td>autoplaySpeed</td>
     <td>The interval in milliseconds with which the slides are changed</td>
-    <td>4000</td>
+    <td><code>4000</code></td>
     <td>number</td>
   </tr>
     <tr>
@@ -158,8 +180,14 @@ $ yarn add swipi
     <tr>
     <td>loop</td>
     <td>Makes the slider infinite</td>
-    <td>false</td>
+    <td><code>false</code></td>
     <td>boolean</td>
+  </tr>
+    <tr>
+    <td>onChange</td>
+    <td>The onChange function is called every time the current index changes and returns an object with the current, previous and next indices</td>
+    <td><code>() => {}</code></td>
+    <td>({ prev: number, current: number, next: number }) => void</td>
   </tr>
   <tr>
     <td>config</td>
@@ -255,10 +283,12 @@ $ yarn add swipi
   <tr>
 </table>
 
-## **Styling**
+## 💅 **Styling**
 
 ```css
-.swipi - styles the container that wraps the slider
+.swipi-wrapper - styles the container that wraps the slider with dots
+
+.swipi-container - styles the container that wraps slides with arrows
 
 .dots-wrapper - styles the container that wraps the dots
 

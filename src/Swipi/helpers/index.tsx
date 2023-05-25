@@ -3,6 +3,7 @@ import {
   AddUniqueIdReturnType,
   CalculateSliderTransformT,
   ReturnSlideWidthType,
+  SlidePositions,
   TouchCoordsType
 } from '../types'
 import { generateUniqueID, returnTimeDifference } from '../../helpers'
@@ -14,7 +15,9 @@ import {
   DEFAULT_SWIPI_WIDTH,
   FAST_SWIPE_TIME,
   ONE_SLIDE,
-  REDUCE_SLIDE
+  REDUCE_SLIDE,
+  ONE_STEP,
+  FIRST_SLIDE
 } from '../constants'
 import { SwipeDirections } from '../constants'
 
@@ -126,6 +129,38 @@ export const calculateSliderTransform = ({
     return Math.ceil(currentSlide) * slideWidth
 
   return currentTransform
+}
+
+const getLoopSlidePositions = (
+  slideIndex: number,
+  dotsCount: number
+): SlidePositions => {
+  const prev = slideIndex <= FIRST_SLIDE ? dotsCount : slideIndex - ONE_STEP
+  const next = slideIndex < dotsCount ? slideIndex + ONE_STEP : FIRST_SLIDE
+
+  return { current: slideIndex, next, prev }
+}
+
+const getRegularSlidePositions = (
+  slideIndex: number,
+  dotsCount: number
+): SlidePositions => {
+  const prev = slideIndex <= FIRST_SLIDE ? FIRST_SLIDE : slideIndex - ONE_STEP
+  const next = slideIndex < dotsCount ? slideIndex + ONE_STEP : dotsCount
+
+  return { current: slideIndex, next, prev }
+}
+
+export const getSlidePositions = (
+  slideIndex: number,
+  dotsCount: number,
+  loop: boolean
+): SlidePositions => {
+  if (loop) {
+    return getLoopSlidePositions(slideIndex + 1, dotsCount)
+  }
+
+  return getRegularSlidePositions(slideIndex + 1, dotsCount)
 }
 
 export const calculateSlideWidthWithCorner = (
