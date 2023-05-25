@@ -2,12 +2,13 @@ import { useState, useMemo } from 'react'
 import { ConfigService } from '../../configService'
 import {
   addUniqueId,
+  calculateSlideWidthWithCorner,
   isHideArrowsFn,
   returnSlideWidth,
   setKeyToChildren
 } from '../../helpers'
 import { cloneArray } from '../../../helpers'
-import { REDUCE_SLIDE } from '../../constants'
+
 import { Slides } from './types'
 
 export const useSlides = ({
@@ -16,6 +17,7 @@ export const useSlides = ({
   config,
   movePath,
   children,
+  biasRight,
   currentRef,
   windowWidth,
   slidesNumber,
@@ -31,7 +33,7 @@ export const useSlides = ({
   const visibleCountSlides = getRightSlidesCount(slidesNumber, slidesAnimation)
   const spaceBetween = returnSpaceBetween(spaceBetweenSlides)
   const isHideArrows = isHideArrowsFn(children, visibleCountSlides)
-  const isCornerSlide = !!getSwipiUpdatesParam('biasRight')
+  const isCornerSlide = getSwipiUpdatesParam('biasRight') ?? biasRight
 
   const currentRefWidth = currentRef?.clientWidth
 
@@ -44,13 +46,13 @@ export const useSlides = ({
     [spaceBetween, visibleCountSlides, currentRefWidth]
   )
 
-  const slideWidth = useMemo(
-    () =>
-      isCornerSlide
-        ? returnSlideWidth(updateSlideWidthArgs) * REDUCE_SLIDE
-        : returnSlideWidth(updateSlideWidthArgs),
-    [isCornerSlide, updateSlideWidthArgs]
-  )
+  const slideWidth = useMemo(() => {
+    const width = returnSlideWidth(updateSlideWidthArgs)
+
+    return isCornerSlide
+      ? calculateSlideWidthWithCorner(width, visibleCountSlides)
+      : width
+  }, [isCornerSlide, updateSlideWidthArgs, visibleCountSlides])
 
   const slides = useMemo(() => {
     return isHideArrows

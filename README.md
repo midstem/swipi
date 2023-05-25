@@ -150,6 +150,12 @@ $ yarn add swipi
     <td>number</td>
   </tr>
     <tr>
+    <td>biasRight</td>
+    <td>Show/hide a piece of an element that goes after visible slides</td>
+    <td>false</td>
+    <td>boolean</td>
+  </tr>
+    <tr>
     <td>loop</td>
     <td>Makes the slider infinite</td>
     <td>false</td>

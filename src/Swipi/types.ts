@@ -27,9 +27,12 @@ export type UseSwipiType = {
   customActiveDot?: JSX.Element
   slidesAnimation: ValueOf<SlidesAnimation>
   loop: boolean
+  biasRight?: boolean
 }
 
 export type SwipiProps = {
+  loop?: boolean
+  biasRight?: boolean
   dotColor?: string
   showDots?: boolean
   autoplay?: boolean
@@ -51,7 +54,6 @@ export type SwipiProps = {
   dotsAnimation?: DotsAnimation
   sizeForDefaultActiveDot?: number
   slidesAnimation?: ValueOf<SlidesAnimation>
-  loop?: boolean
 }
 
 export type DotsAnimation = 'default' | 'sliding'

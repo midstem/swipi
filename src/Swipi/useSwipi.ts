@@ -11,10 +11,12 @@ import { UseSwipiType } from './types'
 import { returnCountOfDots } from './helpers'
 
 export const useSwipi = ({
+  loop,
   config,
   children,
   autoplay,
   dotColor,
+  biasRight,
   customDot,
   showArrows,
   slidesNumber,
@@ -24,8 +26,7 @@ export const useSwipi = ({
   activeDotColor,
   slidesAnimation,
   customActiveDot,
-  spaceBetweenSlides,
-  loop
+  spaceBetweenSlides
 }: UseSwipiType) => {
   const [windowWidth, setWindowWidth] = useState<number>(0)
   const [animation, setAnimation] = useState<boolean>(false)
@@ -56,6 +57,7 @@ export const useSwipi = ({
     config,
     children,
     movePath,
+    biasRight,
     currentRef,
     windowWidth,
     slidesNumber,
@@ -174,7 +176,8 @@ export const useSwipi = ({
   }, [])
 
   useEffect(() => {
-    const adjustedSlideIndex = Math.max(1, Math.min(initialSlide, children.length)) - 1
+    const adjustedSlideIndex =
+      Math.max(1, Math.min(initialSlide, children.length)) - 1
 
     setTransform(slideWidth * -(children.length + adjustedSlideIndex))
     setSlideIndex(adjustedSlideIndex)

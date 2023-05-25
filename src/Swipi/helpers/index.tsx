@@ -13,7 +13,8 @@ import {
   FIRST_SLIDE_IDENTIFIER,
   DEFAULT_SWIPI_WIDTH,
   FAST_SWIPE_TIME,
-  ONE_SLIDE
+  ONE_SLIDE,
+  REDUCE_SLIDE
 } from '../constants'
 import { SwipeDirections } from '../constants'
 
@@ -125,4 +126,11 @@ export const calculateSliderTransform = ({
     return Math.ceil(currentSlide) * slideWidth
 
   return currentTransform
+}
+
+export const calculateSlideWidthWithCorner = (
+  width: number,
+  visibleCountSlides: number
+): number => {
+  return width - (REDUCE_SLIDE * width) / visibleCountSlides
 }
