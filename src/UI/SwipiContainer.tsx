@@ -1,6 +1,6 @@
 import { ComponentBasicProps } from './types'
 
-const SwipiContainer = ({ 
+const SwipiContainer = ({
   children,
   className = '',
   ...props

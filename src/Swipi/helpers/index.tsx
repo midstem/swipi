@@ -15,6 +15,7 @@ import {
   DEFAULT_SWIPI_WIDTH,
   FAST_SWIPE_TIME,
   ONE_SLIDE,
+  REDUCE_SLIDE,
   ONE_STEP,
   FIRST_SLIDE
 } from '../constants'
@@ -160,4 +161,11 @@ export const getSlidePositions = (
   }
 
   return getRegularSlidePositions(slideIndex + 1, dotsCount)
+}
+
+export const calculateSlideWidthWithCorner = (
+  width: number,
+  visibleCountSlides: number
+): number => {
+  return width - (REDUCE_SLIDE * width) / visibleCountSlides
 }

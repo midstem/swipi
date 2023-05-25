@@ -32,6 +32,7 @@ const Swipi = ({
   sizeForDefaultActiveDot = 13,
   className,
   loop = false,
+  biasRight = false,
   onChange = () => {}
 }: SwipiProps) => {
   const {
@@ -54,10 +55,12 @@ const Swipi = ({
     handleDotClick,
     isDisableButton
   } = useSwipi({
+    loop,
     config,
     children,
     dotColor,
     autoplay,
+    biasRight,
     customDot,
     showArrows,
     slidesNumber,
@@ -68,7 +71,6 @@ const Swipi = ({
     customActiveDot,
     slidesAnimation,
     spaceBetweenSlides,
-    loop,
     onChange
   })
 

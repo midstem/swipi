@@ -15,7 +15,7 @@ const Sliding = ({
   customActiveDot,
   sizeForDefaultDot,
   sizeForDefaultActiveDot,
-  handleDotClick,
+  handleDotClick
 }: DotsTypes): JSX.Element => {
   const { dotsRef, activeDotRef, activeDotLeft } = useSliding(slideIndex)
 

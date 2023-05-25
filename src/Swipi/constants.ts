@@ -4,7 +4,7 @@ import { AnimationsTypes } from './types'
 
 export const DEFAULT_SWIPI_WIDTH = 934
 
-export const REDUCE_SLIDE = 0.75
+export const REDUCE_SLIDE = 0.35
 
 export const NAVIGATION_DEBOUNCE_DELAY = 100
 
