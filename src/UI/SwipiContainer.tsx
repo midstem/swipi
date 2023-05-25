@@ -1,13 +1,11 @@
 import { ComponentBasicProps } from './types'
 
-const SwipiContainer = ({ children }: ComponentBasicProps): JSX.Element => (
-  <div
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      width: '100%'
-    }}
-  >
+const SwipiContainer = ({ 
+  children,
+  className = '',
+  ...props
+}: ComponentBasicProps): JSX.Element => (
+  <div className={`swipi-container ${className}`} {...props}>
     {children}
   </div>
 )
