@@ -31,7 +31,8 @@ export const useSlides = ({
   const visibleCountSlides = getRightSlidesCount(slidesNumber, slidesAnimation)
   const spaceBetween = returnSpaceBetween(spaceBetweenSlides)
   const isHideArrows = isHideArrowsFn(children, visibleCountSlides)
-  const isCornerSlide = !!getSwipiUpdatesParam('biasRight')
+  const isCornerSlide = 
+    slidesAnimation === 'default' ? !!getSwipiUpdatesParam('biasRight') : false
 
   const currentRefWidth = currentRef?.clientWidth
 
