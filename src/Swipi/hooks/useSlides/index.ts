@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { ConfigService } from '../../configService'
+import { SlidesAnimation } from '../../../types'
 import {
   addUniqueId,
   calculateSlideWidthWithCorner,
@@ -8,7 +9,6 @@ import {
   setKeyToChildren
 } from '../../helpers'
 import { cloneArray } from '../../../helpers'
-
 import { Slides } from './types'
 
 export const useSlides = ({
@@ -34,7 +34,7 @@ export const useSlides = ({
   const spaceBetween = returnSpaceBetween(spaceBetweenSlides)
   const isHideArrows = isHideArrowsFn(children, visibleCountSlides)
   const isCornerSlide = 
-    slidesAnimation === 'default' ? getSwipiUpdatesParam('biasRight') ?? biasRight : false
+    slidesAnimation === SlidesAnimation.DEFAULT ? getSwipiUpdatesParam('biasRight') ?? biasRight : false
 
 
   const currentRefWidth = currentRef?.clientWidth
