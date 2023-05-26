@@ -11,10 +11,12 @@ import { UseSwipiType } from './types'
 import { getSlidePositions } from './helpers'
 
 export const useSwipi = ({
+  loop,
   config,
   children,
   autoplay,
   dotColor,
+  biasRight,
   customDot,
   showArrows,
   slidesNumber,
@@ -25,7 +27,6 @@ export const useSwipi = ({
   slidesAnimation,
   customActiveDot,
   spaceBetweenSlides,
-  loop,
   onChange
 }: UseSwipiType) => {
   const [windowWidth, setWindowWidth] = useState<number>(0)
@@ -57,6 +58,7 @@ export const useSwipi = ({
     config,
     children,
     movePath,
+    biasRight,
     currentRef,
     windowWidth,
     slidesNumber,

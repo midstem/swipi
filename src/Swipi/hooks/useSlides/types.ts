@@ -7,6 +7,7 @@ export type Slides = {
   movePath: number
   windowWidth: number
   config: ConfigType[]
+  biasRight?: boolean
   slidesNumber: number
   children: JSX.Element[]
   spaceBetweenSlides: number

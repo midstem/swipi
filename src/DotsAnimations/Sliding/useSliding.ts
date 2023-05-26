@@ -6,7 +6,9 @@ import { getDotsLeftOffsets, getWidthDifference } from './helpers'
 const useSliding = (slideIndex: number) => {
   const dotsRef = useRef<(HTMLDivElement | null)[]>([])
   const activeDotRef = useRef<HTMLDivElement>(null)
-  const dotsLeftOffsetsRef = useRef<DotsLeftOffsetsTypes[]>(defaultDotsLeftOffsets)
+  const dotsLeftOffsetsRef = useRef<DotsLeftOffsetsTypes[]>(
+    defaultDotsLeftOffsets
+  )
   const [activeDotLeft, setActiveDotLeft] = useState<number>(0)
   const [dotWidth, setDotWidth] = useState<number>(0)
   const [activeDotWidth, setActiveDotWidth] = useState<number>(0)
