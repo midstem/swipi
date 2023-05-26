@@ -184,11 +184,18 @@ export const useSwipi = ({
 
   useEffect(() => {
     const adjustedSlideIndex =
-      Math.max(1, Math.min(initialSlide, children.length)) - 1
+      Math.max(1, Math.min(initialSlide, countShowDots)) - 1
 
     setTransform(slideWidth * -(children.length + adjustedSlideIndex))
     setSlideIndex(adjustedSlideIndex)
-  }, [children.length, initialSlide, setSlideIndex, setTransform, slideWidth])
+  }, [
+    children.length,
+    countShowDots,
+    initialSlide,
+    setSlideIndex,
+    setTransform,
+    slideWidth
+  ])
 
   return {
     slides,
