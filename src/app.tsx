@@ -103,6 +103,825 @@ const App = () => {
           <Slide child={child} />
         ))}
       </Swipi>
+      <Swipi
+        loop={loop || undefined}
+        showArrows={showArrows}
+        showDots={showDots || undefined}
+        sizeForDefaultDot={
+          sizeForDefaultDot === 0 ? undefined : sizeForDefaultDot
+        }
+        sizeForDefaultActiveDot={
+          sizeForDefaultActiveDot === 0 ? undefined : sizeForDefaultActiveDot
+        }
+        dotColor={dotColor === '#c7c7c7' ? undefined : dotColor}
+        activeDotColor={activeDotColor === '' ? undefined : activeDotColor}
+        dotsAnimation={
+          dotsAnimation === '' ? undefined : (dotsAnimation as DotsAnimation)
+        }
+        customDot={
+          customDot === 'none' ? undefined : customDot === 'circle' ? (
+            <Dot data-cy="default-custom-dot" />
+          ) : (
+            <Unicorn data-cy="black-unicorn" />
+          )
+        }
+        customActiveDot={
+          customActiveDot === 'none' ? undefined : customActiveDot ===
+            'red-unicorn' ? (
+            <Unicorn data-cy="red-unicorn" style={{ fill: 'red' }} />
+          ) : (
+            <ActiveDot data-cy="custom-active-dot" />
+          )
+        }
+        slidesNumber={slidesNumber === 0 ? undefined : slidesNumber}
+        spaceBetweenSlides={
+          spaceBetweenSlides === 0 ? undefined : spaceBetweenSlides
+        }
+        animationSpeed={animationSpeed === 0 ? undefined : animationSpeed}
+        autoplay={autoplay || undefined}
+        autoplaySpeed={autoplaySpeed === 0 ? undefined : autoplaySpeed}
+        slidesAnimation={
+          slidesAnimation === ''
+            ? undefined
+            : (slidesAnimation as ValueOf<SlidesAnimation>)
+        }
+        config={[
+          {
+            maxWidth,
+            slidesNumber: configSlidesNumber,
+            spaceBetween,
+            biasRight
+          }
+        ]}
+        prevButton={
+          prevButton === 'none' ? undefined : <ArrowLeft data-cy="left-arrow" />
+        }
+        nextButton={
+          nextButton === 'none' ? undefined : (
+            <ArrowRight data-cy="right-arrow" />
+          )
+        }
+      >
+        {dives.map((child) => (
+          <Slide child={child} />
+        ))}
+      </Swipi>
+      <Swipi
+        loop={loop || undefined}
+        showArrows={showArrows}
+        showDots={showDots || undefined}
+        sizeForDefaultDot={
+          sizeForDefaultDot === 0 ? undefined : sizeForDefaultDot
+        }
+        sizeForDefaultActiveDot={
+          sizeForDefaultActiveDot === 0 ? undefined : sizeForDefaultActiveDot
+        }
+        dotColor={dotColor === '#c7c7c7' ? undefined : dotColor}
+        activeDotColor={activeDotColor === '' ? undefined : activeDotColor}
+        dotsAnimation={
+          dotsAnimation === '' ? undefined : (dotsAnimation as DotsAnimation)
+        }
+        customDot={
+          customDot === 'none' ? undefined : customDot === 'circle' ? (
+            <Dot data-cy="default-custom-dot" />
+          ) : (
+            <Unicorn data-cy="black-unicorn" />
+          )
+        }
+        customActiveDot={
+          customActiveDot === 'none' ? undefined : customActiveDot ===
+            'red-unicorn' ? (
+            <Unicorn data-cy="red-unicorn" style={{ fill: 'red' }} />
+          ) : (
+            <ActiveDot data-cy="custom-active-dot" />
+          )
+        }
+        slidesNumber={slidesNumber === 0 ? undefined : slidesNumber}
+        spaceBetweenSlides={
+          spaceBetweenSlides === 0 ? undefined : spaceBetweenSlides
+        }
+        animationSpeed={animationSpeed === 0 ? undefined : animationSpeed}
+        autoplay={autoplay || undefined}
+        autoplaySpeed={autoplaySpeed === 0 ? undefined : autoplaySpeed}
+        slidesAnimation={
+          slidesAnimation === ''
+            ? undefined
+            : (slidesAnimation as ValueOf<SlidesAnimation>)
+        }
+        config={[
+          {
+            maxWidth,
+            slidesNumber: configSlidesNumber,
+            spaceBetween,
+            biasRight
+          }
+        ]}
+        prevButton={
+          prevButton === 'none' ? undefined : <ArrowLeft data-cy="left-arrow" />
+        }
+        nextButton={
+          nextButton === 'none' ? undefined : (
+            <ArrowRight data-cy="right-arrow" />
+          )
+        }
+      >
+        {dives.map((child) => (
+          <Slide child={child} />
+        ))}
+      </Swipi>
+      <Swipi
+        loop={loop || undefined}
+        showArrows={showArrows}
+        showDots={showDots || undefined}
+        sizeForDefaultDot={
+          sizeForDefaultDot === 0 ? undefined : sizeForDefaultDot
+        }
+        sizeForDefaultActiveDot={
+          sizeForDefaultActiveDot === 0 ? undefined : sizeForDefaultActiveDot
+        }
+        dotColor={dotColor === '#c7c7c7' ? undefined : dotColor}
+        activeDotColor={activeDotColor === '' ? undefined : activeDotColor}
+        dotsAnimation={
+          dotsAnimation === '' ? undefined : (dotsAnimation as DotsAnimation)
+        }
+        customDot={
+          customDot === 'none' ? undefined : customDot === 'circle' ? (
+            <Dot data-cy="default-custom-dot" />
+          ) : (
+            <Unicorn data-cy="black-unicorn" />
+          )
+        }
+        customActiveDot={
+          customActiveDot === 'none' ? undefined : customActiveDot ===
+            'red-unicorn' ? (
+            <Unicorn data-cy="red-unicorn" style={{ fill: 'red' }} />
+          ) : (
+            <ActiveDot data-cy="custom-active-dot" />
+          )
+        }
+        slidesNumber={slidesNumber === 0 ? undefined : slidesNumber}
+        spaceBetweenSlides={
+          spaceBetweenSlides === 0 ? undefined : spaceBetweenSlides
+        }
+        animationSpeed={animationSpeed === 0 ? undefined : animationSpeed}
+        autoplay={autoplay || undefined}
+        autoplaySpeed={autoplaySpeed === 0 ? undefined : autoplaySpeed}
+        slidesAnimation={
+          slidesAnimation === ''
+            ? undefined
+            : (slidesAnimation as ValueOf<SlidesAnimation>)
+        }
+        config={[
+          {
+            maxWidth,
+            slidesNumber: configSlidesNumber,
+            spaceBetween,
+            biasRight
+          }
+        ]}
+        prevButton={
+          prevButton === 'none' ? undefined : <ArrowLeft data-cy="left-arrow" />
+        }
+        nextButton={
+          nextButton === 'none' ? undefined : (
+            <ArrowRight data-cy="right-arrow" />
+          )
+        }
+      >
+        {dives.map((child) => (
+          <Slide child={child} />
+        ))}
+      </Swipi>
+      <Swipi
+        loop={loop || undefined}
+        showArrows={showArrows}
+        showDots={showDots || undefined}
+        sizeForDefaultDot={
+          sizeForDefaultDot === 0 ? undefined : sizeForDefaultDot
+        }
+        sizeForDefaultActiveDot={
+          sizeForDefaultActiveDot === 0 ? undefined : sizeForDefaultActiveDot
+        }
+        dotColor={dotColor === '#c7c7c7' ? undefined : dotColor}
+        activeDotColor={activeDotColor === '' ? undefined : activeDotColor}
+        dotsAnimation={
+          dotsAnimation === '' ? undefined : (dotsAnimation as DotsAnimation)
+        }
+        customDot={
+          customDot === 'none' ? undefined : customDot === 'circle' ? (
+            <Dot data-cy="default-custom-dot" />
+          ) : (
+            <Unicorn data-cy="black-unicorn" />
+          )
+        }
+        customActiveDot={
+          customActiveDot === 'none' ? undefined : customActiveDot ===
+            'red-unicorn' ? (
+            <Unicorn data-cy="red-unicorn" style={{ fill: 'red' }} />
+          ) : (
+            <ActiveDot data-cy="custom-active-dot" />
+          )
+        }
+        slidesNumber={slidesNumber === 0 ? undefined : slidesNumber}
+        spaceBetweenSlides={
+          spaceBetweenSlides === 0 ? undefined : spaceBetweenSlides
+        }
+        animationSpeed={animationSpeed === 0 ? undefined : animationSpeed}
+        autoplay={autoplay || undefined}
+        autoplaySpeed={autoplaySpeed === 0 ? undefined : autoplaySpeed}
+        slidesAnimation={
+          slidesAnimation === ''
+            ? undefined
+            : (slidesAnimation as ValueOf<SlidesAnimation>)
+        }
+        config={[
+          {
+            maxWidth,
+            slidesNumber: configSlidesNumber,
+            spaceBetween,
+            biasRight
+          }
+        ]}
+        prevButton={
+          prevButton === 'none' ? undefined : <ArrowLeft data-cy="left-arrow" />
+        }
+        nextButton={
+          nextButton === 'none' ? undefined : (
+            <ArrowRight data-cy="right-arrow" />
+          )
+        }
+      >
+        {dives.map((child) => (
+          <Slide child={child} />
+        ))}
+      </Swipi>
+      <Swipi
+        loop={loop || undefined}
+        showArrows={showArrows}
+        showDots={showDots || undefined}
+        sizeForDefaultDot={
+          sizeForDefaultDot === 0 ? undefined : sizeForDefaultDot
+        }
+        sizeForDefaultActiveDot={
+          sizeForDefaultActiveDot === 0 ? undefined : sizeForDefaultActiveDot
+        }
+        dotColor={dotColor === '#c7c7c7' ? undefined : dotColor}
+        activeDotColor={activeDotColor === '' ? undefined : activeDotColor}
+        dotsAnimation={
+          dotsAnimation === '' ? undefined : (dotsAnimation as DotsAnimation)
+        }
+        customDot={
+          customDot === 'none' ? undefined : customDot === 'circle' ? (
+            <Dot data-cy="default-custom-dot" />
+          ) : (
+            <Unicorn data-cy="black-unicorn" />
+          )
+        }
+        customActiveDot={
+          customActiveDot === 'none' ? undefined : customActiveDot ===
+            'red-unicorn' ? (
+            <Unicorn data-cy="red-unicorn" style={{ fill: 'red' }} />
+          ) : (
+            <ActiveDot data-cy="custom-active-dot" />
+          )
+        }
+        slidesNumber={slidesNumber === 0 ? undefined : slidesNumber}
+        spaceBetweenSlides={
+          spaceBetweenSlides === 0 ? undefined : spaceBetweenSlides
+        }
+        animationSpeed={animationSpeed === 0 ? undefined : animationSpeed}
+        autoplay={autoplay || undefined}
+        autoplaySpeed={autoplaySpeed === 0 ? undefined : autoplaySpeed}
+        slidesAnimation={
+          slidesAnimation === ''
+            ? undefined
+            : (slidesAnimation as ValueOf<SlidesAnimation>)
+        }
+        config={[
+          {
+            maxWidth,
+            slidesNumber: configSlidesNumber,
+            spaceBetween,
+            biasRight
+          }
+        ]}
+        prevButton={
+          prevButton === 'none' ? undefined : <ArrowLeft data-cy="left-arrow" />
+        }
+        nextButton={
+          nextButton === 'none' ? undefined : (
+            <ArrowRight data-cy="right-arrow" />
+          )
+        }
+      >
+        {dives.map((child) => (
+          <Slide child={child} />
+        ))}
+      </Swipi>
+      <Swipi
+        loop={loop || undefined}
+        showArrows={showArrows}
+        showDots={showDots || undefined}
+        sizeForDefaultDot={
+          sizeForDefaultDot === 0 ? undefined : sizeForDefaultDot
+        }
+        sizeForDefaultActiveDot={
+          sizeForDefaultActiveDot === 0 ? undefined : sizeForDefaultActiveDot
+        }
+        dotColor={dotColor === '#c7c7c7' ? undefined : dotColor}
+        activeDotColor={activeDotColor === '' ? undefined : activeDotColor}
+        dotsAnimation={
+          dotsAnimation === '' ? undefined : (dotsAnimation as DotsAnimation)
+        }
+        customDot={
+          customDot === 'none' ? undefined : customDot === 'circle' ? (
+            <Dot data-cy="default-custom-dot" />
+          ) : (
+            <Unicorn data-cy="black-unicorn" />
+          )
+        }
+        customActiveDot={
+          customActiveDot === 'none' ? undefined : customActiveDot ===
+            'red-unicorn' ? (
+            <Unicorn data-cy="red-unicorn" style={{ fill: 'red' }} />
+          ) : (
+            <ActiveDot data-cy="custom-active-dot" />
+          )
+        }
+        slidesNumber={slidesNumber === 0 ? undefined : slidesNumber}
+        spaceBetweenSlides={
+          spaceBetweenSlides === 0 ? undefined : spaceBetweenSlides
+        }
+        animationSpeed={animationSpeed === 0 ? undefined : animationSpeed}
+        autoplay={autoplay || undefined}
+        autoplaySpeed={autoplaySpeed === 0 ? undefined : autoplaySpeed}
+        slidesAnimation={
+          slidesAnimation === ''
+            ? undefined
+            : (slidesAnimation as ValueOf<SlidesAnimation>)
+        }
+        config={[
+          {
+            maxWidth,
+            slidesNumber: configSlidesNumber,
+            spaceBetween,
+            biasRight
+          }
+        ]}
+        prevButton={
+          prevButton === 'none' ? undefined : <ArrowLeft data-cy="left-arrow" />
+        }
+        nextButton={
+          nextButton === 'none' ? undefined : (
+            <ArrowRight data-cy="right-arrow" />
+          )
+        }
+      >
+        {dives.map((child) => (
+          <Slide child={child} />
+        ))}
+      </Swipi>
+      <Swipi
+        loop={loop || undefined}
+        showArrows={showArrows}
+        showDots={showDots || undefined}
+        sizeForDefaultDot={
+          sizeForDefaultDot === 0 ? undefined : sizeForDefaultDot
+        }
+        sizeForDefaultActiveDot={
+          sizeForDefaultActiveDot === 0 ? undefined : sizeForDefaultActiveDot
+        }
+        dotColor={dotColor === '#c7c7c7' ? undefined : dotColor}
+        activeDotColor={activeDotColor === '' ? undefined : activeDotColor}
+        dotsAnimation={
+          dotsAnimation === '' ? undefined : (dotsAnimation as DotsAnimation)
+        }
+        customDot={
+          customDot === 'none' ? undefined : customDot === 'circle' ? (
+            <Dot data-cy="default-custom-dot" />
+          ) : (
+            <Unicorn data-cy="black-unicorn" />
+          )
+        }
+        customActiveDot={
+          customActiveDot === 'none' ? undefined : customActiveDot ===
+            'red-unicorn' ? (
+            <Unicorn data-cy="red-unicorn" style={{ fill: 'red' }} />
+          ) : (
+            <ActiveDot data-cy="custom-active-dot" />
+          )
+        }
+        slidesNumber={slidesNumber === 0 ? undefined : slidesNumber}
+        spaceBetweenSlides={
+          spaceBetweenSlides === 0 ? undefined : spaceBetweenSlides
+        }
+        animationSpeed={animationSpeed === 0 ? undefined : animationSpeed}
+        autoplay={autoplay || undefined}
+        autoplaySpeed={autoplaySpeed === 0 ? undefined : autoplaySpeed}
+        slidesAnimation={
+          slidesAnimation === ''
+            ? undefined
+            : (slidesAnimation as ValueOf<SlidesAnimation>)
+        }
+        config={[
+          {
+            maxWidth,
+            slidesNumber: configSlidesNumber,
+            spaceBetween,
+            biasRight
+          }
+        ]}
+        prevButton={
+          prevButton === 'none' ? undefined : <ArrowLeft data-cy="left-arrow" />
+        }
+        nextButton={
+          nextButton === 'none' ? undefined : (
+            <ArrowRight data-cy="right-arrow" />
+          )
+        }
+      >
+        {dives.map((child) => (
+          <Slide child={child} />
+        ))}
+      </Swipi>
+      <Swipi
+        loop={loop || undefined}
+        showArrows={showArrows}
+        showDots={showDots || undefined}
+        sizeForDefaultDot={
+          sizeForDefaultDot === 0 ? undefined : sizeForDefaultDot
+        }
+        sizeForDefaultActiveDot={
+          sizeForDefaultActiveDot === 0 ? undefined : sizeForDefaultActiveDot
+        }
+        dotColor={dotColor === '#c7c7c7' ? undefined : dotColor}
+        activeDotColor={activeDotColor === '' ? undefined : activeDotColor}
+        dotsAnimation={
+          dotsAnimation === '' ? undefined : (dotsAnimation as DotsAnimation)
+        }
+        customDot={
+          customDot === 'none' ? undefined : customDot === 'circle' ? (
+            <Dot data-cy="default-custom-dot" />
+          ) : (
+            <Unicorn data-cy="black-unicorn" />
+          )
+        }
+        customActiveDot={
+          customActiveDot === 'none' ? undefined : customActiveDot ===
+            'red-unicorn' ? (
+            <Unicorn data-cy="red-unicorn" style={{ fill: 'red' }} />
+          ) : (
+            <ActiveDot data-cy="custom-active-dot" />
+          )
+        }
+        slidesNumber={slidesNumber === 0 ? undefined : slidesNumber}
+        spaceBetweenSlides={
+          spaceBetweenSlides === 0 ? undefined : spaceBetweenSlides
+        }
+        animationSpeed={animationSpeed === 0 ? undefined : animationSpeed}
+        autoplay={autoplay || undefined}
+        autoplaySpeed={autoplaySpeed === 0 ? undefined : autoplaySpeed}
+        slidesAnimation={
+          slidesAnimation === ''
+            ? undefined
+            : (slidesAnimation as ValueOf<SlidesAnimation>)
+        }
+        config={[
+          {
+            maxWidth,
+            slidesNumber: configSlidesNumber,
+            spaceBetween,
+            biasRight
+          }
+        ]}
+        prevButton={
+          prevButton === 'none' ? undefined : <ArrowLeft data-cy="left-arrow" />
+        }
+        nextButton={
+          nextButton === 'none' ? undefined : (
+            <ArrowRight data-cy="right-arrow" />
+          )
+        }
+      >
+        {dives.map((child) => (
+          <Slide child={child} />
+        ))}
+      </Swipi>
+      <Swipi
+        loop={loop || undefined}
+        showArrows={showArrows}
+        showDots={showDots || undefined}
+        sizeForDefaultDot={
+          sizeForDefaultDot === 0 ? undefined : sizeForDefaultDot
+        }
+        sizeForDefaultActiveDot={
+          sizeForDefaultActiveDot === 0 ? undefined : sizeForDefaultActiveDot
+        }
+        dotColor={dotColor === '#c7c7c7' ? undefined : dotColor}
+        activeDotColor={activeDotColor === '' ? undefined : activeDotColor}
+        dotsAnimation={
+          dotsAnimation === '' ? undefined : (dotsAnimation as DotsAnimation)
+        }
+        customDot={
+          customDot === 'none' ? undefined : customDot === 'circle' ? (
+            <Dot data-cy="default-custom-dot" />
+          ) : (
+            <Unicorn data-cy="black-unicorn" />
+          )
+        }
+        customActiveDot={
+          customActiveDot === 'none' ? undefined : customActiveDot ===
+            'red-unicorn' ? (
+            <Unicorn data-cy="red-unicorn" style={{ fill: 'red' }} />
+          ) : (
+            <ActiveDot data-cy="custom-active-dot" />
+          )
+        }
+        slidesNumber={slidesNumber === 0 ? undefined : slidesNumber}
+        spaceBetweenSlides={
+          spaceBetweenSlides === 0 ? undefined : spaceBetweenSlides
+        }
+        animationSpeed={animationSpeed === 0 ? undefined : animationSpeed}
+        autoplay={autoplay || undefined}
+        autoplaySpeed={autoplaySpeed === 0 ? undefined : autoplaySpeed}
+        slidesAnimation={
+          slidesAnimation === ''
+            ? undefined
+            : (slidesAnimation as ValueOf<SlidesAnimation>)
+        }
+        config={[
+          {
+            maxWidth,
+            slidesNumber: configSlidesNumber,
+            spaceBetween,
+            biasRight
+          }
+        ]}
+        prevButton={
+          prevButton === 'none' ? undefined : <ArrowLeft data-cy="left-arrow" />
+        }
+        nextButton={
+          nextButton === 'none' ? undefined : (
+            <ArrowRight data-cy="right-arrow" />
+          )
+        }
+      >
+        {dives.map((child) => (
+          <Slide child={child} />
+        ))}
+      </Swipi>
+      <Swipi
+        loop={loop || undefined}
+        showArrows={showArrows}
+        showDots={showDots || undefined}
+        sizeForDefaultDot={
+          sizeForDefaultDot === 0 ? undefined : sizeForDefaultDot
+        }
+        sizeForDefaultActiveDot={
+          sizeForDefaultActiveDot === 0 ? undefined : sizeForDefaultActiveDot
+        }
+        dotColor={dotColor === '#c7c7c7' ? undefined : dotColor}
+        activeDotColor={activeDotColor === '' ? undefined : activeDotColor}
+        dotsAnimation={
+          dotsAnimation === '' ? undefined : (dotsAnimation as DotsAnimation)
+        }
+        customDot={
+          customDot === 'none' ? undefined : customDot === 'circle' ? (
+            <Dot data-cy="default-custom-dot" />
+          ) : (
+            <Unicorn data-cy="black-unicorn" />
+          )
+        }
+        customActiveDot={
+          customActiveDot === 'none' ? undefined : customActiveDot ===
+            'red-unicorn' ? (
+            <Unicorn data-cy="red-unicorn" style={{ fill: 'red' }} />
+          ) : (
+            <ActiveDot data-cy="custom-active-dot" />
+          )
+        }
+        slidesNumber={slidesNumber === 0 ? undefined : slidesNumber}
+        spaceBetweenSlides={
+          spaceBetweenSlides === 0 ? undefined : spaceBetweenSlides
+        }
+        animationSpeed={animationSpeed === 0 ? undefined : animationSpeed}
+        autoplay={autoplay || undefined}
+        autoplaySpeed={autoplaySpeed === 0 ? undefined : autoplaySpeed}
+        slidesAnimation={
+          slidesAnimation === ''
+            ? undefined
+            : (slidesAnimation as ValueOf<SlidesAnimation>)
+        }
+        config={[
+          {
+            maxWidth,
+            slidesNumber: configSlidesNumber,
+            spaceBetween,
+            biasRight
+          }
+        ]}
+        prevButton={
+          prevButton === 'none' ? undefined : <ArrowLeft data-cy="left-arrow" />
+        }
+        nextButton={
+          nextButton === 'none' ? undefined : (
+            <ArrowRight data-cy="right-arrow" />
+          )
+        }
+      >
+        {dives.map((child) => (
+          <Slide child={child} />
+        ))}
+      </Swipi>
+      <Swipi
+        loop={loop || undefined}
+        showArrows={showArrows}
+        showDots={showDots || undefined}
+        sizeForDefaultDot={
+          sizeForDefaultDot === 0 ? undefined : sizeForDefaultDot
+        }
+        sizeForDefaultActiveDot={
+          sizeForDefaultActiveDot === 0 ? undefined : sizeForDefaultActiveDot
+        }
+        dotColor={dotColor === '#c7c7c7' ? undefined : dotColor}
+        activeDotColor={activeDotColor === '' ? undefined : activeDotColor}
+        dotsAnimation={
+          dotsAnimation === '' ? undefined : (dotsAnimation as DotsAnimation)
+        }
+        customDot={
+          customDot === 'none' ? undefined : customDot === 'circle' ? (
+            <Dot data-cy="default-custom-dot" />
+          ) : (
+            <Unicorn data-cy="black-unicorn" />
+          )
+        }
+        customActiveDot={
+          customActiveDot === 'none' ? undefined : customActiveDot ===
+            'red-unicorn' ? (
+            <Unicorn data-cy="red-unicorn" style={{ fill: 'red' }} />
+          ) : (
+            <ActiveDot data-cy="custom-active-dot" />
+          )
+        }
+        slidesNumber={slidesNumber === 0 ? undefined : slidesNumber}
+        spaceBetweenSlides={
+          spaceBetweenSlides === 0 ? undefined : spaceBetweenSlides
+        }
+        animationSpeed={animationSpeed === 0 ? undefined : animationSpeed}
+        autoplay={autoplay || undefined}
+        autoplaySpeed={autoplaySpeed === 0 ? undefined : autoplaySpeed}
+        slidesAnimation={
+          slidesAnimation === ''
+            ? undefined
+            : (slidesAnimation as ValueOf<SlidesAnimation>)
+        }
+        config={[
+          {
+            maxWidth,
+            slidesNumber: configSlidesNumber,
+            spaceBetween,
+            biasRight
+          }
+        ]}
+        prevButton={
+          prevButton === 'none' ? undefined : <ArrowLeft data-cy="left-arrow" />
+        }
+        nextButton={
+          nextButton === 'none' ? undefined : (
+            <ArrowRight data-cy="right-arrow" />
+          )
+        }
+      >
+        {dives.map((child) => (
+          <Slide child={child} />
+        ))}
+      </Swipi>
+      <Swipi
+        loop={loop || undefined}
+        showArrows={showArrows}
+        showDots={showDots || undefined}
+        sizeForDefaultDot={
+          sizeForDefaultDot === 0 ? undefined : sizeForDefaultDot
+        }
+        sizeForDefaultActiveDot={
+          sizeForDefaultActiveDot === 0 ? undefined : sizeForDefaultActiveDot
+        }
+        dotColor={dotColor === '#c7c7c7' ? undefined : dotColor}
+        activeDotColor={activeDotColor === '' ? undefined : activeDotColor}
+        dotsAnimation={
+          dotsAnimation === '' ? undefined : (dotsAnimation as DotsAnimation)
+        }
+        customDot={
+          customDot === 'none' ? undefined : customDot === 'circle' ? (
+            <Dot data-cy="default-custom-dot" />
+          ) : (
+            <Unicorn data-cy="black-unicorn" />
+          )
+        }
+        customActiveDot={
+          customActiveDot === 'none' ? undefined : customActiveDot ===
+            'red-unicorn' ? (
+            <Unicorn data-cy="red-unicorn" style={{ fill: 'red' }} />
+          ) : (
+            <ActiveDot data-cy="custom-active-dot" />
+          )
+        }
+        slidesNumber={slidesNumber === 0 ? undefined : slidesNumber}
+        spaceBetweenSlides={
+          spaceBetweenSlides === 0 ? undefined : spaceBetweenSlides
+        }
+        animationSpeed={animationSpeed === 0 ? undefined : animationSpeed}
+        autoplay={autoplay || undefined}
+        autoplaySpeed={autoplaySpeed === 0 ? undefined : autoplaySpeed}
+        slidesAnimation={
+          slidesAnimation === ''
+            ? undefined
+            : (slidesAnimation as ValueOf<SlidesAnimation>)
+        }
+        config={[
+          {
+            maxWidth,
+            slidesNumber: configSlidesNumber,
+            spaceBetween,
+            biasRight
+          }
+        ]}
+        prevButton={
+          prevButton === 'none' ? undefined : <ArrowLeft data-cy="left-arrow" />
+        }
+        nextButton={
+          nextButton === 'none' ? undefined : (
+            <ArrowRight data-cy="right-arrow" />
+          )
+        }
+      >
+        {dives.map((child) => (
+          <Slide child={child} />
+        ))}
+      </Swipi>
+      <Swipi
+        loop={loop || undefined}
+        showArrows={showArrows}
+        showDots={showDots || undefined}
+        sizeForDefaultDot={
+          sizeForDefaultDot === 0 ? undefined : sizeForDefaultDot
+        }
+        sizeForDefaultActiveDot={
+          sizeForDefaultActiveDot === 0 ? undefined : sizeForDefaultActiveDot
+        }
+        dotColor={dotColor === '#c7c7c7' ? undefined : dotColor}
+        activeDotColor={activeDotColor === '' ? undefined : activeDotColor}
+        dotsAnimation={
+          dotsAnimation === '' ? undefined : (dotsAnimation as DotsAnimation)
+        }
+        customDot={
+          customDot === 'none' ? undefined : customDot === 'circle' ? (
+            <Dot data-cy="default-custom-dot" />
+          ) : (
+            <Unicorn data-cy="black-unicorn" />
+          )
+        }
+        customActiveDot={
+          customActiveDot === 'none' ? undefined : customActiveDot ===
+            'red-unicorn' ? (
+            <Unicorn data-cy="red-unicorn" style={{ fill: 'red' }} />
+          ) : (
+            <ActiveDot data-cy="custom-active-dot" />
+          )
+        }
+        slidesNumber={slidesNumber === 0 ? undefined : slidesNumber}
+        spaceBetweenSlides={
+          spaceBetweenSlides === 0 ? undefined : spaceBetweenSlides
+        }
+        animationSpeed={animationSpeed === 0 ? undefined : animationSpeed}
+        autoplay={autoplay || undefined}
+        autoplaySpeed={autoplaySpeed === 0 ? undefined : autoplaySpeed}
+        slidesAnimation={
+          slidesAnimation === ''
+            ? undefined
+            : (slidesAnimation as ValueOf<SlidesAnimation>)
+        }
+        config={[
+          {
+            maxWidth,
+            slidesNumber: configSlidesNumber,
+            spaceBetween,
+            biasRight
+          }
+        ]}
+        prevButton={
+          prevButton === 'none' ? undefined : <ArrowLeft data-cy="left-arrow" />
+        }
+        nextButton={
+          nextButton === 'none' ? undefined : (
+            <ArrowRight data-cy="right-arrow" />
+          )
+        }
+      >
+        {dives.map((child) => (
+          <Slide child={child} />
+        ))}
+      </Swipi>
       <FormsWrapper>
         <div>
           <DotsForm
