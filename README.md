@@ -49,7 +49,7 @@ export const App = () => (
 )
 ```
 
-## 🔥 <a href='https://midstem.github.io/swipi-landing/'>View more examples and create a custom slider</a>
+## 🔥 <a href='https://swipi.midstem.net'>View more examples and create a custom slider</a>
 
 ## **Browsers support**
 
