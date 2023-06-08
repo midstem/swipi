@@ -77,13 +77,15 @@ const Swipi = ({
   return (
     <CarouselWrapper className={className}>
       <SwipiContainer>
-        <SwipiButton
-          disabled={isDisableButton()}
-          onClick={prevImg}
-          className="left-button"
-        >
-          {isShowArrows && prevButton}
-        </SwipiButton>
+        {isShowArrows && 
+                <SwipiButton
+                disabled={isDisableButton()}
+                onClick={prevImg}
+                className="left-button"
+              >
+                {prevButton}
+              </SwipiButton>
+        }
         <SlidesWrapper
           slidesWrapperRef={slidesWrapperRef}
           startTouchByScreen={onStart}
@@ -110,13 +112,15 @@ const Swipi = ({
             ))}
           </SlidesContainer>
         </SlidesWrapper>
-        <SwipiButton
-          disabled={isDisableButton(true)}
-          onClick={nextImg}
-          className="right-button"
-        >
-          {isShowArrows && nextButton}
-        </SwipiButton>
+        {isShowArrows &&
+                <SwipiButton
+                disabled={isDisableButton(true)}
+                onClick={nextImg}
+                className="right-button"
+              >
+                {nextButton}
+              </SwipiButton>
+        }
       </SwipiContainer>
       {showDots && (
         <Dots
