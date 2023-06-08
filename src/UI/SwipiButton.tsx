@@ -10,12 +10,6 @@ const SwipiButton = forwardRef<HTMLButtonElement, SwipiButtonProps>(
       ref={ref as RefObject<HTMLButtonElement>}
       onClick={onClick}
       type="button"
-      style={{
-        background: 'transparent',
-        border: 'none',
-        cursor: 'pointer',
-        outline: 'none'
-      }}
     >
       {children}
     </button>
