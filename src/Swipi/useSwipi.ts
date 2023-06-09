@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useDots } from './hooks/useDots'
 import { useSlides } from './hooks/useSlides'
 import { useEvents } from './hooks/useEvents'
@@ -177,17 +177,19 @@ export const useSwipi = ({
     onChange(getSlidePositions(slideIndex, countShowDots, loop))
   }, [countShowDots, loop, onChange, slideIndex])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setWindowWidth(window.innerWidth)
     setCurrentRef(slidesWrapperRef.current)
   }, [])
 
   useEffect(() => {
+    if (initialSlide) {
     const adjustedSlideIndex =
       Math.max(1, Math.min(initialSlide, countShowDots)) - 1
 
     setTransform(slideWidth * -(children.length + adjustedSlideIndex))
     setSlideIndex(adjustedSlideIndex)
+    }
   }, [
     children.length,
     countShowDots,
@@ -203,10 +205,11 @@ export const useSwipi = ({
     transform,
     slideIndex,
     slideWidth,
-    isShowArrows: isHideArrows && showArrows,
     spaceBetween,
+    countShowDots,
     slidesWrapperRef,
     Dots: ANIMATIONS[dotsAnimation],
+    isShowArrows: isHideArrows && showArrows,
     onEnd,
     onMove,
     onStart,
@@ -214,9 +217,8 @@ export const useSwipi = ({
     setTransform,
     setAnimation,
     handleDotClick,
+    isDisableButton: isDisableMove(),
     nextImg: useDebounce(() => nextImg(nextDot), NAVIGATION_DEBOUNCE_DELAY),
-    prevImg: useDebounce(() => prevImg(prevDot), NAVIGATION_DEBOUNCE_DELAY),
-    countShowDots,
-    isDisableButton: isDisableMove()
+    prevImg: useDebounce(() => prevImg(prevDot), NAVIGATION_DEBOUNCE_DELAY)
   }
 }
