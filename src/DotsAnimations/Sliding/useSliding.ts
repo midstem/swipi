@@ -12,7 +12,6 @@ const useSliding = (slideIndex: number) => {
   const [activeDotLeft, setActiveDotLeft] = useState<number>(0)
   const [dotWidth, setDotWidth] = useState<number>(0)
   const [activeDotWidth, setActiveDotWidth] = useState<number>(0)
-  //prettier-ignore
 
   const initializeData = (): void => {
     dotsLeftOffsetsRef.current = getDotsLeftOffsets(dotsRef)
@@ -23,8 +22,6 @@ const useSliding = (slideIndex: number) => {
   const moveActiveDot = useCallback(() => {
     const activeDotIndent = dotsLeftOffsetsRef.current[slideIndex].left
     const dotAlignment = getWidthDifference(dotWidth, activeDotWidth)
-
-    if (!slideIndex) return setActiveDotLeft(activeDotIndent + dotAlignment)
 
     setActiveDotLeft(activeDotIndent + dotAlignment)
   }, [activeDotWidth, dotWidth, slideIndex])

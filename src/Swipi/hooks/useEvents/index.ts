@@ -84,6 +84,8 @@ export const useEvents = ({
   }
 
   const onEnd = (): void => {
+    if (!mouseDown) return
+
     setAnimation(true)
     onSwipe()
     checkAreaBeyondSwipi() && jumpToTheLastSlide()

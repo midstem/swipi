@@ -18,7 +18,7 @@ const Swipi = ({
   activeDotColor,
   customActiveDot,
   slidesNumber = 3,
-  initialSlide = 1,
+  initialSlide = 0,
   nextButton = 'ᐳ',
   prevButton = 'ᐸ',
   autoplay = false,
