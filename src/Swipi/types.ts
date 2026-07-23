@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import { FunctionComponent, ReactNode } from 'react'
 import { DotsTypes, SlidesAnimation, ValueOf } from '../types'
 import { SwipeDirections } from './constants'

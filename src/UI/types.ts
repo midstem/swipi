@@ -1,7 +1,8 @@
+import type { JSX } from 'react'
 import { ReactNode, RefObject } from 'react'
 
 export type ComponentBasicProps = {
-  children: React.ReactNode
+  children: ReactNode
   className?: string
 }
 
@@ -14,7 +15,7 @@ export type SwipiButtonProps = {
 
 export type SlidesWrapperProps = {
   children: ReactNode
-  slidesWrapperRef: RefObject<HTMLDivElement>
+  slidesWrapperRef: RefObject<HTMLDivElement | null>
   startTouchByScreen: (a: number) => void
   moveTouchScreen: (a: number) => void
   endTouchScreen: () => void

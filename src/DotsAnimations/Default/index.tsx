@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import Dot from '../../UI/Dot'
 import DotsWrapper from '../../UI/DotsWrapper'
 import { generateArray } from '../../helpers'

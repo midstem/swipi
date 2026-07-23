@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import { SlidesWrapperProps } from './types'
 
 const SlidesWrapper = ({

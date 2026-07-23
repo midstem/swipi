@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import { CSSProperties, MutableRefObject } from 'react'
 import {
   AddUniqueIdReturnType,
@@ -43,7 +44,7 @@ export const calculateSlideIndex = (
 
 export const startAutoplay = (
   autoplaySpeed: number,
-  timeout: MutableRefObject<NodeJS.Timeout | undefined>,
+  timeout: MutableRefObject<ReturnType<typeof setTimeout> | undefined>,
   nextImg: () => void
 ) => {
   timeout.current = setTimeout(() => {
@@ -57,7 +58,7 @@ export const isHideArrowsFn = (
 ) => children.length > visibleCountSlides
 
 export const setKeyToChildren = (children: JSX.Element[]): JSX.Element[] => {
-  return children.map((child, index) => ({ ...child, key: index }))
+  return children.map((child, index) => ({ ...child, key: String(index) }))
 }
 
 export const returnSlidesAnimation = (

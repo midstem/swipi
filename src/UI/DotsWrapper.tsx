@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import { ComponentBasicProps } from './types'
 
 const DotsWrapper = ({ children }: ComponentBasicProps): JSX.Element => (

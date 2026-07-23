@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import ActiveDot from '../../UI/ActiveDot'
 import Dot from '../../UI/Dot'
 import DotsWrapper from '../../UI/DotsWrapper'
@@ -24,7 +25,9 @@ const Sliding = ({
       {generateArray(countShowDots).map((_, index) => (
         <div
           key={index}
-          ref={(el) => (dotsRef.current[index] = el)}
+          ref={(el) => {
+            dotsRef.current[index] = el
+          }}
           onClick={() => {
             handleDotClick(index)
           }}

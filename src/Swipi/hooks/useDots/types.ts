@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import { SetWithPrev } from '../../types'
 
 export type DotsProps = {

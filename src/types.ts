@@ -1,3 +1,5 @@
+import type { JSX, ReactNode } from 'react'
+
 export type DotsTypes = {
   customDot?: JSX.Element
   slideIndex: number
@@ -8,7 +10,7 @@ export type DotsTypes = {
   dotColor?: string
   animationSpeed: number
   handleDotClick: (index: number) => void
-  returnDots: (index: number) => React.ReactNode
+  returnDots: (index: number) => ReactNode
   countShowDots: number
 }
 
