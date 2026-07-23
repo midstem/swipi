@@ -2,7 +2,7 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import { resolve } from 'path'
-export default defineConfig(() => ({
+export default defineConfig({
   server: {
     port: 3000
   },
@@ -33,4 +33,4 @@ export default defineConfig(() => ({
       external: ['react']
     }
   }
-}))
+})
