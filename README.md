@@ -77,15 +77,15 @@ export const App = () => {
 }
 ```
 
-| Method | Description | Type |
-| --- | --- | --- |
-| `scrollNext` | Scroll to the next snap position (respects `loop`) | `() => void` |
-| `scrollPrev` | Scroll to the previous snap position (respects `loop`) | `() => void` |
-| `scrollTo` | Scroll to a given snap index (0-based) | `(index: number) => void` |
-| `selectedScrollSnap` | Index of the currently selected snap position | `() => number` |
-| `scrollSnapList` | List of all available snap indices, e.g. `[0, 1, 2]` | `() => number[]` |
-| `canScrollNext` | Whether a next scroll is currently possible | `() => boolean` |
-| `canScrollPrev` | Whether a previous scroll is currently possible | `() => boolean` |
+| Method               | Description                                            | Type                      |
+| -------------------- | ------------------------------------------------------ | ------------------------- |
+| `scrollNext`         | Scroll to the next snap position (respects `loop`)     | `() => void`              |
+| `scrollPrev`         | Scroll to the previous snap position (respects `loop`) | `() => void`              |
+| `scrollTo`           | Scroll to a given snap index (0-based)                 | `(index: number) => void` |
+| `selectedScrollSnap` | Index of the currently selected snap position          | `() => number`            |
+| `scrollSnapList`     | List of all available snap indices, e.g. `[0, 1, 2]`   | `() => number[]`          |
+| `canScrollNext`      | Whether a next scroll is currently possible            | `() => boolean`           |
+| `canScrollPrev`      | Whether a previous scroll is currently possible        | `() => boolean`           |
 
 ## **Browsers support**
 
