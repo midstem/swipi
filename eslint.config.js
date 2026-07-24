@@ -55,8 +55,6 @@ export default [
         { checksVoidReturn: false }
       ],
       '@typescript-eslint/no-explicit-any': 'off',
-      // Public props use ValueOf<Enum> (`${T}`) so JS consumers can pass plain
-      // strings, which makes every enum comparison "unsafe" by this rule.
       '@typescript-eslint/no-unsafe-enum-comparison': 'off',
       '@typescript-eslint/no-unused-vars': [1, { ignoreRestSiblings: true }],
       'no-redeclare': 'off',
