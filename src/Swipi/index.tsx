@@ -1,5 +1,6 @@
+import { forwardRef, useImperativeHandle } from 'react'
 import { useSwipi } from './useSwipi'
-import { SwipiProps } from './types'
+import { SwipiProps, SwipiRef } from './types'
 import { returnSlidesAnimation } from './helpers'
 import { Slide } from '../UI/Slide'
 import SwipiButton from '../UI/SwipiButton'
@@ -9,32 +10,35 @@ import SlidesContainer from '../UI/SlidesContainer'
 import CarouselWrapper from '../UI/CarouselWrapper'
 import '../UI/styles.css'
 
-const Swipi = ({
-  showDots,
-  dotColor,
-  customDot,
-  config = [],
-  children = [],
-  activeDotColor,
-  customActiveDot,
-  slidesNumber = 3,
-  initialSlide = 0,
-  nextButton = 'ᐳ',
-  prevButton = 'ᐸ',
-  autoplay = false,
-  sizeForDefaultDot,
-  showArrows = true,
-  autoplaySpeed = 4000,
-  animationSpeed = 300,
-  spaceBetweenSlides = 0,
-  dotsAnimation = 'default',
-  slidesAnimation = 'default',
-  sizeForDefaultActiveDot = 13,
-  className,
-  loop = false,
-  biasRight = false,
-  onChange = () => {}
-}: SwipiProps) => {
+const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
+  {
+    showDots,
+    dotColor,
+    customDot,
+    config = [],
+    children = [],
+    activeDotColor,
+    customActiveDot,
+    slidesNumber = 3,
+    initialSlide = 0,
+    nextButton = 'ᐳ',
+    prevButton = 'ᐸ',
+    autoplay = false,
+    sizeForDefaultDot,
+    showArrows = true,
+    autoplaySpeed = 4000,
+    animationSpeed = 300,
+    spaceBetweenSlides = 0,
+    dotsAnimation = 'default',
+    slidesAnimation = 'default',
+    sizeForDefaultActiveDot = 13,
+    className,
+    loop = false,
+    biasRight = false,
+    onChange = () => {}
+  }: SwipiProps,
+  ref
+) {
   const {
     Dots,
     slides,
@@ -73,6 +77,28 @@ const Swipi = ({
     spaceBetweenSlides,
     onChange
   })
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      scrollNext: nextImg,
+      scrollPrev: prevImg,
+      scrollTo: handleDotClick,
+      selectedScrollSnap: () => slideIndex,
+      scrollSnapList: () =>
+        Array.from({ length: countShowDots }, (_, index) => index),
+      canScrollNext: () => !isDisableButton(true),
+      canScrollPrev: () => !isDisableButton()
+    }),
+    [
+      nextImg,
+      prevImg,
+      handleDotClick,
+      slideIndex,
+      countShowDots,
+      isDisableButton
+    ]
+  )
 
   return (
     <CarouselWrapper className={className}>
@@ -139,6 +165,6 @@ const Swipi = ({
       )}
     </CarouselWrapper>
   )
-}
+})
 
 export default Swipi
