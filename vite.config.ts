@@ -30,7 +30,7 @@ export default defineConfig({
       cssFileName: 'style'
     },
     rollupOptions: {
-      external: ['react']
+      external: ['react', 'react/jsx-runtime']
     }
   }
 })
