@@ -1,4 +1,5 @@
-import { forwardRef, RefObject } from 'react'
+import type { JSX } from 'react'
+import { forwardRef } from 'react'
 import { SwipiButtonProps } from './types'
 
 const SwipiButton = forwardRef<HTMLButtonElement, SwipiButtonProps>(
@@ -7,7 +8,7 @@ const SwipiButton = forwardRef<HTMLButtonElement, SwipiButtonProps>(
       aria-label={className}
       disabled={disabled}
       className={className}
-      ref={ref as RefObject<HTMLButtonElement>}
+      ref={ref}
       onClick={onClick}
       type="button"
     >

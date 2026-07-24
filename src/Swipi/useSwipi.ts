@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState
+} from 'react'
 import { useDots } from './hooks/useDots'
 import { useSlides } from './hooks/useSlides'
 import { useEvents } from './hooks/useEvents'
@@ -37,7 +43,7 @@ export const useSwipi = ({
   const [startX, setStartX] = useState<number>(0)
   const [movePath, setMovePath] = useState<number>(0)
 
-  const timeout = useRef<NodeJS.Timer>()
+  const timeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const slidesWrapperRef = useRef<HTMLDivElement>(null)
 
   const {
@@ -184,11 +190,11 @@ export const useSwipi = ({
 
   useEffect(() => {
     if (initialSlide) {
-    const adjustedSlideIndex =
-      Math.max(1, Math.min(initialSlide, countShowDots)) - 1
+      const adjustedSlideIndex =
+        Math.max(1, Math.min(initialSlide, countShowDots)) - 1
 
-    setTransform(slideWidth * -(children.length + adjustedSlideIndex))
-    setSlideIndex(adjustedSlideIndex)
+      setTransform(slideWidth * -(children.length + adjustedSlideIndex))
+      setSlideIndex(adjustedSlideIndex)
     }
   }, [
     children.length,

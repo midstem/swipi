@@ -5,5 +5,5 @@ export type Autoplay = {
   autoplaySpeed: number
   slideIndex: number
   nextImg: () => void
-  timeout: MutableRefObject<NodeJS.Timeout | undefined>
+  timeout: MutableRefObject<ReturnType<typeof setTimeout> | undefined>
 }

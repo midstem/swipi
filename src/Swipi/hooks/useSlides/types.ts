@@ -1,3 +1,4 @@
+import type { JSX } from 'react'
 import { ConfigType } from '../../types'
 import { SlidesAnimation, ValueOf } from '../../../types'
 

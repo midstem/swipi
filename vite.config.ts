@@ -2,7 +2,7 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import { resolve } from 'path'
-export default defineConfig(() => ({
+export default defineConfig({
   server: {
     port: 3000
   },
@@ -17,8 +17,8 @@ export default defineConfig(() => ({
         'src/UI',
         'src/Swipi/hooks',
         'src/Swipi/helpers',
-        'src/Swipi/constants.ts',
-        'src/helpers'
+        'src/helpers',
+        'src/**/*.test.{ts,tsx}'
       ]
     })
   ],
@@ -26,10 +26,11 @@ export default defineConfig(() => ({
     lib: {
       entry: resolve('src', 'index.ts'),
       formats: ['es'],
-      fileName: 'index'
+      fileName: 'index',
+      cssFileName: 'style'
     },
     rollupOptions: {
       external: ['react']
     }
   }
-}))
+})

@@ -52,9 +52,10 @@ describe('calculateSlideIndex', () => {
 describe('startAutoplay', () => {
   test('should start autoplay', () => {
     vi.useFakeTimers()
-    const timeout: MutableRefObject<NodeJS.Timeout | undefined> = {
-      current: undefined
-    }
+    const timeout: MutableRefObject<ReturnType<typeof setTimeout> | undefined> =
+      {
+        current: undefined
+      }
     const nextImg = vi.fn()
     const autoplaySpeed = 3000
 
@@ -83,8 +84,8 @@ describe('setKeyToChildren', () => {
   test('should set keys to children based on their index', () => {
     const children = [<div />, <div />]
     const keyedChildren = setKeyToChildren(children)
-    expect(keyedChildren[0].key).toEqual(0)
-    expect(keyedChildren[1].key).toEqual(1)
+    expect(keyedChildren[0].key).toEqual('0')
+    expect(keyedChildren[1].key).toEqual('1')
   })
 })
 

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 
 export const useDebounce = (callback: () => void, delay: number) => {
   const [isDisabled, setIsDisabled] = useState(false)
-  const timer = useRef<NodeJS.Timer>()
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   const debounce = useCallback(() => {
     if (!isDisabled) {
