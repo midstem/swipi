@@ -87,6 +87,44 @@ export const App = () => {
 | `canScrollNext`      | Whether a next scroll is currently possible            | `() => boolean`           |
 | `canScrollPrev`      | Whether a previous scroll is currently possible        | `() => boolean`           |
 
+## **Reactive state (`onSelect`)**
+
+While `ref` lets you _command_ the slider, `onSelect` lets the slider _report_
+its state back to you on every change — so your own UI (progress bar, "slide X
+of Y", custom controls) re-renders automatically without reading from the ref.
+
+```tsx
+import { useState } from 'react'
+import Swipi, { SwipiState } from 'swipi'
+
+export const App = () => {
+  const [state, setState] = useState<SwipiState>()
+
+  return (
+    <>
+      <Swipi onSelect={setState} showDots>
+        <div />
+        <div />
+        <div />
+      </Swipi>
+
+      <p>
+        Slide {(state?.selectedIndex ?? 0) + 1} of {state?.snapCount}
+      </p>
+    </>
+  )
+}
+```
+
+`onSelect` receives a `SwipiState` object:
+
+| Field           | Description                                     | Type      |
+| --------------- | ----------------------------------------------- | --------- |
+| `selectedIndex` | Index of the currently selected snap position   | `number`  |
+| `snapCount`     | Total number of snap positions                  | `number`  |
+| `canScrollNext` | Whether a next scroll is currently possible     | `boolean` |
+| `canScrollPrev` | Whether a previous scroll is currently possible | `boolean` |
+
 ## **Browsers support**
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Opera |
@@ -331,4 +369,12 @@ export const App = () => {
 .left-button - styles the left button that gets the user to the previous slide
 
 .right-button - styles the right button that gets the user to the next slide
+```
+
+## 🛠 **Development**
+
+Run the local playground (`src/dev`) with hot-reload to try changes before publishing:
+
+```bash
+$ npm start
 ```
