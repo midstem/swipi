@@ -75,6 +75,7 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
     slidesNumber,
     initialSlide,
     autoplaySpeed,
+    animationSpeed,
     dotsAnimation,
     activeDotColor,
     customActiveDot,

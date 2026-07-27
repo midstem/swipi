@@ -1,27 +1,34 @@
+import { useRef } from 'react'
 import { Navigation } from './types'
 
 export const useNavigation = ({
   setTransform,
   setAnimation,
   slideWidth,
-  normalizeTransform,
+  animationSpeed,
+  isLoopEnabled,
   isDisableMove
 }: Navigation) => {
+  const isAnimating = useRef(false)
+
   const navigateSlide =
     (nextSlide?: boolean) => (callback: (transform: number) => void) => {
       if (isDisableMove(!!nextSlide)) return
+      if (isLoopEnabled && isAnimating.current) return
 
-      setAnimation(false)
-      setTransform((prev) => normalizeTransform(prev))
+      setAnimation(true)
+      setTransform((transform) => {
+        callback(transform)
 
-      requestAnimationFrame(() => {
-        setAnimation(true)
-        setTransform((prev) => {
-          callback(prev)
-
-          return nextSlide ? prev - slideWidth : prev + slideWidth
-        })
+        return nextSlide ? transform - slideWidth : transform + slideWidth
       })
+
+      if (!isLoopEnabled) return
+
+      isAnimating.current = true
+      setTimeout(() => {
+        isAnimating.current = false
+      }, animationSpeed)
     }
 
   return {

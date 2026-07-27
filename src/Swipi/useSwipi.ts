@@ -28,6 +28,7 @@ export const useSwipi = ({
   slidesNumber,
   initialSlide,
   autoplaySpeed,
+  animationSpeed,
   dotsAnimation,
   activeDotColor,
   slidesAnimation,
@@ -147,7 +148,8 @@ export const useSwipi = ({
     slideWidth,
     setTransform,
     setAnimation,
-    normalizeTransform,
+    animationSpeed,
+    isLoopEnabled,
     isDisableMove: isDisableMove()
   })
 

@@ -20,6 +20,7 @@ export type UseSwipiType = {
   slidesNumber: number
   initialSlide: number
   autoplaySpeed: number
+  animationSpeed: number
   children: JSX.Element[]
   activeDotColor?: string
   customDot?: JSX.Element
