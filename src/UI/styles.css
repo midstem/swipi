@@ -24,5 +24,36 @@ button {
   background-color: transparent;
   border: none;
   cursor: pointer;
-  outline: none;
+}
+
+.swipi-dot {
+  padding: 0;
+  display: inline-flex;
+  line-height: 0;
+}
+
+.swipi-wrapper button:focus-visible {
+  outline: 3px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+.swipi-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swipi-wrapper *,
+  .swipi-wrapper *::before,
+  .swipi-wrapper *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }

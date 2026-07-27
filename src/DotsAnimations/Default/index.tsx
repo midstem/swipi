@@ -19,8 +19,12 @@ const Default = ({
   return (
     <DotsWrapper>
       {generateArray(countShowDots).map((_, index) => (
-        <div
+        <button
           key={index}
+          type="button"
+          className="swipi-dot"
+          aria-label={`Go to slide ${index + 1}`}
+          aria-current={slideIndex === index}
           onClick={() => {
             handleDotClick(index)
           }}
@@ -37,7 +41,7 @@ const Default = ({
               activeDotColor={activeDotColor}
             />
           )}
-        </div>
+        </button>
       ))}
     </DotsWrapper>
   )

@@ -4,7 +4,7 @@ import { DotsLeftOffsetsTypes } from './types'
 import { getDotsLeftOffsets, getWidthDifference } from './helpers'
 
 const useSliding = (slideIndex: number) => {
-  const dotsRef = useRef<(HTMLDivElement | null)[]>([])
+  const dotsRef = useRef<(HTMLButtonElement | null)[]>([])
   const activeDotRef = useRef<HTMLDivElement>(null)
   const dotsLeftOffsetsRef = useRef<DotsLeftOffsetsTypes[]>(
     defaultDotsLeftOffsets

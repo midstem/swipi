@@ -5,10 +5,14 @@ export const Slide = ({
   slideWidth,
   spaceBetween,
   children,
-  animation = {}
+  animation = {},
+  ariaLabel
 }: SlideProps): JSX.Element => {
   return (
     <div
+      role="group"
+      aria-roledescription="slide"
+      aria-label={ariaLabel}
       style={{
         boxSizing: 'border-box',
         width: `${slideWidth}px`,

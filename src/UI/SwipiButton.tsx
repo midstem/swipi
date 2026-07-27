@@ -3,9 +3,9 @@ import { forwardRef } from 'react'
 import { SwipiButtonProps } from './types'
 
 const SwipiButton = forwardRef<HTMLButtonElement, SwipiButtonProps>(
-  ({ children, onClick, className, disabled }, ref): JSX.Element => (
+  ({ children, onClick, className, disabled, ariaLabel }, ref): JSX.Element => (
     <button
-      aria-label={className}
+      aria-label={ariaLabel}
       disabled={disabled}
       className={className}
       ref={ref}

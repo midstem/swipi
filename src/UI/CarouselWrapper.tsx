@@ -1,11 +1,11 @@
 import type { JSX } from 'react'
-import { ComponentBasicProps } from './types'
+import { CarouselWrapperProps } from './types'
 
 const CarouselWrapper = ({
   children,
   className = '',
   ...props
-}: ComponentBasicProps): JSX.Element => (
+}: CarouselWrapperProps): JSX.Element => (
   <div className={`swipi-wrapper ${className}`} {...props}>
     {children}
   </div>

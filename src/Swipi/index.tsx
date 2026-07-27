@@ -1,8 +1,9 @@
-import { forwardRef, useImperativeHandle } from 'react'
+import { forwardRef, KeyboardEvent, useImperativeHandle } from 'react'
 import { useSwipi } from './useSwipi'
 import { SwipiProps, SwipiRef } from './types'
 import { returnSlidesAnimation } from './helpers'
 import { Slide } from '../UI/Slide'
+import LiveRegion from '../UI/LiveRegion'
 import SwipiButton from '../UI/SwipiButton'
 import SlidesWrapper from '../UI/SlidesWrapper'
 import SwipiContainer from '../UI/SwipiContainer'
@@ -36,7 +37,8 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
     loop = false,
     biasRight = false,
     onChange = () => {},
-    onSelect = () => {}
+    onSelect = () => {},
+    ariaLabel = 'Slides'
   }: SwipiProps,
   ref
 ) {
@@ -102,14 +104,27 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
     ]
   )
 
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
+    if (event.key === 'ArrowLeft') prevImg()
+    if (event.key === 'ArrowRight') nextImg()
+  }
+
   return (
-    <CarouselWrapper className={className}>
+    <CarouselWrapper
+      className={className}
+      role="group"
+      aria-roledescription="carousel"
+      aria-label={ariaLabel}
+      onKeyDown={handleKeyDown}
+    >
+      <LiveRegion current={slideIndex + 1} total={countShowDots} />
       <SwipiContainer>
         {isShowArrows && (
           <SwipiButton
             disabled={isDisableButton()}
             onClick={prevImg}
             className="left-button"
+            ariaLabel="Previous slide"
           >
             {prevButton}
           </SwipiButton>
@@ -130,6 +145,7 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
                 key={id}
                 slideWidth={slideWidth}
                 spaceBetween={spaceBetween}
+                ariaLabel={`${Number(key) + 1} of ${children.length}`}
                 animation={returnSlidesAnimation(
                   slidesAnimation,
                   Number(key) === slideIndex
@@ -145,6 +161,7 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
             disabled={isDisableButton(true)}
             onClick={nextImg}
             className="right-button"
+            ariaLabel="Next slide"
           >
             {nextButton}
           </SwipiButton>
