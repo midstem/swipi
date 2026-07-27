@@ -4,18 +4,23 @@ export const useNavigation = ({
   setTransform,
   setAnimation,
   slideWidth,
+  normalizeTransform,
   isDisableMove
 }: Navigation) => {
   const navigateSlide =
     (nextSlide?: boolean) => (callback: (transform: number) => void) => {
       if (isDisableMove(!!nextSlide)) return
 
-      setAnimation(true)
+      setAnimation(false)
+      setTransform((prev) => normalizeTransform(prev))
 
-      setTransform((transform) => {
-        callback(transform)
+      requestAnimationFrame(() => {
+        setAnimation(true)
+        setTransform((prev) => {
+          callback(prev)
 
-        return nextSlide ? transform - slideWidth : transform + slideWidth
+          return nextSlide ? prev - slideWidth : prev + slideWidth
+        })
       })
     }
 

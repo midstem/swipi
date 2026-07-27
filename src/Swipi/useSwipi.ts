@@ -147,6 +147,7 @@ export const useSwipi = ({
     slideWidth,
     setTransform,
     setAnimation,
+    normalizeTransform,
     isDisableMove: isDisableMove()
   })
 
