@@ -47,6 +47,46 @@ export const App = () => (
 
 ## 🔥 <a href='https://swipi.midstem.net'>View more examples and create a custom slider</a>
 
+## **Imperative API (ref)**
+
+Attach a `ref` to control the slider programmatically — build your own
+buttons, thumbnails, or sync several sliders together.
+
+```tsx
+import { useRef } from 'react'
+import Swipi, { SwipiRef } from 'swipi'
+
+const styles = { height: '250px', backgroundColor: '#dadada' }
+
+export const App = () => {
+  const swipiRef = useRef<SwipiRef>(null)
+
+  return (
+    <>
+      <Swipi ref={swipiRef} loop showDots spaceBetweenSlides={15}>
+        <div style={styles} />
+        <div style={styles} />
+        <div style={styles} />
+      </Swipi>
+
+      <button onClick={() => swipiRef.current?.scrollPrev()}>Prev</button>
+      <button onClick={() => swipiRef.current?.scrollTo(2)}>Go to 3rd</button>
+      <button onClick={() => swipiRef.current?.scrollNext()}>Next</button>
+    </>
+  )
+}
+```
+
+| Method               | Description                                            | Type                      |
+| -------------------- | ------------------------------------------------------ | ------------------------- |
+| `scrollNext`         | Scroll to the next snap position (respects `loop`)     | `() => void`              |
+| `scrollPrev`         | Scroll to the previous snap position (respects `loop`) | `() => void`              |
+| `scrollTo`           | Scroll to a given snap index (0-based)                 | `(index: number) => void` |
+| `selectedScrollSnap` | Index of the currently selected snap position          | `() => number`            |
+| `scrollSnapList`     | List of all available snap indices, e.g. `[0, 1, 2]`   | `() => number[]`          |
+| `canScrollNext`      | Whether a next scroll is currently possible            | `() => boolean`           |
+| `canScrollPrev`      | Whether a previous scroll is currently possible        | `() => boolean`           |
+
 ## **Browsers support**
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Opera |

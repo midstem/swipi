@@ -61,6 +61,16 @@ export type SwipiProps = {
 
 export type DotsAnimation = 'default' | 'sliding'
 
+export type SwipiRef = {
+  scrollNext: () => void
+  scrollPrev: () => void
+  scrollTo: (index: number) => void
+  selectedScrollSnap: () => number
+  scrollSnapList: () => number[]
+  canScrollNext: () => boolean
+  canScrollPrev: () => boolean
+}
+
 export type ReturnSlideWidthType = {
   current?: number
   spaceBetween: number
