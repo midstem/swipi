@@ -35,11 +35,13 @@ export const returnSlideWidth = ({
 export const calculateSlideIndex = (
   transform: number,
   slideWidth: number,
-  children: JSX.Element[]
+  children: JSX.Element[],
+  cloneOffset = 0
 ): number => {
   const result = Math.round(Math.abs(transform / slideWidth))
+  const length = children.length
 
-  return Math.abs(result % children.length)
+  return (((result - cloneOffset) % length) + length) % length
 }
 
 export const startAutoplay = (

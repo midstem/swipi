@@ -49,6 +49,7 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
     transform,
     slideWidth,
     slideIndex,
+    cloneCount,
     spaceBetween,
     isShowArrows,
     countShowDots,
@@ -59,6 +60,7 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
     prevImg,
     onStart,
     returnDots,
+    handleSettle,
     handleDotClick,
     isDisableButton
   } = useSwipi({
@@ -139,6 +141,7 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
             animation={animation}
             transform={transform}
             animationSpeed={animationSpeed}
+            onSettle={handleSettle}
           >
             {slides?.map(({ id, key }, index) => (
               <Slide
@@ -146,6 +149,9 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
                 slideWidth={slideWidth}
                 spaceBetween={spaceBetween}
                 ariaLabel={`${Number(key) + 1} of ${children.length}`}
+                isClone={
+                  index < cloneCount || index >= cloneCount + children.length
+                }
                 animation={returnSlidesAnimation(
                   slidesAnimation,
                   Number(key) === slideIndex

@@ -7,6 +7,7 @@ import { calculateSlideIndex, returnCountOfDots } from '../../helpers'
 export const useDots = ({
   setTransform,
   slideWidth,
+  cloneCount,
   customActiveDot,
   customDot,
   setAnimation,
@@ -20,7 +21,7 @@ export const useDots = ({
 
   const handleDotClick = (index: number): void => {
     setAnimation(true)
-    setTransform(-index * slideWidth)
+    setTransform(-(cloneCount + index) * slideWidth)
     setSlideIndex(index)
   }
 
@@ -42,11 +43,12 @@ export const useDots = ({
         calculateSlideIndex(
           next ? transform - slideWidth : transform + slideWidth,
           slideWidth,
-          children
+          children,
+          cloneCount
         )
       )
     },
-    [slideWidth, children]
+    [slideWidth, children, cloneCount]
   )
 
   return {

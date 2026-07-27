@@ -3,6 +3,7 @@ import { ConfigType } from '../../types'
 import { SlidesAnimation, ValueOf } from '../../../types'
 
 export type Slides = {
+  loop: boolean
   endX: number
   startX: number
   movePath: number

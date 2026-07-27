@@ -13,8 +13,8 @@ export const useEvents = ({
   children,
   transform,
   slideWidth,
+  cloneCount,
   isHideArrows,
-  startTransform,
   setEndX,
   setStartX,
   moveSlides,
@@ -22,9 +22,6 @@ export const useEvents = ({
   setAnimation,
   setTransform,
   setSlideIndex,
-  checkSwipiCorner,
-  jumpToTheLastSlide,
-  checkAreaBeyondSwipi,
   isDisableMove
 }: TouchEvents) => {
   const [mouseDown, setMouseDown] = useState(false)
@@ -34,11 +31,6 @@ export const useEvents = ({
     setEndX(0)
     setMovePath(0)
     setStartX(0)
-  }
-
-  const turnInitialPosition = (): void => {
-    setAnimation(false)
-    setTransform((prev) => (prev ? prev - startTransform : startTransform))
   }
 
   const onSwipe = (): void => {
@@ -53,7 +45,9 @@ export const useEvents = ({
         swipedSide
       })
 
-      setSlideIndex(calculateSlideIndex(newTransform, slideWidth, children))
+      setSlideIndex(
+        calculateSlideIndex(newTransform, slideWidth, children, cloneCount)
+      )
 
       return newTransform
     })
@@ -61,7 +55,6 @@ export const useEvents = ({
 
   const onStart = (X: number): void => {
     setTimeTouch(new Date())
-    checkSwipiCorner() && turnInitialPosition()
     setStartX(X)
     setMouseDown(true)
   }
@@ -80,7 +73,9 @@ export const useEvents = ({
     setAnimation(false)
     moveSlides()
     setEndX(X)
-    setSlideIndex(calculateSlideIndex(transform, slideWidth, children))
+    setSlideIndex(
+      calculateSlideIndex(transform, slideWidth, children, cloneCount)
+    )
   }
 
   const onEnd = (): void => {
@@ -88,7 +83,6 @@ export const useEvents = ({
 
     setAnimation(true)
     onSwipe()
-    checkAreaBeyondSwipi() && jumpToTheLastSlide()
     resetCoordinates()
     setMouseDown(false)
   }

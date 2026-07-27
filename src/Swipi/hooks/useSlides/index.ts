@@ -8,10 +8,10 @@ import {
   returnSlideWidth,
   setKeyToChildren
 } from '../../helpers'
-import { cloneArray } from '../../../helpers'
 import { Slides } from './types'
 
 export const useSlides = ({
+  loop,
   endX,
   startX,
   config,
@@ -33,6 +33,8 @@ export const useSlides = ({
   const visibleCountSlides = getRightSlidesCount(slidesNumber, slidesAnimation)
   const spaceBetween = returnSpaceBetween(spaceBetweenSlides)
   const isHideArrows = isHideArrowsFn(children, visibleCountSlides)
+  const isLoopEnabled = loop && isHideArrows
+  const cloneCount = isLoopEnabled ? visibleCountSlides + 1 : 0
   const isCornerSlide =
     slidesAnimation === SlidesAnimation.DEFAULT
       ? (getSwipiUpdatesParam('biasRight') ?? biasRight)
@@ -58,27 +60,33 @@ export const useSlides = ({
   }, [isCornerSlide, updateSlideWidthArgs, visibleCountSlides])
 
   const slides = useMemo(() => {
-    return isHideArrows
-      ? addUniqueId(cloneArray(setKeyToChildren(children), 3))
-      : addUniqueId(setKeyToChildren(children))
-  }, [isHideArrows, children])
+    const keyed = setKeyToChildren(children)
 
-  const startTransform = -slideWidth * children.length
+    if (!isLoopEnabled) return addUniqueId(keyed)
 
-  const checkAreaBeyondSwipi = (): boolean =>
-    transform <= startTransform * 2 - slideWidth || transform >= slideWidth / 2
+    const headClones = keyed.slice(children.length - cloneCount)
+    const tailClones = keyed.slice(0, cloneCount)
+
+    return addUniqueId([...headClones, ...keyed, ...tailClones])
+  }, [isLoopEnabled, cloneCount, children])
+
+  const normalizeTransform = (value: number): number => {
+    if (!isLoopEnabled || !slideWidth) return value
+
+    const setWidth = children.length * slideWidth
+    let result = value
+
+    while (result > -cloneCount * slideWidth) result -= setWidth
+    while (result <= -(cloneCount + children.length) * slideWidth)
+      result += setWidth
+
+    return result
+  }
 
   const moveSlides = (): void => {
     const pathTaken = endX && startX - endX
-    setTransform((prev) => prev - pathTaken + movePath)
+    setTransform((prev) => normalizeTransform(prev - pathTaken + movePath))
     setMovePath(pathTaken)
-  }
-
-  const jumpToTheLastSlide = (): void => {
-    const lineLengthOfSlides = slideWidth * slides.length
-    const numberOfSlidesBack = visibleCountSlides === 1 ? 2 : visibleCountSlides
-    const rightJump = -(lineLengthOfSlides - slideWidth * numberOfSlidesBack)
-    setTransform(movePath > 0 ? rightJump : 0)
   }
 
   return {
@@ -87,11 +95,11 @@ export const useSlides = ({
     slideWidth,
     isHideArrows,
     spaceBetween,
-    startTransform,
+    cloneCount,
+    isLoopEnabled,
     moveSlides,
     setTransform,
-    jumpToTheLastSlide,
-    checkAreaBeyondSwipi,
+    normalizeTransform,
     visibleCountSlides
   }
 }

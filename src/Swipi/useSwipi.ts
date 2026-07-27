@@ -53,13 +53,14 @@ export const useSwipi = ({
     slideWidth,
     isHideArrows,
     spaceBetween,
-    startTransform,
+    cloneCount,
+    isLoopEnabled,
     moveSlides,
     setTransform,
-    jumpToTheLastSlide,
-    checkAreaBeyondSwipi,
+    normalizeTransform,
     visibleCountSlides
   } = useSlides({
+    loop,
     endX,
     startX,
     config,
@@ -86,6 +87,7 @@ export const useSwipi = ({
     dotColor,
     customDot,
     slideWidth,
+    cloneCount,
     dotsAnimation,
     activeDotColor,
     customActiveDot,
@@ -116,27 +118,12 @@ export const useSwipi = ({
   const canScrollNext = !isDisableMove()(true)
   const canScrollPrev = !isDisableMove()(false)
 
-  const checkSwipiCorner = useCallback(
-    (): boolean =>
-      transform <= startTransform * 2 + slideWidth / 2 ||
-      transform >= -slideWidth / 2,
-    [transform, slideWidth, startTransform]
-  )
+  const handleSettle = useCallback((): void => {
+    if (!isLoopEnabled) return
 
-  const putInTheInitialPosition = useCallback(
-    (callback?: () => void): (() => void) => {
-      setTransform(startTransform)
-      setAnimation(false)
-
-      const timer = setTimeout(() => {
-        callback?.()
-        setAnimation(true)
-      }, 1)
-
-      return () => clearTimeout(timer)
-    },
-    [startTransform, setAnimation, setTransform]
-  )
+    setAnimation(false)
+    setTransform((prev) => normalizeTransform(prev))
+  }, [isLoopEnabled, normalizeTransform, setAnimation, setTransform])
 
   const { onEnd, onMove, onStart } = useEvents({
     startX,
@@ -144,8 +131,8 @@ export const useSwipi = ({
     children,
     transform,
     slideWidth,
+    cloneCount,
     isHideArrows,
-    startTransform,
     setEndX,
     setStartX,
     moveSlides,
@@ -153,9 +140,6 @@ export const useSwipi = ({
     setAnimation,
     setTransform,
     setSlideIndex,
-    checkSwipiCorner,
-    jumpToTheLastSlide,
-    checkAreaBeyondSwipi,
     isDisableMove: isDisableMove()
   })
 
@@ -163,8 +147,6 @@ export const useSwipi = ({
     slideWidth,
     setTransform,
     setAnimation,
-    checkSwipiCorner,
-    putInTheInitialPosition,
     isDisableMove: isDisableMove()
   })
 
@@ -179,8 +161,6 @@ export const useSwipi = ({
   useWindowResize(() => {
     setWindowWidth(window.innerWidth)
     setAnimation(false)
-    setSlideIndex(0)
-    setTransform(0)
   })
 
   useEffect(() => {
@@ -202,15 +182,15 @@ export const useSwipi = ({
   }, [])
 
   useEffect(() => {
-    if (initialSlide) {
-      const adjustedSlideIndex =
-        Math.max(1, Math.min(initialSlide, countShowDots)) - 1
+    if (!slideWidth) return
 
-      setTransform(slideWidth * -(children.length + adjustedSlideIndex))
-      setSlideIndex(adjustedSlideIndex)
-    }
+    const adjustedSlideIndex =
+      Math.max(1, Math.min(initialSlide || 1, countShowDots)) - 1
+
+    setTransform(-(cloneCount + adjustedSlideIndex) * slideWidth)
+    setSlideIndex(adjustedSlideIndex)
   }, [
-    children.length,
+    cloneCount,
     countShowDots,
     initialSlide,
     setSlideIndex,
@@ -224,6 +204,7 @@ export const useSwipi = ({
     transform,
     slideIndex,
     slideWidth,
+    cloneCount,
     spaceBetween,
     countShowDots,
     slidesWrapperRef,
@@ -235,6 +216,7 @@ export const useSwipi = ({
     returnDots,
     setTransform,
     setAnimation,
+    handleSettle,
     handleDotClick,
     isDisableButton: isDisableMove(),
     nextImg: useDebounce(() => nextImg(nextDot), NAVIGATION_DEBOUNCE_DELAY),

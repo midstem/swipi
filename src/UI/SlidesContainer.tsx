@@ -6,7 +6,8 @@ const SlidesContainer = ({
   children,
   transform,
   animation,
-  animationSpeed
+  animationSpeed,
+  onSettle
 }: SlidesContainerProps): JSX.Element => {
   const [isDragging, setIsDragging] = useState<boolean>(false)
 
@@ -17,6 +18,9 @@ const SlidesContainer = ({
     <div
       onDragStart={(e) => {
         e.preventDefault()
+      }}
+      onTransitionEnd={(e) => {
+        if (e.propertyName === 'transform') onSettle()
       }}
       onMouseDown={startDragging}
       onMouseUp={stopDragging}

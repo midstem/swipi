@@ -35,6 +35,7 @@ export type SlidesContainerProps = {
   animation: boolean
   transform: number
   animationSpeed: number
+  onSettle: () => void
 }
 
 export type DotProps = {
@@ -57,4 +58,5 @@ export type SlideProps = {
   children: JSX.Element
   animation?: React.CSSProperties
   ariaLabel: string
+  isClone?: boolean
 }

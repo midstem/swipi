@@ -6,13 +6,16 @@ export const Slide = ({
   spaceBetween,
   children,
   animation = {},
-  ariaLabel
+  ariaLabel,
+  isClone
 }: SlideProps): JSX.Element => {
   return (
     <div
       role="group"
       aria-roledescription="slide"
       aria-label={ariaLabel}
+      aria-hidden={isClone || undefined}
+      inert={isClone || undefined}
       style={{
         boxSizing: 'border-box',
         width: `${slideWidth}px`,

@@ -58,6 +58,16 @@ describe('Swipi accessibility', () => {
 
     expect(screen.getByText('Slide 1 of 3')).toBeTruthy()
   })
+
+  it('exposes each real slide only once in loop mode (clones are hidden)', () => {
+    render(
+      <Swipi slidesNumber={1} loop>
+        {renderSlides(3)}
+      </Swipi>
+    )
+
+    expect(screen.getAllByRole('group', { name: '1 of 3' })).toHaveLength(1)
+  })
 })
 
 describe('Swipi imperative ref API', () => {

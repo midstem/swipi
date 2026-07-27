@@ -4,6 +4,7 @@ import { SetWithPrev } from '../../types'
 export type DotsProps = {
   setTransform: SetWithPrev
   slideWidth: number
+  cloneCount: number
   dotsAnimation: string
   customActiveDot?: JSX.Element
   customDot?: JSX.Element
