@@ -1,8 +1,13 @@
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import dts from 'vite-plugin-dts'
 import { resolve } from 'path'
+
 export default defineConfig({
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts']
+  },
   server: {
     port: 3000
   },
@@ -15,6 +20,7 @@ export default defineConfig({
       include: ['src'],
       exclude: [
         'src/dev',
+        'src/test',
         'src/UI',
         'src/Swipi/hooks',
         'src/Swipi/helpers',
