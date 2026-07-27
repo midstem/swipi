@@ -59,6 +59,7 @@ export type SwipiProps = {
   slidesAnimation?: ValueOf<SlidesAnimation>
   onChange?: (value: SlidePositions) => void
   onSelect?: (state: SwipiState) => void
+  ariaLabel?: string
 }
 
 export type DotsAnimation = 'default' | 'sliding'

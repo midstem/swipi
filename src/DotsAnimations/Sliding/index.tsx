@@ -23,8 +23,12 @@ const Sliding = ({
   return (
     <DotsWrapper>
       {generateArray(countShowDots).map((_, index) => (
-        <div
+        <button
           key={index}
+          type="button"
+          className="swipi-dot"
+          aria-label={`Go to slide ${index + 1}`}
+          aria-current={slideIndex === index}
           ref={(el) => {
             dotsRef.current[index] = el
           }}
@@ -43,9 +47,10 @@ const Sliding = ({
               sizeForDefaultDot={sizeForDefaultDot}
             />
           )}
-        </div>
+        </button>
       ))}
       <div
+        aria-hidden="true"
         ref={activeDotRef}
         style={{
           position: 'absolute',

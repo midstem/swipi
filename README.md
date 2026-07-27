@@ -125,6 +125,20 @@ export const App = () => {
 | `canScrollNext` | Whether a next scroll is currently possible     | `boolean` |
 | `canScrollPrev` | Whether a previous scroll is currently possible | `boolean` |
 
+## **Accessibility**
+
+Swipi ships with keyboard and screen-reader support out of the box:
+
+- The carousel exposes `role="group"` + `aria-roledescription="carousel"` with a
+  configurable `aria-label` (via the `ariaLabel` prop), and each slide is a
+  labelled group (`"1 of 5"`).
+- Slide changes are announced through a polite `aria-live` region.
+- Arrows and dots are real `<button>`s with meaningful labels
+  (`"Previous slide"`, `"Go to slide 3"`) and `aria-current` on the active dot.
+- The slider responds to <kbd>←</kbd> / <kbd>→</kbd> when focused, with a visible
+  `:focus-visible` outline.
+- Animations are disabled under `prefers-reduced-motion`.
+
 ## **Browsers support**
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Opera |
@@ -262,6 +276,18 @@ export const App = () => {
     <td>The onChange function is called every time the current index changes and returns an object with the current, previous and next indices</td>
     <td><code>() => {}</code></td>
     <td>({ prev: number, current: number, next: number }) => void</td>
+  </tr>
+    <tr>
+    <td>onSelect</td>
+    <td>Called on every state change with the full navigable state, so external UI can stay in sync (see <a href="#reactive-state-onselect">Reactive state</a>)</td>
+    <td><code>() => {}</code></td>
+    <td>({ selectedIndex: number, snapCount: number, canScrollNext: boolean, canScrollPrev: boolean }) => void</td>
+  </tr>
+    <tr>
+    <td>ariaLabel</td>
+    <td>Accessible name for the carousel, announced by screen readers</td>
+    <td><code>'Slides'</code></td>
+    <td>string</td>
   </tr>
   <tr>
     <td>config</td>

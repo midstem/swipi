@@ -1,9 +1,17 @@
 import type { JSX } from 'react'
-import { ReactNode, RefObject } from 'react'
+import { HTMLAttributes, ReactNode, RefObject } from 'react'
 
 export type ComponentBasicProps = {
   children: ReactNode
   className?: string
+}
+
+export type CarouselWrapperProps = ComponentBasicProps &
+  HTMLAttributes<HTMLDivElement>
+
+export type LiveRegionProps = {
+  current: number
+  total: number
 }
 
 export type SwipiButtonProps = {
@@ -11,6 +19,7 @@ export type SwipiButtonProps = {
   onClick: () => void
   className: string
   disabled: boolean
+  ariaLabel: string
 }
 
 export type SlidesWrapperProps = {
@@ -47,4 +56,5 @@ export type SlideProps = {
   spaceBetween: number
   children: JSX.Element
   animation?: React.CSSProperties
+  ariaLabel: string
 }
