@@ -370,3 +370,11 @@ export const App = () => {
 
 .right-button - styles the right button that gets the user to the next slide
 ```
+
+## 🛠 **Development**
+
+Run the local playground (`src/dev`) with hot-reload to try changes before publishing:
+
+```bash
+$ npm start
+```

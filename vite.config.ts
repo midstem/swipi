@@ -14,6 +14,7 @@ export default defineConfig({
     dts({
       include: ['src'],
       exclude: [
+        'src/dev',
         'src/UI',
         'src/Swipi/hooks',
         'src/Swipi/helpers',
