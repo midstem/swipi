@@ -35,7 +35,8 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
     className,
     loop = false,
     biasRight = false,
-    onChange = () => {}
+    onChange = () => {},
+    onSelect = () => {}
   }: SwipiProps,
   ref
 ) {
@@ -75,7 +76,8 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
     customActiveDot,
     slidesAnimation,
     spaceBetweenSlides,
-    onChange
+    onChange,
+    onSelect
   })
 
   useImperativeHandle(

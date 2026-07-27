@@ -33,7 +33,8 @@ export const useSwipi = ({
   slidesAnimation,
   customActiveDot,
   spaceBetweenSlides,
-  onChange
+  onChange,
+  onSelect
 }: UseSwipiType) => {
   const [windowWidth, setWindowWidth] = useState<number>(0)
   const [animation, setAnimation] = useState<boolean>(false)
@@ -112,6 +113,9 @@ export const useSwipi = ({
       return false
     }
 
+  const canScrollNext = !isDisableMove()(true)
+  const canScrollPrev = !isDisableMove()(false)
+
   const checkSwipiCorner = useCallback(
     (): boolean =>
       transform <= startTransform * 2 + slideWidth / 2 ||
@@ -182,6 +186,15 @@ export const useSwipi = ({
   useEffect(() => {
     onChange(getSlidePositions(slideIndex, countShowDots, loop))
   }, [countShowDots, loop, onChange, slideIndex])
+
+  useEffect(() => {
+    onSelect({
+      selectedIndex: slideIndex,
+      snapCount: countShowDots,
+      canScrollNext,
+      canScrollPrev
+    })
+  }, [onSelect, slideIndex, countShowDots, canScrollNext, canScrollPrev])
 
   useLayoutEffect(() => {
     setWindowWidth(window.innerWidth)

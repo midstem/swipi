@@ -30,6 +30,7 @@ export type UseSwipiType = {
   loop: boolean
   biasRight?: boolean
   onChange: (value: SlidePositions) => void
+  onSelect: (state: SwipiState) => void
 }
 
 export type SwipiProps = {
@@ -57,9 +58,17 @@ export type SwipiProps = {
   sizeForDefaultActiveDot?: number
   slidesAnimation?: ValueOf<SlidesAnimation>
   onChange?: (value: SlidePositions) => void
+  onSelect?: (state: SwipiState) => void
 }
 
 export type DotsAnimation = 'default' | 'sliding'
+
+export type SwipiState = {
+  selectedIndex: number
+  snapCount: number
+  canScrollNext: boolean
+  canScrollPrev: boolean
+}
 
 export type SwipiRef = {
   scrollNext: () => void
