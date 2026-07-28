@@ -130,7 +130,6 @@ export const isFadeInAnimation = (animation: ValueOf<SlidesAnimation>) => {
   return animation === SlidesAnimation.FADE_IN
 }
 
-/** Speed of the pointer at the release, px per ms, capped to a sane flick. */
 export const getDragVelocity = ({
   distance,
   duration
@@ -141,12 +140,6 @@ export const getDragVelocity = ({
     MAX_DRAG_VELOCITY
   )
 
-/**
- * Where the track would coast to with the release speed. With `dragFree` that
- * is the resting place. Otherwise one gesture moves by one slide at most,
- * however far it was dragged or how hard it was flicked — the release speed
- * only decides whether the slide changes at all.
- */
 export const getMomentumTarget = ({
   transform,
   velocity,
@@ -165,14 +158,9 @@ export const getMomentumTarget = ({
     startIndex + ONE_STEP
   )
 
-  /** Rounding towards the first slide gives `-0`, which reads badly in styles. */
   return -index * slideWidth || INITIAL_TRANSFORM
 }
 
-/**
- * Duration that makes `easeOutCubic` start at the speed of the finger, so the
- * track keeps moving instead of restarting.
- */
 export const getMomentumDuration = ({
   distance,
   velocity,

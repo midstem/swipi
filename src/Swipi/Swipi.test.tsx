@@ -27,7 +27,6 @@ const getTrack = (): HTMLElement => getSlides()[0].parentElement as HTMLElement
 
 const getViewport = (): HTMLElement => getTrack().parentElement as HTMLElement
 
-/** An empty transform means the track sits at the very first slide. */
 const getTrackOffset = (): number => {
   const offset = /translate3d\((-?[\d.]+)px/.exec(getTrack().style.transform)
 
@@ -36,7 +35,6 @@ const getTrackOffset = (): number => {
 
 const POINTER_ID = 1
 
-/** Longer than VELOCITY_STALE_TIME, so the release carries no speed. */
 const PAUSE_BEFORE_RELEASE = 150
 
 const drag = (points: [number, number][]): void => {

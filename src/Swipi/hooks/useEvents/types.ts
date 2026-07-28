@@ -17,12 +17,10 @@ export type DragState = {
   startX: number
   startY: number
   startTransform: number
-  /** Two last samples of the pointer — the release speed is taken from them. */
   lastX: number
   lastAt: number
   previousX: number
   previousAt: number
-  /** Set once the gesture is recognised as horizontal. */
   isDragging: boolean
 }
 

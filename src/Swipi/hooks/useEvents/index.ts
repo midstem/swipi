@@ -2,51 +2,11 @@ import { PointerEvent, useRef } from 'react'
 import { DragState, TouchEvents, UseEventsReturn } from './types'
 import {
   clampTransform,
-  getDragVelocity,
   getMomentumDuration,
   getMomentumTarget
 } from '../../helpers'
-import {
-  DRAG_THRESHOLD,
-  NO_VELOCITY,
-  PRIMARY_BUTTON,
-  VELOCITY_STALE_TIME
-} from '../../constants'
-
-const noop = (): void => {}
-
-const capturePointer = (
-  event: PointerEvent<HTMLDivElement>,
-  isCapturing: boolean
-): void => {
-  const element = event.currentTarget
-
-  try {
-    if (isCapturing) {
-      element.setPointerCapture?.(event.pointerId)
-      return
-    }
-
-    if (element.hasPointerCapture?.(event.pointerId)) {
-      element.releasePointerCapture(event.pointerId)
-    }
-  } catch {
-    /* the pointer is gone — nothing to capture or release */
-  }
-}
-
-/**
- * Speed of the last pointer sample. A pointer that stopped before the release
- * carries nothing, so holding the track still simply drops it where it is.
- */
-const getReleaseVelocity = (drag: DragState): number => {
-  if (performance.now() - drag.lastAt > VELOCITY_STALE_TIME) return NO_VELOCITY
-
-  return getDragVelocity({
-    distance: drag.lastX - drag.previousX,
-    duration: drag.lastAt - drag.previousAt
-  })
-}
+import { DRAG_THRESHOLD, PRIMARY_BUTTON } from '../../constants'
+import { capturePointer, getReleaseVelocity, noop } from './helpers'
 
 export const useEvents = ({
   isLoop,
