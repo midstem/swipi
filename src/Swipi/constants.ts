@@ -38,6 +38,12 @@ export const HALF = 0.5
 
 export const INITIAL_TRANSFORM = 0
 
+export const NO_OFFSET = 0
+
+export const NO_WIDTH = 0
+
+export const EMPTY_TRANSFORM = ''
+
 export const PROGRESS_END = 1
 
 export const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'

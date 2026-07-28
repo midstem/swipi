@@ -4,14 +4,13 @@ import { SlidesAnimation, ValueOf } from '../../../types'
 
 export type Slides = {
   loop: boolean
-  transform: number
   windowWidth: number
+  containerWidth: number
   config: ConfigType[]
   biasRight?: boolean
   slidesNumber: number
   children: JSX.Element[]
   spaceBetweenSlides: number
-  currentRef: HTMLDivElement | null
   slidesAnimation: ValueOf<SlidesAnimation>
 }
 
@@ -21,6 +20,5 @@ export type UseSlidesReturn = {
   slideWidth: number
   isHideArrows: boolean
   spaceBetween: number
-  slideOffsets: number[]
   visibleCountSlides: number
 }

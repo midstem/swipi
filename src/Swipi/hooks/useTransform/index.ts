@@ -1,18 +1,25 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { easeOutCubic } from '../../helpers'
 import { INITIAL_TRANSFORM, PROGRESS_END } from '../../constants'
 import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
-import { UseTransformReturn } from './types'
+import { UseTransformProps, UseTransformReturn } from './types'
 
-export const useTransform = (animationSpeed: number): UseTransformReturn => {
+export const useTransform = ({
+  animationSpeed,
+  render,
+  onTarget
+}: UseTransformProps): UseTransformReturn => {
   const prefersReducedMotion = usePrefersReducedMotion()
 
-  const [transform, setTransform] = useState(INITIAL_TRANSFORM)
-  const [target, setTarget] = useState(INITIAL_TRANSFORM)
-
+  /** Neither the position nor the destination lives in React state. */
   const transformRef = useRef(INITIAL_TRANSFORM)
   const targetRef = useRef(INITIAL_TRANSFORM)
   const frameRef = useRef<number | null>(null)
+  const renderRef = useRef(render)
+  const onTargetRef = useRef(onTarget)
+
+  renderRef.current = render
+  onTargetRef.current = onTarget
 
   const cancelAnimation = useCallback((): void => {
     if (frameRef.current === null) return
@@ -23,12 +30,12 @@ export const useTransform = (animationSpeed: number): UseTransformReturn => {
 
   const applyTransform = useCallback((value: number): void => {
     transformRef.current = value
-    setTransform(value)
+    renderRef.current(value)
   }, [])
 
   const applyTarget = useCallback((value: number): void => {
     targetRef.current = value
-    setTarget(value)
+    onTargetRef.current(value)
   }, [])
 
   const moveTo = useCallback(
@@ -53,9 +60,12 @@ export const useTransform = (animationSpeed: number): UseTransformReturn => {
         return
       }
 
-      const startedAt = performance.now()
+      /** Taken from the first frame, so it always shares the frame clock. */
+      let startedAt: number | null = null
 
       const step = (now: number): void => {
+        startedAt ??= now
+
         const progress = Math.min(
           (now - startedAt) / animationSpeed,
           PROGRESS_END
@@ -80,5 +90,5 @@ export const useTransform = (animationSpeed: number): UseTransformReturn => {
 
   useEffect(() => cancelAnimation, [cancelAnimation])
 
-  return { transform, target, transformRef, targetRef, moveTo, animateTo }
+  return { transformRef, targetRef, moveTo, animateTo }
 }

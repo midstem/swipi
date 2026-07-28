@@ -12,6 +12,17 @@
   width: 100%;
 }
 
+.swipi-track {
+  display: flex;
+  width: fit-content;
+  height: 100%;
+  cursor: grab;
+}
+
+.swipi-track:active {
+  cursor: grabbing;
+}
+
 .dots-wrapper {
   position: relative;
   display: flex;

@@ -390,6 +390,8 @@ Swipi ships with keyboard and screen-reader support out of the box:
 
 .swipi-container - styles the container that wraps slides with arrows
 
+.swipi-track - styles the moving track that holds the slides
+
 .dots-wrapper - styles the container that wraps the dots
 
 .left-button - styles the left button that gets the user to the previous slide

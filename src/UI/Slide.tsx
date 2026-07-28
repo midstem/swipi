@@ -1,16 +1,27 @@
 import type { JSX } from 'react'
+import { useCallback } from 'react'
 import { SlideProps } from './types'
 
 export const Slide = ({
-  offset,
+  index,
+  slidesRef,
   slideWidth,
   spaceBetween,
   children,
   animation = {},
   ariaLabel
 }: SlideProps): JSX.Element => {
+  /** The offset is written to this node by `useTrack`, never through props. */
+  const setSlideRef = useCallback(
+    (node: HTMLDivElement | null): void => {
+      slidesRef.current[index] = node
+    },
+    [slidesRef, index]
+  )
+
   return (
     <div
+      ref={setSlideRef}
       role="group"
       aria-roledescription="slide"
       aria-label={ariaLabel}
@@ -19,7 +30,6 @@ export const Slide = ({
         flexShrink: 0,
         width: `${slideWidth}px`,
         paddingRight: `${spaceBetween}px`,
-        transform: offset ? `translate3d(${offset}px, 0, 0)` : undefined,
         ...animation
       }}
     >
