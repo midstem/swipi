@@ -50,7 +50,6 @@ export type ActiveDotProps = {
 }
 
 export type SlideProps = {
-  /** Loop shift that moves the slide a whole lap forward or backward. */
   offset: number
   slideWidth: number
   spaceBetween: number

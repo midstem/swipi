@@ -224,7 +224,7 @@ describe('Swipi navigation bounds', () => {
     act(() => ref.current?.scrollTo(4))
 
     expect(ref.current?.selectedScrollSnap()).toBe(4)
-    // the track moves backwards by one slide instead of forwards by four
+
     await waitFor(() => expect(getTrackOffset()).toBeGreaterThan(0))
   })
 })

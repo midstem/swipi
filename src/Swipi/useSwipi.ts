@@ -83,10 +83,6 @@ export const useSwipi = ({
     spaceBetweenSlides
   })
 
-  /**
-   * Derived from the target rather than from the rendered offset, so the state
-   * exposed to consumers is already the slide the carousel is heading to.
-   */
   const slideIndex = useMemo(
     () =>
       calculateSlideIndex({
@@ -154,10 +150,6 @@ export const useSwipi = ({
     setCurrentRef(slidesWrapperRef.current)
   }, [])
 
-  /**
-   * Slide width changes on resize while the track offset stays in pixels, so
-   * the current slide is re-snapped to the new geometry.
-   */
   useLayoutEffect(() => {
     const width = previousSlideWidth.current
 

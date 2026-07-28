@@ -53,10 +53,6 @@ export const useSlides = ({
       : width
   }, [isCornerSlide, updateSlideWidthArgs, visibleCountSlides])
 
-  /**
-   * Looping a carousel that already shows every slide at once has nothing to
-   * recycle, so it silently falls back to a bounded track.
-   */
   const isLoop = loop && isHideArrows
 
   const lastIndex = isLoop

@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react'
 import { REDUCED_MOTION_QUERY } from '../../constants'
 
-/**
- * The track is animated in JavaScript, so the `prefers-reduced-motion` rule
- * from the stylesheet cannot switch it off on its own.
- */
 export const usePrefersReducedMotion = (): boolean => {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 

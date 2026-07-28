@@ -42,10 +42,6 @@ export const useNavigation = ({
     scrollBy(-ONE_STEP)
   }, [canScrollPrev, scrollBy])
 
-  /**
-   * The track offset is unbounded in loop mode, so a snap is reached by moving
-   * relatively from the current position instead of jumping to an absolute one.
-   */
   const scrollTo = useCallback(
     (index: number): void => {
       if (!isLoop) {

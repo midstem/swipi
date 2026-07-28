@@ -16,14 +16,11 @@ export type Slides = {
 }
 
 export type UseSlidesReturn = {
-  /** `loop` prop narrowed down to the cases where looping is possible. */
   isLoop: boolean
-  /** Index of the last reachable snap position. */
   lastIndex: number
   slideWidth: number
   isHideArrows: boolean
   spaceBetween: number
-  /** Per-slide horizontal shift that keeps the loop going without clones. */
   slideOffsets: number[]
   visibleCountSlides: number
 }

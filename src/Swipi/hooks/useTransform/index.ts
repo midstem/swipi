@@ -4,17 +4,6 @@ import { INITIAL_TRANSFORM, PROGRESS_END } from '../../constants'
 import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
 import { UseTransformReturn } from './types'
 
-/**
- * Single source of truth for the track position.
- *
- * `transform` is the pixel offset that is actually rendered and it is animated
- * frame by frame instead of relying on a CSS transition. Recomputing it on
- * every frame is what allows the loop to recycle slides on the fly, because
- * their offsets are always derived from the position on screen right now.
- *
- * `target` is where the track is heading, so the selected index, dots and
- * callbacks react immediately instead of waiting for the animation to end.
- */
 export const useTransform = (animationSpeed: number): UseTransformReturn => {
   const prefersReducedMotion = usePrefersReducedMotion()
 

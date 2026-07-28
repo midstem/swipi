@@ -38,10 +38,6 @@ export const returnSlideWidth = ({
 }: ReturnSlideWidthType): number =>
   ((current || DEFAULT_SWIPI_WIDTH) + spaceBetween) / visibleCountSlides
 
-/**
- * Position of the track expressed in slides. Track transform is negative while
- * moving forward, so the index grows in the opposite direction.
- */
 export const getTrackPosition = (
   transform: number,
   slideWidth: number
@@ -71,12 +67,6 @@ export const clampTransform = ({
 }: ClampTransformType): number =>
   loop ? transform : clamp(transform, -lastIndex * slideWidth, 0)
 
-/**
- * Keeps every slide inside a single virtual window of `slidesCount * slideWidth`
- * pixels by shifting it a whole number of laps. That is what replaces cloning:
- * a slide leaving the track on the left is teleported to the right (and back)
- * while it is off screen, so N slides can be scrolled endlessly.
- */
 export const getSlideOffsets = ({
   transform,
   slideWidth,
@@ -97,10 +87,6 @@ export const getSlideOffsets = ({
   })
 }
 
-/**
- * Shortest signed distance between two slides of a looped carousel, so that
- * dots and `scrollTo` always take the closest way around.
- */
 export const getShortestLoopStep = (
   from: number,
   to: number,
@@ -170,10 +156,6 @@ export const returnCountOfDots = (
   )
 }
 
-/**
- * Where the track has to land once the pointer is released: the closest slide,
- * or the next one in the swipe direction when the gesture was a quick flick.
- */
 export const snapToSlide = ({
   transform,
   slideWidth,
