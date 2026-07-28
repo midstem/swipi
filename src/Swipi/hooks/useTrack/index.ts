@@ -6,10 +6,6 @@ import { UseTrackProps, UseTrackReturn } from './types'
 const toTranslate = (value: number): string =>
   value ? `translate3d(${value}px, 0, 0)` : EMPTY_TRANSFORM
 
-/**
- * Owns the track and the slide nodes and writes their transforms directly to
- * the DOM, so an animation frame never goes through the React render.
- */
 export const useTrack = ({
   loop,
   slideWidth,

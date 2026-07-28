@@ -5,7 +5,6 @@ const DEFAULT_CONTAINER_WIDTH = 900
 
 let containerWidth = DEFAULT_CONTAINER_WIDTH
 
-/** jsdom has no layout, so the measured width is driven from the tests. */
 export const setContainerWidth = (width: number): void => {
   containerWidth = width
 }
@@ -35,7 +34,6 @@ class ResizeObserverMock {
   }
 }
 
-/** jsdom ships no ResizeObserver — tests trigger it through this mock. */
 export const triggerResize = (): void =>
   ResizeObserverMock.instances.forEach((instance) => instance.trigger())
 

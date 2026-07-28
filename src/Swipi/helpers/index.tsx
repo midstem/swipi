@@ -68,10 +68,6 @@ export const clampTransform = ({
 }: ClampTransformType): number =>
   loop ? transform : clamp(transform, -lastIndex * slideWidth, 0)
 
-/**
- * Offset that keeps a single slide inside the visible lap in loop mode.
- * Called for every slide on every animation frame, so it stays allocation-free.
- */
 export const getSlideOffset = ({
   index,
   transform,

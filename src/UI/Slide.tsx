@@ -11,7 +11,6 @@ export const Slide = ({
   animation = {},
   ariaLabel
 }: SlideProps): JSX.Element => {
-  /** The offset is written to this node by `useTrack`, never through props. */
   const setSlideRef = useCallback(
     (node: HTMLDivElement | null): void => {
       slidesRef.current[index] = node

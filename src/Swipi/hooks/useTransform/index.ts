@@ -11,7 +11,6 @@ export const useTransform = ({
 }: UseTransformProps): UseTransformReturn => {
   const prefersReducedMotion = usePrefersReducedMotion()
 
-  /** Neither the position nor the destination lives in React state. */
   const transformRef = useRef(INITIAL_TRANSFORM)
   const targetRef = useRef(INITIAL_TRANSFORM)
   const frameRef = useRef<number | null>(null)
@@ -60,7 +59,6 @@ export const useTransform = ({
         return
       }
 
-      /** Taken from the first frame, so it always shares the frame clock. */
       let startedAt: number | null = null
 
       const step = (now: number): void => {

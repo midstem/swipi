@@ -85,7 +85,6 @@ export const useSwipi = ({
     slidesCount
   })
 
-  /** The snapped index is the only reactive value — it changes once per snap. */
   const [slideIndex, setSlideIndex] = useState<number>(FIRST_SLIDE_INDEX)
 
   const syncSlideIndex = useCallback(
@@ -173,7 +172,6 @@ export const useSwipi = ({
     moveTo(-Math.round(getTrackPosition(targetRef.current, width)) * slideWidth)
   }, [slideWidth, moveTo, targetRef])
 
-  /** Geometry drives the offsets and the index, so both follow every render. */
   useLayoutEffect(() => {
     render(transformRef.current)
     syncSlideIndex(targetRef.current)
