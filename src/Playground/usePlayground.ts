@@ -80,7 +80,6 @@ export const usePlayground = (): UsePlaygroundReturn => {
     swipiRef,
     swipiState,
     positions,
-    /** `initialSlide` is applied on mount only, so it has to remount the slider */
     remountKey: `${remountToken}-${state.initialSlide}`,
     update,
     remount,

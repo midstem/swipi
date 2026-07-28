@@ -407,35 +407,4 @@ $ npm start
 ```
 
 The playground exposes **every** prop of the component, so a change can be
-tried without touching the code:
-
-- toggles and sliders for `loop`, `autoplay`, `autoplaySpeed`, `showArrows`,
-  `showDots`, `biasRight`, `initialSlide`, `slidesNumber`, `animationSpeed`,
-  `spaceBetweenSlides` and the number of slides;
-- selects for `slidesAnimation` and `dotsAnimation`, colour pickers and sizes
-  for the dots, custom dot / custom active dot and custom arrow elements;
-- an editor for the responsive `config` breakpoints that also shows the current
-  window width and the breakpoint that is applied right now;
-- buttons for the whole imperative API (`scrollNext`, `scrollPrev`, `scrollTo`,
-  `selectedScrollSnap`, `scrollSnapList`, `canScrollNext`, `canScrollPrev`),
-  live `onSelect` / `onChange` payloads and an event log;
-- a resizable stage with device presets and a generated JSX snippet of the
-  current setup, ready to be copied.
-
-Every playground component lives in its own folder and keeps the logic out of
-the markup — `index.tsx` renders, `use<Component>.ts` holds the state and the
-handlers, `helpers.ts` and `constants.ts` hold the rest:
-
-```
-src/Playground
-├── index.tsx, usePlayground.ts, types.ts, constants.ts, helpers.ts
-└── components
-    └── ConfigEditor
-        ├── index.tsx          # UI only
-        ├── useConfigEditor.ts # state and handlers
-        ├── helpers.ts
-        └── constants.ts
-```
-
-Settings are kept in `localStorage`, so a reload does not reset the setup —
-use **Reset props** to get back to the defaults.
+tried without touching the code.

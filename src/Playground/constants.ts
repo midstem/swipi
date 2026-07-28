@@ -27,7 +27,6 @@ export const MAX_EVENTS = 12
 
 export const JSON_INDENT = 2
 
-/** Props defaults taken from `Swipi` — used to keep the code snippet minimal. */
 export const SWIPI_DEFAULTS = {
   loop: false,
   biasRight: false,

@@ -11,7 +11,6 @@ export const getActiveBreakpoint = (
 ): ConfigType | undefined =>
   config.filter((item) => item.maxWidth >= windowWidth).at(-1)
 
-/** Repeats what the slider does internally, so the stage can explain itself. */
 export const getVisibleSlides = (
   state: PlaygroundState,
   config: ConfigType[],
