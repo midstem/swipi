@@ -17,7 +17,6 @@ export type DragState = {
   lastX: number
   startTransform: number
   startedAt: number
-  /** Set once the gesture is recognised as horizontal. */
   isDragging: boolean
 }
 

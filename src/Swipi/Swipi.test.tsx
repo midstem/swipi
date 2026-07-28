@@ -32,7 +32,6 @@ const getTrackOffset = (): number =>
 
 const POINTER_ID = 1
 
-/** Plays a pointer gesture as [clientX, clientY] steps, without releasing it. */
 const drag = (points: [number, number][]): void => {
   const viewport = getViewport()
   const [[startX, startY], ...moves] = points

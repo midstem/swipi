@@ -50,7 +50,6 @@ Object.defineProperty(HTMLElement.prototype, 'clientWidth', {
 
 const capturedPointers = new Set<number>()
 
-/** jsdom implements no pointer capture — these keep the drag path testable. */
 Element.prototype.setPointerCapture = function setPointerCapture(
   pointerId: number
 ): void {

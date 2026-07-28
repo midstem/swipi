@@ -22,7 +22,6 @@ export enum SwipeDirections {
 
 export const FIRST_SLIDE_IDENTIFIER = 1
 
-/** Movement that has to happen before a gesture counts as a drag, px. */
 export const DRAG_THRESHOLD = 5
 
 export const FAST_SWIPE_TIME = 200

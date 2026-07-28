@@ -5,10 +5,6 @@ import { DRAG_THRESHOLD, PRIMARY_BUTTON } from '../../constants'
 
 const noop = (): void => {}
 
-/**
- * Capturing throws when the pointer is no longer active, and a failed capture
- * must never break the gesture — the drag simply goes on without it.
- */
 const capturePointer = (
   event: PointerEvent<HTMLDivElement>,
   isCapturing: boolean
@@ -54,10 +50,6 @@ export const useEvents = ({
     }
   }
 
-  /**
-   * The gesture is claimed only after it moves far enough and turns out to be
-   * horizontal — a vertical one is dropped, so the page keeps scrolling.
-   */
   const lockAxis = (
     drag: DragState,
     event: PointerEvent<HTMLDivElement>,
