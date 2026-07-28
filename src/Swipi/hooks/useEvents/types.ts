@@ -1,4 +1,4 @@
-import { MutableRefObject } from 'react'
+import { MutableRefObject, PointerEvent } from 'react'
 
 export type TouchEvents = {
   isLoop: boolean
@@ -10,8 +10,20 @@ export type TouchEvents = {
   animateTo: (value: number) => void
 }
 
+export type DragState = {
+  pointerId: number
+  startX: number
+  startY: number
+  lastX: number
+  startTransform: number
+  startedAt: number
+  isDragging: boolean
+}
+
+export type PointerHandler = (event: PointerEvent<HTMLDivElement>) => void
+
 export type UseEventsReturn = {
-  onStart: (x: number) => void
-  onMove: (x: number) => void
-  onEnd: () => void
+  onPointerDown: PointerHandler
+  onPointerMove: PointerHandler
+  onPointerUp: PointerHandler
 }

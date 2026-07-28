@@ -2,7 +2,11 @@ import { createRef } from 'react'
 import { describe, expect, it } from 'vitest'
 import { act, render, screen, fireEvent, waitFor } from '@testing-library/react'
 import Swipi from './index'
-import { setContainerWidth, triggerResize } from '../test/setup'
+import {
+  isPointerCaptured,
+  setContainerWidth,
+  triggerResize
+} from '../test/setup'
 import { SwipiRef, SwipiState } from './types'
 
 const renderSlides = (count: number) =>
@@ -19,10 +23,33 @@ const getSlides = (): HTMLElement[] =>
       (element) => element.getAttribute('aria-roledescription') === 'slide'
     )
 
-const getTrackOffset = (): number => {
-  const track = getSlides()[0].parentElement as HTMLElement
+const getTrack = (): HTMLElement => getSlides()[0].parentElement as HTMLElement
 
-  return Number(/translate3d\((-?[\d.]+)px/.exec(track.style.transform)?.[1])
+const getViewport = (): HTMLElement => getTrack().parentElement as HTMLElement
+
+const getTrackOffset = (): number =>
+  Number(/translate3d\((-?[\d.]+)px/.exec(getTrack().style.transform)?.[1])
+
+const POINTER_ID = 1
+
+const drag = (points: [number, number][]): void => {
+  const viewport = getViewport()
+  const [[startX, startY], ...moves] = points
+
+  fireEvent.pointerDown(viewport, {
+    pointerId: POINTER_ID,
+    button: 0,
+    clientX: startX,
+    clientY: startY
+  })
+
+  moves.forEach(([clientX, clientY]) =>
+    fireEvent.pointerMove(viewport, {
+      pointerId: POINTER_ID,
+      clientX,
+      clientY
+    })
+  )
 }
 
 describe('Swipi accessibility', () => {
@@ -334,18 +361,19 @@ describe('Swipi rendering', () => {
       </Swipi>
     )
 
-    const track = getSlides()[0].parentElement as HTMLElement
     const rendersBeforeDrag = states.length
 
-    fireEvent.mouseDown(track, { clientX: 500 })
-    fireEvent.mouseMove(track, { clientX: 480 })
-    fireEvent.mouseMove(track, { clientX: 460 })
-    fireEvent.mouseMove(track, { clientX: 440 })
+    drag([
+      [500, 300],
+      [480, 300],
+      [460, 300],
+      [440, 300]
+    ])
 
     expect(getTrackOffset()).toBe(-60)
     expect(states).toHaveLength(rendersBeforeDrag)
 
-    fireEvent.mouseUp(track)
+    fireEvent.pointerUp(getViewport(), { pointerId: POINTER_ID })
   })
 
   it('animates the track down to the requested position', async () => {
@@ -360,6 +388,58 @@ describe('Swipi rendering', () => {
     act(() => ref.current?.scrollTo(2))
 
     await waitFor(() => expect(getTrackOffset()).toBe(-1800))
+  })
+
+  it('keeps a vertical gesture with the page', () => {
+    render(<Swipi slidesNumber={1}>{renderSlides(3)}</Swipi>)
+
+    drag([
+      [500, 300],
+      [495, 340],
+      [490, 400]
+    ])
+
+    expect(getTrack().style.transform).toBe('')
+    expect(isPointerCaptured(POINTER_ID)).toBe(false)
+  })
+
+  it('ignores a movement below the drag threshold', () => {
+    render(<Swipi slidesNumber={1}>{renderSlides(3)}</Swipi>)
+
+    drag([
+      [500, 300],
+      [497, 300]
+    ])
+
+    expect(getTrack().style.transform).toBe('')
+  })
+
+  it('captures the pointer so the drag survives leaving the carousel', () => {
+    render(<Swipi slidesNumber={1}>{renderSlides(3)}</Swipi>)
+
+    drag([
+      [500, 300],
+      [460, 300]
+    ])
+
+    expect(isPointerCaptured(POINTER_ID)).toBe(true)
+
+    fireEvent.pointerUp(getViewport(), { pointerId: POINTER_ID })
+
+    expect(isPointerCaptured(POINTER_ID)).toBe(false)
+  })
+
+  it('snaps to the neighbouring slide when the gesture is cancelled', async () => {
+    render(<Swipi slidesNumber={1}>{renderSlides(3)}</Swipi>)
+
+    drag([
+      [500, 300],
+      [400, 300]
+    ])
+
+    fireEvent.pointerCancel(getViewport(), { pointerId: POINTER_ID })
+
+    await waitFor(() => expect(getTrackOffset()).toBe(-900))
   })
 
   it('keeps the loop offsets in sync after a resize', () => {

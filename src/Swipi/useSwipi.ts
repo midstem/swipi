@@ -127,7 +127,7 @@ export const useSwipi = ({
     canScrollPrev
   })
 
-  const { onEnd, onMove, onStart } = useEvents({
+  const { onPointerDown, onPointerMove, onPointerUp } = useEvents({
     isLoop,
     moveTo,
     animateTo,
@@ -212,9 +212,9 @@ export const useSwipi = ({
     slidesWrapperRef,
     Dots: ANIMATIONS[dotsAnimation],
     isShowArrows: isHideArrows && showArrows,
-    onEnd,
-    onMove,
-    onStart,
+    onPointerDown,
+    onPointerMove,
+    onPointerUp,
     returnDots,
     isDisableButton,
     handleDotClick: scrollTo,

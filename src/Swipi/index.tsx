@@ -52,12 +52,12 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
     isShowArrows,
     countShowDots,
     slidesWrapperRef,
-    onEnd,
-    onMove,
     nextImg,
     prevImg,
-    onStart,
     returnDots,
+    onPointerUp,
+    onPointerDown,
+    onPointerMove,
     handleDotClick,
     isDisableButton
   } = useSwipi({
@@ -131,9 +131,9 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
         )}
         <SlidesWrapper
           slidesWrapperRef={slidesWrapperRef}
-          startTouchByScreen={onStart}
-          moveTouchScreen={onMove}
-          endTouchScreen={onEnd}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
         >
           <SlidesContainer trackRef={trackRef}>
             {children.map((slide, index) => (

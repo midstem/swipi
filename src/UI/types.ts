@@ -1,5 +1,11 @@
 import type { JSX } from 'react'
-import { HTMLAttributes, MutableRefObject, ReactNode, RefObject } from 'react'
+import {
+  HTMLAttributes,
+  MutableRefObject,
+  PointerEventHandler,
+  ReactNode,
+  RefObject
+} from 'react'
 
 export type ComponentBasicProps = {
   children: ReactNode
@@ -25,9 +31,9 @@ export type SwipiButtonProps = {
 export type SlidesWrapperProps = {
   children: ReactNode
   slidesWrapperRef: RefObject<HTMLDivElement | null>
-  startTouchByScreen: (a: number) => void
-  moveTouchScreen: (a: number) => void
-  endTouchScreen: () => void
+  onPointerDown: PointerEventHandler<HTMLDivElement>
+  onPointerMove: PointerEventHandler<HTMLDivElement>
+  onPointerUp: PointerEventHandler<HTMLDivElement>
 }
 
 export type SlidesContainerProps = {

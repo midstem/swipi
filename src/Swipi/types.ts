@@ -99,7 +99,7 @@ export type SnapToSlideType = {
   transform: number
   slideWidth: number
   swipedSide: SwipeDirections | null
-  timeTouch: Date
+  startedAt: number
 }
 
 export type LoopGeometry = {

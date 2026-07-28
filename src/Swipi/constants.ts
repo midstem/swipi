@@ -22,9 +22,11 @@ export enum SwipeDirections {
 
 export const FIRST_SLIDE_IDENTIFIER = 1
 
-export const DISTANCE = 1
+export const DRAG_THRESHOLD = 5
 
 export const FAST_SWIPE_TIME = 200
+
+export const PRIMARY_BUTTON = 0
 
 export const ONE_SLIDE = 1
 

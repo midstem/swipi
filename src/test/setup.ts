@@ -48,7 +48,31 @@ Object.defineProperty(HTMLElement.prototype, 'clientWidth', {
   get: () => containerWidth
 })
 
+const capturedPointers = new Set<number>()
+
+Element.prototype.setPointerCapture = function setPointerCapture(
+  pointerId: number
+): void {
+  capturedPointers.add(pointerId)
+}
+
+Element.prototype.releasePointerCapture = function releasePointerCapture(
+  pointerId: number
+): void {
+  capturedPointers.delete(pointerId)
+}
+
+Element.prototype.hasPointerCapture = function hasPointerCapture(
+  pointerId: number
+): boolean {
+  return capturedPointers.has(pointerId)
+}
+
+export const isPointerCaptured = (pointerId: number): boolean =>
+  capturedPointers.has(pointerId)
+
 afterEach(() => {
   cleanup()
   containerWidth = DEFAULT_CONTAINER_WIDTH
+  capturedPointers.clear()
 })

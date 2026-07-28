@@ -4,24 +4,17 @@ import { SlidesWrapperProps } from './types'
 const SlidesWrapper = ({
   children,
   slidesWrapperRef,
-  startTouchByScreen,
-  moveTouchScreen,
-  endTouchScreen
+  onPointerDown,
+  onPointerMove,
+  onPointerUp
 }: SlidesWrapperProps): JSX.Element => (
   <div
     ref={slidesWrapperRef}
-    onTouchStart={(e) => startTouchByScreen(e.touches[0].clientX)}
-    onTouchMove={(e) => moveTouchScreen(e.touches[0].clientX)}
-    onTouchEnd={endTouchScreen}
-    onMouseDown={(e) => startTouchByScreen(e.clientX)}
-    onMouseMove={(e) => moveTouchScreen(e.clientX)}
-    onMouseUp={endTouchScreen}
-    onMouseLeave={endTouchScreen}
-    style={{
-      height: '100%',
-      width: '100%',
-      overflow: 'hidden'
-    }}
+    className="swipi-viewport"
+    onPointerDown={onPointerDown}
+    onPointerMove={onPointerMove}
+    onPointerUp={onPointerUp}
+    onPointerCancel={onPointerUp}
   >
     {children}
   </div>
