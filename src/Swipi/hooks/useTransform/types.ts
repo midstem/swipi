@@ -10,5 +10,5 @@ export type UseTransformReturn = {
   transformRef: MutableRefObject<number>
   targetRef: MutableRefObject<number>
   moveTo: (value: number) => void
-  animateTo: (value: number) => void
+  animateTo: (value: number, duration?: number) => void
 }

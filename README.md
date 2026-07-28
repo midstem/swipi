@@ -272,6 +272,16 @@ Swipi ships with keyboard and screen-reader support out of the box:
     <td>boolean</td>
   </tr>
     <tr>
+    <td>dragFree</td>
+    <td>
+      Keeps the momentum of a drag without snapping to a slide — the track
+      coasts and rests wherever it stops. With <code>false</code> the release
+      speed still carries the slider, but it always lands on a slide
+    </td>
+    <td><code>false</code></td>
+    <td>boolean</td>
+  </tr>
+    <tr>
     <td>onChange</td>
     <td>The onChange function is called every time the current index changes and returns an object with the current, previous and next indices</td>
     <td><code>() => {}</code></td>

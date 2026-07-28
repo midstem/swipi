@@ -13,20 +13,32 @@ export const ANIMATIONS: AnimationsTypes = {
   sliding: Sliding
 }
 
-export enum SwipeDirections {
-  TOP = 'top',
-  LEFT = 'left',
-  RIGHT = 'right',
-  BOTTOM = 'bottom'
-}
-
 export const FIRST_SLIDE_IDENTIFIER = 1
 
+/** Movement that has to happen before a gesture counts as a drag, px. */
 export const DRAG_THRESHOLD = 5
 
-export const FAST_SWIPE_TIME = 200
-
 export const PRIMARY_BUTTON = 0
+
+/** How long the release speed keeps carrying the track, ms. */
+export const MOMENTUM_DECAY_TIME = 250
+
+/** A flick can hardly be faster than this, px per ms. */
+export const MAX_DRAG_VELOCITY = 3
+
+/** A pointer that rested longer than this before the release carries no speed. */
+export const VELOCITY_STALE_TIME = 100
+
+export const MIN_SAMPLE_TIME = 1
+
+export const NO_VELOCITY = 0
+
+/** Initial slope of `easeOutCubic`, used to match the speed of the finger. */
+export const EASE_SPEED_FACTOR = 3
+
+export const MIN_MOMENTUM_DURATION = 120
+
+export const MAX_MOMENTUM_DURATION = 600
 
 export const ONE_SLIDE = 1
 

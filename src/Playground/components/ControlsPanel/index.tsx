@@ -81,6 +81,12 @@ const ControlsPanel = ({ state, update }: ControlsPanelProps): JSX.Element => {
           onChange={change('loop')}
         />
         <Toggle
+          label="dragFree"
+          hint="Momentum without snapping — the track rests where it stops"
+          checked={state.dragFree}
+          onChange={change('dragFree')}
+        />
+        <Toggle
           label="autoplay"
           checked={state.autoplay}
           onChange={change('autoplay')}

@@ -1,7 +1,6 @@
 import type { JSX } from 'react'
 import { FunctionComponent, ReactNode } from 'react'
 import { DotsTypes, SlidesAnimation, ValueOf } from '../types'
-import { SwipeDirections } from './constants'
 
 export type ConfigType = {
   maxWidth: number
@@ -27,6 +26,7 @@ export type UseSwipiType = {
   slidesAnimation: ValueOf<SlidesAnimation>
   animationSpeed: number
   loop: boolean
+  dragFree: boolean
   biasRight?: boolean
   onChange: (value: SlidePositions) => void
   onSelect: (state: SwipiState) => void
@@ -34,6 +34,7 @@ export type UseSwipiType = {
 
 export type SwipiProps = {
   loop?: boolean
+  dragFree?: boolean
   biasRight?: boolean
   dotColor?: string
   showDots?: boolean
@@ -90,16 +91,22 @@ export type AnimationsTypes = {
   [key in DotsAnimation]: FunctionComponent<DotsTypes>
 }
 
-export type TouchCoordsType = {
-  touchStartX: number
-  touchEndX: number
+export type DragVelocityType = {
+  distance: number
+  duration: number
 }
 
-export type SnapToSlideType = {
+export type MomentumTargetType = {
   transform: number
+  velocity: number
   slideWidth: number
-  swipedSide: SwipeDirections | null
-  startedAt: number
+  dragFree: boolean
+}
+
+export type MomentumDurationType = {
+  distance: number
+  velocity: number
+  animationSpeed: number
 }
 
 export type LoopGeometry = {

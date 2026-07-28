@@ -35,6 +35,7 @@ export const useSwipi = ({
   children,
   autoplay,
   dotColor,
+  dragFree,
   biasRight,
   customDot,
   showArrows,
@@ -130,10 +131,12 @@ export const useSwipi = ({
   const { onPointerDown, onPointerMove, onPointerUp } = useEvents({
     isLoop,
     moveTo,
+    dragFree,
     animateTo,
     lastIndex,
     slideWidth,
     isHideArrows,
+    animationSpeed,
     transformRef
   })
 

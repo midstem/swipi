@@ -2,28 +2,33 @@ import { CSSProperties, MutableRefObject } from 'react'
 import {
   CalculateSlideIndexType,
   ClampTransformType,
+  DragVelocityType,
+  MomentumDurationType,
+  MomentumTargetType,
   ReturnSlideWidthType,
   SlideOffsetType,
-  SlidePositions,
-  SnapToSlideType,
-  TouchCoordsType
+  SlidePositions
 } from '../types'
 import { SlidesAnimation, ValueOf } from '../../types'
 import { fadeIn } from '../../SlidesAnimation/FadeIn'
 import {
-  DRAG_THRESHOLD,
-  FIRST_SLIDE_IDENTIFIER,
   DEFAULT_SWIPI_WIDTH,
-  FAST_SWIPE_TIME,
-  ONE_SLIDE,
-  REDUCE_SLIDE,
-  ONE_STEP,
+  EASE_SPEED_FACTOR,
   FIRST_SLIDE,
+  FIRST_SLIDE_IDENTIFIER,
   FIRST_SLIDE_INDEX,
   HALF,
-  NO_OFFSET
+  INITIAL_TRANSFORM,
+  MAX_DRAG_VELOCITY,
+  MAX_MOMENTUM_DURATION,
+  MIN_MOMENTUM_DURATION,
+  MIN_SAMPLE_TIME,
+  MOMENTUM_DECAY_TIME,
+  NO_OFFSET,
+  ONE_SLIDE,
+  ONE_STEP,
+  REDUCE_SLIDE
 } from '../constants'
-import { SwipeDirections } from '../constants'
 
 export const clamp = (value: number, min: number, max: number): number =>
   Math.min(Math.max(value, min), max)
@@ -125,15 +130,55 @@ export const isFadeInAnimation = (animation: ValueOf<SlidesAnimation>) => {
   return animation === SlidesAnimation.FADE_IN
 }
 
-export const getSwipeDirection = ({
-  touchEndX,
-  touchStartX
-}: TouchCoordsType): SwipeDirections | null => {
-  if (touchEndX - touchStartX > DRAG_THRESHOLD) return SwipeDirections.RIGHT
+/** Speed of the pointer at the release, px per ms, capped to a sane flick. */
+export const getDragVelocity = ({
+  distance,
+  duration
+}: DragVelocityType): number =>
+  clamp(
+    distance / Math.max(duration, MIN_SAMPLE_TIME),
+    -MAX_DRAG_VELOCITY,
+    MAX_DRAG_VELOCITY
+  )
 
-  if (touchStartX - touchEndX > DRAG_THRESHOLD) return SwipeDirections.LEFT
+/**
+ * Where the track would coast to with the release speed. Without `dragFree`
+ * that projection only picks the slide to snap to, so the flick can carry
+ * further than the neighbouring one.
+ */
+export const getMomentumTarget = ({
+  transform,
+  velocity,
+  slideWidth,
+  dragFree
+}: MomentumTargetType): number => {
+  const projected = transform + velocity * MOMENTUM_DECAY_TIME
 
-  return null
+  if (dragFree) return projected
+
+  const snapped =
+    -Math.round(getTrackPosition(projected, slideWidth)) * slideWidth
+
+  /** Rounding towards the first slide gives `-0`, which reads badly in styles. */
+  return snapped || INITIAL_TRANSFORM
+}
+
+/**
+ * Duration that makes `easeOutCubic` start at the speed of the finger, so the
+ * track keeps moving instead of restarting.
+ */
+export const getMomentumDuration = ({
+  distance,
+  velocity,
+  animationSpeed
+}: MomentumDurationType): number => {
+  if (!velocity) return animationSpeed
+
+  return clamp(
+    (EASE_SPEED_FACTOR * Math.abs(distance)) / Math.abs(velocity),
+    MIN_MOMENTUM_DURATION,
+    MAX_MOMENTUM_DURATION
+  )
 }
 
 export const returnCountOfDots = (
@@ -151,26 +196,6 @@ export const returnCountOfDots = (
     slidesCount - visibleCountSlides + FIRST_SLIDE_IDENTIFIER,
     ONE_SLIDE
   )
-}
-
-export const snapToSlide = ({
-  transform,
-  slideWidth,
-  swipedSide,
-  startedAt
-}: SnapToSlideType): number => {
-  const position = getTrackPosition(transform, slideWidth)
-  const isFastSwipe = performance.now() - startedAt <= FAST_SWIPE_TIME
-
-  if (isFastSwipe && swipedSide === SwipeDirections.LEFT) {
-    return -Math.ceil(position) * slideWidth
-  }
-
-  if (isFastSwipe && swipedSide === SwipeDirections.RIGHT) {
-    return -Math.floor(position) * slideWidth
-  }
-
-  return -Math.round(position) * slideWidth
 }
 
 const getLoopSlidePositions = (

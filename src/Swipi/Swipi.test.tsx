@@ -27,10 +27,17 @@ const getTrack = (): HTMLElement => getSlides()[0].parentElement as HTMLElement
 
 const getViewport = (): HTMLElement => getTrack().parentElement as HTMLElement
 
-const getTrackOffset = (): number =>
-  Number(/translate3d\((-?[\d.]+)px/.exec(getTrack().style.transform)?.[1])
+/** An empty transform means the track sits at the very first slide. */
+const getTrackOffset = (): number => {
+  const offset = /translate3d\((-?[\d.]+)px/.exec(getTrack().style.transform)
+
+  return offset ? Number(offset[1]) : 0
+}
 
 const POINTER_ID = 1
+
+/** Longer than VELOCITY_STALE_TIME, so the release carries no speed. */
+const PAUSE_BEFORE_RELEASE = 150
 
 const drag = (points: [number, number][]): void => {
   const viewport = getViewport()
@@ -440,6 +447,59 @@ describe('Swipi rendering', () => {
     fireEvent.pointerCancel(getViewport(), { pointerId: POINTER_ID })
 
     await waitFor(() => expect(getTrackOffset()).toBe(-900))
+  })
+
+  it('carries a flick over to the next slide', async () => {
+    render(<Swipi slidesNumber={1}>{renderSlides(3)}</Swipi>)
+
+    drag([
+      [500, 300],
+      [460, 300],
+      [420, 300]
+    ])
+
+    fireEvent.pointerUp(getViewport(), { pointerId: POINTER_ID })
+
+    await waitFor(() => expect(getTrackOffset()).toBe(-900))
+  })
+
+  it('drops the track on the current slide when the pointer rests before the release', async () => {
+    render(<Swipi slidesNumber={1}>{renderSlides(3)}</Swipi>)
+
+    drag([
+      [500, 300],
+      [460, 300],
+      [420, 300]
+    ])
+
+    await new Promise((resolve) => setTimeout(resolve, PAUSE_BEFORE_RELEASE))
+
+    fireEvent.pointerUp(getViewport(), { pointerId: POINTER_ID })
+
+    await waitFor(() => expect(getTrackOffset()).toBe(0))
+  })
+
+  it('keeps the projected position with dragFree', async () => {
+    render(
+      <Swipi slidesNumber={1} dragFree>
+        {renderSlides(3)}
+      </Swipi>
+    )
+
+    drag([
+      [500, 300],
+      [460, 300],
+      [420, 300]
+    ])
+
+    fireEvent.pointerUp(getViewport(), { pointerId: POINTER_ID })
+
+    await waitFor(() => {
+      const offset = getTrackOffset()
+
+      expect(offset).toBeLessThan(-80)
+      expect(offset % 900).not.toBe(0)
+    })
   })
 
   it('keeps the loop offsets in sync after a resize', () => {
