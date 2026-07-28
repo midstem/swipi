@@ -142,25 +142,31 @@ export const getDragVelocity = ({
   )
 
 /**
- * Where the track would coast to with the release speed. Without `dragFree`
- * that projection only picks the slide to snap to, so the flick can carry
- * further than the neighbouring one.
+ * Where the track would coast to with the release speed. With `dragFree` that
+ * is the resting place. Otherwise one gesture moves by one slide at most,
+ * however far it was dragged or how hard it was flicked — the release speed
+ * only decides whether the slide changes at all.
  */
 export const getMomentumTarget = ({
   transform,
   velocity,
   slideWidth,
+  startTransform,
   dragFree
 }: MomentumTargetType): number => {
   const projected = transform + velocity * MOMENTUM_DECAY_TIME
 
   if (dragFree) return projected
 
-  const snapped =
-    -Math.round(getTrackPosition(projected, slideWidth)) * slideWidth
+  const startIndex = Math.round(getTrackPosition(startTransform, slideWidth))
+  const index = clamp(
+    Math.round(getTrackPosition(projected, slideWidth)),
+    startIndex - ONE_STEP,
+    startIndex + ONE_STEP
+  )
 
   /** Rounding towards the first slide gives `-0`, which reads badly in styles. */
-  return snapped || INITIAL_TRANSFORM
+  return -index * slideWidth || INITIAL_TRANSFORM
 }
 
 /**

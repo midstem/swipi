@@ -100,6 +100,8 @@ export type MomentumTargetType = {
   transform: number
   velocity: number
   slideWidth: number
+  /** Track position the gesture started from — one gesture moves one slide. */
+  startTransform: number
   dragFree: boolean
 }
 

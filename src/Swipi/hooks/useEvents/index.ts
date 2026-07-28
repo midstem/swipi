@@ -149,6 +149,7 @@ export const useEvents = ({
         transform,
         velocity,
         slideWidth,
+        startTransform: drag.startTransform,
         dragFree
       }),
       slideWidth,

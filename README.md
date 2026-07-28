@@ -275,8 +275,9 @@ Swipi ships with keyboard and screen-reader support out of the box:
     <td>dragFree</td>
     <td>
       Keeps the momentum of a drag without snapping to a slide — the track
-      coasts and rests wherever it stops. With <code>false</code> the release
-      speed still carries the slider, but it always lands on a slide
+      coasts and rests wherever it stops. With <code>false</code> one gesture
+      moves by one slide at most, however far it was dragged, and the release
+      speed only decides whether the slide changes at all
     </td>
     <td><code>false</code></td>
     <td>boolean</td>

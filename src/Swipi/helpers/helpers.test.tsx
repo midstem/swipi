@@ -186,7 +186,7 @@ describe('getDragVelocity', () => {
 })
 
 describe('getMomentumTarget', () => {
-  const geometry = { slideWidth: 100, dragFree: false }
+  const geometry = { slideWidth: 100, dragFree: false, startTransform: -100 }
 
   test('should stay on the current slide when the pointer stopped', () => {
     expect(
@@ -197,12 +197,48 @@ describe('getMomentumTarget', () => {
   test('should carry a flick over to the next slide', () => {
     expect(
       getMomentumTarget({ ...geometry, transform: -120, velocity: -1 })
-    ).toEqual(-400)
+    ).toEqual(-200)
+  })
+
+  test('should never skip a slide, however hard the flick is', () => {
+    expect(
+      getMomentumTarget({ ...geometry, transform: -120, velocity: -10 })
+    ).toEqual(-200)
+    expect(
+      getMomentumTarget({ ...geometry, transform: -120, velocity: 10 })
+    ).toEqual(0)
+  })
+
+  test('should move by one slide however far the gesture was dragged', () => {
+    expect(
+      getMomentumTarget({
+        ...geometry,
+        startTransform: 0,
+        transform: -258,
+        velocity: -1
+      })
+    ).toEqual(-100)
+  })
+
+  test('should advance on a short but fast flick', () => {
+    expect(
+      getMomentumTarget({
+        ...geometry,
+        startTransform: 0,
+        transform: -5,
+        velocity: -1
+      })
+    ).toEqual(-100)
   })
 
   test('should snap back when the drag did not reach the halfway point', () => {
     expect(
-      getMomentumTarget({ ...geometry, transform: -30, velocity: 0 })
+      getMomentumTarget({
+        ...geometry,
+        startTransform: 0,
+        transform: -30,
+        velocity: 0
+      })
     ).toEqual(0)
   })
 
