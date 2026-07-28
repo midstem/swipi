@@ -2,6 +2,7 @@ import type { JSX } from 'react'
 import { SlideProps } from './types'
 
 export const Slide = ({
+  offset,
   slideWidth,
   spaceBetween,
   children,
@@ -15,8 +16,10 @@ export const Slide = ({
       aria-label={ariaLabel}
       style={{
         boxSizing: 'border-box',
+        flexShrink: 0,
         width: `${slideWidth}px`,
         paddingRight: `${spaceBetween}px`,
+        transform: offset ? `translate3d(${offset}px, 0, 0)` : undefined,
         ...animation
       }}
     >

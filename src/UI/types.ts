@@ -32,9 +32,7 @@ export type SlidesWrapperProps = {
 
 export type SlidesContainerProps = {
   children: ReactNode
-  animation: boolean
   transform: number
-  animationSpeed: number
 }
 
 export type DotProps = {
@@ -52,6 +50,7 @@ export type ActiveDotProps = {
 }
 
 export type SlideProps = {
+  offset: number
   slideWidth: number
   spaceBetween: number
   children: JSX.Element

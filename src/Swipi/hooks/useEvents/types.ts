@@ -1,23 +1,17 @@
-import type { JSX } from 'react'
-import { SetWithPrev } from '../../types'
+import { MutableRefObject } from 'react'
 
 export type TouchEvents = {
-  endX: number
-  startX: number
-  transform: number
+  isLoop: boolean
+  lastIndex: number
   slideWidth: number
   isHideArrows: boolean
-  startTransform: number
-  children: JSX.Element[]
-  moveSlides: () => void
-  setTransform: SetWithPrev
-  jumpToTheLastSlide: () => void
-  checkSwipiCorner: () => boolean
-  setEndX: (value: number) => void
-  setStartX: (value: number) => void
-  checkAreaBeyondSwipi: () => boolean
-  setMovePath: (value: number) => void
-  setSlideIndex: (index: number) => void
-  setAnimation: (animation: boolean) => void
-  isDisableMove: (value: boolean) => boolean
+  transformRef: MutableRefObject<number>
+  moveTo: (value: number) => void
+  animateTo: (value: number) => void
+}
+
+export type UseEventsReturn = {
+  onStart: (x: number) => void
+  onMove: (x: number) => void
+  onEnd: () => void
 }

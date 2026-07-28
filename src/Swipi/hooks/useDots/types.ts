@@ -1,16 +1,17 @@
-import type { JSX } from 'react'
-import { SetWithPrev } from '../../types'
+import type { JSX, ReactNode } from 'react'
 
 export type DotsProps = {
-  setTransform: SetWithPrev
-  slideWidth: number
-  dotsAnimation: string
-  customActiveDot?: JSX.Element
-  customDot?: JSX.Element
-  setAnimation: (value: boolean) => void
+  isLoop: boolean
   dotColor?: string
+  slideIndex: number
+  slidesCount: number
   activeDotColor?: string
-  loop: boolean
-  children: JSX.Element[]
+  customDot?: JSX.Element
+  customActiveDot?: JSX.Element
   visibleCountSlides: number
+}
+
+export type UseDotsReturn = {
+  returnDots: (index: number) => ReactNode
+  countShowDots: number
 }

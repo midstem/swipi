@@ -1,101 +1,70 @@
-import { useState } from 'react'
-import { TouchEvents } from './types'
-import {
-  calculateSlideIndex,
-  calculateSliderTransform,
-  getSwipeDirection
-} from '../../helpers'
-import { SwipeDirections } from '../../constants'
+import { useRef } from 'react'
+import { TouchEvents, UseEventsReturn } from './types'
+import { clampTransform, getSwipeDirection, snapToSlide } from '../../helpers'
+
+const noop = (): void => {}
 
 export const useEvents = ({
-  endX: touchEndX,
-  startX: touchStartX,
-  children,
-  transform,
+  isLoop,
+  moveTo,
+  animateTo,
+  lastIndex,
   slideWidth,
   isHideArrows,
-  startTransform,
-  setEndX,
-  setStartX,
-  moveSlides,
-  setMovePath,
-  setAnimation,
-  setTransform,
-  setSlideIndex,
-  checkSwipiCorner,
-  jumpToTheLastSlide,
-  checkAreaBeyondSwipi,
-  isDisableMove
-}: TouchEvents) => {
-  const [mouseDown, setMouseDown] = useState(false)
-  const [timeTouch, setTimeTouch] = useState<Date>(new Date())
+  transformRef
+}: TouchEvents): UseEventsReturn => {
+  const isDragging = useRef(false)
+  const startXRef = useRef(0)
+  const lastXRef = useRef(0)
+  const startTransformRef = useRef(0)
+  const startedAtRef = useRef(new Date())
 
-  const resetCoordinates = (): void => {
-    setEndX(0)
-    setMovePath(0)
-    setStartX(0)
+  const onStart = (x: number): void => {
+    isDragging.current = true
+    startXRef.current = x
+    lastXRef.current = x
+    startTransformRef.current = transformRef.current
+    startedAtRef.current = new Date()
   }
 
-  const turnInitialPosition = (): void => {
-    setAnimation(false)
-    setTransform((prev) => (prev ? prev - startTransform : startTransform))
-  }
+  const onMove = (x: number): void => {
+    if (!isDragging.current) return
 
-  const onSwipe = (): void => {
-    const swipedSide = getSwipeDirection({ touchEndX, touchStartX })
+    lastXRef.current = x
 
-    setTransform((prev) => {
-      const newTransform = calculateSliderTransform({
-        transform: prev,
-        isDisableMove: isDisableMove(swipedSide === SwipeDirections.LEFT),
+    moveTo(
+      clampTransform({
+        transform: startTransformRef.current + (x - startXRef.current),
         slideWidth,
-        timeTouch,
-        swipedSide
+        lastIndex,
+        loop: isLoop
       })
-
-      setSlideIndex(calculateSlideIndex(newTransform, slideWidth, children))
-
-      return newTransform
-    })
-  }
-
-  const onStart = (X: number): void => {
-    setTimeTouch(new Date())
-    checkSwipiCorner() && turnInitialPosition()
-    setStartX(X)
-    setMouseDown(true)
-  }
-
-  const onMove = (X: number): void => {
-    if (!mouseDown) return
-
-    const swipedSide = getSwipeDirection({ touchEndX: X, touchStartX })
-
-    if (isDisableMove(swipedSide === SwipeDirections.LEFT)) {
-      setAnimation(true)
-      onSwipe()
-      return
-    }
-
-    setAnimation(false)
-    moveSlides()
-    setEndX(X)
-    setSlideIndex(calculateSlideIndex(transform, slideWidth, children))
+    )
   }
 
   const onEnd = (): void => {
-    if (!mouseDown) return
+    if (!isDragging.current) return
 
-    setAnimation(true)
-    onSwipe()
-    checkAreaBeyondSwipi() && jumpToTheLastSlide()
-    resetCoordinates()
-    setMouseDown(false)
+    isDragging.current = false
+
+    const transform = snapToSlide({
+      transform: transformRef.current,
+      slideWidth,
+      swipedSide: getSwipeDirection({
+        touchStartX: startXRef.current,
+        touchEndX: lastXRef.current
+      }),
+      timeTouch: startedAtRef.current
+    })
+
+    animateTo(
+      clampTransform({ transform, slideWidth, lastIndex, loop: isLoop })
+    )
   }
 
   return {
-    onStart: isHideArrows ? onStart : () => {},
-    onMove: isHideArrows ? onMove : () => {},
-    onEnd
+    onEnd: isHideArrows ? onEnd : noop,
+    onMove: isHideArrows ? onMove : noop,
+    onStart: isHideArrows ? onStart : noop
   }
 }
