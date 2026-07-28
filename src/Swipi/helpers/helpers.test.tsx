@@ -7,7 +7,7 @@ import {
   isHideArrowsFn,
   returnSlidesAnimation,
   isFadeInAnimation,
-  getSlideOffsets,
+  getSlideOffset,
   getShortestLoopStep,
   clampTransform,
   normalizeIndex,
@@ -105,51 +105,40 @@ describe('clampTransform', () => {
   })
 })
 
-describe('getSlideOffsets', () => {
+describe('getSlideOffset', () => {
   const geometry = { slideWidth: 100, slidesCount: 4 }
 
+  const getOffsets = (transform: number, loop: boolean): number[] =>
+    Array.from({ length: geometry.slidesCount }, (_, index) =>
+      getSlideOffset({ ...geometry, index, transform, loop })
+    )
+
   test('should not shift any slide when the loop is off', () => {
-    expect(
-      getSlideOffsets({ ...geometry, transform: -300, loop: false })
-    ).toEqual([0, 0, 0, 0])
+    expect(getOffsets(-300, false)).toEqual([0, 0, 0, 0])
   })
 
   test('should keep the last slide buffered on the left of the first one', () => {
     const contentSize = geometry.slidesCount * geometry.slideWidth
-    const offsets = getSlideOffsets({ ...geometry, transform: 0, loop: true })
 
-    expect(offsets).toEqual([0, 0, 0, -contentSize])
+    expect(getOffsets(0, true)).toEqual([0, 0, 0, -contentSize])
   })
 
   test('should move slides that left on the left side to the right side', () => {
     const contentSize = geometry.slidesCount * geometry.slideWidth
-    const offsets = getSlideOffsets({
-      ...geometry,
-      transform: -200,
-      loop: true
-    })
 
-    expect(offsets).toEqual([contentSize, 0, 0, 0])
+    expect(getOffsets(-200, true)).toEqual([contentSize, 0, 0, 0])
   })
 
   test('should shift a slide by whole laps only', () => {
     const contentSize = geometry.slidesCount * geometry.slideWidth
-    const offsets = getSlideOffsets({
-      ...geometry,
-      transform: -1000,
-      loop: true
-    })
 
-    offsets.forEach((offset) => expect(offset % contentSize).toEqual(0))
+    getOffsets(-1000, true).forEach((offset) =>
+      expect(offset % contentSize).toEqual(0)
+    )
   })
 
   test('should place every slide in a distinct visible position', () => {
-    const offsets = getSlideOffsets({
-      ...geometry,
-      transform: -1000,
-      loop: true
-    })
-    const positions = offsets.map(
+    const positions = getOffsets(-1000, true).map(
       (offset, index) => index * geometry.slideWidth - 1000 + offset
     )
 

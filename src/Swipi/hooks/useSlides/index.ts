@@ -3,7 +3,6 @@ import { ConfigService } from '../../configService'
 import { SlidesAnimation } from '../../../types'
 import {
   calculateSlideWidthWithCorner,
-  getSlideOffsets,
   isHideArrowsFn,
   returnSlideWidth
 } from '../../helpers'
@@ -15,9 +14,8 @@ export const useSlides = ({
   loop,
   children,
   biasRight,
-  transform,
-  currentRef,
   windowWidth,
+  containerWidth,
   slidesNumber,
   slidesAnimation,
   spaceBetweenSlides
@@ -34,15 +32,13 @@ export const useSlides = ({
       ? (getSwipiUpdatesParam('biasRight') ?? biasRight)
       : false
 
-  const currentRefWidth = currentRef?.clientWidth
-
   const updateSlideWidthArgs = useMemo(
     () => ({
       visibleCountSlides,
       spaceBetween,
-      current: currentRefWidth
+      current: containerWidth
     }),
-    [spaceBetween, visibleCountSlides, currentRefWidth]
+    [spaceBetween, visibleCountSlides, containerWidth]
   )
 
   const slideWidth = useMemo(() => {
@@ -59,18 +55,12 @@ export const useSlides = ({
     ? slidesCount - 1
     : Math.max(slidesCount - visibleCountSlides, FIRST_SLIDE_INDEX)
 
-  const slideOffsets = useMemo(
-    () => getSlideOffsets({ transform, slideWidth, slidesCount, loop: isLoop }),
-    [transform, slideWidth, slidesCount, isLoop]
-  )
-
   return {
     isLoop,
     lastIndex,
     slideWidth,
     isHideArrows,
     spaceBetween,
-    slideOffsets,
     visibleCountSlides
   }
 }

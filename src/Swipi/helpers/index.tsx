@@ -3,7 +3,7 @@ import {
   CalculateSlideIndexType,
   ClampTransformType,
   ReturnSlideWidthType,
-  SlideOffsetsType,
+  SlideOffsetType,
   SlidePositions,
   SnapToSlideType,
   TouchCoordsType
@@ -21,7 +21,8 @@ import {
   ONE_STEP,
   FIRST_SLIDE,
   FIRST_SLIDE_INDEX,
-  HALF
+  HALF,
+  NO_OFFSET
 } from '../constants'
 import { SwipeDirections } from '../constants'
 
@@ -67,24 +68,21 @@ export const clampTransform = ({
 }: ClampTransformType): number =>
   loop ? transform : clamp(transform, -lastIndex * slideWidth, 0)
 
-export const getSlideOffsets = ({
+export const getSlideOffset = ({
+  index,
   transform,
   slideWidth,
   slidesCount,
   loop
-}: SlideOffsetsType): number[] => {
+}: SlideOffsetType): number => {
   const contentSize = slidesCount * slideWidth
 
-  if (!loop || contentSize <= 0) {
-    return Array.from({ length: slidesCount }, () => 0)
-  }
+  if (!loop || contentSize <= 0) return NO_OFFSET
 
-  return Array.from({ length: slidesCount }, (_, index) => {
-    const position = index * slideWidth + transform
-    const laps = Math.floor((position + slideWidth) / contentSize)
+  const position = index * slideWidth + transform
+  const laps = Math.floor((position + slideWidth) / contentSize)
 
-    return laps ? -laps * contentSize : 0
-  })
+  return laps ? -laps * contentSize : NO_OFFSET
 }
 
 export const getShortestLoopStep = (

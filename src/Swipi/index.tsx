@@ -44,11 +44,11 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
 ) {
   const {
     Dots,
-    transform,
+    trackRef,
+    slidesRef,
     slideWidth,
     slideIndex,
     spaceBetween,
-    slideOffsets,
     isShowArrows,
     countShowDots,
     slidesWrapperRef,
@@ -135,11 +135,12 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
           moveTouchScreen={onMove}
           endTouchScreen={onEnd}
         >
-          <SlidesContainer transform={transform}>
+          <SlidesContainer trackRef={trackRef}>
             {children.map((slide, index) => (
               <Slide
                 key={index}
-                offset={slideOffsets[index]}
+                index={index}
+                slidesRef={slidesRef}
                 slideWidth={slideWidth}
                 spaceBetween={spaceBetween}
                 ariaLabel={`${index + 1} of ${children.length}`}

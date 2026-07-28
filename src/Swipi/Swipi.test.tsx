@@ -2,6 +2,7 @@ import { createRef } from 'react'
 import { describe, expect, it } from 'vitest'
 import { act, render, screen, fireEvent, waitFor } from '@testing-library/react'
 import Swipi from './index'
+import { setContainerWidth, triggerResize } from '../test/setup'
 import { SwipiRef, SwipiState } from './types'
 
 const renderSlides = (count: number) =>
@@ -21,7 +22,7 @@ const getSlides = (): HTMLElement[] =>
 const getTrackOffset = (): number => {
   const track = getSlides()[0].parentElement as HTMLElement
 
-  return Number(/-?[\d.]+/.exec(track.style.transform)?.[0])
+  return Number(/translate3d\((-?[\d.]+)px/.exec(track.style.transform)?.[1])
 }
 
 describe('Swipi accessibility', () => {
@@ -307,5 +308,74 @@ describe('Swipi keyboard navigation', () => {
     })
 
     await waitFor(() => expect(lastState(states).selectedIndex).toBe(1))
+  })
+})
+
+describe('Swipi rendering', () => {
+  it('recalculates the slide width when the container resizes', () => {
+    render(<Swipi slidesNumber={1}>{renderSlides(3)}</Swipi>)
+
+    expect(getSlides()[0].style.width).toBe('900px')
+
+    act(() => {
+      setContainerWidth(600)
+      triggerResize()
+    })
+
+    expect(getSlides()[0].style.width).toBe('600px')
+  })
+
+  it('moves the track on drag without re-rendering the slides', () => {
+    const states: SwipiState[] = []
+
+    render(
+      <Swipi slidesNumber={1} onSelect={(state) => states.push(state)}>
+        {renderSlides(3)}
+      </Swipi>
+    )
+
+    const track = getSlides()[0].parentElement as HTMLElement
+    const rendersBeforeDrag = states.length
+
+    fireEvent.mouseDown(track, { clientX: 500 })
+    fireEvent.mouseMove(track, { clientX: 480 })
+    fireEvent.mouseMove(track, { clientX: 460 })
+    fireEvent.mouseMove(track, { clientX: 440 })
+
+    expect(getTrackOffset()).toBe(-60)
+    expect(states).toHaveLength(rendersBeforeDrag)
+
+    fireEvent.mouseUp(track)
+  })
+
+  it('animates the track down to the requested position', async () => {
+    const ref = createRef<SwipiRef>()
+
+    render(
+      <Swipi ref={ref} slidesNumber={1}>
+        {renderSlides(3)}
+      </Swipi>
+    )
+
+    act(() => ref.current?.scrollTo(2))
+
+    await waitFor(() => expect(getTrackOffset()).toBe(-1800))
+  })
+
+  it('keeps the loop offsets in sync after a resize', () => {
+    render(
+      <Swipi slidesNumber={1} loop>
+        {renderSlides(3)}
+      </Swipi>
+    )
+
+    act(() => {
+      setContainerWidth(600)
+      triggerResize()
+    })
+
+    const [, , last] = getSlides()
+
+    expect(last.style.transform).toBe('translate3d(-1800px, 0, 0)')
   })
 })

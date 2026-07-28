@@ -108,7 +108,8 @@ export type LoopGeometry = {
   loop: boolean
 }
 
-export type SlideOffsetsType = LoopGeometry & {
+export type SlideOffsetType = LoopGeometry & {
+  index: number
   transform: number
 }
 

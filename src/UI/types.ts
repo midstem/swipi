@@ -1,5 +1,5 @@
 import type { JSX } from 'react'
-import { HTMLAttributes, ReactNode, RefObject } from 'react'
+import { HTMLAttributes, MutableRefObject, ReactNode, RefObject } from 'react'
 
 export type ComponentBasicProps = {
   children: ReactNode
@@ -32,7 +32,7 @@ export type SlidesWrapperProps = {
 
 export type SlidesContainerProps = {
   children: ReactNode
-  transform: number
+  trackRef: RefObject<HTMLDivElement | null>
 }
 
 export type DotProps = {
@@ -50,7 +50,8 @@ export type ActiveDotProps = {
 }
 
 export type SlideProps = {
-  offset: number
+  index: number
+  slidesRef: MutableRefObject<(HTMLDivElement | null)[]>
   slideWidth: number
   spaceBetween: number
   children: JSX.Element

@@ -2,17 +2,18 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
-  useMemo,
   useRef,
   useState
 } from 'react'
 import { useDots } from './hooks/useDots'
 import { useSlides } from './hooks/useSlides'
 import { useEvents } from './hooks/useEvents'
+import { useTrack } from './hooks/useTrack'
 import { useDebounce } from './hooks/useDebounce'
 import { useAutoplay } from './hooks/useAutoplay'
 import { useTransform } from './hooks/useTransform'
 import { useNavigation } from './hooks/useNavigation'
+import { useElementWidth } from './hooks/useElementWidth'
 import { useWindowResize } from './hooks/useWindowResize'
 import {
   ANIMATIONS,
@@ -50,7 +51,6 @@ export const useSwipi = ({
   onSelect
 }: UseSwipiType) => {
   const [windowWidth, setWindowWidth] = useState<number>(0)
-  const [currentRef, setCurrentRef] = useState<HTMLDivElement | null>(null)
 
   const timeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const slidesWrapperRef = useRef<HTMLDivElement>(null)
@@ -58,9 +58,7 @@ export const useSwipi = ({
   const isInitialSlideApplied = useRef<boolean>(false)
 
   const slidesCount = children.length
-
-  const { transform, target, transformRef, targetRef, moveTo, animateTo } =
-    useTransform(animationSpeed)
+  const containerWidth = useElementWidth(slidesWrapperRef)
 
   const {
     isLoop,
@@ -68,32 +66,47 @@ export const useSwipi = ({
     slideWidth,
     isHideArrows,
     spaceBetween,
-    slideOffsets,
     visibleCountSlides
   } = useSlides({
     loop,
     config,
     children,
     biasRight,
-    transform,
-    currentRef,
     windowWidth,
+    containerWidth,
     slidesNumber,
     slidesAnimation,
     spaceBetweenSlides
   })
 
-  const slideIndex = useMemo(
-    () =>
-      calculateSlideIndex({
+  const { trackRef, slidesRef, render } = useTrack({
+    loop: isLoop,
+    slideWidth,
+    slidesCount
+  })
+
+  const [slideIndex, setSlideIndex] = useState<number>(FIRST_SLIDE_INDEX)
+
+  const syncSlideIndex = useCallback(
+    (target: number): void => {
+      const index = calculateSlideIndex({
         transform: target,
         slideWidth,
         slidesCount,
         lastIndex,
         loop: isLoop
-      }),
-    [target, slideWidth, slidesCount, lastIndex, isLoop]
+      })
+
+      setSlideIndex((previous) => (previous === index ? previous : index))
+    },
+    [slideWidth, slidesCount, lastIndex, isLoop]
   )
+
+  const { transformRef, targetRef, moveTo, animateTo } = useTransform({
+    animationSpeed,
+    render,
+    onTarget: syncSlideIndex
+  })
 
   const canScrollNext = isLoop || slideIndex < lastIndex
   const canScrollPrev = isLoop || slideIndex > FIRST_SLIDE_INDEX
@@ -147,7 +160,6 @@ export const useSwipi = ({
 
   useLayoutEffect(() => {
     setWindowWidth(window.innerWidth)
-    setCurrentRef(slidesWrapperRef.current)
   }, [])
 
   useLayoutEffect(() => {
@@ -159,6 +171,11 @@ export const useSwipi = ({
 
     moveTo(-Math.round(getTrackPosition(targetRef.current, width)) * slideWidth)
   }, [slideWidth, moveTo, targetRef])
+
+  useLayoutEffect(() => {
+    render(transformRef.current)
+    syncSlideIndex(targetRef.current)
+  })
 
   useEffect(() => {
     if (!initialSlide || isInitialSlideApplied.current || slideWidth <= 0)
@@ -186,11 +203,11 @@ export const useSwipi = ({
   }, [onSelect, slideIndex, countShowDots, canScrollNext, canScrollPrev])
 
   return {
-    transform,
+    trackRef,
+    slidesRef,
     slideIndex,
     slideWidth,
     spaceBetween,
-    slideOffsets,
     countShowDots,
     slidesWrapperRef,
     Dots: ANIMATIONS[dotsAnimation],

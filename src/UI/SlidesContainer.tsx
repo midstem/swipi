@@ -1,35 +1,16 @@
-import type { JSX } from 'react'
-import { useState } from 'react'
+import type { DragEvent, JSX } from 'react'
 import { SlidesContainerProps } from './types'
+
+const preventDragStart = (event: DragEvent<HTMLDivElement>): void =>
+  event.preventDefault()
 
 const SlidesContainer = ({
   children,
-  transform
-}: SlidesContainerProps): JSX.Element => {
-  const [isDragging, setIsDragging] = useState<boolean>(false)
-
-  const startDragging = () => setIsDragging(true)
-  const stopDragging = () => setIsDragging(false)
-
-  return (
-    <div
-      onDragStart={(e) => {
-        e.preventDefault()
-      }}
-      onMouseDown={startDragging}
-      onMouseUp={stopDragging}
-      onMouseLeave={stopDragging}
-      style={{
-        display: 'flex',
-        width: 'fit-content',
-        transform: `translate3d(${transform}px, 0, 0)`,
-        height: '100%',
-        cursor: isDragging ? 'grabbing' : 'grab'
-      }}
-    >
-      {children}
-    </div>
-  )
-}
+  trackRef
+}: SlidesContainerProps): JSX.Element => (
+  <div ref={trackRef} className="swipi-track" onDragStart={preventDragStart}>
+    {children}
+  </div>
+)
 
 export default SlidesContainer
