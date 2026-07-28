@@ -1,13 +1,14 @@
-import type { JSX } from 'react'
 import { CSSProperties, MutableRefObject } from 'react'
 import {
-  AddUniqueIdReturnType,
-  CalculateSliderTransformT,
+  CalculateSlideIndexType,
+  ClampTransformType,
   ReturnSlideWidthType,
+  SlideOffsetsType,
   SlidePositions,
+  SnapToSlideType,
   TouchCoordsType
 } from '../types'
-import { generateUniqueID, returnTimeDifference } from '../../helpers'
+import { returnTimeDifference } from '../../helpers'
 import { SlidesAnimation, ValueOf } from '../../types'
 import { fadeIn } from '../../SlidesAnimation/FadeIn'
 import {
@@ -18,28 +19,96 @@ import {
   ONE_SLIDE,
   REDUCE_SLIDE,
   ONE_STEP,
-  FIRST_SLIDE
+  FIRST_SLIDE,
+  FIRST_SLIDE_INDEX,
+  HALF
 } from '../constants'
 import { SwipeDirections } from '../constants'
 
-export const addUniqueId = (slides: JSX.Element[]): AddUniqueIdReturnType =>
-  slides.map((slide) => ({ ...slide, id: generateUniqueID() }))
+export const clamp = (value: number, min: number, max: number): number =>
+  Math.min(Math.max(value, min), max)
+
+export const normalizeIndex = (index: number, slidesCount: number): number =>
+  ((index % slidesCount) + slidesCount) % slidesCount
 
 export const returnSlideWidth = ({
   visibleCountSlides,
-  current = DEFAULT_SWIPI_WIDTH,
+  current,
   spaceBetween
 }: ReturnSlideWidthType): number =>
-  (current + spaceBetween) / visibleCountSlides
+  ((current || DEFAULT_SWIPI_WIDTH) + spaceBetween) / visibleCountSlides
 
-export const calculateSlideIndex = (
+/**
+ * Position of the track expressed in slides. Track transform is negative while
+ * moving forward, so the index grows in the opposite direction.
+ */
+export const getTrackPosition = (
   transform: number,
-  slideWidth: number,
-  children: JSX.Element[]
-): number => {
-  const result = Math.round(Math.abs(transform / slideWidth))
+  slideWidth: number
+): number => (slideWidth > 0 ? -transform / slideWidth : 0)
 
-  return Math.abs(result % children.length)
+export const calculateSlideIndex = ({
+  transform,
+  slideWidth,
+  slidesCount,
+  lastIndex,
+  loop
+}: CalculateSlideIndexType): number => {
+  if (slideWidth <= 0 || slidesCount <= 0) return FIRST_SLIDE_INDEX
+
+  const index = Math.round(getTrackPosition(transform, slideWidth))
+
+  return loop
+    ? normalizeIndex(index, slidesCount)
+    : clamp(index, FIRST_SLIDE_INDEX, lastIndex)
+}
+
+export const clampTransform = ({
+  transform,
+  slideWidth,
+  lastIndex,
+  loop
+}: ClampTransformType): number =>
+  loop ? transform : clamp(transform, -lastIndex * slideWidth, 0)
+
+/**
+ * Keeps every slide inside a single virtual window of `slidesCount * slideWidth`
+ * pixels by shifting it a whole number of laps. That is what replaces cloning:
+ * a slide leaving the track on the left is teleported to the right (and back)
+ * while it is off screen, so N slides can be scrolled endlessly.
+ */
+export const getSlideOffsets = ({
+  transform,
+  slideWidth,
+  slidesCount,
+  loop
+}: SlideOffsetsType): number[] => {
+  const contentSize = slidesCount * slideWidth
+
+  if (!loop || contentSize <= 0) {
+    return Array.from({ length: slidesCount }, () => 0)
+  }
+
+  return Array.from({ length: slidesCount }, (_, index) => {
+    const position = index * slideWidth + transform
+    const laps = Math.floor((position + slideWidth) / contentSize)
+
+    return laps ? -laps * contentSize : 0
+  })
+}
+
+/**
+ * Shortest signed distance between two slides of a looped carousel, so that
+ * dots and `scrollTo` always take the closest way around.
+ */
+export const getShortestLoopStep = (
+  from: number,
+  to: number,
+  slidesCount: number
+): number => {
+  const step = normalizeIndex(to - from, slidesCount)
+
+  return step > slidesCount * HALF ? step - slidesCount : step
 }
 
 export const startAutoplay = (
@@ -53,13 +122,9 @@ export const startAutoplay = (
 }
 
 export const isHideArrowsFn = (
-  children: JSX.Element[],
+  slidesCount: number,
   visibleCountSlides: number
-) => children.length > visibleCountSlides
-
-export const setKeyToChildren = (children: JSX.Element[]): JSX.Element[] => {
-  return children.map((child, index) => ({ ...child, key: String(index) }))
-}
+) => slidesCount > visibleCountSlides
 
 export const returnSlidesAnimation = (
   animation: ValueOf<SlidesAnimation>,
@@ -89,47 +154,45 @@ export const getSwipeDirection = ({
 }
 
 export const returnCountOfDots = (
-  children: JSX.Element[],
+  slidesCount: number,
   visibleCountSlides: number,
   loop: boolean
 ): number => {
-  const countOfSlides = children.length
+  if (slidesCount === visibleCountSlides) return ONE_SLIDE
 
-  if (countOfSlides === visibleCountSlides) return 1
+  if (loop) return slidesCount
 
-  if (loop) return countOfSlides
+  if (visibleCountSlides === ONE_SLIDE) return slidesCount
 
-  if (visibleCountSlides === ONE_SLIDE) return countOfSlides
-
-  return countOfSlides - visibleCountSlides + FIRST_SLIDE_IDENTIFIER
+  return Math.max(
+    slidesCount - visibleCountSlides + FIRST_SLIDE_IDENTIFIER,
+    ONE_SLIDE
+  )
 }
 
-export const calculateSliderTransform = ({
+/**
+ * Where the track has to land once the pointer is released: the closest slide,
+ * or the next one in the swipe direction when the gesture was a quick flick.
+ */
+export const snapToSlide = ({
   transform,
   slideWidth,
   swipedSide,
-  timeTouch,
-  isDisableMove
-}: CalculateSliderTransformT): number => {
-  const currentSlide = transform / slideWidth
-  const currentTransform = Math.round(currentSlide) * slideWidth
+  timeTouch
+}: SnapToSlideType): number => {
+  const position = getTrackPosition(transform, slideWidth)
+  const isFastSwipe =
+    returnTimeDifference(timeTouch, new Date()) <= FAST_SWIPE_TIME
 
-  if (isDisableMove) {
-    return currentTransform
+  if (isFastSwipe && swipedSide === SwipeDirections.LEFT) {
+    return -Math.ceil(position) * slideWidth
   }
 
-  if (returnTimeDifference(timeTouch, new Date()) > FAST_SWIPE_TIME) {
-    return currentTransform
+  if (isFastSwipe && swipedSide === SwipeDirections.RIGHT) {
+    return -Math.floor(position) * slideWidth
   }
 
-  if (swipedSide === SwipeDirections.LEFT) {
-    return Math.floor(currentSlide) * slideWidth
-  }
-
-  if (swipedSide === SwipeDirections.RIGHT)
-    return Math.ceil(currentSlide) * slideWidth
-
-  return currentTransform
+  return -Math.round(position) * slideWidth
 }
 
 const getLoopSlidePositions = (
@@ -170,3 +233,6 @@ export const calculateSlideWidthWithCorner = (
 ): number => {
   return width - (REDUCE_SLIDE * width) / visibleCountSlides
 }
+
+export const easeOutCubic = (progress: number): number =>
+  1 - Math.pow(1 - progress, 3)

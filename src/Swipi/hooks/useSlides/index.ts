@@ -1,38 +1,34 @@
-import { useState, useMemo } from 'react'
+import { useMemo } from 'react'
 import { ConfigService } from '../../configService'
 import { SlidesAnimation } from '../../../types'
 import {
-  addUniqueId,
   calculateSlideWidthWithCorner,
+  getSlideOffsets,
   isHideArrowsFn,
-  returnSlideWidth,
-  setKeyToChildren
+  returnSlideWidth
 } from '../../helpers'
-import { cloneArray } from '../../../helpers'
-import { Slides } from './types'
+import { FIRST_SLIDE_INDEX } from '../../constants'
+import { Slides, UseSlidesReturn } from './types'
 
 export const useSlides = ({
-  endX,
-  startX,
   config,
-  movePath,
+  loop,
   children,
   biasRight,
+  transform,
   currentRef,
   windowWidth,
   slidesNumber,
   slidesAnimation,
-  spaceBetweenSlides,
-  setMovePath
-}: Slides) => {
-  const [transform, setTransform] = useState<number>(0)
-
+  spaceBetweenSlides
+}: Slides): UseSlidesReturn => {
   const { returnSpaceBetween, getSwipiUpdatesParam, getRightSlidesCount } =
     ConfigService(config, windowWidth)
 
+  const slidesCount = children.length
   const visibleCountSlides = getRightSlidesCount(slidesNumber, slidesAnimation)
   const spaceBetween = returnSpaceBetween(spaceBetweenSlides)
-  const isHideArrows = isHideArrowsFn(children, visibleCountSlides)
+  const isHideArrows = isHideArrowsFn(slidesCount, visibleCountSlides)
   const isCornerSlide =
     slidesAnimation === SlidesAnimation.DEFAULT
       ? (getSwipiUpdatesParam('biasRight') ?? biasRight)
@@ -57,41 +53,28 @@ export const useSlides = ({
       : width
   }, [isCornerSlide, updateSlideWidthArgs, visibleCountSlides])
 
-  const slides = useMemo(() => {
-    return isHideArrows
-      ? addUniqueId(cloneArray(setKeyToChildren(children), 3))
-      : addUniqueId(setKeyToChildren(children))
-  }, [isHideArrows, children])
+  /**
+   * Looping a carousel that already shows every slide at once has nothing to
+   * recycle, so it silently falls back to a bounded track.
+   */
+  const isLoop = loop && isHideArrows
 
-  const startTransform = -slideWidth * children.length
+  const lastIndex = isLoop
+    ? slidesCount - 1
+    : Math.max(slidesCount - visibleCountSlides, FIRST_SLIDE_INDEX)
 
-  const checkAreaBeyondSwipi = (): boolean =>
-    transform <= startTransform * 2 - slideWidth || transform >= slideWidth / 2
-
-  const moveSlides = (): void => {
-    const pathTaken = endX && startX - endX
-    setTransform((prev) => prev - pathTaken + movePath)
-    setMovePath(pathTaken)
-  }
-
-  const jumpToTheLastSlide = (): void => {
-    const lineLengthOfSlides = slideWidth * slides.length
-    const numberOfSlidesBack = visibleCountSlides === 1 ? 2 : visibleCountSlides
-    const rightJump = -(lineLengthOfSlides - slideWidth * numberOfSlidesBack)
-    setTransform(movePath > 0 ? rightJump : 0)
-  }
+  const slideOffsets = useMemo(
+    () => getSlideOffsets({ transform, slideWidth, slidesCount, loop: isLoop }),
+    [transform, slideWidth, slidesCount, isLoop]
+  )
 
   return {
-    slides,
-    transform,
+    isLoop,
+    lastIndex,
     slideWidth,
     isHideArrows,
     spaceBetween,
-    startTransform,
-    moveSlides,
-    setTransform,
-    jumpToTheLastSlide,
-    checkAreaBeyondSwipi,
+    slideOffsets,
     visibleCountSlides
   }
 }

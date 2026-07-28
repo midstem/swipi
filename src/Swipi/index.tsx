@@ -44,12 +44,11 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
 ) {
   const {
     Dots,
-    slides,
-    animation,
     transform,
     slideWidth,
     slideIndex,
     spaceBetween,
+    slideOffsets,
     isShowArrows,
     countShowDots,
     slidesWrapperRef,
@@ -75,6 +74,7 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
     autoplaySpeed,
     dotsAnimation,
     activeDotColor,
+    animationSpeed,
     customActiveDot,
     slidesAnimation,
     spaceBetweenSlides,
@@ -135,23 +135,20 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
           moveTouchScreen={onMove}
           endTouchScreen={onEnd}
         >
-          <SlidesContainer
-            animation={animation}
-            transform={transform}
-            animationSpeed={animationSpeed}
-          >
-            {slides?.map(({ id, key }, index) => (
+          <SlidesContainer transform={transform}>
+            {children.map((slide, index) => (
               <Slide
-                key={id}
+                key={index}
+                offset={slideOffsets[index]}
                 slideWidth={slideWidth}
                 spaceBetween={spaceBetween}
-                ariaLabel={`${Number(key) + 1} of ${children.length}`}
+                ariaLabel={`${index + 1} of ${children.length}`}
                 animation={returnSlidesAnimation(
                   slidesAnimation,
-                  Number(key) === slideIndex
+                  index === slideIndex
                 )}
               >
-                {slides[index]}
+                {slide}
               </Slide>
             ))}
           </SlidesContainer>

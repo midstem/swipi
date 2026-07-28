@@ -1,12 +1,17 @@
-import { useCallback, useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 export const useWindowResize = (callback: () => void) => {
-  const resizeHandler = useCallback(callback, [callback])
+  const callbackRef = useRef(callback)
+
+  callbackRef.current = callback
 
   useEffect(() => {
+    const resizeHandler = () => callbackRef.current()
+
     window.addEventListener('resize', resizeHandler)
+
     return () => {
       window.removeEventListener('resize', resizeHandler)
     }
-  }, [resizeHandler])
+  }, [])
 }

@@ -2,6 +2,7 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState
 } from 'react'
@@ -10,11 +11,22 @@ import { useSlides } from './hooks/useSlides'
 import { useEvents } from './hooks/useEvents'
 import { useDebounce } from './hooks/useDebounce'
 import { useAutoplay } from './hooks/useAutoplay'
+import { useTransform } from './hooks/useTransform'
 import { useNavigation } from './hooks/useNavigation'
 import { useWindowResize } from './hooks/useWindowResize'
-import { ANIMATIONS, NAVIGATION_DEBOUNCE_DELAY } from './constants'
+import {
+  ANIMATIONS,
+  FIRST_SLIDE,
+  FIRST_SLIDE_INDEX,
+  NAVIGATION_DEBOUNCE_DELAY
+} from './constants'
 import { UseSwipiType } from './types'
-import { getSlidePositions } from './helpers'
+import {
+  calculateSlideIndex,
+  clamp,
+  getSlidePositions,
+  getTrackPosition
+} from './helpers'
 
 export const useSwipi = ({
   loop,
@@ -30,6 +42,7 @@ export const useSwipi = ({
   autoplaySpeed,
   dotsAnimation,
   activeDotColor,
+  animationSpeed,
   slidesAnimation,
   customActiveDot,
   spaceBetweenSlides,
@@ -37,135 +50,93 @@ export const useSwipi = ({
   onSelect
 }: UseSwipiType) => {
   const [windowWidth, setWindowWidth] = useState<number>(0)
-  const [animation, setAnimation] = useState<boolean>(false)
   const [currentRef, setCurrentRef] = useState<HTMLDivElement | null>(null)
-
-  const [endX, setEndX] = useState<number>(0)
-  const [startX, setStartX] = useState<number>(0)
-  const [movePath, setMovePath] = useState<number>(0)
 
   const timeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const slidesWrapperRef = useRef<HTMLDivElement>(null)
+  const previousSlideWidth = useRef<number>(0)
+  const isInitialSlideApplied = useRef<boolean>(false)
+
+  const slidesCount = children.length
+
+  const { transform, target, transformRef, targetRef, moveTo, animateTo } =
+    useTransform(animationSpeed)
 
   const {
-    slides,
-    transform,
+    isLoop,
+    lastIndex,
     slideWidth,
     isHideArrows,
     spaceBetween,
-    startTransform,
-    moveSlides,
-    setTransform,
-    jumpToTheLastSlide,
-    checkAreaBeyondSwipi,
+    slideOffsets,
     visibleCountSlides
   } = useSlides({
-    endX,
-    startX,
+    loop,
     config,
     children,
-    movePath,
     biasRight,
+    transform,
     currentRef,
     windowWidth,
     slidesNumber,
     slidesAnimation,
-    spaceBetweenSlides,
-    setMovePath
+    spaceBetweenSlides
   })
 
-  const {
-    slideIndex,
-    nextDot,
-    prevDot,
-    returnDots,
-    setSlideIndex,
-    handleDotClick,
-    countShowDots
-  } = useDots({
-    dotColor,
-    customDot,
-    slideWidth,
-    dotsAnimation,
-    activeDotColor,
-    customActiveDot,
-    setAnimation,
-    setTransform,
-    loop,
-    children,
-    visibleCountSlides
-  })
-
-  const isLastSlide = (): boolean => {
-    return slideIndex + visibleCountSlides === children.length
-  }
-
-  const isFirstSlide = (): boolean => {
-    return slideIndex === 0
-  }
-
-  const isDisableMove =
+  /**
+   * Derived from the target rather than from the rendered offset, so the state
+   * exposed to consumers is already the slide the carousel is heading to.
+   */
+  const slideIndex = useMemo(
     () =>
-    (isNext?: boolean): boolean => {
-      if (isNext && isLastSlide() && !loop) return true
-      if (!isNext && isFirstSlide() && !loop) return true
-
-      return false
-    }
-
-  const canScrollNext = !isDisableMove()(true)
-  const canScrollPrev = !isDisableMove()(false)
-
-  const checkSwipiCorner = useCallback(
-    (): boolean =>
-      transform <= startTransform * 2 + slideWidth / 2 ||
-      transform >= -slideWidth / 2,
-    [transform, slideWidth, startTransform]
+      calculateSlideIndex({
+        transform: target,
+        slideWidth,
+        slidesCount,
+        lastIndex,
+        loop: isLoop
+      }),
+    [target, slideWidth, slidesCount, lastIndex, isLoop]
   )
 
-  const putInTheInitialPosition = useCallback(
-    (callback?: () => void): (() => void) => {
-      setTransform(startTransform)
-      setAnimation(false)
+  const canScrollNext = isLoop || slideIndex < lastIndex
+  const canScrollPrev = isLoop || slideIndex > FIRST_SLIDE_INDEX
 
-      const timer = setTimeout(() => {
-        callback?.()
-        setAnimation(true)
-      }, 1)
-
-      return () => clearTimeout(timer)
-    },
-    [startTransform, setAnimation, setTransform]
+  const isDisableButton = useCallback(
+    (isNext?: boolean): boolean => !(isNext ? canScrollNext : canScrollPrev),
+    [canScrollNext, canScrollPrev]
   )
+
+  const { nextImg, prevImg, scrollTo } = useNavigation({
+    isLoop,
+    lastIndex,
+    targetRef,
+    animateTo,
+    slideWidth,
+    slidesCount,
+    canScrollNext,
+    canScrollPrev
+  })
 
   const { onEnd, onMove, onStart } = useEvents({
-    startX,
-    endX,
-    children,
-    transform,
+    isLoop,
+    moveTo,
+    animateTo,
+    lastIndex,
     slideWidth,
     isHideArrows,
-    startTransform,
-    setEndX,
-    setStartX,
-    moveSlides,
-    setMovePath,
-    setAnimation,
-    setTransform,
-    setSlideIndex,
-    checkSwipiCorner,
-    jumpToTheLastSlide,
-    checkAreaBeyondSwipi,
-    isDisableMove: isDisableMove()
+    transformRef
   })
 
-  const { nextImg, prevImg } = useNavigation({
-    slideWidth,
-    setTransform,
-    setAnimation,
-    checkSwipiCorner,
-    putInTheInitialPosition,
-    isDisableMove: isDisableMove()
+  const { returnDots, countShowDots } = useDots({
+    isLoop,
+    dotColor,
+    customDot,
+    slideIndex,
+    slidesCount,
+    activeDotColor,
+    customActiveDot,
+    visibleCountSlides
   })
 
   useAutoplay({
@@ -173,19 +144,45 @@ export const useSwipi = ({
     autoplay,
     slideIndex,
     autoplaySpeed,
-    nextImg: () => nextImg(nextDot)
+    nextImg
   })
 
-  useWindowResize(() => {
+  useWindowResize(() => setWindowWidth(window.innerWidth))
+
+  useLayoutEffect(() => {
     setWindowWidth(window.innerWidth)
-    setAnimation(false)
-    setSlideIndex(0)
-    setTransform(0)
-  })
+    setCurrentRef(slidesWrapperRef.current)
+  }, [])
+
+  /**
+   * Slide width changes on resize while the track offset stays in pixels, so
+   * the current slide is re-snapped to the new geometry.
+   */
+  useLayoutEffect(() => {
+    const width = previousSlideWidth.current
+
+    previousSlideWidth.current = slideWidth
+
+    if (!width || width === slideWidth) return
+
+    moveTo(-Math.round(getTrackPosition(targetRef.current, width)) * slideWidth)
+  }, [slideWidth, moveTo, targetRef])
 
   useEffect(() => {
-    onChange(getSlidePositions(slideIndex, countShowDots, loop))
-  }, [countShowDots, loop, onChange, slideIndex])
+    if (!initialSlide || isInitialSlideApplied.current || slideWidth <= 0)
+      return
+
+    isInitialSlideApplied.current = true
+
+    moveTo(
+      -(clamp(initialSlide, FIRST_SLIDE, countShowDots) - FIRST_SLIDE) *
+        slideWidth
+    )
+  }, [initialSlide, countShowDots, slideWidth, moveTo])
+
+  useEffect(() => {
+    onChange(getSlidePositions(slideIndex, countShowDots, isLoop))
+  }, [countShowDots, isLoop, onChange, slideIndex])
 
   useEffect(() => {
     onSelect({
@@ -196,35 +193,12 @@ export const useSwipi = ({
     })
   }, [onSelect, slideIndex, countShowDots, canScrollNext, canScrollPrev])
 
-  useLayoutEffect(() => {
-    setWindowWidth(window.innerWidth)
-    setCurrentRef(slidesWrapperRef.current)
-  }, [])
-
-  useEffect(() => {
-    if (initialSlide) {
-      const adjustedSlideIndex =
-        Math.max(1, Math.min(initialSlide, countShowDots)) - 1
-
-      setTransform(slideWidth * -(children.length + adjustedSlideIndex))
-      setSlideIndex(adjustedSlideIndex)
-    }
-  }, [
-    children.length,
-    countShowDots,
-    initialSlide,
-    setSlideIndex,
-    setTransform,
-    slideWidth
-  ])
-
   return {
-    slides,
-    animation,
     transform,
     slideIndex,
     slideWidth,
     spaceBetween,
+    slideOffsets,
     countShowDots,
     slidesWrapperRef,
     Dots: ANIMATIONS[dotsAnimation],
@@ -233,11 +207,9 @@ export const useSwipi = ({
     onMove,
     onStart,
     returnDots,
-    setTransform,
-    setAnimation,
-    handleDotClick,
-    isDisableButton: isDisableMove(),
-    nextImg: useDebounce(() => nextImg(nextDot), NAVIGATION_DEBOUNCE_DELAY),
-    prevImg: useDebounce(() => prevImg(prevDot), NAVIGATION_DEBOUNCE_DELAY)
+    isDisableButton,
+    handleDotClick: scrollTo,
+    nextImg: useDebounce(nextImg, NAVIGATION_DEBOUNCE_DELAY),
+    prevImg: useDebounce(prevImg, NAVIGATION_DEBOUNCE_DELAY)
   }
 }

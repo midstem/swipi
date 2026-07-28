@@ -1,10 +1,18 @@
-import { SetWithPrev } from '../../types'
+import { MutableRefObject } from 'react'
 
 export type Navigation = {
-  putInTheInitialPosition: (callback?: () => void) => () => void
-  checkSwipiCorner: () => boolean
-  setAnimation: (animation: boolean) => void
-  setTransform: SetWithPrev
+  isLoop: boolean
+  lastIndex: number
   slideWidth: number
-  isDisableMove: (value: boolean) => boolean
+  slidesCount: number
+  canScrollNext: boolean
+  canScrollPrev: boolean
+  targetRef: MutableRefObject<number>
+  animateTo: (value: number) => void
+}
+
+export type UseNavigationReturn = {
+  nextImg: () => void
+  prevImg: () => void
+  scrollTo: (index: number) => void
 }

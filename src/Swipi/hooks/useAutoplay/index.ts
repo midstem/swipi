@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Autoplay } from './types'
 import { startAutoplay } from '../../helpers'
 
@@ -9,14 +9,18 @@ export const useAutoplay = ({
   nextImg,
   timeout
 }: Autoplay) => {
+  const nextImgRef = useRef(nextImg)
+
+  nextImgRef.current = nextImg
+
   useEffect(() => {
     if (!autoplay) return
 
     clearTimeout(timeout.current)
-    startAutoplay(autoplaySpeed, timeout, nextImg)
+    startAutoplay(autoplaySpeed, timeout, () => nextImgRef.current())
 
     const currentTimeout = timeout.current
 
     return () => clearTimeout(currentTimeout)
-  }, [autoplaySpeed, autoplay, slideIndex, nextImg, timeout])
+  }, [autoplaySpeed, autoplay, slideIndex, timeout])
 }

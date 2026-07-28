@@ -31,3 +31,13 @@ export const ONE_SLIDE = 1
 export const ONE_STEP = 1
 
 export const FIRST_SLIDE = 1
+
+export const FIRST_SLIDE_INDEX = 0
+
+export const HALF = 0.5
+
+export const INITIAL_TRANSFORM = 0
+
+export const PROGRESS_END = 1
+
+export const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'

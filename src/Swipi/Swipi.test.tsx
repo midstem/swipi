@@ -11,6 +11,19 @@ const renderSlides = (count: number) =>
 
 const lastState = (calls: SwipiState[]) => calls[calls.length - 1]
 
+const getSlides = (): HTMLElement[] =>
+  screen
+    .getAllByRole('group')
+    .filter(
+      (element) => element.getAttribute('aria-roledescription') === 'slide'
+    )
+
+const getTrackOffset = (): number => {
+  const track = getSlides()[0].parentElement as HTMLElement
+
+  return Number(/-?[\d.]+/.exec(track.style.transform)?.[0])
+}
+
 describe('Swipi accessibility', () => {
   it('exposes the carousel group with a configurable label', () => {
     render(
@@ -177,6 +190,101 @@ describe('Swipi navigation bounds', () => {
     act(() => ref.current?.scrollNext())
 
     await waitFor(() => expect(lastState(states).selectedIndex).toBe(0))
+  })
+
+  it('wraps to the last slide when scrolling prev from the first in loop mode', async () => {
+    const states: SwipiState[] = []
+    const ref = createRef<SwipiRef>()
+
+    render(
+      <Swipi
+        ref={ref}
+        slidesNumber={1}
+        loop
+        onSelect={(state) => states.push(state)}
+      >
+        {renderSlides(3)}
+      </Swipi>
+    )
+
+    act(() => ref.current?.scrollPrev())
+
+    await waitFor(() => expect(lastState(states).selectedIndex).toBe(2))
+  })
+
+  it('takes the shortest way around when a snap is on the other side of the loop', async () => {
+    const ref = createRef<SwipiRef>()
+
+    render(
+      <Swipi ref={ref} slidesNumber={1} loop>
+        {renderSlides(5)}
+      </Swipi>
+    )
+
+    act(() => ref.current?.scrollTo(4))
+
+    expect(ref.current?.selectedScrollSnap()).toBe(4)
+    // the track moves backwards by one slide instead of forwards by four
+    await waitFor(() => expect(getTrackOffset()).toBeGreaterThan(0))
+  })
+})
+
+describe('Swipi loop without clones', () => {
+  it('renders a single DOM node per slide', () => {
+    render(
+      <Swipi slidesNumber={1} loop>
+        {renderSlides(4)}
+      </Swipi>
+    )
+
+    expect(getSlides()).toHaveLength(4)
+    expect(screen.getAllByText('1')).toHaveLength(1)
+  })
+
+  it('labels every slide with its own position', () => {
+    render(
+      <Swipi slidesNumber={1} loop>
+        {renderSlides(3)}
+      </Swipi>
+    )
+
+    expect(
+      getSlides().map((slide) => slide.getAttribute('aria-label'))
+    ).toEqual(['1 of 3', '2 of 3', '3 of 3'])
+  })
+
+  it('keeps the trailing slide shifted behind the first one', () => {
+    render(
+      <Swipi slidesNumber={1} loop>
+        {renderSlides(3)}
+      </Swipi>
+    )
+
+    const [first, second, last] = getSlides()
+
+    expect(first.style.transform).toBe('')
+    expect(second.style.transform).toBe('')
+    expect(last.style.transform).toMatch(/^translate3d\(-\d/)
+  })
+
+  it('does not shift any slide when the loop is off', () => {
+    render(<Swipi slidesNumber={1}>{renderSlides(3)}</Swipi>)
+
+    getSlides().forEach((slide) => expect(slide.style.transform).toBe(''))
+  })
+
+  it('does not loop when every slide is already visible', () => {
+    const ref = createRef<SwipiRef>()
+
+    render(
+      <Swipi ref={ref} slidesNumber={3} loop>
+        {renderSlides(3)}
+      </Swipi>
+    )
+
+    expect(ref.current?.canScrollNext()).toBe(false)
+    expect(ref.current?.canScrollPrev()).toBe(false)
+    getSlides().forEach((slide) => expect(slide.style.transform).toBe(''))
   })
 })
 

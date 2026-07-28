@@ -32,9 +32,7 @@ export type SlidesWrapperProps = {
 
 export type SlidesContainerProps = {
   children: ReactNode
-  animation: boolean
   transform: number
-  animationSpeed: number
 }
 
 export type DotProps = {
@@ -52,6 +50,8 @@ export type ActiveDotProps = {
 }
 
 export type SlideProps = {
+  /** Loop shift that moves the slide a whole lap forward or backward. */
+  offset: number
   slideWidth: number
   spaceBetween: number
   children: JSX.Element

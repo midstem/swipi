@@ -3,8 +3,6 @@ import { FunctionComponent, ReactNode } from 'react'
 import { DotsTypes, SlidesAnimation, ValueOf } from '../types'
 import { SwipeDirections } from './constants'
 
-export type AddUniqueIdReturnType = Array<{ id: string } & JSX.Element>
-
 export type ConfigType = {
   maxWidth: number
   biasRight?: boolean
@@ -27,6 +25,7 @@ export type UseSwipiType = {
   dotsAnimation: DotsAnimation
   customActiveDot?: JSX.Element
   slidesAnimation: ValueOf<SlidesAnimation>
+  animationSpeed: number
   loop: boolean
   biasRight?: boolean
   onChange: (value: SlidePositions) => void
@@ -87,29 +86,41 @@ export type ReturnSlideWidthType = {
   visibleCountSlides: number
 }
 
-export type NextPrevDotType = {
-  prev: number
-  slideWidth: number
-  children: JSX.Element[]
-}
-
 export type AnimationsTypes = {
   [key in DotsAnimation]: FunctionComponent<DotsTypes>
 }
-
-export type SetWithPrev = (value: number | ((prev: number) => number)) => void
 
 export type TouchCoordsType = {
   touchStartX: number
   touchEndX: number
 }
 
-export type CalculateSliderTransformT = {
+export type SnapToSlideType = {
   transform: number
   slideWidth: number
   swipedSide: SwipeDirections | null
   timeTouch: Date
-  isDisableMove: boolean
+}
+
+export type LoopGeometry = {
+  slideWidth: number
+  slidesCount: number
+  loop: boolean
+}
+
+export type SlideOffsetsType = LoopGeometry & {
+  transform: number
+}
+
+export type ClampTransformType = {
+  transform: number
+  slideWidth: number
+  lastIndex: number
+  loop: boolean
+}
+
+export type CalculateSlideIndexType = ClampTransformType & {
+  slidesCount: number
 }
 
 export type SlidePositions = {
