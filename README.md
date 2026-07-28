@@ -399,8 +399,12 @@ Swipi ships with keyboard and screen-reader support out of the box:
 
 ## 🛠 **Development**
 
-Run the local playground (`src/dev`) with hot-reload to try changes before publishing:
+Run the local playground (`src/Playground`) with hot-reload to try changes
+before publishing:
 
 ```bash
 $ npm start
 ```
+
+The playground exposes **every** prop of the component, so a change can be
+tried without touching the code.

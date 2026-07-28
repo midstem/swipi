@@ -30,7 +30,7 @@
   },
   "homepage": "https://midstem.github.io/swipi-landing/",
   "scripts": {
-    "start": "vite --open",
+    "start": "vite --open --host",
     "build": "vite build",
     "test": "vitest",
     "lint": "eslint .",
