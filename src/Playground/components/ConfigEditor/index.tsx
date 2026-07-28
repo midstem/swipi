@@ -1,55 +1,31 @@
 import type { JSX } from 'react'
-import { ConfigType } from '../Swipi/types'
-import { NEW_CONFIG_ITEM } from './constants'
-import { ConfigEditorProps } from './types'
-
-const FIELDS: {
-  key: 'maxWidth' | 'slidesNumber' | 'spaceBetween'
-  label: string
-}[] = [
-  { key: 'maxWidth', label: 'maxWidth' },
-  { key: 'slidesNumber', label: 'slidesNumber' },
-  { key: 'spaceBetween', label: 'spaceBetween' }
-]
+import { ConfigEditorProps } from '../../types'
+import { CONFIG_NUMBER_FIELDS, EMPTY_FIELD_VALUE } from './constants'
+import { useConfigEditor } from './useConfigEditor'
 
 const ConfigEditor = ({
   config,
   disabled,
   onChange
 }: ConfigEditorProps): JSX.Element => {
-  const updateItem = (index: number, patch: Partial<ConfigType>): void => {
-    onChange(
-      config.map((item, itemIndex) =>
-        itemIndex === index ? { ...item, ...patch } : item
-      )
-    )
-  }
-
-  const removeItem = (index: number): void => {
-    onChange(config.filter((_, itemIndex) => itemIndex !== index))
-  }
-
-  const addItem = (): void => {
-    onChange([...config, { ...NEW_CONFIG_ITEM }])
-  }
+  const { addItem, removeItem, changeNumber, changeBiasRight } =
+    useConfigEditor({ config, disabled, onChange })
 
   return (
     <div className={`pg-config${disabled ? ' pg-field--disabled' : ''}`}>
       {config.map((item, index) => (
         <div className="pg-config__item" key={index}>
           <div className="pg-config__grid">
-            {FIELDS.map(({ key, label }) => (
+            {CONFIG_NUMBER_FIELDS.map(({ key, label }) => (
               <label className="pg-config__cell" key={key}>
                 <span className="pg-hint">{label}</span>
                 <input
                   type="number"
                   className="pg-input pg-input--number"
-                  min={0}
+                  min={EMPTY_FIELD_VALUE}
                   disabled={disabled}
-                  value={item[key] ?? 0}
-                  onChange={(event) =>
-                    updateItem(index, { [key]: Number(event.target.value) })
-                  }
+                  value={item[key] ?? EMPTY_FIELD_VALUE}
+                  onChange={changeNumber(index, key)}
                 />
               </label>
             ))}
@@ -60,9 +36,7 @@ const ConfigEditor = ({
                 type="checkbox"
                 disabled={disabled}
                 checked={Boolean(item.biasRight)}
-                onChange={(event) =>
-                  updateItem(index, { biasRight: event.target.checked })
-                }
+                onChange={changeBiasRight(index)}
               />
               <span className="pg-label">biasRight</span>
             </label>
@@ -70,7 +44,7 @@ const ConfigEditor = ({
               type="button"
               className="pg-button pg-button--ghost"
               disabled={disabled}
-              onClick={() => removeItem(index)}
+              onClick={removeItem(index)}
             >
               Remove
             </button>

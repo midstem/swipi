@@ -298,6 +298,18 @@ body {
   overflow: hidden;
 }
 
+.pg-custom-dot {
+  display: block;
+  width: 22px;
+  height: 8px;
+  border-radius: 4px;
+  background: #d6d6d6;
+}
+
+.pg-custom-dot--active {
+  background: var(--pg-accent);
+}
+
 .pg-slide {
   display: flex;
   align-items: center;

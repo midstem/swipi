@@ -1,7 +1,6 @@
-import type { JSX } from 'react'
-import { ConfigType, DotsAnimation } from '../Swipi/types'
+import { DotsAnimation } from '../Swipi/types'
 import { SlidesAnimation, ValueOf } from '../types'
-import { PlaygroundState, SelectOption } from './types'
+import { PlaygroundState, SelectOption, StagePreset } from './types'
 
 export const STORAGE_KEY = 'swipi-playground-state'
 
@@ -26,6 +25,8 @@ export const MAX_SLIDES_COUNT = SLIDE_COLORS.length
 
 export const MAX_EVENTS = 12
 
+export const JSON_INDENT = 2
+
 /** Props defaults taken from `Swipi` — used to keep the code snippet minimal. */
 export const SWIPI_DEFAULTS = {
   loop: false,
@@ -49,12 +50,6 @@ export const SWIPI_DEFAULTS = {
   className: '',
   ariaLabel: 'Slides'
 }
-
-export const DEFAULT_CONFIG: ConfigType[] = [
-  { maxWidth: 1200, slidesNumber: 3, spaceBetween: 20 },
-  { maxWidth: 768, slidesNumber: 2, spaceBetween: 12 },
-  { maxWidth: 480, slidesNumber: 1, spaceBetween: 8 }
-]
 
 export const DEFAULT_STATE: PlaygroundState = {
   slidesCount: 5,
@@ -81,7 +76,11 @@ export const DEFAULT_STATE: PlaygroundState = {
   className: '',
   ariaLabel: SWIPI_DEFAULTS.ariaLabel,
   useConfig: false,
-  config: DEFAULT_CONFIG,
+  config: [
+    { maxWidth: 1200, slidesNumber: 3, spaceBetween: 20 },
+    { maxWidth: 768, slidesNumber: 2, spaceBetween: 12 },
+    { maxWidth: 480, slidesNumber: 1, spaceBetween: 8 }
+  ],
   stageWidth: 640
 }
 
@@ -97,39 +96,9 @@ export const SLIDES_ANIMATION_OPTIONS: SelectOption<
   { value: 'fade-in', label: 'fade-in' }
 ]
 
-export const STAGE_PRESETS = [
+export const STAGE_PRESETS: StagePreset[] = [
   { label: 'Mobile', width: 360 },
   { label: 'Tablet', width: 768 },
   { label: 'Desktop', width: 1024 },
   { label: 'Full', width: 1440 }
 ]
-
-export const CUSTOM_DOT: JSX.Element = (
-  <span
-    style={{
-      display: 'block',
-      width: 22,
-      height: 8,
-      borderRadius: 4,
-      backgroundColor: '#d6d6d6'
-    }}
-  />
-)
-
-export const CUSTOM_ACTIVE_DOT: JSX.Element = (
-  <span
-    style={{
-      display: 'block',
-      width: 22,
-      height: 8,
-      borderRadius: 4,
-      backgroundColor: '#4361ee'
-    }}
-  />
-)
-
-export const NEW_CONFIG_ITEM: ConfigType = {
-  maxWidth: 640,
-  slidesNumber: 1,
-  spaceBetween: 10
-}

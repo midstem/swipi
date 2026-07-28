@@ -399,7 +399,8 @@ Swipi ships with keyboard and screen-reader support out of the box:
 
 ## 🛠 **Development**
 
-Run the local playground (`src/dev`) with hot-reload to try changes before publishing:
+Run the local playground (`src/Playground`) with hot-reload to try changes
+before publishing:
 
 ```bash
 $ npm start
@@ -420,6 +421,21 @@ tried without touching the code:
   live `onSelect` / `onChange` payloads and an event log;
 - a resizable stage with device presets and a generated JSX snippet of the
   current setup, ready to be copied.
+
+Every playground component lives in its own folder and keeps the logic out of
+the markup — `index.tsx` renders, `use<Component>.ts` holds the state and the
+handlers, `helpers.ts` and `constants.ts` hold the rest:
+
+```
+src/Playground
+├── index.tsx, usePlayground.ts, types.ts, constants.ts, helpers.ts
+└── components
+    └── ConfigEditor
+        ├── index.tsx          # UI only
+        ├── useConfigEditor.ts # state and handlers
+        ├── helpers.ts
+        └── constants.ts
+```
 
 Settings are kept in `localStorage`, so a reload does not reset the setup —
 use **Reset props** to get back to the defaults.
