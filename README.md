@@ -390,7 +390,10 @@ Swipi ships with keyboard and screen-reader support out of the box:
 
 .swipi-container - styles the container that wraps slides with arrows
 
-.swipi-track - styles the moving track that holds the slides
+.swipi-viewport - styles the visible window the track is dragged inside
+
+.swipi-track - styles the moving track that holds the slides (drag cursor and
+text selection live here)
 
 .dots-wrapper - styles the container that wraps the dots
 

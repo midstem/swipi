@@ -161,7 +161,7 @@ describe('getShortestLoopStep', () => {
 })
 
 describe('snapToSlide', () => {
-  const geometry = { slideWidth: 100, timeTouch: new Date() }
+  const geometry = { slideWidth: 100, startedAt: performance.now() }
 
   test('should move to the next slide on a quick swipe to the left', () => {
     expect(
@@ -187,7 +187,7 @@ describe('snapToSlide', () => {
     expect(
       snapToSlide({
         ...geometry,
-        timeTouch: new Date(Date.now() - 5000),
+        startedAt: performance.now() - 5000,
         transform: -180,
         swipedSide: SwipeDirections.LEFT
       })

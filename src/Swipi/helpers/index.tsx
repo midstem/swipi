@@ -8,11 +8,10 @@ import {
   SnapToSlideType,
   TouchCoordsType
 } from '../types'
-import { returnTimeDifference } from '../../helpers'
 import { SlidesAnimation, ValueOf } from '../../types'
 import { fadeIn } from '../../SlidesAnimation/FadeIn'
 import {
-  DISTANCE,
+  DRAG_THRESHOLD,
   FIRST_SLIDE_IDENTIFIER,
   DEFAULT_SWIPI_WIDTH,
   FAST_SWIPE_TIME,
@@ -130,9 +129,9 @@ export const getSwipeDirection = ({
   touchEndX,
   touchStartX
 }: TouchCoordsType): SwipeDirections | null => {
-  if (touchEndX - touchStartX > DISTANCE) return SwipeDirections.RIGHT
+  if (touchEndX - touchStartX > DRAG_THRESHOLD) return SwipeDirections.RIGHT
 
-  if (touchStartX - touchEndX > DISTANCE) return SwipeDirections.LEFT
+  if (touchStartX - touchEndX > DRAG_THRESHOLD) return SwipeDirections.LEFT
 
   return null
 }
@@ -158,11 +157,10 @@ export const snapToSlide = ({
   transform,
   slideWidth,
   swipedSide,
-  timeTouch
+  startedAt
 }: SnapToSlideType): number => {
   const position = getTrackPosition(transform, slideWidth)
-  const isFastSwipe =
-    returnTimeDifference(timeTouch, new Date()) <= FAST_SWIPE_TIME
+  const isFastSwipe = performance.now() - startedAt <= FAST_SWIPE_TIME
 
   if (isFastSwipe && swipedSide === SwipeDirections.LEFT) {
     return -Math.ceil(position) * slideWidth

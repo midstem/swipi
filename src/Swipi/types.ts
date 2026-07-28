@@ -99,7 +99,8 @@ export type SnapToSlideType = {
   transform: number
   slideWidth: number
   swipedSide: SwipeDirections | null
-  timeTouch: Date
+  /** Timestamp of the drag start, taken from `performance.now()`. */
+  startedAt: number
 }
 
 export type LoopGeometry = {

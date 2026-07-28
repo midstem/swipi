@@ -1,8 +1,33 @@
-import { useRef } from 'react'
-import { TouchEvents, UseEventsReturn } from './types'
+import { PointerEvent, useRef } from 'react'
+import { DragState, TouchEvents, UseEventsReturn } from './types'
 import { clampTransform, getSwipeDirection, snapToSlide } from '../../helpers'
+import { DRAG_THRESHOLD, PRIMARY_BUTTON } from '../../constants'
 
 const noop = (): void => {}
+
+/**
+ * Capturing throws when the pointer is no longer active, and a failed capture
+ * must never break the gesture — the drag simply goes on without it.
+ */
+const capturePointer = (
+  event: PointerEvent<HTMLDivElement>,
+  isCapturing: boolean
+): void => {
+  const element = event.currentTarget
+
+  try {
+    if (isCapturing) {
+      element.setPointerCapture?.(event.pointerId)
+      return
+    }
+
+    if (element.hasPointerCapture?.(event.pointerId)) {
+      element.releasePointerCapture(event.pointerId)
+    }
+  } catch {
+    /* the pointer is gone — nothing to capture or release */
+  }
+}
 
 export const useEvents = ({
   isLoop,
@@ -13,28 +38,68 @@ export const useEvents = ({
   isHideArrows,
   transformRef
 }: TouchEvents): UseEventsReturn => {
-  const isDragging = useRef(false)
-  const startXRef = useRef(0)
-  const lastXRef = useRef(0)
-  const startTransformRef = useRef(0)
-  const startedAtRef = useRef(new Date())
+  const dragRef = useRef<DragState | null>(null)
 
-  const onStart = (x: number): void => {
-    isDragging.current = true
-    startXRef.current = x
-    lastXRef.current = x
-    startTransformRef.current = transformRef.current
-    startedAtRef.current = new Date()
+  const onPointerDown = (event: PointerEvent<HTMLDivElement>): void => {
+    if (event.button !== PRIMARY_BUTTON) return
+
+    dragRef.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      lastX: event.clientX,
+      startTransform: transformRef.current,
+      startedAt: performance.now(),
+      isDragging: false
+    }
   }
 
-  const onMove = (x: number): void => {
-    if (!isDragging.current) return
+  /**
+   * The gesture is claimed only after it moves far enough and turns out to be
+   * horizontal — a vertical one is dropped, so the page keeps scrolling.
+   */
+  const lockAxis = (
+    drag: DragState,
+    event: PointerEvent<HTMLDivElement>,
+    deltaX: number,
+    deltaY: number
+  ): boolean => {
+    if (
+      Math.abs(deltaX) < DRAG_THRESHOLD &&
+      Math.abs(deltaY) < DRAG_THRESHOLD
+    ) {
+      return false
+    }
 
-    lastXRef.current = x
+    if (Math.abs(deltaY) > Math.abs(deltaX)) {
+      dragRef.current = null
+
+      return false
+    }
+
+    drag.isDragging = true
+    drag.startedAt = performance.now()
+
+    capturePointer(event, true)
+
+    return true
+  }
+
+  const onPointerMove = (event: PointerEvent<HTMLDivElement>): void => {
+    const drag = dragRef.current
+
+    if (!drag || drag.pointerId !== event.pointerId) return
+
+    const deltaX = event.clientX - drag.startX
+    const deltaY = event.clientY - drag.startY
+
+    if (!drag.isDragging && !lockAxis(drag, event, deltaX, deltaY)) return
+
+    drag.lastX = event.clientX
 
     moveTo(
       clampTransform({
-        transform: startTransformRef.current + (x - startXRef.current),
+        transform: drag.startTransform + deltaX,
         slideWidth,
         lastIndex,
         loop: isLoop
@@ -42,19 +107,25 @@ export const useEvents = ({
     )
   }
 
-  const onEnd = (): void => {
-    if (!isDragging.current) return
+  const onPointerUp = (event: PointerEvent<HTMLDivElement>): void => {
+    const drag = dragRef.current
 
-    isDragging.current = false
+    if (!drag || drag.pointerId !== event.pointerId) return
+
+    dragRef.current = null
+
+    capturePointer(event, false)
+
+    if (!drag.isDragging) return
 
     const transform = snapToSlide({
       transform: transformRef.current,
       slideWidth,
       swipedSide: getSwipeDirection({
-        touchStartX: startXRef.current,
-        touchEndX: lastXRef.current
+        touchStartX: drag.startX,
+        touchEndX: drag.lastX
       }),
-      timeTouch: startedAtRef.current
+      startedAt: drag.startedAt
     })
 
     animateTo(
@@ -63,8 +134,8 @@ export const useEvents = ({
   }
 
   return {
-    onEnd: isHideArrows ? onEnd : noop,
-    onMove: isHideArrows ? onMove : noop,
-    onStart: isHideArrows ? onStart : noop
+    onPointerDown: isHideArrows ? onPointerDown : noop,
+    onPointerMove: isHideArrows ? onPointerMove : noop,
+    onPointerUp: isHideArrows ? onPointerUp : noop
   }
 }
