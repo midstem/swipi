@@ -1,4 +1,10 @@
-import { CSSProperties, MutableRefObject } from 'react'
+import {
+  CSSProperties,
+  isValidElement,
+  Key,
+  MutableRefObject,
+  ReactNode
+} from 'react'
 import {
   CalculateSlideIndexType,
   ClampTransformType,
@@ -233,3 +239,6 @@ export const calculateSlideWidthWithCorner = (
 
 export const easeOutCubic = (progress: number): number =>
   1 - Math.pow(1 - progress, 3)
+
+export const getSlideKey = (slide: ReactNode, index: number): Key =>
+  isValidElement(slide) ? (slide.key ?? index) : index

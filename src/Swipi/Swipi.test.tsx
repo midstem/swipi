@@ -1,4 +1,4 @@
-import { createRef } from 'react'
+import { createRef, useState, type JSX } from 'react'
 import { describe, expect, it } from 'vitest'
 import { act, render, screen, fireEvent, waitFor } from '@testing-library/react'
 import Swipi from './index'
@@ -180,6 +180,101 @@ describe('Swipi reactive state (onSelect)', () => {
       canScrollPrev: true
     })
   })
+
+  it('stays quiet while the parent re-renders with an inline callback', () => {
+    const states: SwipiState[] = []
+
+    const Host = (): JSX.Element => {
+      const [, setTick] = useState(0)
+
+      return (
+        <>
+          <button onClick={() => setTick((tick) => tick + 1)}>rerender</button>
+          <Swipi slidesNumber={1} onSelect={(state) => states.push(state)}>
+            {renderSlides(3)}
+          </Swipi>
+        </>
+      )
+    }
+
+    render(<Host />)
+
+    const callsAfterMount = states.length
+
+    fireEvent.click(screen.getByRole('button', { name: 'rerender' }))
+    fireEvent.click(screen.getByRole('button', { name: 'rerender' }))
+
+    expect(states.length).toBe(callsAfterMount)
+  })
+
+  it('reports every index of a rapid navigation burst', () => {
+    const states: SwipiState[] = []
+
+    render(
+      <Swipi slidesNumber={1} onSelect={(state) => states.push(state)}>
+        {renderSlides(4)}
+      </Swipi>
+    )
+
+    const next = screen.getByRole('button', { name: 'Next slide' })
+
+    fireEvent.click(next)
+    fireEvent.click(next)
+    fireEvent.click(next)
+
+    expect(states.map((state) => state.selectedIndex)).toEqual([0, 1, 2, 3])
+  })
+})
+
+describe('Swipi children', () => {
+  it('accepts a single child', () => {
+    render(
+      <Swipi slidesNumber={1}>
+        <div>only</div>
+      </Swipi>
+    )
+
+    expect(getSlides()).toHaveLength(1)
+  })
+
+  it('skips falsy children instead of rendering empty slides', () => {
+    const isHidden = false
+
+    render(
+      <Swipi slidesNumber={1}>
+        <div>first</div>
+        {isHidden && <div>hidden</div>}
+        <div>second</div>
+      </Swipi>
+    )
+
+    expect(getSlides()).toHaveLength(2)
+  })
+
+  it('treats a fragment as one slide', () => {
+    render(
+      <Swipi slidesNumber={1}>
+        <>
+          <div>first</div>
+          <div>second</div>
+        </>
+        <div>third</div>
+      </Swipi>
+    )
+
+    expect(getSlides()).toHaveLength(2)
+  })
+
+  it('flattens a mapped list next to a static slide', () => {
+    render(
+      <Swipi slidesNumber={1}>
+        <div>static</div>
+        {renderSlides(3)}
+      </Swipi>
+    )
+
+    expect(getSlides()).toHaveLength(4)
+  })
 })
 
 describe('Swipi navigation bounds', () => {
@@ -302,6 +397,20 @@ describe('Swipi loop without clones', () => {
 
   it('does not shift any slide when the loop is off', () => {
     render(<Swipi slidesNumber={1}>{renderSlides(3)}</Swipi>)
+
+    getSlides().forEach((slide) => expect(slide.style.transform).toBe(''))
+  })
+
+  it('clears the shifted slides when the loop is turned off', () => {
+    const { rerender } = render(
+      <Swipi slidesNumber={1} loop>
+        {renderSlides(3)}
+      </Swipi>
+    )
+
+    expect(getSlides()[2].style.transform).toMatch(/^translate3d\(-\d/)
+
+    rerender(<Swipi slidesNumber={1}>{renderSlides(3)}</Swipi>)
 
     getSlides().forEach((slide) => expect(slide.style.transform).toBe(''))
   })

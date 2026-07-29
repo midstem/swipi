@@ -1,5 +1,5 @@
-import type { JSX } from 'react'
 import {
+  CSSProperties,
   HTMLAttributes,
   MutableRefObject,
   PointerEventHandler,
@@ -60,7 +60,7 @@ export type SlideProps = {
   slidesRef: MutableRefObject<(HTMLDivElement | null)[]>
   slideWidth: number
   spaceBetween: number
-  children: JSX.Element
-  animation?: React.CSSProperties
+  children: ReactNode
+  animation?: CSSProperties
   ariaLabel: string
 }

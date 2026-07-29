@@ -1,7 +1,13 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
 import dts from 'vite-plugin-dts'
+import { libInjectCss } from 'vite-plugin-lib-inject-css'
 import { resolve } from 'path'
+
+const FILE_NAME_BY_FORMAT: Record<string, string> = {
+  es: 'index.js',
+  cjs: 'index.cjs'
+}
 
 export default defineConfig({
   test: {
@@ -16,6 +22,7 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    libInjectCss(),
     dts({
       include: ['src'],
       exclude: [
@@ -32,8 +39,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve('src', 'index.ts'),
-      formats: ['es'],
-      fileName: 'index',
+      formats: ['es', 'cjs'],
+      fileName: (format) => FILE_NAME_BY_FORMAT[format],
       cssFileName: 'style'
     },
     rollupOptions: {

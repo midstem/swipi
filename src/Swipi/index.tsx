@@ -1,7 +1,13 @@
-import { forwardRef, KeyboardEvent, useImperativeHandle } from 'react'
+import {
+  Children,
+  forwardRef,
+  KeyboardEvent,
+  useImperativeHandle,
+  useMemo
+} from 'react'
 import { useSwipi } from './useSwipi'
 import { SwipiProps, SwipiRef } from './types'
-import { returnSlidesAnimation } from './helpers'
+import { getSlideKey, returnSlidesAnimation } from './helpers'
 import { Slide } from '../UI/Slide'
 import LiveRegion from '../UI/LiveRegion'
 import SwipiButton from '../UI/SwipiButton'
@@ -17,7 +23,7 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
     dotColor,
     customDot,
     config = [],
-    children = [],
+    children,
     activeDotColor,
     customActiveDot,
     slidesNumber = 3,
@@ -43,6 +49,8 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
   }: SwipiProps,
   ref
 ) {
+  const slides = useMemo(() => Children.toArray(children), [children])
+
   const {
     Dots,
     trackRef,
@@ -64,7 +72,7 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
   } = useSwipi({
     loop,
     config,
-    children,
+    slides,
     dotColor,
     autoplay,
     dragFree,
@@ -138,14 +146,14 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
           onPointerUp={onPointerUp}
         >
           <SlidesContainer trackRef={trackRef}>
-            {children.map((slide, index) => (
+            {slides.map((slide, index) => (
               <Slide
-                key={index}
+                key={getSlideKey(slide, index)}
                 index={index}
                 slidesRef={slidesRef}
                 slideWidth={slideWidth}
                 spaceBetween={spaceBetween}
-                ariaLabel={`${index + 1} of ${children.length}`}
+                ariaLabel={`${index + 1} of ${slides.length}`}
                 animation={returnSlidesAnimation(
                   slidesAnimation,
                   index === slideIndex

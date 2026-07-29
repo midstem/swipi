@@ -5,10 +5,24 @@
   "license": "MIT",
   "author": "Maksym Tkachuk, Oleksandr Didyshen",
   "description": "Lightweight TypeScript Slider",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./style.css": "./dist/index.css",
+    "./dist/style.css": "./dist/index.css",
+    "./package.json": "./package.json"
+  },
   "peerDependencies": {
-    "react": ">=19"
+    "react": ">=18"
   },
   "repository": {
     "type": "git",
@@ -77,6 +91,7 @@
     "typescript": "^6.0.3",
     "vite": "^8.1.0",
     "vite-plugin-dts": "^5.0.3",
+    "vite-plugin-lib-inject-css": "^2.2.2",
     "vitest": "^4.1.9"
   },
   "pre-commit": "lint-tsc"

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { easeOutCubic } from '../../helpers'
 import { INITIAL_TRANSFORM, PROGRESS_END } from '../../constants'
+import { useLatestRef } from '../useLatestRef'
 import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
 import { UseTransformProps, UseTransformReturn } from './types'
 
@@ -14,11 +15,8 @@ export const useTransform = ({
   const transformRef = useRef(INITIAL_TRANSFORM)
   const targetRef = useRef(INITIAL_TRANSFORM)
   const frameRef = useRef<number | null>(null)
-  const renderRef = useRef(render)
-  const onTargetRef = useRef(onTarget)
-
-  renderRef.current = render
-  onTargetRef.current = onTarget
+  const renderRef = useLatestRef(render)
+  const onTargetRef = useLatestRef(onTarget)
 
   const cancelAnimation = useCallback((): void => {
     if (frameRef.current === null) return
@@ -27,15 +25,21 @@ export const useTransform = ({
     frameRef.current = null
   }, [])
 
-  const applyTransform = useCallback((value: number): void => {
-    transformRef.current = value
-    renderRef.current(value)
-  }, [])
+  const applyTransform = useCallback(
+    (value: number): void => {
+      transformRef.current = value
+      renderRef.current(value)
+    },
+    [renderRef]
+  )
 
-  const applyTarget = useCallback((value: number): void => {
-    targetRef.current = value
-    onTargetRef.current(value)
-  }, [])
+  const applyTarget = useCallback(
+    (value: number): void => {
+      targetRef.current = value
+      onTargetRef.current(value)
+    },
+    [onTargetRef]
+  )
 
   const moveTo = useCallback(
     (value: number): void => {
