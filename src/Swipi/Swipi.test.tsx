@@ -1,7 +1,15 @@
-import { createRef, useState, type JSX } from 'react'
+import { createRef, useState, type JSX, type RefObject } from 'react'
 import { describe, expect, it } from 'vitest'
-import { act, render, screen, fireEvent, waitFor } from '@testing-library/react'
+import {
+  act,
+  render,
+  renderHook,
+  screen,
+  fireEvent,
+  waitFor
+} from '@testing-library/react'
 import Swipi from './index'
+import { useDots } from './hooks/useDots'
 import {
   isPointerCaptured,
   setContainerWidth,
@@ -280,6 +288,94 @@ describe('Swipi children', () => {
     )
 
     expect(getSlides()).toHaveLength(4)
+  })
+})
+
+describe('Swipi dots', () => {
+  const getDots = (): HTMLElement[] =>
+    screen.getAllByRole('button', { name: /Go to slide/ })
+
+  const GrowingSlides = ({
+    swipiRef
+  }: {
+    swipiRef: RefObject<SwipiRef | null>
+  }): JSX.Element => {
+    const [count, setCount] = useState(3)
+
+    return (
+      <>
+        <button onClick={() => setCount(8)}>grow</button>
+        <Swipi ref={swipiRef} showDots dotsAnimation="sliding" slidesNumber={1}>
+          {renderSlides(count)}
+        </Swipi>
+      </>
+    )
+  }
+
+  it('scrolls to a sliding dot added after mount', () => {
+    const swipiRef = createRef<SwipiRef>()
+
+    render(<GrowingSlides swipiRef={swipiRef} />)
+
+    expect(getDots()).toHaveLength(3)
+
+    fireEvent.click(screen.getByRole('button', { name: 'grow' }))
+
+    expect(getDots()).toHaveLength(8)
+
+    act(() => swipiRef.current?.scrollTo(7))
+
+    expect(getDots()).toHaveLength(8)
+    expect(swipiRef.current?.selectedScrollSnap()).toBe(7)
+  })
+
+  it('keeps sliding dots clickable', () => {
+    const states: SwipiState[] = []
+
+    render(
+      <Swipi
+        showDots
+        dotsAnimation="sliding"
+        slidesNumber={1}
+        onSelect={(state) => states.push(state)}
+      >
+        {renderSlides(4)}
+      </Swipi>
+    )
+
+    fireEvent.click(getDots()[2])
+
+    expect(lastState(states).selectedIndex).toBe(2)
+  })
+
+  it('keeps default dots clickable', () => {
+    const states: SwipiState[] = []
+
+    render(
+      <Swipi showDots slidesNumber={1} onSelect={(state) => states.push(state)}>
+        {renderSlides(4)}
+      </Swipi>
+    )
+
+    fireEvent.click(getDots()[3])
+
+    expect(lastState(states).selectedIndex).toBe(3)
+  })
+
+  it('reuses the dot renderer across re-renders so buttons can be memoized', () => {
+    const props = {
+      isLoop: false,
+      slidesCount: 5,
+      visibleCountSlides: 1,
+      dotColor: 'red'
+    }
+
+    const { result, rerender } = renderHook(() => useDots(props))
+    const firstRenderer = result.current.returnDots
+
+    rerender()
+
+    expect(result.current.returnDots).toBe(firstRenderer)
   })
 })
 

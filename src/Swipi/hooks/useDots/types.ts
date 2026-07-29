@@ -1,9 +1,9 @@
-import type { JSX, ReactNode } from 'react'
+import type { JSX } from 'react'
+import { RenderDot } from '../../../UI/types'
 
 export type DotsProps = {
   isLoop: boolean
   dotColor?: string
-  slideIndex: number
   slidesCount: number
   activeDotColor?: string
   customDot?: JSX.Element
@@ -12,6 +12,6 @@ export type DotsProps = {
 }
 
 export type UseDotsReturn = {
-  returnDots: (index: number) => ReactNode
+  returnDots: RenderDot
   countShowDots: number
 }

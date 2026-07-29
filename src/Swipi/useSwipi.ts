@@ -143,7 +143,6 @@ export const useSwipi = ({
     isLoop,
     dotColor,
     customDot,
-    slideIndex,
     slidesCount,
     activeDotColor,
     customActiveDot,
