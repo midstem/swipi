@@ -341,6 +341,28 @@ describe('returnSlidesAnimation', () => {
 
     expect(emptyStyles).toEqual({})
   })
+
+  test('should reuse the same object for the default animation so slides can be memoized', () => {
+    const animation: ValueOf<SlidesAnimation> = SlidesAnimation.DEFAULT
+
+    expect(returnSlidesAnimation(animation, true)).toBe(
+      returnSlidesAnimation(animation, false)
+    )
+  })
+
+  test('should reuse one object per visibility state of the fade-in animation', () => {
+    const animation: ValueOf<SlidesAnimation> = SlidesAnimation.FADE_IN
+
+    expect(returnSlidesAnimation(animation, true)).toBe(
+      returnSlidesAnimation(animation, true)
+    )
+    expect(returnSlidesAnimation(animation, false)).toBe(
+      returnSlidesAnimation(animation, false)
+    )
+    expect(returnSlidesAnimation(animation, true)).not.toBe(
+      returnSlidesAnimation(animation, false)
+    )
+  })
 })
 
 describe('isFadeInAnimation', () => {

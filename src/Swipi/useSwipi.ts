@@ -81,7 +81,8 @@ export const useSwipi = ({
   const { trackRef, slidesRef, render } = useTrack({
     loop: isLoop,
     slideWidth,
-    slidesCount
+    slidesCount,
+    spaceBetween
   })
 
   const [slideIndex, setSlideIndex] = useState<number>(FIRST_SLIDE_INDEX)
@@ -204,22 +205,21 @@ export const useSwipi = ({
   }, [slideIndex, countShowDots, canScrollNext, canScrollPrev, onSelectRef])
 
   return {
-    trackRef,
-    slidesRef,
-    slideIndex,
-    slideWidth,
-    spaceBetween,
-    countShowDots,
-    slidesWrapperRef,
-    Dots: ANIMATIONS[dotsAnimation],
-    isShowArrows: isHideArrows && showArrows,
-    nextImg,
-    prevImg,
-    onPointerDown,
-    onPointerMove,
-    onPointerUp,
-    returnDots,
-    isDisableButton,
-    handleDotClick: scrollTo
+    refs: { trackRef, slidesRef, slidesWrapperRef },
+    state: {
+      slideIndex,
+      countShowDots,
+      isDisableButton,
+      isShowArrows: isHideArrows && showArrows
+    },
+    handlers: {
+      nextImg,
+      prevImg,
+      scrollTo,
+      onPointerDown,
+      onPointerMove,
+      onPointerUp
+    },
+    dots: { Dots: ANIMATIONS[dotsAnimation], returnDots }
   }
 }

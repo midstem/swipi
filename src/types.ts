@@ -1,17 +1,21 @@
 import type { JSX, ReactNode } from 'react'
 
-export type DotsTypes = {
+export type DotsAppearance = {
+  dotColor?: string
+  activeDotColor?: string
   customDot?: JSX.Element
-  slideIndex: number
   customActiveDot?: JSX.Element
   sizeForDefaultDot?: number
   sizeForDefaultActiveDot: number
-  activeDotColor?: string
-  dotColor?: string
+}
+
+export type DotsTypes = {
+  slideIndex: number
+  countShowDots: number
   animationSpeed: number
+  appearance: DotsAppearance
   handleDotClick: (index: number) => void
   returnDots: (index: number) => ReactNode
-  countShowDots: number
 }
 
 export enum SlidesAnimation {

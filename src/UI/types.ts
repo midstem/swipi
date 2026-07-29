@@ -58,9 +58,7 @@ export type ActiveDotProps = {
 export type SlideProps = {
   index: number
   slidesRef: MutableRefObject<(HTMLDivElement | null)[]>
-  slideWidth: number
-  spaceBetween: number
   children: ReactNode
-  animation?: CSSProperties
+  animation: CSSProperties
   ariaLabel: string
 }

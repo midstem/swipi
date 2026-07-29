@@ -7,17 +7,21 @@ import { DotsTypes } from '../../types'
 import useSliding from './useSliding'
 
 const Sliding = ({
-  dotColor,
-  customDot,
   slideIndex,
+  appearance,
   countShowDots,
-  activeDotColor,
   animationSpeed,
-  customActiveDot,
-  sizeForDefaultDot,
-  sizeForDefaultActiveDot,
   handleDotClick
 }: DotsTypes): JSX.Element => {
+  const {
+    dotColor,
+    customDot,
+    activeDotColor,
+    customActiveDot,
+    sizeForDefaultDot,
+    sizeForDefaultActiveDot
+  } = appearance
+
   const { dotsRef, activeDotRef, activeDotLeft } = useSliding(slideIndex)
 
   return (

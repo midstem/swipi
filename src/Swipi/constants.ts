@@ -54,3 +54,7 @@ export const EMPTY_TRANSFORM = ''
 export const PROGRESS_END = 1
 
 export const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
+
+export const SLIDE_WIDTH_VARIABLE = '--swipi-slide-width'
+
+export const SLIDE_GAP_VARIABLE = '--swipi-slide-gap'

@@ -51,25 +51,7 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
 ) {
   const slides = useMemo(() => Children.toArray(children), [children])
 
-  const {
-    Dots,
-    trackRef,
-    slidesRef,
-    slideWidth,
-    slideIndex,
-    spaceBetween,
-    isShowArrows,
-    countShowDots,
-    slidesWrapperRef,
-    nextImg,
-    prevImg,
-    returnDots,
-    onPointerUp,
-    onPointerDown,
-    onPointerMove,
-    handleDotClick,
-    isDisableButton
-  } = useSwipi({
+  const { refs, state, handlers, dots } = useSwipi({
     loop,
     config,
     slides,
@@ -92,26 +74,24 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
     onSelect
   })
 
+  const { trackRef, slidesRef, slidesWrapperRef } = refs
+  const { slideIndex, countShowDots, isShowArrows, isDisableButton } = state
+  const { nextImg, prevImg, scrollTo } = handlers
+  const { Dots, returnDots } = dots
+
   useImperativeHandle(
     ref,
     () => ({
       scrollNext: nextImg,
       scrollPrev: prevImg,
-      scrollTo: handleDotClick,
+      scrollTo,
       selectedScrollSnap: () => slideIndex,
       scrollSnapList: () =>
         Array.from({ length: countShowDots }, (_, index) => index),
       canScrollNext: () => !isDisableButton(true),
       canScrollPrev: () => !isDisableButton()
     }),
-    [
-      nextImg,
-      prevImg,
-      handleDotClick,
-      slideIndex,
-      countShowDots,
-      isDisableButton
-    ]
+    [nextImg, prevImg, scrollTo, slideIndex, countShowDots, isDisableButton]
   )
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
@@ -141,9 +121,9 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
         )}
         <SlidesWrapper
           slidesWrapperRef={slidesWrapperRef}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
+          onPointerDown={handlers.onPointerDown}
+          onPointerMove={handlers.onPointerMove}
+          onPointerUp={handlers.onPointerUp}
         >
           <SlidesContainer trackRef={trackRef}>
             {slides.map((slide, index) => (
@@ -151,8 +131,6 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
                 key={getSlideKey(slide, index)}
                 index={index}
                 slidesRef={slidesRef}
-                slideWidth={slideWidth}
-                spaceBetween={spaceBetween}
                 ariaLabel={`${index + 1} of ${slides.length}`}
                 animation={returnSlidesAnimation(
                   slidesAnimation,
@@ -177,16 +155,18 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
       </SwipiContainer>
       {showDots && (
         <Dots
-          countShowDots={countShowDots}
-          dotColor={dotColor}
-          customDot={customDot}
           slideIndex={slideIndex}
-          activeDotColor={activeDotColor}
+          countShowDots={countShowDots}
           animationSpeed={animationSpeed}
-          customActiveDot={customActiveDot}
-          sizeForDefaultDot={sizeForDefaultDot}
-          sizeForDefaultActiveDot={sizeForDefaultActiveDot}
-          handleDotClick={handleDotClick}
+          appearance={{
+            dotColor,
+            customDot,
+            activeDotColor,
+            customActiveDot,
+            sizeForDefaultDot,
+            sizeForDefaultActiveDot
+          }}
+          handleDotClick={scrollTo}
           returnDots={returnDots}
         />
       )}
