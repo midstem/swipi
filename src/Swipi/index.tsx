@@ -51,6 +51,25 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
 ) {
   const slides = useMemo(() => Children.toArray(children), [children])
 
+  const dotsAppearance = useMemo(
+    () => ({
+      dotColor,
+      customDot,
+      activeDotColor,
+      customActiveDot,
+      sizeForDefaultDot,
+      sizeForDefaultActiveDot
+    }),
+    [
+      dotColor,
+      customDot,
+      activeDotColor,
+      customActiveDot,
+      sizeForDefaultDot,
+      sizeForDefaultActiveDot
+    ]
+  )
+
   const { refs, state, handlers, dots } = useSwipi({
     loop,
     config,
@@ -158,14 +177,7 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
           slideIndex={slideIndex}
           countShowDots={countShowDots}
           animationSpeed={animationSpeed}
-          appearance={{
-            dotColor,
-            customDot,
-            activeDotColor,
-            customActiveDot,
-            sizeForDefaultDot,
-            sizeForDefaultActiveDot
-          }}
+          appearance={dotsAppearance}
           handleDotClick={scrollTo}
           returnDots={returnDots}
         />

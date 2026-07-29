@@ -1,38 +1,40 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
+import { NO_OFFSET, NO_WIDTH } from '../../Swipi/constants'
 import { defaultDotsLeftOffsets } from './constants'
-import { DotsLeftOffsetsTypes } from './types'
+import {
+  DotsLeftOffsetsTypes,
+  UseSlidingProps,
+  UseSlidingReturn
+} from './types'
 import { getDotsLeftOffsets, getWidthDifference } from './helpers'
 
-const useSliding = (slideIndex: number) => {
+const useSliding = ({
+  slideIndex,
+  countShowDots
+}: UseSlidingProps): UseSlidingReturn => {
   const dotsRef = useRef<(HTMLButtonElement | null)[]>([])
   const activeDotRef = useRef<HTMLDivElement>(null)
   const dotsLeftOffsetsRef = useRef<DotsLeftOffsetsTypes[]>(
     defaultDotsLeftOffsets
   )
-  const [activeDotLeft, setActiveDotLeft] = useState<number>(0)
-  const [dotWidth, setDotWidth] = useState<number>(0)
-  const [activeDotWidth, setActiveDotWidth] = useState<number>(0)
 
-  const initializeData = (): void => {
+  const [activeDotLeft, setActiveDotLeft] = useState<number>(NO_OFFSET)
+  const [dotWidth, setDotWidth] = useState<number>(NO_WIDTH)
+  const [activeDotWidth, setActiveDotWidth] = useState<number>(NO_WIDTH)
+
+  useLayoutEffect(() => {
+    dotsRef.current.length = countShowDots
     dotsLeftOffsetsRef.current = getDotsLeftOffsets(dotsRef)
-    setDotWidth(dotsRef.current[0]?.clientWidth ?? 0)
-    setActiveDotWidth(activeDotRef.current?.clientWidth ?? 0)
-  }
 
-  const moveActiveDot = useCallback(() => {
-    const activeDotIndent = dotsLeftOffsetsRef.current[slideIndex].left
-    const dotAlignment = getWidthDifference(dotWidth, activeDotWidth)
+    setDotWidth(dotsRef.current[0]?.clientWidth ?? NO_WIDTH)
+    setActiveDotWidth(activeDotRef.current?.clientWidth ?? NO_WIDTH)
+  }, [countShowDots])
 
-    setActiveDotLeft(activeDotIndent + dotAlignment)
-  }, [activeDotWidth, dotWidth, slideIndex])
+  useLayoutEffect(() => {
+    const dotIndent = dotsLeftOffsetsRef.current[slideIndex]?.left ?? NO_OFFSET
 
-  useEffect(() => {
-    initializeData()
-  }, [])
-
-  useEffect(() => {
-    moveActiveDot()
-  }, [moveActiveDot])
+    setActiveDotLeft(dotIndent + getWidthDifference(dotWidth, activeDotWidth))
+  }, [slideIndex, countShowDots, dotWidth, activeDotWidth])
 
   return { dotsRef, activeDotRef, activeDotLeft }
 }

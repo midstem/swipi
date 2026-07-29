@@ -2,8 +2,7 @@ import type { JSX } from 'react'
 import { DotProps } from './types'
 
 const Dot = ({
-  index,
-  slideIndex,
+  isActive = false,
   sizeForDefaultDot = 12,
   sizeForDefaultActiveDot = 12,
   dotColor = '#c7c7c7',
@@ -12,8 +11,8 @@ const Dot = ({
   <div
     style={{
       aspectRatio: '1 / 1',
-      width: slideIndex === index ? sizeForDefaultActiveDot : sizeForDefaultDot,
-      backgroundColor: slideIndex === index ? activeDotColor : dotColor,
+      width: isActive ? sizeForDefaultActiveDot : sizeForDefaultDot,
+      backgroundColor: isActive ? activeDotColor : dotColor,
       borderRadius: '50%',
       cursor: 'pointer'
     }}

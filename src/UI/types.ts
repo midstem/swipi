@@ -42,12 +42,22 @@ export type SlidesContainerProps = {
 }
 
 export type DotProps = {
-  index?: number
-  slideIndex?: number
+  isActive?: boolean
   sizeForDefaultDot?: number
   sizeForDefaultActiveDot?: number
   dotColor?: string
   activeDotColor?: string
+}
+
+export type RenderDot = (index: number, isActive: boolean) => ReactNode
+
+export type DotButtonProps = {
+  index: number
+  isActive: boolean
+  onSelect: (index: number) => void
+  renderDot: RenderDot
+  dotsRef?: MutableRefObject<(HTMLButtonElement | null)[]>
+  style?: CSSProperties
 }
 
 export type ActiveDotProps = {

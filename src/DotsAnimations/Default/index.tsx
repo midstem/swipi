@@ -1,5 +1,7 @@
 import type { JSX } from 'react'
+import { useCallback } from 'react'
 import Dot from '../../UI/Dot'
+import DotButton from '../../UI/DotButton'
 import DotsWrapper from '../../UI/DotsWrapper'
 import { generateArray } from '../../helpers'
 import { DotsTypes } from '../../types'
@@ -11,41 +13,42 @@ const Default = ({
   returnDots,
   countShowDots
 }: DotsTypes): JSX.Element => {
-  const {
-    dotColor,
-    customDot,
-    activeDotColor,
-    customActiveDot,
-    sizeForDefaultDot,
-    sizeForDefaultActiveDot
-  } = appearance
+  const renderDot = useCallback(
+    (index: number, isActive: boolean) => {
+      const {
+        dotColor,
+        customDot,
+        activeDotColor,
+        customActiveDot,
+        sizeForDefaultDot,
+        sizeForDefaultActiveDot
+      } = appearance
+
+      if (customDot || customActiveDot) return returnDots(index, isActive)
+
+      return (
+        <Dot
+          isActive={isActive}
+          dotColor={dotColor}
+          activeDotColor={activeDotColor}
+          sizeForDefaultDot={sizeForDefaultDot}
+          sizeForDefaultActiveDot={sizeForDefaultActiveDot}
+        />
+      )
+    },
+    [appearance, returnDots]
+  )
 
   return (
     <DotsWrapper>
       {generateArray(countShowDots).map((_, index) => (
-        <button
+        <DotButton
           key={index}
-          type="button"
-          className="swipi-dot"
-          aria-label={`Go to slide ${index + 1}`}
-          aria-current={slideIndex === index}
-          onClick={() => {
-            handleDotClick(index)
-          }}
-        >
-          {customDot || customActiveDot ? (
-            returnDots(index)
-          ) : (
-            <Dot
-              index={index}
-              slideIndex={slideIndex}
-              sizeForDefaultDot={sizeForDefaultDot}
-              sizeForDefaultActiveDot={sizeForDefaultActiveDot}
-              dotColor={dotColor}
-              activeDotColor={activeDotColor}
-            />
-          )}
-        </button>
+          index={index}
+          isActive={slideIndex === index}
+          onSelect={handleDotClick}
+          renderDot={renderDot}
+        />
       ))}
     </DotsWrapper>
   )

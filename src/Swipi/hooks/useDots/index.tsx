@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, useCallback } from 'react'
 import { DotsProps, UseDotsReturn } from './types'
 import ActiveDot from '../../../UI/ActiveDot'
 import Dot from '../../../UI/Dot'
@@ -8,23 +8,21 @@ export const useDots = ({
   isLoop,
   dotColor,
   customDot,
-  slideIndex,
   slidesCount,
   activeDotColor,
   customActiveDot,
   visibleCountSlides
 }: DotsProps): UseDotsReturn => {
-  const returnDots = (index: number): ReactNode => {
-    if (slideIndex === index) {
-      return customActiveDot || <ActiveDot activeDotColor={activeDotColor} />
-    }
+  const returnDots = useCallback(
+    (_index: number, isActive: boolean): ReactNode => {
+      if (isActive) {
+        return customActiveDot || <ActiveDot activeDotColor={activeDotColor} />
+      }
 
-    return (
-      customDot || (
-        <Dot index={index} slideIndex={slideIndex} dotColor={dotColor} />
-      )
-    )
-  }
+      return customDot || <Dot dotColor={dotColor} />
+    },
+    [customActiveDot, activeDotColor, customDot, dotColor]
+  )
 
   return {
     returnDots,
