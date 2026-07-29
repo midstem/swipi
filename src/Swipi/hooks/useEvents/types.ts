@@ -2,21 +2,25 @@ import { MutableRefObject, PointerEvent } from 'react'
 
 export type TouchEvents = {
   isLoop: boolean
+  dragFree: boolean
   lastIndex: number
   slideWidth: number
   isHideArrows: boolean
+  animationSpeed: number
   transformRef: MutableRefObject<number>
   moveTo: (value: number) => void
-  animateTo: (value: number) => void
+  animateTo: (value: number, duration?: number) => void
 }
 
 export type DragState = {
   pointerId: number
   startX: number
   startY: number
-  lastX: number
   startTransform: number
-  startedAt: number
+  lastX: number
+  lastAt: number
+  previousX: number
+  previousAt: number
   isDragging: boolean
 }
 

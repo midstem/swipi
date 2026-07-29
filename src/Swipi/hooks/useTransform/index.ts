@@ -47,14 +47,14 @@ export const useTransform = ({
   )
 
   const animateTo = useCallback(
-    (value: number): void => {
+    (value: number, duration: number = animationSpeed): void => {
       cancelAnimation()
       applyTarget(value)
 
       const from = transformRef.current
       const distance = value - from
 
-      if (!distance || animationSpeed <= 0 || prefersReducedMotion) {
+      if (!distance || duration <= 0 || prefersReducedMotion) {
         applyTransform(value)
         return
       }
@@ -64,10 +64,7 @@ export const useTransform = ({
       const step = (now: number): void => {
         startedAt ??= now
 
-        const progress = Math.min(
-          (now - startedAt) / animationSpeed,
-          PROGRESS_END
-        )
+        const progress = Math.min((now - startedAt) / duration, PROGRESS_END)
 
         applyTransform(from + distance * easeOutCubic(progress))
 

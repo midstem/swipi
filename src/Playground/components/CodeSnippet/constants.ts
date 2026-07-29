@@ -4,6 +4,7 @@ export type SnippetPropKey = keyof typeof SWIPI_DEFAULTS
 
 export const SNIPPET_PROPS: SnippetPropKey[] = [
   'loop',
+  'dragFree',
   'autoplay',
   'autoplaySpeed',
   'showDots',

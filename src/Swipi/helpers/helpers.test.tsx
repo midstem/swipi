@@ -12,9 +12,16 @@ import {
   clampTransform,
   normalizeIndex,
   returnCountOfDots,
-  snapToSlide
+  getDragVelocity,
+  getMomentumTarget,
+  getMomentumDuration
 } from '.'
-import { DEFAULT_SWIPI_WIDTH, SwipeDirections } from '../constants'
+import {
+  DEFAULT_SWIPI_WIDTH,
+  MAX_DRAG_VELOCITY,
+  MAX_MOMENTUM_DURATION,
+  MIN_MOMENTUM_DURATION
+} from '../constants'
 import { SlidesAnimation, ValueOf } from '../../types'
 
 describe('returnSlideWidth', () => {
@@ -160,38 +167,115 @@ describe('getShortestLoopStep', () => {
   })
 })
 
-describe('snapToSlide', () => {
-  const geometry = { slideWidth: 100, startedAt: performance.now() }
+describe('getDragVelocity', () => {
+  test('should return the speed of the pointer in px per ms', () => {
+    expect(getDragVelocity({ distance: -60, duration: 30 })).toEqual(-2)
+  })
 
-  test('should move to the next slide on a quick swipe to the left', () => {
+  test('should cap an unrealistically fast sample', () => {
+    expect(getDragVelocity({ distance: -500, duration: 1 })).toEqual(
+      -MAX_DRAG_VELOCITY
+    )
+  })
+
+  test('should survive two samples taken at the same moment', () => {
+    expect(getDragVelocity({ distance: 10, duration: 0 })).toEqual(
+      MAX_DRAG_VELOCITY
+    )
+  })
+})
+
+describe('getMomentumTarget', () => {
+  const geometry = { slideWidth: 100, dragFree: false, startTransform: -100 }
+
+  test('should stay on the current slide when the pointer stopped', () => {
     expect(
-      snapToSlide({
-        ...geometry,
-        transform: -20,
-        swipedSide: SwipeDirections.LEFT
-      })
+      getMomentumTarget({ ...geometry, transform: -120, velocity: 0 })
     ).toEqual(-100)
   })
 
-  test('should move to the previous slide on a quick swipe to the right', () => {
+  test('should carry a flick over to the next slide', () => {
     expect(
-      snapToSlide({
-        ...geometry,
-        transform: -180,
-        swipedSide: SwipeDirections.RIGHT
-      })
-    ).toEqual(-100)
-  })
-
-  test('should snap to the closest slide on a slow drag', () => {
-    expect(
-      snapToSlide({
-        ...geometry,
-        startedAt: performance.now() - 5000,
-        transform: -180,
-        swipedSide: SwipeDirections.LEFT
-      })
+      getMomentumTarget({ ...geometry, transform: -120, velocity: -1 })
     ).toEqual(-200)
+  })
+
+  test('should never skip a slide, however hard the flick is', () => {
+    expect(
+      getMomentumTarget({ ...geometry, transform: -120, velocity: -10 })
+    ).toEqual(-200)
+    expect(
+      getMomentumTarget({ ...geometry, transform: -120, velocity: 10 })
+    ).toEqual(0)
+  })
+
+  test('should move by one slide however far the gesture was dragged', () => {
+    expect(
+      getMomentumTarget({
+        ...geometry,
+        startTransform: 0,
+        transform: -258,
+        velocity: -1
+      })
+    ).toEqual(-100)
+  })
+
+  test('should advance on a short but fast flick', () => {
+    expect(
+      getMomentumTarget({
+        ...geometry,
+        startTransform: 0,
+        transform: -5,
+        velocity: -1
+      })
+    ).toEqual(-100)
+  })
+
+  test('should snap back when the drag did not reach the halfway point', () => {
+    expect(
+      getMomentumTarget({
+        ...geometry,
+        startTransform: 0,
+        transform: -30,
+        velocity: 0
+      })
+    ).toEqual(0)
+  })
+
+  test('should keep the projected position with dragFree', () => {
+    expect(
+      getMomentumTarget({
+        ...geometry,
+        dragFree: true,
+        transform: -120,
+        velocity: -1
+      })
+    ).toEqual(-370)
+  })
+})
+
+describe('getMomentumDuration', () => {
+  const animationSpeed = 300
+
+  test('should fall back to the configured speed without velocity', () => {
+    expect(
+      getMomentumDuration({ distance: -100, velocity: 0, animationSpeed })
+    ).toEqual(animationSpeed)
+  })
+
+  test('should follow the distance and the release speed', () => {
+    expect(
+      getMomentumDuration({ distance: -300, velocity: -2, animationSpeed })
+    ).toEqual(450)
+  })
+
+  test('should stay within the momentum bounds', () => {
+    expect(
+      getMomentumDuration({ distance: -10, velocity: -3, animationSpeed })
+    ).toEqual(MIN_MOMENTUM_DURATION)
+    expect(
+      getMomentumDuration({ distance: -3000, velocity: -1, animationSpeed })
+    ).toEqual(MAX_MOMENTUM_DURATION)
   })
 })
 

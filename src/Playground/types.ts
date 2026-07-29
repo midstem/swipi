@@ -11,6 +11,7 @@ import { SlidesAnimation, ValueOf } from '../types'
 export type PlaygroundState = {
   slidesCount: number
   loop: boolean
+  dragFree: boolean
   biasRight: boolean
   showDots: boolean
   autoplay: boolean

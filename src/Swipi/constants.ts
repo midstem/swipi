@@ -13,20 +13,27 @@ export const ANIMATIONS: AnimationsTypes = {
   sliding: Sliding
 }
 
-export enum SwipeDirections {
-  TOP = 'top',
-  LEFT = 'left',
-  RIGHT = 'right',
-  BOTTOM = 'bottom'
-}
-
 export const FIRST_SLIDE_IDENTIFIER = 1
 
 export const DRAG_THRESHOLD = 5
 
-export const FAST_SWIPE_TIME = 200
-
 export const PRIMARY_BUTTON = 0
+
+export const MOMENTUM_DECAY_TIME = 250
+
+export const MAX_DRAG_VELOCITY = 3
+
+export const VELOCITY_STALE_TIME = 100
+
+export const MIN_SAMPLE_TIME = 1
+
+export const NO_VELOCITY = 0
+
+export const EASE_SPEED_FACTOR = 3
+
+export const MIN_MOMENTUM_DURATION = 120
+
+export const MAX_MOMENTUM_DURATION = 600
 
 export const ONE_SLIDE = 1
 

@@ -29,6 +29,7 @@ export const JSON_INDENT = 2
 
 export const SWIPI_DEFAULTS = {
   loop: false,
+  dragFree: false,
   biasRight: false,
   showDots: false,
   autoplay: false,
@@ -53,6 +54,7 @@ export const SWIPI_DEFAULTS = {
 export const DEFAULT_STATE: PlaygroundState = {
   slidesCount: 5,
   loop: true,
+  dragFree: false,
   biasRight: false,
   showDots: true,
   autoplay: false,

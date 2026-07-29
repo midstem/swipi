@@ -28,6 +28,7 @@ const Stage = ({
           key={remountKey}
           ref={swipiRef}
           loop={state.loop}
+          dragFree={state.dragFree}
           config={config}
           biasRight={state.biasRight}
           showDots={state.showDots}

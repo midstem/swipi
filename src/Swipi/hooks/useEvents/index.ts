@@ -1,37 +1,22 @@
 import { PointerEvent, useRef } from 'react'
 import { DragState, TouchEvents, UseEventsReturn } from './types'
-import { clampTransform, getSwipeDirection, snapToSlide } from '../../helpers'
+import {
+  clampTransform,
+  getMomentumDuration,
+  getMomentumTarget
+} from '../../helpers'
 import { DRAG_THRESHOLD, PRIMARY_BUTTON } from '../../constants'
-
-const noop = (): void => {}
-
-const capturePointer = (
-  event: PointerEvent<HTMLDivElement>,
-  isCapturing: boolean
-): void => {
-  const element = event.currentTarget
-
-  try {
-    if (isCapturing) {
-      element.setPointerCapture?.(event.pointerId)
-      return
-    }
-
-    if (element.hasPointerCapture?.(event.pointerId)) {
-      element.releasePointerCapture(event.pointerId)
-    }
-  } catch {
-    /* the pointer is gone — nothing to capture or release */
-  }
-}
+import { capturePointer, getReleaseVelocity, noop } from './helpers'
 
 export const useEvents = ({
   isLoop,
   moveTo,
+  dragFree,
   animateTo,
   lastIndex,
   slideWidth,
   isHideArrows,
+  animationSpeed,
   transformRef
 }: TouchEvents): UseEventsReturn => {
   const dragRef = useRef<DragState | null>(null)
@@ -39,13 +24,17 @@ export const useEvents = ({
   const onPointerDown = (event: PointerEvent<HTMLDivElement>): void => {
     if (event.button !== PRIMARY_BUTTON) return
 
+    const startedAt = performance.now()
+
     dragRef.current = {
       pointerId: event.pointerId,
       startX: event.clientX,
       startY: event.clientY,
-      lastX: event.clientX,
       startTransform: transformRef.current,
-      startedAt: performance.now(),
+      lastX: event.clientX,
+      lastAt: startedAt,
+      previousX: event.clientX,
+      previousAt: startedAt,
       isDragging: false
     }
   }
@@ -70,7 +59,6 @@ export const useEvents = ({
     }
 
     drag.isDragging = true
-    drag.startedAt = performance.now()
 
     capturePointer(event, true)
 
@@ -87,7 +75,10 @@ export const useEvents = ({
 
     if (!drag.isDragging && !lockAxis(drag, event, deltaX, deltaY)) return
 
+    drag.previousX = drag.lastX
+    drag.previousAt = drag.lastAt
     drag.lastX = event.clientX
+    drag.lastAt = performance.now()
 
     moveTo(
       clampTransform({
@@ -110,18 +101,29 @@ export const useEvents = ({
 
     if (!drag.isDragging) return
 
-    const transform = snapToSlide({
-      transform: transformRef.current,
-      slideWidth,
-      swipedSide: getSwipeDirection({
-        touchStartX: drag.startX,
-        touchEndX: drag.lastX
+    const transform = transformRef.current
+    const velocity = getReleaseVelocity(drag)
+
+    const target = clampTransform({
+      transform: getMomentumTarget({
+        transform,
+        velocity,
+        slideWidth,
+        startTransform: drag.startTransform,
+        dragFree
       }),
-      startedAt: drag.startedAt
+      slideWidth,
+      lastIndex,
+      loop: isLoop
     })
 
     animateTo(
-      clampTransform({ transform, slideWidth, lastIndex, loop: isLoop })
+      target,
+      getMomentumDuration({
+        distance: target - transform,
+        velocity,
+        animationSpeed
+      })
     )
   }
 
