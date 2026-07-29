@@ -1,15 +1,22 @@
-import { useRef } from 'react'
-import { EMPTY_TRANSFORM } from '../../constants'
+import { useLayoutEffect, useRef } from 'react'
+import {
+  EMPTY_TRANSFORM,
+  SLIDE_GAP_VARIABLE,
+  SLIDE_WIDTH_VARIABLE
+} from '../../constants'
 import { getSlideOffset } from '../../helpers'
 import { UseTrackProps, UseTrackReturn } from './types'
 
 const toTranslate = (value: number): string =>
   value ? `translate3d(${value}px, 0, 0)` : EMPTY_TRANSFORM
 
+const toPixels = (value: number): string => `${value}px`
+
 export const useTrack = ({
   loop,
   slideWidth,
-  slidesCount
+  slidesCount,
+  spaceBetween
 }: UseTrackProps): UseTrackReturn => {
   const trackRef = useRef<HTMLDivElement>(null)
   const slidesRef = useRef<(HTMLDivElement | null)[]>([])
@@ -67,6 +74,15 @@ export const useTrack = ({
 
     renderSlideOffsets(transform)
   }
+
+  useLayoutEffect(() => {
+    const track = trackRef.current
+
+    if (!track) return
+
+    track.style.setProperty(SLIDE_WIDTH_VARIABLE, toPixels(slideWidth))
+    track.style.setProperty(SLIDE_GAP_VARIABLE, toPixels(spaceBetween))
+  }, [slideWidth, spaceBetween])
 
   return { trackRef, slidesRef, render }
 }

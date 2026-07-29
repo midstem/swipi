@@ -6,16 +6,20 @@ import { DotsTypes } from '../../types'
 
 const Default = ({
   slideIndex,
-  customDot,
-  customActiveDot,
-  sizeForDefaultDot,
-  sizeForDefaultActiveDot,
-  dotColor,
-  activeDotColor,
+  appearance,
   handleDotClick,
   returnDots,
   countShowDots
 }: DotsTypes): JSX.Element => {
+  const {
+    dotColor,
+    customDot,
+    activeDotColor,
+    customActiveDot,
+    sizeForDefaultDot,
+    sizeForDefaultActiveDot
+  } = appearance
+
   return (
     <DotsWrapper>
       {generateArray(countShowDots).map((_, index) => (

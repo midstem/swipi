@@ -27,6 +27,12 @@ const getTrack = (): HTMLElement => getSlides()[0].parentElement as HTMLElement
 
 const getViewport = (): HTMLElement => getTrack().parentElement as HTMLElement
 
+const getSlideWidthVariable = (): string =>
+  getTrack().style.getPropertyValue('--swipi-slide-width')
+
+const getSlideGapVariable = (): string =>
+  getTrack().style.getPropertyValue('--swipi-slide-gap')
+
 const getTrackOffset = (): number => {
   const offset = /translate3d\((-?[\d.]+)px/.exec(getTrack().style.transform)
 
@@ -456,14 +462,29 @@ describe('Swipi rendering', () => {
   it('recalculates the slide width when the container resizes', () => {
     render(<Swipi slidesNumber={1}>{renderSlides(3)}</Swipi>)
 
-    expect(getSlides()[0].style.width).toBe('900px')
+    expect(getSlideWidthVariable()).toBe('900px')
 
     act(() => {
       setContainerWidth(600)
       triggerResize()
     })
 
-    expect(getSlides()[0].style.width).toBe('600px')
+    expect(getSlideWidthVariable()).toBe('600px')
+  })
+
+  it('drives the slide geometry from the track instead of every slide', () => {
+    render(
+      <Swipi slidesNumber={2} spaceBetweenSlides={20}>
+        {renderSlides(4)}
+      </Swipi>
+    )
+
+    expect(getSlideGapVariable()).toBe('20px')
+    getSlides().forEach((slide) => {
+      expect(slide.style.width).toBe('')
+      expect(slide.style.paddingRight).toBe('')
+      expect(slide.className).toBe('swipi-slide')
+    })
   })
 
   it('moves the track on drag without re-rendering the slides', () => {

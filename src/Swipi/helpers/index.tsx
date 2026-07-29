@@ -120,6 +120,8 @@ export const isHideArrowsFn = (
   visibleCountSlides: number
 ) => slidesCount > visibleCountSlides
 
+const NO_ANIMATION: CSSProperties = {}
+
 export const returnSlidesAnimation = (
   animation: ValueOf<SlidesAnimation>,
   isVisible: boolean
@@ -128,7 +130,7 @@ export const returnSlidesAnimation = (
     case SlidesAnimation.FADE_IN:
       return fadeIn(isVisible)
     default:
-      return {}
+      return NO_ANIMATION
   }
 }
 

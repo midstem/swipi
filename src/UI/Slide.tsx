@@ -1,16 +1,14 @@
 import type { JSX } from 'react'
-import { useCallback } from 'react'
+import { memo, useCallback } from 'react'
 import { SlideProps } from './types'
 
-export const Slide = ({
+export const Slide = memo(function Slide({
   index,
   slidesRef,
-  slideWidth,
-  spaceBetween,
   children,
-  animation = {},
+  animation,
   ariaLabel
-}: SlideProps): JSX.Element => {
+}: SlideProps): JSX.Element {
   const setSlideRef = useCallback(
     (node: HTMLDivElement | null): void => {
       slidesRef.current[index] = node
@@ -21,18 +19,13 @@ export const Slide = ({
   return (
     <div
       ref={setSlideRef}
+      className="swipi-slide"
       role="group"
       aria-roledescription="slide"
       aria-label={ariaLabel}
-      style={{
-        boxSizing: 'border-box',
-        flexShrink: 0,
-        width: `${slideWidth}px`,
-        paddingRight: `${spaceBetween}px`,
-        ...animation
-      }}
+      style={animation}
     >
       {children}
     </div>
   )
-}
+})
