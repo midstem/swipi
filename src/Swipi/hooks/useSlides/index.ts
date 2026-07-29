@@ -12,9 +12,9 @@ import { Slides, UseSlidesReturn } from './types'
 export const useSlides = ({
   config,
   loop,
-  children,
   biasRight,
   windowWidth,
+  slidesCount,
   containerWidth,
   slidesNumber,
   slidesAnimation,
@@ -23,7 +23,6 @@ export const useSlides = ({
   const { returnSpaceBetween, getSwipiUpdatesParam, getRightSlidesCount } =
     ConfigService(config, windowWidth)
 
-  const slidesCount = children.length
   const visibleCountSlides = getRightSlidesCount(slidesNumber, slidesAnimation)
   const spaceBetween = returnSpaceBetween(spaceBetweenSlides)
   const isHideArrows = isHideArrowsFn(slidesCount, visibleCountSlides)

@@ -38,7 +38,7 @@
   gap: 10px;
 }
 
-button {
+.swipi-wrapper button {
   z-index: 1;
   background-color: transparent;
   border: none;

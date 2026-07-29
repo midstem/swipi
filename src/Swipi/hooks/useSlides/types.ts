@@ -1,4 +1,3 @@
-import type { JSX } from 'react'
 import { ConfigType } from '../../types'
 import { SlidesAnimation, ValueOf } from '../../../types'
 
@@ -8,8 +7,8 @@ export type Slides = {
   containerWidth: number
   config: ConfigType[]
   biasRight?: boolean
+  slidesCount: number
   slidesNumber: number
-  children: JSX.Element[]
   spaceBetweenSlides: number
   slidesAnimation: ValueOf<SlidesAnimation>
 }

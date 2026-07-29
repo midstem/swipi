@@ -9,18 +9,13 @@ import { useDots } from './hooks/useDots'
 import { useSlides } from './hooks/useSlides'
 import { useEvents } from './hooks/useEvents'
 import { useTrack } from './hooks/useTrack'
-import { useDebounce } from './hooks/useDebounce'
 import { useAutoplay } from './hooks/useAutoplay'
 import { useTransform } from './hooks/useTransform'
+import { useLatestRef } from './hooks/useLatestRef'
 import { useNavigation } from './hooks/useNavigation'
 import { useElementWidth } from './hooks/useElementWidth'
 import { useWindowResize } from './hooks/useWindowResize'
-import {
-  ANIMATIONS,
-  FIRST_SLIDE,
-  FIRST_SLIDE_INDEX,
-  NAVIGATION_DEBOUNCE_DELAY
-} from './constants'
+import { ANIMATIONS, FIRST_SLIDE, FIRST_SLIDE_INDEX } from './constants'
 import { UseSwipiType } from './types'
 import {
   calculateSlideIndex,
@@ -32,7 +27,7 @@ import {
 export const useSwipi = ({
   loop,
   config,
-  children,
+  slides,
   autoplay,
   dotColor,
   dragFree,
@@ -58,8 +53,11 @@ export const useSwipi = ({
   const previousSlideWidth = useRef<number>(0)
   const isInitialSlideApplied = useRef<boolean>(false)
 
-  const slidesCount = children.length
+  const slidesCount = slides.length
   const containerWidth = useElementWidth(slidesWrapperRef)
+
+  const onChangeRef = useLatestRef(onChange)
+  const onSelectRef = useLatestRef(onSelect)
 
   const {
     isLoop,
@@ -71,9 +69,9 @@ export const useSwipi = ({
   } = useSlides({
     loop,
     config,
-    children,
     biasRight,
     windowWidth,
+    slidesCount,
     containerWidth,
     slidesNumber,
     slidesAnimation,
@@ -193,17 +191,17 @@ export const useSwipi = ({
   }, [initialSlide, countShowDots, slideWidth, moveTo])
 
   useEffect(() => {
-    onChange(getSlidePositions(slideIndex, countShowDots, isLoop))
-  }, [countShowDots, isLoop, onChange, slideIndex])
+    onChangeRef.current(getSlidePositions(slideIndex, countShowDots, isLoop))
+  }, [countShowDots, isLoop, slideIndex, onChangeRef])
 
   useEffect(() => {
-    onSelect({
+    onSelectRef.current({
       selectedIndex: slideIndex,
       snapCount: countShowDots,
       canScrollNext,
       canScrollPrev
     })
-  }, [onSelect, slideIndex, countShowDots, canScrollNext, canScrollPrev])
+  }, [slideIndex, countShowDots, canScrollNext, canScrollPrev, onSelectRef])
 
   return {
     trackRef,
@@ -215,13 +213,13 @@ export const useSwipi = ({
     slidesWrapperRef,
     Dots: ANIMATIONS[dotsAnimation],
     isShowArrows: isHideArrows && showArrows,
+    nextImg,
+    prevImg,
     onPointerDown,
     onPointerMove,
     onPointerUp,
     returnDots,
     isDisableButton,
-    handleDotClick: scrollTo,
-    nextImg: useDebounce(nextImg, NAVIGATION_DEBOUNCE_DELAY),
-    prevImg: useDebounce(prevImg, NAVIGATION_DEBOUNCE_DELAY)
+    handleDotClick: scrollTo
   }
 }

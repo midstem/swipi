@@ -17,7 +17,7 @@ export type UseSwipiType = {
   slidesNumber: number
   initialSlide: number
   autoplaySpeed: number
-  children: JSX.Element[]
+  slides: ReactNode[]
   activeDotColor?: string
   customDot?: JSX.Element
   spaceBetweenSlides: number
@@ -47,7 +47,7 @@ export type SwipiProps = {
   nextButton?: ReactNode
   prevButton?: ReactNode
   autoplaySpeed?: number
-  children: JSX.Element[]
+  children: ReactNode
   customDot?: JSX.Element
   animationSpeed?: number
   activeDotColor?: string

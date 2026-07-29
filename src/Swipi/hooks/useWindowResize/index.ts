@@ -1,9 +1,8 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
+import { useLatestRef } from '../useLatestRef'
 
 export const useWindowResize = (callback: () => void) => {
-  const callbackRef = useRef(callback)
-
-  callbackRef.current = callback
+  const callbackRef = useLatestRef(callback)
 
   useEffect(() => {
     const resizeHandler = () => callbackRef.current()
@@ -13,5 +12,5 @@ export const useWindowResize = (callback: () => void) => {
     return () => {
       window.removeEventListener('resize', resizeHandler)
     }
-  }, [])
+  }, [callbackRef])
 }
