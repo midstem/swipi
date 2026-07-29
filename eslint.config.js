@@ -15,7 +15,15 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 export default [
-  { ignores: ['vite.config.ts', 'dist/**', 'node_modules/**'] },
+  {
+    ignores: [
+      'eslint.config.js',
+      'vite.config.ts',
+      'scripts/**',
+      'dist/**',
+      'node_modules/**'
+    ]
+  },
 
   js.configs.recommended,
   ...tsPlugin.configs['flat/recommended'],

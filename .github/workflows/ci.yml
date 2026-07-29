@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  quality:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,8 +25,51 @@ jobs:
       - name: Lint
         run: npx eslint src
 
+      - name: Typecheck
+        run: npm run typecheck
+
       - name: Test
         run: npm run test:run
 
       - name: Build
         run: npm run build
+
+      - name: Verify the published package
+        run: npm run verify:package
+
+  react-compatibility:
+    runs-on: ubuntu-latest
+    name: react ${{ matrix.react }}
+    strategy:
+      fail-fast: false
+      matrix:
+        react: [18, 19]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Pin React ${{ matrix.react }}
+        run: |
+          npm install --no-save --no-package-lock \
+            react@${{ matrix.react }} \
+            react-dom@${{ matrix.react }} \
+            @types/react@${{ matrix.react }} \
+            @types/react-dom@${{ matrix.react }}
+
+      - name: Test
+        run: npm run test:run
+
+      - name: Build
+        run: npm run build
+
+      - name: Typecheck the public API
+        run: npm run typecheck:package

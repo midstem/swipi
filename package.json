@@ -46,12 +46,15 @@
   "scripts": {
     "start": "vite --open --host",
     "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "typecheck:package": "tsc -p scripts/types-fixture",
+    "verify:package": "node scripts/verify-package.mjs",
     "test": "vitest",
     "lint": "eslint .",
     "lint:fix": "eslint --cache ./src --quiet --fix",
-    "lint:format": "prettier --write --log-level warn \"./**/*.{js,jsx,ts,tsx,css,md,json}\"",
+    "lint:format": "prettier --write --log-level warn \"./**/*.{js,jsx,mjs,ts,tsx,css,md,json}\"",
     "test:run": "vitest run",
-    "lint-tsc": "npm run build && npm run lint:format && npm run lint:fix && npm run test:run"
+    "lint-tsc": "npm run build && npm run verify:package && npm run lint:format && npm run lint:fix && npm run typecheck && npm run test:run"
   },
   "browserslist": {
     "production": [
