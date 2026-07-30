@@ -12,9 +12,9 @@ describe('getDotsLeftOffsets', () => {
   test('should get the left offsets of the dots', () => {
     const dotsRef = {
       current: [
-        { offsetLeft: 10 } as HTMLDivElement,
-        { offsetLeft: 20 } as HTMLDivElement,
-        { offsetLeft: 30 } as HTMLDivElement
+        { offsetLeft: 10 } as HTMLButtonElement,
+        { offsetLeft: 20 } as HTMLButtonElement,
+        { offsetLeft: 30 } as HTMLButtonElement
       ]
     }
 
@@ -26,9 +26,9 @@ describe('getDotsLeftOffsets', () => {
   test('should handle null dot elements', () => {
     const dotsRef = {
       current: [
-        { offsetLeft: 10 } as HTMLDivElement,
+        { offsetLeft: 10 } as HTMLButtonElement,
         null,
-        { offsetLeft: 30 } as HTMLDivElement
+        { offsetLeft: 30 } as HTMLButtonElement
       ]
     }
 
