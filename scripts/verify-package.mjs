@@ -55,6 +55,26 @@ check(
   /require\(['"]\.\/index\.css['"]\)/.test(cjs)
 )
 
+const publicExports = ['useSwipiCarousel']
+
+publicExports.forEach((name) => {
+  check(
+    `the ESM bundle does not export "${name}"`,
+    new RegExp(`export\\s*\\{[^}]*\\b${name}\\b`).test(esm)
+  )
+
+  check(
+    `the CJS bundle does not export "${name}"`,
+    new RegExp(`exports\\.${name}\\s*=`).test(cjs)
+  )
+})
+
+const types = readDist('index.d.ts')
+
+publicExports.forEach((name) =>
+  check(`the type entry does not export "${name}"`, types.includes(name))
+)
+
 const criticalRules = [
   '.swipi-viewport',
   '.swipi-track',

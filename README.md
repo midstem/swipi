@@ -47,6 +47,136 @@ export const App = () => (
 
 ## 🔥 <a href='https://swipi.midstem.net'>View more examples and create a custom slider</a>
 
+## **Headless (`useSwipiCarousel`)**
+
+The component above renders our markup, our dots and our arrows. When you want
+your own, take the hook instead: it gives you the carousel engine — drag,
+momentum, snapping, looping, autoplay — and you write every element yourself.
+
+Everything you need to wire up comes from a prop getter, so the accessibility
+comes with it rather than being something you have to remember.
+
+```tsx
+import { useSwipiCarousel } from 'swipi'
+
+const items = ['One', 'Two', 'Three', 'Four', 'Five']
+
+export const Gallery = () => {
+  const {
+    state,
+    scrollNext,
+    scrollPrev,
+    getViewportProps,
+    getTrackProps,
+    getSlideProps,
+    getDotProps,
+    getLiveRegionProps
+  } = useSwipiCarousel({ loop: true, slidesNumber: 3, spaceBetweenSlides: 12 })
+
+  return (
+    <div className="gallery">
+      <div className="gallery__viewport" {...getViewportProps()}>
+        <div className="gallery__track" {...getTrackProps()}>
+          {items.map((item, index) => (
+            <article
+              className="gallery__slide"
+              key={item}
+              {...getSlideProps(index)}
+            >
+              {item}
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <span className="gallery__status" {...getLiveRegionProps()}>
+        {state.announcement}
+      </span>
+
+      <button onClick={scrollPrev} disabled={!state.canScrollPrev}>
+        Previous
+      </button>
+      <button onClick={scrollNext} disabled={!state.canScrollNext}>
+        Next
+      </button>
+
+      <nav className="gallery__dots">
+        {Array.from({ length: state.snapCount }, (_, index) => (
+          <button
+            className="gallery__dot"
+            key={index}
+            {...getDotProps(index)}
+          />
+        ))}
+      </nav>
+    </div>
+  )
+}
+```
+
+### Required CSS
+
+This is a contract, not a suggestion — the geometry depends on it. Class names
+are yours; only the declarations matter.
+
+```css
+.gallery__viewport {
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.gallery__track {
+  display: flex;
+  width: fit-content;
+  user-select: none;
+}
+
+.gallery__slide {
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: var(--swipi-slide-width);
+  padding-right: var(--swipi-slide-gap);
+}
+
+.gallery__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+```
+
+`--swipi-slide-width` and `--swipi-slide-gap` are set on the track element for
+you, derived from `slidesNumber` and `spaceBetweenSlides`. Sizing slides purely
+from your own CSS — `flex: 0 0 50%` and the like — is not supported yet.
+
+### What the hook returns
+
+| Field                 | Description                                                         |
+| --------------------- | ------------------------------------------------------------------- |
+| `state.selectedIndex` | Index of the current snap position                                  |
+| `state.snapCount`     | Number of snap positions                                            |
+| `state.slidesCount`   | Number of slides found in the track                                 |
+| `state.canScrollNext` | Whether a next scroll is possible                                   |
+| `state.canScrollPrev` | Whether a previous scroll is possible                               |
+| `state.hasOverflow`   | Whether there are more slides than fit, i.e. dragging does anything |
+| `state.announcement`  | Text for the live region, e.g. `"Slide 2 of 5"`                     |
+| `scrollNext`          | Move to the next snap                                               |
+| `scrollPrev`          | Move to the previous snap                                           |
+| `scrollTo`            | Move to a given snap index                                          |
+| `getViewportProps`    | Ref, pointer handlers, `tabIndex`, carousel role and arrow keys     |
+| `getTrackProps`       | Ref and the native drag guard                                       |
+| `getSlideProps`       | Slide role and its `"2 of 5"` label                                 |
+| `getDotProps`         | Dot label, `aria-current` and the click handler                     |
+| `getLiveRegionProps`  | `aria-live` and `aria-atomic`                                       |
+
+The hook takes the same behavioural options as the component — `loop`,
+`dragFree`, `slidesNumber`, `spaceBetweenSlides`, `biasRight`, `config`,
+`initialSlide`, `animationSpeed`, `autoplay`, `autoplaySpeed`, `ariaLabel`,
+`onSelect`, `onChange` — and none of its visual ones.
+
 ## **Imperative API (ref)**
 
 Attach a `ref` to control the slider programmatically — build your own

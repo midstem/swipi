@@ -207,6 +207,7 @@ export const useSwipi = ({
     refs: { trackRef, slidesWrapperRef },
     state: {
       slideIndex,
+      slidesCount,
       countShowDots,
       hasOverflow,
       isDisableButton

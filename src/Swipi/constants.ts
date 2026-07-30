@@ -1,5 +1,25 @@
 export const DEFAULT_SWIPI_WIDTH = 934
 
+export const DEFAULT_SLIDES_NUMBER = 3
+
+export const DEFAULT_INITIAL_SLIDE = 0
+
+export const DEFAULT_AUTOPLAY_SPEED = 4000
+
+export const DEFAULT_ANIMATION_SPEED = 300
+
+export const DEFAULT_SPACE_BETWEEN = 0
+
+export const DEFAULT_ARIA_LABEL = 'Slides'
+
+export const CAROUSEL_ROLE_DESCRIPTION = 'carousel'
+
+export const SLIDE_ROLE_DESCRIPTION = 'slide'
+
+export const GROUP_ROLE = 'group'
+
+export const FOCUSABLE = 0
+
 export const REDUCE_SLIDE = 0.35
 
 export const FIRST_SLIDE_IDENTIFIER = 1
