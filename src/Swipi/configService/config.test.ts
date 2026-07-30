@@ -1,6 +1,5 @@
 import { describe, expect, test } from 'vitest'
 import { ConfigService } from '.'
-import { SlidesAnimation } from '../../types'
 
 const config = [
   { maxWidth: 600, slidesNumber: 1, spaceBetween: 10 },
@@ -9,12 +8,8 @@ const config = [
 ]
 
 describe('ConfigService when we have maxWidth >= windowWidth', () => {
-  const {
-    getSwipiUpdatesParam,
-    returnCountSlides,
-    returnSpaceBetween,
-    getRightSlidesCount
-  } = ConfigService(config, 1000)
+  const { getSwipiUpdatesParam, returnCountSlides, returnSpaceBetween } =
+    ConfigService(config, 1000)
 
   test('getSwipiUpdatesParam', () => {
     expect(getSwipiUpdatesParam('slidesNumber')).toBe(3)
@@ -30,24 +25,11 @@ describe('ConfigService when we have maxWidth >= windowWidth', () => {
     expect(returnSpaceBetween(40)).toBe(30)
     expect(returnSpaceBetween(70)).toBe(30)
   })
-
-  test('getRightSlidesCount', () => {
-    expect(getRightSlidesCount(4, SlidesAnimation.FADE_IN)).toBe(1)
-    expect(getRightSlidesCount(6, SlidesAnimation.FADE_IN)).toBe(1)
-    //@ts-expect-error: For testing, we need something that is not in SlidesAnimation
-    expect(getRightSlidesCount(4, 'test')).toBe(3)
-    //@ts-expect-error: For testing, we need something that is not in SlidesAnimation
-    expect(getRightSlidesCount(6, 'test')).toBe(3)
-  })
 })
 
 describe("ConfigService when we don't have maxWidth >= windowWidth", () => {
-  const {
-    getSwipiUpdatesParam,
-    returnCountSlides,
-    returnSpaceBetween,
-    getRightSlidesCount
-  } = ConfigService(config, 1300)
+  const { getSwipiUpdatesParam, returnCountSlides, returnSpaceBetween } =
+    ConfigService(config, 1300)
 
   test('getSwipiUpdatesParam', () => {
     expect(getSwipiUpdatesParam('slidesNumber')).toBe(undefined)
@@ -62,14 +44,5 @@ describe("ConfigService when we don't have maxWidth >= windowWidth", () => {
   test('returnSpaceBetween', () => {
     expect(returnSpaceBetween(40)).toBe(40)
     expect(returnSpaceBetween(70)).toBe(70)
-  })
-
-  test('getRightSlidesCount', () => {
-    expect(getRightSlidesCount(4, SlidesAnimation.FADE_IN)).toBe(1)
-    expect(getRightSlidesCount(6, SlidesAnimation.FADE_IN)).toBe(1)
-    //@ts-expect-error: For testing, we need something that is not in SlidesAnimation
-    expect(getRightSlidesCount(4, 'test')).toBe(4)
-    //@ts-expect-error: For testing, we need something that is not in SlidesAnimation
-    expect(getRightSlidesCount(6, 'test')).toBe(6)
   })
 })

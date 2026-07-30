@@ -1,5 +1,3 @@
-import { SlidesAnimation, ValueOf } from '../../types'
-import { isFadeInAnimation } from '../helpers'
 import { ConfigType } from '../types'
 
 export const ConfigService = (config: ConfigType[], windowWidth: number) => {
@@ -14,19 +12,9 @@ export const ConfigService = (config: ConfigType[], windowWidth: number) => {
   const returnSpaceBetween = (spaceBetweenSlides: number): number =>
     getSwipiUpdatesParam('spaceBetween') || spaceBetweenSlides
 
-  const getRightSlidesCount = (
-    slidesNumber: number,
-    animation: ValueOf<SlidesAnimation>
-  ) => {
-    if (isFadeInAnimation(animation)) return 1
-
-    return returnCountSlides(slidesNumber)
-  }
-
   return {
     returnCountSlides,
     returnSpaceBetween,
-    getRightSlidesCount,
     getSwipiUpdatesParam
   }
 }

@@ -1,4 +1,6 @@
 import { ConfigService } from '../../../Swipi/configService'
+import { ONE_SLIDE } from '../../../Swipi/constants'
+import { isFadeInAnimation } from '../../../Swipi/helpers'
 import { ConfigType } from '../../../Swipi/types'
 import { PlaygroundState } from '../../types'
 
@@ -15,8 +17,10 @@ export const getVisibleSlides = (
   state: PlaygroundState,
   config: ConfigType[],
   windowWidth: number
-): number =>
-  ConfigService(config, windowWidth).getRightSlidesCount(
-    state.slidesNumber,
-    state.slidesAnimation
+): number => {
+  if (isFadeInAnimation(state.slidesAnimation)) return ONE_SLIDE
+
+  return ConfigService(config, windowWidth).returnCountSlides(
+    state.slidesNumber
   )
+}

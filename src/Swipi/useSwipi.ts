@@ -5,7 +5,6 @@ import {
   useRef,
   useState
 } from 'react'
-import { useDots } from './hooks/useDots'
 import { useSlides } from './hooks/useSlides'
 import { useEvents } from './hooks/useEvents'
 import { useTrack } from './hooks/useTrack'
@@ -15,7 +14,7 @@ import { useLatestRef } from './hooks/useLatestRef'
 import { useNavigation } from './hooks/useNavigation'
 import { useElementWidth } from './hooks/useElementWidth'
 import { useWindowResize } from './hooks/useWindowResize'
-import { ANIMATIONS, FIRST_SLIDE, FIRST_SLIDE_INDEX } from './constants'
+import { FIRST_SLIDE, FIRST_SLIDE_INDEX } from './constants'
 import { UseSwipiType } from './types'
 import {
   calculateSlideIndex,
@@ -27,21 +26,14 @@ import {
 export const useSwipi = ({
   loop,
   config,
-  slides,
   autoplay,
-  dotColor,
   dragFree,
   biasRight,
-  customDot,
-  showArrows,
+  slidesCount,
   slidesNumber,
   initialSlide,
   autoplaySpeed,
-  dotsAnimation,
-  activeDotColor,
   animationSpeed,
-  slidesAnimation,
-  customActiveDot,
   spaceBetweenSlides,
   onChange,
   onSelect
@@ -53,7 +45,6 @@ export const useSwipi = ({
   const previousSlideWidth = useRef<number>(0)
   const isInitialSlideApplied = useRef<boolean>(false)
 
-  const slidesCount = slides.length
   const containerWidth = useElementWidth(slidesWrapperRef)
 
   const onChangeRef = useLatestRef(onChange)
@@ -63,9 +54,9 @@ export const useSwipi = ({
     isLoop,
     lastIndex,
     slideWidth,
-    isHideArrows,
+    hasOverflow,
     spaceBetween,
-    visibleCountSlides
+    countShowDots
   } = useSlides({
     loop,
     config,
@@ -74,7 +65,6 @@ export const useSwipi = ({
     slidesCount,
     containerWidth,
     slidesNumber,
-    slidesAnimation,
     spaceBetweenSlides
   })
 
@@ -134,19 +124,9 @@ export const useSwipi = ({
     animateTo,
     lastIndex,
     slideWidth,
-    isHideArrows,
+    hasOverflow,
     animationSpeed,
     transformRef
-  })
-
-  const { returnDots, countShowDots } = useDots({
-    isLoop,
-    dotColor,
-    customDot,
-    slidesCount,
-    activeDotColor,
-    customActiveDot,
-    visibleCountSlides
   })
 
   useAutoplay({
@@ -208,8 +188,8 @@ export const useSwipi = ({
     state: {
       slideIndex,
       countShowDots,
-      isDisableButton,
-      isShowArrows: isHideArrows && showArrows
+      hasOverflow,
+      isDisableButton
     },
     handlers: {
       nextImg,
@@ -218,7 +198,6 @@ export const useSwipi = ({
       onPointerDown,
       onPointerMove,
       onPointerUp
-    },
-    dots: { Dots: ANIMATIONS[dotsAnimation], returnDots }
+    }
   }
 }

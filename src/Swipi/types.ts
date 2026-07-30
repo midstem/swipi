@@ -1,6 +1,6 @@
 import type { JSX } from 'react'
-import { FunctionComponent, ReactNode } from 'react'
-import { DotsTypes, SlidesAnimation, ValueOf } from '../types'
+import { ReactNode } from 'react'
+import { SlidesAnimation, ValueOf } from '../types'
 
 export type ConfigType = {
   maxWidth: number
@@ -10,24 +10,17 @@ export type ConfigType = {
 }
 
 export type UseSwipiType = {
+  loop: boolean
   autoplay: boolean
-  dotColor?: string
-  showArrows: boolean
+  dragFree: boolean
+  biasRight?: boolean
   config: ConfigType[]
+  slidesCount: number
   slidesNumber: number
   initialSlide: number
   autoplaySpeed: number
-  slides: ReactNode[]
-  activeDotColor?: string
-  customDot?: JSX.Element
-  spaceBetweenSlides: number
-  dotsAnimation: DotsAnimation
-  customActiveDot?: JSX.Element
-  slidesAnimation: ValueOf<SlidesAnimation>
   animationSpeed: number
-  loop: boolean
-  dragFree: boolean
-  biasRight?: boolean
+  spaceBetweenSlides: number
   onChange: (value: SlidePositions) => void
   onSelect: (state: SwipiState) => void
 }
@@ -85,10 +78,6 @@ export type ReturnSlideWidthType = {
   current?: number
   spaceBetween: number
   visibleCountSlides: number
-}
-
-export type AnimationsTypes = {
-  [key in DotsAnimation]: FunctionComponent<DotsTypes>
 }
 
 export type DragVelocityType = {

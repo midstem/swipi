@@ -15,7 +15,7 @@ export const useEvents = ({
   animateTo,
   lastIndex,
   slideWidth,
-  isHideArrows,
+  hasOverflow,
   animationSpeed,
   transformRef
 }: TouchEvents): UseEventsReturn => {
@@ -128,8 +128,8 @@ export const useEvents = ({
   }
 
   return {
-    onPointerDown: isHideArrows ? onPointerDown : noop,
-    onPointerMove: isHideArrows ? onPointerMove : noop,
-    onPointerUp: isHideArrows ? onPointerUp : noop
+    onPointerDown: hasOverflow ? onPointerDown : noop,
+    onPointerMove: hasOverflow ? onPointerMove : noop,
+    onPointerUp: hasOverflow ? onPointerUp : noop
   }
 }
