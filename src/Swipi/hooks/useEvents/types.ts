@@ -5,7 +5,7 @@ export type TouchEvents = {
   dragFree: boolean
   lastIndex: number
   slideWidth: number
-  isHideArrows: boolean
+  hasOverflow: boolean
   animationSpeed: number
   transformRef: MutableRefObject<number>
   moveTo: (value: number) => void

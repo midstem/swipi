@@ -1,5 +1,4 @@
 import type { JSX } from 'react'
-import { RenderDot } from './UI/types'
 
 export type DotsAppearance = {
   dotColor?: string
@@ -16,7 +15,6 @@ export type DotsTypes = {
   animationSpeed: number
   appearance: DotsAppearance
   handleDotClick: (index: number) => void
-  returnDots: RenderDot
 }
 
 export enum SlidesAnimation {

@@ -1,15 +1,7 @@
 import { createRef, useState, type JSX, type RefObject } from 'react'
 import { describe, expect, it } from 'vitest'
-import {
-  act,
-  render,
-  renderHook,
-  screen,
-  fireEvent,
-  waitFor
-} from '@testing-library/react'
+import { act, render, screen, fireEvent, waitFor } from '@testing-library/react'
 import Swipi from './index'
-import { useDots } from './hooks/useDots'
 import {
   isPointerCaptured,
   setContainerWidth,
@@ -362,20 +354,97 @@ describe('Swipi dots', () => {
     expect(lastState(states).selectedIndex).toBe(3)
   })
 
-  it('reuses the dot renderer across re-renders so buttons can be memoized', () => {
-    const props = {
-      isLoop: false,
-      slidesCount: 5,
-      visibleCountSlides: 1,
-      dotColor: 'red'
-    }
+  it('renders a custom dot for the inactive positions only', () => {
+    render(
+      <Swipi
+        showDots
+        slidesNumber={1}
+        customDot={<span data-testid="custom-dot" />}
+      >
+        {renderSlides(3)}
+      </Swipi>
+    )
 
-    const { result, rerender } = renderHook(() => useDots(props))
-    const firstRenderer = result.current.returnDots
+    expect(screen.getAllByTestId('custom-dot')).toHaveLength(2)
+  })
+})
 
-    rerender()
+describe('Swipi slides animation', () => {
+  const WIDE_BREAKPOINT = [{ maxWidth: 2000, slidesNumber: 3 }]
 
-    expect(result.current.returnDots).toBe(firstRenderer)
+  it('shows one slide at a time whatever slidesNumber says', () => {
+    render(
+      <Swipi slidesNumber={3} slidesAnimation="fade-in">
+        {renderSlides(3)}
+      </Swipi>
+    )
+
+    expect(getSlideWidthVariable()).toBe('900px')
+  })
+
+  it('ignores the config breakpoint while fading', () => {
+    render(
+      <Swipi
+        slidesNumber={1}
+        slidesAnimation="fade-in"
+        config={WIDE_BREAKPOINT}
+      >
+        {renderSlides(3)}
+      </Swipi>
+    )
+
+    expect(getSlideWidthVariable()).toBe('900px')
+  })
+
+  it('fades the selected slide in and the rest out', () => {
+    render(
+      <Swipi slidesNumber={1} slidesAnimation="fade-in">
+        {renderSlides(3)}
+      </Swipi>
+    )
+
+    const [first, second] = getSlides()
+
+    expect(first.style.opacity).toBe('1')
+    expect(second.style.opacity).toBe('0')
+  })
+})
+
+describe('Swipi biasRight', () => {
+  it('shrinks the slide to reveal a piece of the next one', () => {
+    render(
+      <Swipi slidesNumber={2} biasRight>
+        {renderSlides(4)}
+      </Swipi>
+    )
+
+    expect(getSlideWidthVariable()).toBe('371.25px')
+  })
+
+  it('takes biasRight from the active breakpoint', () => {
+    render(
+      <Swipi
+        slidesNumber={1}
+        config={[{ maxWidth: 2000, slidesNumber: 2, biasRight: true }]}
+      >
+        {renderSlides(4)}
+      </Swipi>
+    )
+
+    expect(getSlideWidthVariable()).toBe('371.25px')
+  })
+
+  it('drops the breakpoint biasRight while fading', () => {
+    render(
+      <Swipi
+        slidesAnimation="fade-in"
+        config={[{ maxWidth: 2000, slidesNumber: 2, biasRight: true }]}
+      >
+        {renderSlides(3)}
+      </Swipi>
+    )
+
+    expect(getSlideWidthVariable()).toBe('900px')
   })
 })
 

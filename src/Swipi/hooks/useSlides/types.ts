@@ -1,5 +1,4 @@
 import { ConfigType } from '../../types'
-import { SlidesAnimation, ValueOf } from '../../../types'
 
 export type Slides = {
   loop: boolean
@@ -10,14 +9,13 @@ export type Slides = {
   slidesCount: number
   slidesNumber: number
   spaceBetweenSlides: number
-  slidesAnimation: ValueOf<SlidesAnimation>
 }
 
 export type UseSlidesReturn = {
   isLoop: boolean
   lastIndex: number
   slideWidth: number
-  isHideArrows: boolean
+  hasOverflow: boolean
   spaceBetween: number
-  visibleCountSlides: number
+  countShowDots: number
 }

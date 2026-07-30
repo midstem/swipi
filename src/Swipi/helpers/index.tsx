@@ -8,6 +8,7 @@ import {
 import {
   CalculateSlideIndexType,
   ClampTransformType,
+  ConfigType,
   DragVelocityType,
   MomentumDurationType,
   MomentumTargetType,
@@ -115,10 +116,10 @@ export const startAutoplay = (
   }, autoplaySpeed)
 }
 
-export const isHideArrowsFn = (
+export const hasSlidesOverflow = (
   slidesCount: number,
   visibleCountSlides: number
-) => slidesCount > visibleCountSlides
+): boolean => slidesCount > visibleCountSlides
 
 const NO_ANIMATION: CSSProperties = {}
 
@@ -137,6 +138,18 @@ export const returnSlidesAnimation = (
 export const isFadeInAnimation = (animation: ValueOf<SlidesAnimation>) => {
   return animation === SlidesAnimation.FADE_IN
 }
+
+export const toCoreConfig = (
+  config: ConfigType[],
+  animation: ValueOf<SlidesAnimation>
+): ConfigType[] =>
+  isFadeInAnimation(animation)
+    ? config.map((entry) => ({
+        ...entry,
+        slidesNumber: ONE_SLIDE,
+        biasRight: false
+      }))
+    : config
 
 export const getDragVelocity = ({
   distance,

@@ -1,15 +1,6 @@
-import Default from '../DotsAnimations/Default'
-import Sliding from '../DotsAnimations/Sliding'
-import { AnimationsTypes } from './types'
-
 export const DEFAULT_SWIPI_WIDTH = 934
 
 export const REDUCE_SLIDE = 0.35
-
-export const ANIMATIONS: AnimationsTypes = {
-  default: Default,
-  sliding: Sliding
-}
 
 export const FIRST_SLIDE_IDENTIFIER = 1
 

@@ -7,7 +7,14 @@ import {
 } from 'react'
 import { useSwipi } from './useSwipi'
 import { SwipiProps, SwipiRef } from './types'
-import { getSlideKey, returnSlidesAnimation } from './helpers'
+import {
+  getSlideKey,
+  isFadeInAnimation,
+  returnSlidesAnimation,
+  toCoreConfig
+} from './helpers'
+import { ONE_SLIDE } from './constants'
+import { ANIMATIONS } from '../DotsAnimations'
 import { Slide } from '../UI/Slide'
 import LiveRegion from '../UI/LiveRegion'
 import SwipiButton from '../UI/SwipiButton'
@@ -70,33 +77,35 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
     ]
   )
 
-  const { refs, state, handlers, dots } = useSwipi({
+  const isFadeIn = isFadeInAnimation(slidesAnimation)
+
+  const coreConfig = useMemo(
+    () => toCoreConfig(config, slidesAnimation),
+    [config, slidesAnimation]
+  )
+
+  const { refs, state, handlers } = useSwipi({
     loop,
-    config,
-    slides,
-    dotColor,
     autoplay,
     dragFree,
-    biasRight,
-    customDot,
-    showArrows,
-    slidesNumber,
     initialSlide,
     autoplaySpeed,
-    dotsAnimation,
-    activeDotColor,
     animationSpeed,
-    customActiveDot,
-    slidesAnimation,
     spaceBetweenSlides,
+    config: coreConfig,
+    slidesCount: slides.length,
+    slidesNumber: isFadeIn ? ONE_SLIDE : slidesNumber,
+    biasRight: isFadeIn ? false : biasRight,
     onChange,
     onSelect
   })
 
   const { trackRef, slidesRef, slidesWrapperRef } = refs
-  const { slideIndex, countShowDots, isShowArrows, isDisableButton } = state
+  const { slideIndex, countShowDots, hasOverflow, isDisableButton } = state
   const { nextImg, prevImg, scrollTo } = handlers
-  const { Dots, returnDots } = dots
+
+  const Dots = ANIMATIONS[dotsAnimation]
+  const isShowArrows = hasOverflow && showArrows
 
   useImperativeHandle(
     ref,
@@ -179,7 +188,6 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
           animationSpeed={animationSpeed}
           appearance={dotsAppearance}
           handleDotClick={scrollTo}
-          returnDots={returnDots}
         />
       )}
     </CarouselWrapper>

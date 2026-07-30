@@ -4,7 +4,8 @@ import {
   returnSlideWidth,
   calculateSlideIndex,
   startAutoplay,
-  isHideArrowsFn,
+  hasSlidesOverflow,
+  toCoreConfig,
   returnSlidesAnimation,
   isFadeInAnimation,
   getSlideOffset,
@@ -311,13 +312,13 @@ describe('startAutoplay', () => {
   })
 })
 
-describe('isHideArrowsFn', () => {
+describe('hasSlidesOverflow', () => {
   test('should return true if slides count is greater than visibleCountSlides', () => {
-    expect(isHideArrowsFn(3, 2)).toBe(true)
+    expect(hasSlidesOverflow(3, 2)).toBe(true)
   })
 
   test('should return false if slides count is less than or equal to visibleCountSlides', () => {
-    expect(isHideArrowsFn(2, 2)).toBe(false)
+    expect(hasSlidesOverflow(2, 2)).toBe(false)
   })
 })
 
@@ -375,5 +376,23 @@ describe('isFadeInAnimation', () => {
     //@ts-expect-error: For testing, we need something that is not in SlidesAnimation
     const animation: ValueOf<SlidesAnimation> = 'something-for-test'
     expect(isFadeInAnimation(animation)).toBe(false)
+  })
+})
+
+describe('toCoreConfig', () => {
+  const config = [
+    { maxWidth: 600, slidesNumber: 2, spaceBetween: 10, biasRight: true },
+    { maxWidth: 900, slidesNumber: 4, spaceBetween: 20 }
+  ]
+
+  test('should keep the config untouched for the default animation', () => {
+    expect(toCoreConfig(config, SlidesAnimation.DEFAULT)).toBe(config)
+  })
+
+  test('should collapse every breakpoint to a single slide for fade-in', () => {
+    expect(toCoreConfig(config, SlidesAnimation.FADE_IN)).toEqual([
+      { maxWidth: 600, slidesNumber: 1, spaceBetween: 10, biasRight: false },
+      { maxWidth: 900, slidesNumber: 1, spaceBetween: 20, biasRight: false }
+    ])
   })
 })

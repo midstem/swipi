@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 import { ConfigService } from '../../configService'
-import { SlidesAnimation } from '../../../types'
 import {
   calculateSlideWidthWithCorner,
-  isHideArrowsFn,
+  hasSlidesOverflow,
+  returnCountOfDots,
   returnSlideWidth
 } from '../../helpers'
 import { FIRST_SLIDE_INDEX } from '../../constants'
@@ -17,19 +17,15 @@ export const useSlides = ({
   slidesCount,
   containerWidth,
   slidesNumber,
-  slidesAnimation,
   spaceBetweenSlides
 }: Slides): UseSlidesReturn => {
-  const { returnSpaceBetween, getSwipiUpdatesParam, getRightSlidesCount } =
+  const { returnSpaceBetween, getSwipiUpdatesParam, returnCountSlides } =
     ConfigService(config, windowWidth)
 
-  const visibleCountSlides = getRightSlidesCount(slidesNumber, slidesAnimation)
+  const visibleCountSlides = returnCountSlides(slidesNumber)
   const spaceBetween = returnSpaceBetween(spaceBetweenSlides)
-  const isHideArrows = isHideArrowsFn(slidesCount, visibleCountSlides)
-  const isCornerSlide =
-    slidesAnimation === SlidesAnimation.DEFAULT
-      ? (getSwipiUpdatesParam('biasRight') ?? biasRight)
-      : false
+  const hasOverflow = hasSlidesOverflow(slidesCount, visibleCountSlides)
+  const isCornerSlide = getSwipiUpdatesParam('biasRight') ?? biasRight
 
   const updateSlideWidthArgs = useMemo(
     () => ({
@@ -48,7 +44,7 @@ export const useSlides = ({
       : width
   }, [isCornerSlide, updateSlideWidthArgs, visibleCountSlides])
 
-  const isLoop = loop && isHideArrows
+  const isLoop = loop && hasOverflow
 
   const lastIndex = isLoop
     ? slidesCount - 1
@@ -58,8 +54,8 @@ export const useSlides = ({
     isLoop,
     lastIndex,
     slideWidth,
-    isHideArrows,
+    hasOverflow,
     spaceBetween,
-    visibleCountSlides
+    countShowDots: returnCountOfDots(slidesCount, visibleCountSlides, isLoop)
   }
 }
