@@ -1,12 +1,11 @@
-import { MutableRefObject, RefObject } from 'react'
+import { RefObject } from 'react'
 import { LoopGeometry } from '../../types'
 
 export type UseTrackProps = LoopGeometry & {
+  trackRef: RefObject<HTMLDivElement | null>
   spaceBetween: number
 }
 
 export type UseTrackReturn = {
-  trackRef: RefObject<HTMLDivElement | null>
-  slidesRef: MutableRefObject<(HTMLDivElement | null)[]>
   render: (transform: number) => void
 }

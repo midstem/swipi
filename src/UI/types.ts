@@ -66,8 +66,6 @@ export type ActiveDotProps = {
 }
 
 export type SlideProps = {
-  index: number
-  slidesRef: MutableRefObject<(HTMLDivElement | null)[]>
   children: ReactNode
   animation: CSSProperties
   ariaLabel: string
