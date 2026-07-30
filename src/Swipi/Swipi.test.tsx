@@ -232,6 +232,52 @@ describe('Swipi reactive state (onSelect)', () => {
   })
 })
 
+describe('Swipi slide discovery', () => {
+  it('reports the initial state once, after the slides are measured', () => {
+    const states: SwipiState[] = []
+
+    render(
+      <Swipi slidesNumber={1} onSelect={(state) => states.push(state)}>
+        {renderSlides(3)}
+      </Swipi>
+    )
+
+    expect(states).toHaveLength(1)
+    expect(states[0].snapCount).toBe(3)
+  })
+
+  it('counts the slides that are actually in the track', () => {
+    const ref = createRef<SwipiRef>()
+
+    render(
+      <Swipi ref={ref} slidesNumber={1}>
+        {renderSlides(5)}
+      </Swipi>
+    )
+
+    expect(getTrack().children).toHaveLength(5)
+    expect(ref.current?.scrollSnapList()).toEqual([0, 1, 2, 3, 4])
+  })
+
+  it('picks up a slide inserted outside a react render', async () => {
+    const ref = createRef<SwipiRef>()
+
+    render(
+      <Swipi ref={ref} slidesNumber={1}>
+        {renderSlides(3)}
+      </Swipi>
+    )
+
+    expect(ref.current?.scrollSnapList()).toHaveLength(3)
+
+    act(() => {
+      getTrack().appendChild(document.createElement('div'))
+    })
+
+    await waitFor(() => expect(ref.current?.scrollSnapList()).toHaveLength(4))
+  })
+})
+
 describe('Swipi children', () => {
   it('accepts a single child', () => {
     render(

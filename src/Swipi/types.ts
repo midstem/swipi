@@ -15,7 +15,6 @@ export type UseSwipiType = {
   dragFree: boolean
   biasRight?: boolean
   config: ConfigType[]
-  slidesCount: number
   slidesNumber: number
   initialSlide: number
   autoplaySpeed: number

@@ -12,29 +12,31 @@ const toTranslate = (value: number): string =>
 
 const toPixels = (value: number): string => `${value}px`
 
+const forEachSlide = (
+  track: HTMLElement,
+  visit: (slide: HTMLElement, index: number) => void
+): void => {
+  const { children } = track
+
+  for (let index = 0; index < children.length; index += 1) {
+    visit(children[index] as HTMLElement, index)
+  }
+}
+
 export const useTrack = ({
   loop,
+  trackRef,
   slideWidth,
   slidesCount,
   spaceBetween
 }: UseTrackProps): UseTrackReturn => {
-  const trackRef = useRef<HTMLDivElement>(null)
-  const slidesRef = useRef<(HTMLDivElement | null)[]>([])
-  const appliedOffsetsRef = useRef(new WeakMap<HTMLDivElement, number>())
+  const appliedOffsetsRef = useRef(new WeakMap<HTMLElement, number>())
   const hasAppliedOffsetsRef = useRef(false)
 
-  const renderTrack = (transform: number): void => {
-    if (!trackRef.current) return
-
-    trackRef.current.style.transform = toTranslate(transform)
-  }
-
-  const renderSlideOffsets = (transform: number): void => {
+  const renderSlideOffsets = (track: HTMLElement, transform: number): void => {
     const appliedOffsets = appliedOffsetsRef.current
 
-    slidesRef.current.forEach((slide, index) => {
-      if (!slide) return
-
+    forEachSlide(track, (slide, index) => {
       const offset = getSlideOffset({
         index,
         transform,
@@ -51,12 +53,10 @@ export const useTrack = ({
     })
   }
 
-  const resetSlideOffsets = (): void => {
+  const resetSlideOffsets = (track: HTMLElement): void => {
     if (!hasAppliedOffsetsRef.current) return
 
-    slidesRef.current.forEach((slide) => {
-      if (!slide) return
-
+    forEachSlide(track, (slide) => {
       slide.style.transform = EMPTY_TRANSFORM
     })
 
@@ -65,14 +65,18 @@ export const useTrack = ({
   }
 
   const render = (transform: number): void => {
-    renderTrack(transform)
+    const track = trackRef.current
+
+    if (!track) return
+
+    track.style.transform = toTranslate(transform)
 
     if (!loop) {
-      resetSlideOffsets()
+      resetSlideOffsets(track)
       return
     }
 
-    renderSlideOffsets(transform)
+    renderSlideOffsets(track, transform)
   }
 
   useLayoutEffect(() => {
@@ -82,7 +86,7 @@ export const useTrack = ({
 
     track.style.setProperty(SLIDE_WIDTH_VARIABLE, toPixels(slideWidth))
     track.style.setProperty(SLIDE_GAP_VARIABLE, toPixels(spaceBetween))
-  }, [slideWidth, spaceBetween])
+  }, [trackRef, slideWidth, spaceBetween])
 
-  return { trackRef, slidesRef, render }
+  return { render }
 }

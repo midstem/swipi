@@ -93,14 +93,13 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
     animationSpeed,
     spaceBetweenSlides,
     config: coreConfig,
-    slidesCount: slides.length,
     slidesNumber: isFadeIn ? ONE_SLIDE : slidesNumber,
     biasRight: isFadeIn ? false : biasRight,
     onChange,
     onSelect
   })
 
-  const { trackRef, slidesRef, slidesWrapperRef } = refs
+  const { trackRef, slidesWrapperRef } = refs
   const { slideIndex, countShowDots, hasOverflow, isDisableButton } = state
   const { nextImg, prevImg, scrollTo } = handlers
 
@@ -157,8 +156,6 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
             {slides.map((slide, index) => (
               <Slide
                 key={getSlideKey(slide, index)}
-                index={index}
-                slidesRef={slidesRef}
                 ariaLabel={`${index + 1} of ${slides.length}`}
                 animation={returnSlidesAnimation(
                   slidesAnimation,
