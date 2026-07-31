@@ -9,6 +9,42 @@ export const EMPTY_GEOMETRY: SlidesGeometry = {
   contentSize: 0
 }
 
+export const measureSlides = (
+  track: HTMLElement,
+  viewportWidth: number,
+  loop: boolean
+): SlidesGeometry => {
+  const { children } = track
+  const positions: number[] = []
+  const sizes: number[] = []
+
+  for (let index = 0; index < children.length; index += 1) {
+    const slide = children[index] as HTMLElement
+
+    positions.push(slide.offsetLeft)
+    sizes.push(slide.offsetWidth)
+  }
+
+  if (!positions.length) return EMPTY_GEOMETRY
+
+  const origin = positions[0]
+  const offsets = positions.map((position) => position - origin)
+  const contentSize = offsets[offsets.length - 1] + sizes[sizes.length - 1]
+
+  return {
+    positions: offsets,
+    sizes,
+    contentSize,
+    snaps: toSnaps({
+      positions: offsets,
+      sizes,
+      contentSize,
+      viewportWidth,
+      loop
+    })
+  }
+}
+
 const toSnap = (position: number): number => -position || INITIAL_TRANSFORM
 
 export const toSnaps = ({
