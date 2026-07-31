@@ -50,6 +50,8 @@ Object.defineProperty(HTMLElement.prototype, 'clientWidth', {
 
 const SLIDE_WIDTH_VARIABLE = '--swipi-slide-width'
 
+const SLIDE_GAP_VARIABLE = '--swipi-slide-gap'
+
 const TEST_WIDTH_ATTRIBUTE = 'data-test-width'
 
 const simulateWidth = (element: Element): number => {
@@ -61,7 +63,14 @@ const simulateWidth = (element: Element): number => {
 
   if (!parent) return 0
 
-  return parseFloat(parent.style.getPropertyValue(SLIDE_WIDTH_VARIABLE)) || 0
+  const width =
+    parseFloat(parent.style.getPropertyValue(SLIDE_WIDTH_VARIABLE)) || 0
+
+  if (element !== parent.lastElementChild) return width
+
+  const gap = parseFloat(parent.style.getPropertyValue(SLIDE_GAP_VARIABLE)) || 0
+
+  return width - gap
 }
 
 Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {

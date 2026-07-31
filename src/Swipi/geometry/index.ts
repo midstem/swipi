@@ -3,7 +3,8 @@ import {
   INITIAL_TRANSFORM,
   MOMENTUM_DECAY_TIME,
   NO_OFFSET,
-  ONE_STEP
+  ONE_STEP,
+  SNAP_TOLERANCE
 } from '../constants'
 import {
   MomentumSnapType,
@@ -57,8 +58,9 @@ export const toSnaps = ({
 
   return positions.reduce<number[]>((snaps, position) => {
     const snap = Math.max(toSnap(position), maxScroll)
+    const previous = snaps[snaps.length - 1]
 
-    if (snaps[snaps.length - 1] === snap) return snaps
+    if (snaps.length && Math.abs(previous - snap) < SNAP_TOLERANCE) return snaps
 
     return [...snaps, snap]
   }, [])

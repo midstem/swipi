@@ -62,6 +62,8 @@ export const NO_WIDTH = 0
 
 export const NO_SLIDES = 0
 
+export const SNAP_TOLERANCE = 1
+
 export const EMPTY_TRANSFORM = ''
 
 export const PROGRESS_END = 1
