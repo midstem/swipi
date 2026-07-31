@@ -1,16 +1,10 @@
-import { useLayoutEffect, useRef } from 'react'
-import {
-  EMPTY_TRANSFORM,
-  SLIDE_GAP_VARIABLE,
-  SLIDE_WIDTH_VARIABLE
-} from '../../constants'
-import { getSlideOffset } from '../../helpers'
+import { useRef } from 'react'
+import { EMPTY_TRANSFORM } from '../../constants'
+import { getSlideLap } from '../../geometry'
 import { UseTrackProps, UseTrackReturn } from './types'
 
 const toTranslate = (value: number): string =>
   value ? `translate3d(${value}px, 0, 0)` : EMPTY_TRANSFORM
-
-const toPixels = (value: number): string => `${value}px`
 
 const forEachSlide = (
   track: HTMLElement,
@@ -26,9 +20,7 @@ const forEachSlide = (
 export const useTrack = ({
   loop,
   trackRef,
-  slideWidth,
-  slidesCount,
-  spaceBetween
+  geometry
 }: UseTrackProps): UseTrackReturn => {
   const appliedOffsetsRef = useRef(new WeakMap<HTMLElement, number>())
   const hasAppliedOffsetsRef = useRef(false)
@@ -37,13 +29,7 @@ export const useTrack = ({
     const appliedOffsets = appliedOffsetsRef.current
 
     forEachSlide(track, (slide, index) => {
-      const offset = getSlideOffset({
-        index,
-        transform,
-        slideWidth,
-        slidesCount,
-        loop
-      })
+      const offset = getSlideLap(index, transform, geometry)
 
       if (appliedOffsets.get(slide) === offset) return
 
@@ -78,15 +64,6 @@ export const useTrack = ({
 
     renderSlideOffsets(track, transform)
   }
-
-  useLayoutEffect(() => {
-    const track = trackRef.current
-
-    if (!track) return
-
-    track.style.setProperty(SLIDE_WIDTH_VARIABLE, toPixels(slideWidth))
-    track.style.setProperty(SLIDE_GAP_VARIABLE, toPixels(spaceBetween))
-  }, [trackRef, slideWidth, spaceBetween])
 
   return { render }
 }

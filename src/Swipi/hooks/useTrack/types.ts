@@ -1,9 +1,10 @@
 import { RefObject } from 'react'
-import { LoopGeometry } from '../../types'
+import { SlidesGeometry } from '../../types'
 
-export type UseTrackProps = LoopGeometry & {
+export type UseTrackProps = {
+  loop: boolean
   trackRef: RefObject<HTMLDivElement | null>
-  spaceBetween: number
+  geometry: SlidesGeometry
 }
 
 export type UseTrackReturn = {

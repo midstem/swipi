@@ -111,6 +111,15 @@ export type SlidesGeometry = {
   contentSize: number
 }
 
+export type MomentumSnapType = {
+  transform: number
+  velocity: number
+  startTransform: number
+  geometry: SlidesGeometry
+  loop: boolean
+  dragFree: boolean
+}
+
 export type SnapsFromPositions = {
   positions: number[]
   sizes: number[]

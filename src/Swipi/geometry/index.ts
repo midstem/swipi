@@ -1,5 +1,11 @@
-import { INITIAL_TRANSFORM, NO_OFFSET } from '../constants'
-import { SlidesGeometry, SnapsFromPositions } from '../types'
+import {
+  HALF,
+  INITIAL_TRANSFORM,
+  MOMENTUM_DECAY_TIME,
+  NO_OFFSET,
+  ONE_STEP
+} from '../constants'
+import { MomentumSnapType, SlidesGeometry, SnapsFromPositions } from '../types'
 import { clamp, normalizeIndex } from '../helpers'
 
 export const EMPTY_GEOMETRY: SlidesGeometry = {
@@ -106,6 +112,78 @@ export const clampToSnaps = (
   if (loop || !snaps.length) return transform
 
   return clamp(transform, snaps[snaps.length - 1], INITIAL_TRANSFORM)
+}
+
+export const getStepTarget = (
+  transform: number,
+  geometry: SlidesGeometry,
+  loop: boolean,
+  step: number
+): number => {
+  const { snaps, sizes } = geometry
+
+  if (!snaps.length) return transform
+
+  const current = getSnapIndex(transform, geometry, loop)
+
+  if (!loop) {
+    return snaps[clamp(current + step, 0, snaps.length - ONE_STEP)]
+  }
+
+  if (!step) return transform
+
+  const leaving = step > 0 ? current : normalizeIndex(current - 1, snaps.length)
+
+  return transform - step * sizes[leaving]
+}
+
+export const getScrollToTarget = (
+  transform: number,
+  geometry: SlidesGeometry,
+  loop: boolean,
+  index: number
+): number => {
+  const { snaps, positions, contentSize } = geometry
+
+  if (!snaps.length) return transform
+
+  if (!loop) return snaps[clamp(index, 0, snaps.length - ONE_STEP)]
+
+  const scrolled = normalizeIndex(-transform, contentSize)
+  const distance = positions[normalizeIndex(index, positions.length)] - scrolled
+  const half = contentSize * HALF
+
+  const shortest =
+    distance > half
+      ? distance - contentSize
+      : distance < -half
+        ? distance + contentSize
+        : distance
+
+  return transform - shortest
+}
+
+export const getMomentumSnap = ({
+  transform,
+  velocity,
+  startTransform,
+  geometry,
+  loop,
+  dragFree
+}: MomentumSnapType): number => {
+  const projected = transform + velocity * MOMENTUM_DECAY_TIME
+
+  if (dragFree) return projected
+
+  const startIndex = getSnapIndex(startTransform, geometry, loop)
+  const yardstick = geometry.sizes[startIndex] || ONE_STEP
+  const steps = clamp(
+    Math.round((startTransform - projected) / yardstick),
+    -ONE_STEP,
+    ONE_STEP
+  )
+
+  return getStepTarget(startTransform, geometry, loop, steps)
 }
 
 export const getSlideLap = (

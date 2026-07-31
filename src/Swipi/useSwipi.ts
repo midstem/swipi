@@ -14,15 +14,13 @@ import { useLatestRef } from './hooks/useLatestRef'
 import { useNavigation } from './hooks/useNavigation'
 import { useElementWidth } from './hooks/useElementWidth'
 import { useSlidesCount } from './hooks/useSlidesCount'
+import { useSlidesGeometry } from './hooks/useSlidesGeometry'
+import { useTrackVariables } from './hooks/useTrackVariables'
 import { useWindowResize } from './hooks/useWindowResize'
 import { FIRST_SLIDE, FIRST_SLIDE_INDEX, NO_SLIDES } from './constants'
 import { UseSwipiType } from './types'
-import {
-  calculateSlideIndex,
-  clamp,
-  getSlidePositions,
-  getTrackPosition
-} from './helpers'
+import { clamp, getSlidePositions } from './helpers'
+import { getSnapIndex } from './geometry'
 
 export const useSwipi = ({
   loop,
@@ -43,7 +41,6 @@ export const useSwipi = ({
   const timeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const trackRef = useRef<HTMLDivElement>(null)
   const slidesWrapperRef = useRef<HTMLDivElement>(null)
-  const previousSlideWidth = useRef<number>(0)
   const isInitialSlideApplied = useRef<boolean>(false)
 
   const slidesCount = useSlidesCount(trackRef)
@@ -53,14 +50,7 @@ export const useSwipi = ({
   const onChangeRef = useLatestRef(onChange)
   const onSelectRef = useLatestRef(onSelect)
 
-  const {
-    isLoop,
-    lastIndex,
-    slideWidth,
-    hasOverflow,
-    spaceBetween,
-    countShowDots
-  } = useSlides({
+  const { isLoop, slideWidth, hasOverflow, spaceBetween } = useSlides({
     loop,
     config,
     biasRight,
@@ -71,29 +61,31 @@ export const useSwipi = ({
     spaceBetweenSlides
   })
 
-  const { render } = useTrack({
+  useTrackVariables({ trackRef, slideWidth, spaceBetween })
+
+  const geometry = useSlidesGeometry({
     trackRef,
-    loop: isLoop,
-    slideWidth,
     slidesCount,
-    spaceBetween
+    slideWidth,
+    spaceBetween,
+    loop: isLoop,
+    viewportWidth: containerWidth
   })
+
+  const countShowDots = geometry.snaps.length
+  const lastIndex = Math.max(countShowDots - 1, FIRST_SLIDE_INDEX)
+
+  const { render } = useTrack({ trackRef, loop: isLoop, geometry })
 
   const [slideIndex, setSlideIndex] = useState<number>(FIRST_SLIDE_INDEX)
 
   const syncSlideIndex = useCallback(
     (target: number): void => {
-      const index = calculateSlideIndex({
-        transform: target,
-        slideWidth,
-        slidesCount,
-        lastIndex,
-        loop: isLoop
-      })
+      const index = getSnapIndex(target, geometry, isLoop)
 
       setSlideIndex((previous) => (previous === index ? previous : index))
     },
-    [slideWidth, slidesCount, lastIndex, isLoop]
+    [geometry, isLoop]
   )
 
   const { transformRef, targetRef, moveTo, animateTo } = useTransform({
@@ -101,6 +93,8 @@ export const useSwipi = ({
     render,
     onTarget: syncSlideIndex
   })
+
+  const slideIndexRef = useLatestRef(slideIndex)
 
   const canScrollNext = isLoop || slideIndex < lastIndex
   const canScrollPrev = isLoop || slideIndex > FIRST_SLIDE_INDEX
@@ -112,11 +106,9 @@ export const useSwipi = ({
 
   const { nextImg, prevImg, scrollTo } = useNavigation({
     isLoop,
-    lastIndex,
+    geometry,
     targetRef,
     animateTo,
-    slideWidth,
-    slidesCount,
     canScrollNext,
     canScrollPrev
   })
@@ -126,8 +118,7 @@ export const useSwipi = ({
     moveTo,
     dragFree,
     animateTo,
-    lastIndex,
-    slideWidth,
+    geometry,
     hasOverflow,
     animationSpeed,
     transformRef
@@ -148,14 +139,10 @@ export const useSwipi = ({
   }, [])
 
   useLayoutEffect(() => {
-    const width = previousSlideWidth.current
+    if (!geometry.snaps.length) return
 
-    previousSlideWidth.current = slideWidth
-
-    if (!width || width === slideWidth) return
-
-    moveTo(-Math.round(getTrackPosition(targetRef.current, width)) * slideWidth)
-  }, [slideWidth, moveTo, targetRef])
+    moveTo(geometry.snaps[clamp(slideIndexRef.current, 0, lastIndex)])
+  }, [geometry, lastIndex, moveTo, slideIndexRef])
 
   useLayoutEffect(() => {
     render(transformRef.current)
@@ -174,10 +161,11 @@ export const useSwipi = ({
     isInitialSlideApplied.current = true
 
     moveTo(
-      -(clamp(initialSlide, FIRST_SLIDE, countShowDots) - FIRST_SLIDE) *
-        slideWidth
+      geometry.snaps[
+        clamp(initialSlide, FIRST_SLIDE, countShowDots) - FIRST_SLIDE
+      ]
     )
-  }, [isMeasured, initialSlide, countShowDots, slideWidth, moveTo])
+  }, [isMeasured, initialSlide, countShowDots, slideWidth, geometry, moveTo])
 
   useEffect(() => {
     if (!isMeasured) return

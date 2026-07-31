@@ -6,6 +6,8 @@ type UseSlidesGeometryProps = {
   trackRef: RefObject<HTMLDivElement | null>
   viewportWidth: number
   slidesCount: number
+  slideWidth: number
+  spaceBetween: number
   loop: boolean
 }
 
@@ -13,6 +15,8 @@ export const useSlidesGeometry = ({
   trackRef,
   viewportWidth,
   slidesCount,
+  slideWidth,
+  spaceBetween,
   loop
 }: UseSlidesGeometryProps): SlidesGeometry => {
   const [geometry, setGeometry] = useState<SlidesGeometry>(EMPTY_GEOMETRY)
@@ -27,7 +31,7 @@ export const useSlidesGeometry = ({
 
   useLayoutEffect(() => {
     measure()
-  }, [measure, slidesCount])
+  }, [measure, slidesCount, slideWidth, spaceBetween])
 
   return geometry
 }

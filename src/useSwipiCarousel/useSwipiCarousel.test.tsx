@@ -139,6 +139,57 @@ describe('useSwipiCarousel navigation', () => {
   })
 })
 
+describe('useSwipiCarousel with slides sized by the consumer', () => {
+  const WIDTHS = [200, 500, 100, 400]
+
+  const UnevenCarousel = (options: SwipiCarouselOptions): JSX.Element => {
+    const { state, getViewportProps, getTrackProps, getSlideProps, scrollTo } =
+      useSwipiCarousel(options)
+
+    return (
+      <div>
+        <div data-testid="viewport" {...getViewportProps()}>
+          <div data-testid="track" {...getTrackProps()}>
+            {WIDTHS.map((width, index) => (
+              <article
+                key={width}
+                data-test-width={width}
+                {...getSlideProps(index)}
+              />
+            ))}
+          </div>
+        </div>
+
+        <button onClick={() => scrollTo(2)}>third</button>
+
+        <p data-testid="state">
+          {state.selectedIndex}/{state.snapCount}
+        </p>
+      </div>
+    )
+  }
+
+  it('snaps to positions that follow the real slide widths', async () => {
+    render(<UnevenCarousel />)
+
+    expect(readState()).toBe('0/3')
+
+    fireEvent.click(screen.getByRole('button', { name: 'third' }))
+
+    await waitFor(() =>
+      expect(screen.getByTestId('track').style.transform).toBe(
+        'translate3d(-300px, 0, 0)'
+      )
+    )
+  })
+
+  it('offers a snap per slide when looping', () => {
+    render(<UnevenCarousel loop />)
+
+    expect(readState()).toBe('0/4')
+  })
+})
+
 describe('useSwipiCarousel geometry', () => {
   it('drives the slide width from the track variable', () => {
     render(<Carousel />)
