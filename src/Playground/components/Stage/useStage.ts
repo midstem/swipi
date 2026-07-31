@@ -1,7 +1,13 @@
 import { useMemo, useState } from 'react'
 import { useWindowResize } from '../../../Swipi/hooks/useWindowResize'
 import { UseStageProps, UseStageReturn } from '../../types'
-import { getActiveBreakpoint, getConfig, getVisibleSlides } from './helpers'
+import {
+  getActiveBreakpoint,
+  getBias,
+  getConfig,
+  getSpaceBetween,
+  getVisibleSlides
+} from './helpers'
 
 export const useStage = ({ state }: UseStageProps): UseStageReturn => {
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth)
@@ -16,6 +22,8 @@ export const useStage = ({ state }: UseStageProps): UseStageReturn => {
     config,
     windowWidth,
     visibleSlides,
+    spaceBetween: getSpaceBetween(state, config, windowWidth),
+    bias: getBias(state, config, windowWidth, visibleSlides),
     areArrowsAvailable: state.slidesCount > visibleSlides,
     activeBreakpoint: getActiveBreakpoint(config, windowWidth)
   }

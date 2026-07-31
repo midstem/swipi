@@ -210,6 +210,8 @@ export type StageProps = {
 export type UseStageProps = Pick<StageProps, 'state'>
 
 export type UseStageReturn = {
+  bias: number
+  spaceBetween: number
   config: ConfigType[]
   windowWidth: number
   visibleSlides: number
