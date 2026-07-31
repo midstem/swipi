@@ -104,6 +104,21 @@ export type LoopGeometry = {
   loop: boolean
 }
 
+export type SlidesGeometry = {
+  positions: number[]
+  sizes: number[]
+  snaps: number[]
+  contentSize: number
+}
+
+export type SnapsFromPositions = {
+  positions: number[]
+  sizes: number[]
+  contentSize: number
+  viewportWidth: number
+  loop: boolean
+}
+
 export type SlideOffsetType = LoopGeometry & {
   index: number
   transform: number
