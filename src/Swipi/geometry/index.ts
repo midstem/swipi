@@ -18,8 +18,14 @@ export const EMPTY_GEOMETRY: SlidesGeometry = {
   positions: [],
   sizes: [],
   snaps: [],
-  contentSize: 0
+  contentSize: 0,
+  loopSize: 0
 }
+
+const getGap = (positions: number[], sizes: number[]): number =>
+  positions.length > ONE_STEP
+    ? Math.max(positions[ONE_STEP] - (positions[0] + sizes[0]), NO_OFFSET)
+    : NO_OFFSET
 
 export const measureSlides = (track: HTMLElement): SlidesMeasurement => {
   const { children } = track
@@ -33,13 +39,31 @@ export const measureSlides = (track: HTMLElement): SlidesMeasurement => {
     sizes.push(slide.offsetWidth)
   }
 
-  if (!positions.length) return { positions: [], sizes: [], contentSize: 0 }
+  if (!positions.length) {
+    return { positions: [], sizes: [], contentSize: 0, loopSize: 0 }
+  }
 
   const origin = positions[0]
   const offsets = positions.map((position) => position - origin)
   const contentSize = offsets[offsets.length - 1] + sizes[sizes.length - 1]
 
-  return { positions: offsets, sizes, contentSize }
+  return {
+    positions: offsets,
+    sizes,
+    contentSize,
+    loopSize: contentSize + getGap(offsets, sizes)
+  }
+}
+
+const getStride = (
+  { positions, loopSize }: SlidesGeometry,
+  index: number
+): number => {
+  const next = index + ONE_STEP
+
+  if (next < positions.length) return positions[next] - positions[index]
+
+  return loopSize - positions[index]
 }
 
 const toSnap = (position: number): number => -position || INITIAL_TRANSFORM
@@ -84,16 +108,16 @@ export const findNearestSnap = (transform: number, snaps: number[]): number => {
 
 export const getSnapIndex = (
   transform: number,
-  { snaps, contentSize }: SlidesGeometry,
+  { snaps, loopSize }: SlidesGeometry,
   loop: boolean
 ): number => {
   if (!snaps.length) return 0
 
   if (!loop) return findNearestSnap(transform, snaps)
 
-  const scrolled = normalizeIndex(-transform, contentSize)
+  const scrolled = normalizeIndex(-transform, loopSize)
 
-  return findNearestSnap(-scrolled, [...snaps, -contentSize]) % snaps.length
+  return findNearestSnap(-scrolled, [...snaps, -loopSize]) % snaps.length
 }
 
 export const clampToSnaps = (
@@ -112,7 +136,7 @@ export const getStepTarget = (
   loop: boolean,
   step: number
 ): number => {
-  const { snaps, sizes } = geometry
+  const { snaps } = geometry
 
   if (!snaps.length) return transform
 
@@ -125,8 +149,9 @@ export const getStepTarget = (
   if (!step) return transform
 
   const leaving = step > 0 ? current : normalizeIndex(current - 1, snaps.length)
+  const stride = getStride(geometry, leaving)
 
-  return transform - step * sizes[leaving]
+  return transform - step * stride
 }
 
 export const getScrollToTarget = (
@@ -135,21 +160,21 @@ export const getScrollToTarget = (
   loop: boolean,
   index: number
 ): number => {
-  const { snaps, positions, contentSize } = geometry
+  const { snaps, positions, loopSize } = geometry
 
   if (!snaps.length) return transform
 
   if (!loop) return snaps[clamp(index, 0, snaps.length - ONE_STEP)]
 
-  const scrolled = normalizeIndex(-transform, contentSize)
+  const scrolled = normalizeIndex(-transform, loopSize)
   const distance = positions[normalizeIndex(index, positions.length)] - scrolled
-  const half = contentSize * HALF
+  const half = loopSize * HALF
 
   const shortest =
     distance > half
-      ? distance - contentSize
+      ? distance - loopSize
       : distance < -half
-        ? distance + contentSize
+        ? distance + loopSize
         : distance
 
   return transform - shortest
@@ -181,12 +206,12 @@ export const getMomentumSnap = ({
 export const getSlideLap = (
   index: number,
   transform: number,
-  { positions, sizes, contentSize }: SlidesGeometry
+  { positions, sizes, loopSize }: SlidesGeometry
 ): number => {
-  if (contentSize <= 0 || !positions.length) return NO_OFFSET
+  if (loopSize <= 0 || !positions.length) return NO_OFFSET
 
   const position = positions[index] + transform
-  const laps = Math.floor((position + sizes[index]) / contentSize)
+  const laps = Math.floor((position + sizes[index]) / loopSize)
 
-  return laps ? -laps * contentSize : NO_OFFSET
+  return laps ? -laps * loopSize : NO_OFFSET
 }

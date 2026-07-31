@@ -1,13 +1,11 @@
 import type { JSX } from 'react'
 import {
-  DOTS_ANIMATION_OPTIONS,
   MAX_SLIDES_COUNT,
   MIN_SLIDES_COUNT,
   SLIDES_ANIMATION_OPTIONS,
   STAGE_PRESETS
 } from '../../constants'
 import { ControlsPanelProps } from '../../types'
-import ColorField from '../ColorField'
 import ConfigEditor from '../ConfigEditor'
 import NumberField from '../NumberField'
 import Section from '../Section'
@@ -17,7 +15,6 @@ import Toggle from '../Toggle'
 import {
   ANIMATION_SPEED_LIMITS,
   AUTOPLAY_SPEED_LIMITS,
-  DOT_SIZE_LIMITS,
   SLIDES_NUMBER_LIMITS,
   SPACE_BETWEEN_LIMITS,
   STAGE_WIDTH_LIMITS
@@ -114,16 +111,6 @@ const ControlsPanel = ({ state, update }: ControlsPanelProps): JSX.Element => {
           checked={state.showArrows}
           onChange={change('showArrows')}
         />
-        <TextField
-          label="prevButton"
-          value={state.prevButton}
-          onChange={change('prevButton')}
-        />
-        <TextField
-          label="nextButton"
-          value={state.nextButton}
-          onChange={change('nextButton')}
-        />
       </Section>
 
       <Section title="Dots">
@@ -131,46 +118,6 @@ const ControlsPanel = ({ state, update }: ControlsPanelProps): JSX.Element => {
           label="showDots"
           checked={state.showDots}
           onChange={change('showDots')}
-        />
-        <SelectField
-          label="dotsAnimation"
-          value={state.dotsAnimation}
-          options={DOTS_ANIMATION_OPTIONS}
-          onChange={change('dotsAnimation')}
-        />
-        <ColorField
-          label="dotColor"
-          value={state.dotColor}
-          onChange={change('dotColor')}
-        />
-        <ColorField
-          label="activeDotColor"
-          value={state.activeDotColor}
-          onChange={change('activeDotColor')}
-        />
-        <NumberField
-          label="sizeForDefaultDot"
-          value={state.sizeForDefaultDot}
-          {...DOT_SIZE_LIMITS}
-          onChange={change('sizeForDefaultDot')}
-        />
-        <NumberField
-          label="sizeForDefaultActiveDot"
-          value={state.sizeForDefaultActiveDot}
-          {...DOT_SIZE_LIMITS}
-          onChange={change('sizeForDefaultActiveDot')}
-        />
-        <Toggle
-          label="customDot"
-          hint="Replaces the default dot with a custom element"
-          checked={state.customDot}
-          onChange={change('customDot')}
-        />
-        <Toggle
-          label="customActiveDot"
-          hint="Replaces the default active dot with a custom element"
-          checked={state.customActiveDot}
-          onChange={change('customActiveDot')}
         />
       </Section>
 
@@ -188,17 +135,11 @@ const ControlsPanel = ({ state, update }: ControlsPanelProps): JSX.Element => {
         />
       </Section>
 
-      <Section title="Accessibility & styling">
+      <Section title="Accessibility">
         <TextField
           label="ariaLabel"
           value={state.ariaLabel}
           onChange={change('ariaLabel')}
-        />
-        <TextField
-          label="className"
-          placeholder="my-slider"
-          value={state.className}
-          onChange={change('className')}
         />
       </Section>
 

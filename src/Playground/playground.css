@@ -389,3 +389,105 @@ body {
   font-weight: 600;
   color: var(--pg-accent);
 }
+
+.pg-carousel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.pg-carousel__row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.pg-carousel__viewport {
+  width: 100%;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.pg-carousel__track {
+  display: flex;
+  width: 100%;
+  cursor: grab;
+  user-select: none;
+}
+
+.pg-carousel__track:active {
+  cursor: grabbing;
+}
+
+.pg-carousel__slide {
+  box-sizing: border-box;
+  flex: 0 0
+    calc(
+      (100% - (var(--pg-visible) - 1) * var(--pg-gap)) / var(--pg-visible) *
+        var(--pg-bias)
+    );
+  margin-right: var(--pg-gap);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 250px;
+  font-size: 48px;
+  font-weight: 700;
+  color: #fff;
+  border-radius: 8px;
+  user-select: none;
+}
+
+.pg-carousel__slide:last-child {
+  margin-right: 0;
+}
+
+.pg-carousel__arrow {
+  z-index: 1;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.pg-carousel__arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.pg-carousel__dots {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pg-carousel__dot {
+  display: inline-flex;
+  padding: 0;
+  line-height: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.pg-carousel__dot-mark {
+  aspect-ratio: 1 / 1;
+  width: 12px;
+  background: #c7c7c7;
+  border-radius: 50%;
+}
+
+.pg-carousel__dot-mark[data-active='true'] {
+  width: 14px;
+  background: #6c7ae0;
+}
+
+.pg-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}

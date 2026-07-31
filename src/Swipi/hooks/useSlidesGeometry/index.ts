@@ -5,11 +5,13 @@ import { SlidesMeasurement } from '../../types'
 const EMPTY_MEASUREMENT: SlidesMeasurement = {
   positions: [],
   sizes: [],
-  contentSize: 0
+  contentSize: 0,
+  loopSize: 0
 }
 
 const isSame = (a: SlidesMeasurement, b: SlidesMeasurement): boolean =>
   a.contentSize === b.contentSize &&
+  a.loopSize === b.loopSize &&
   a.positions.length === b.positions.length &&
   a.positions.every((position, index) => position === b.positions[index]) &&
   a.sizes.every((size, index) => size === b.sizes[index])

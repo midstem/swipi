@@ -1,4 +1,3 @@
-import { DotsAnimation } from '../Swipi/types'
 import { SlidesAnimation, ValueOf } from '../types'
 import { PlaygroundState, SelectOption, StagePreset } from './types'
 
@@ -39,15 +38,7 @@ export const SWIPI_DEFAULTS = {
   autoplaySpeed: 4000,
   animationSpeed: 300,
   spaceBetweenSlides: 0,
-  dotColor: '#c7c7c7',
-  activeDotColor: '#000000',
-  sizeForDefaultDot: 12,
-  sizeForDefaultActiveDot: 13,
-  dotsAnimation: 'default',
   slidesAnimation: 'default',
-  nextButton: 'ᐳ',
-  prevButton: 'ᐸ',
-  className: '',
   ariaLabel: 'Slides'
 }
 
@@ -64,17 +55,7 @@ export const DEFAULT_STATE: PlaygroundState = {
   autoplaySpeed: 4000,
   animationSpeed: 300,
   spaceBetweenSlides: 15,
-  dotColor: SWIPI_DEFAULTS.dotColor,
-  activeDotColor: SWIPI_DEFAULTS.activeDotColor,
-  sizeForDefaultDot: SWIPI_DEFAULTS.sizeForDefaultDot,
-  sizeForDefaultActiveDot: SWIPI_DEFAULTS.sizeForDefaultActiveDot,
-  dotsAnimation: 'default',
   slidesAnimation: 'default',
-  customDot: false,
-  customActiveDot: false,
-  nextButton: SWIPI_DEFAULTS.nextButton,
-  prevButton: SWIPI_DEFAULTS.prevButton,
-  className: '',
   ariaLabel: SWIPI_DEFAULTS.ariaLabel,
   useConfig: false,
   config: [
@@ -84,11 +65,6 @@ export const DEFAULT_STATE: PlaygroundState = {
   ],
   stageWidth: 640
 }
-
-export const DOTS_ANIMATION_OPTIONS: SelectOption<DotsAnimation>[] = [
-  { value: 'default', label: 'default' },
-  { value: 'sliding', label: 'sliding' }
-]
 
 export const SLIDES_ANIMATION_OPTIONS: SelectOption<
   ValueOf<SlidesAnimation>
