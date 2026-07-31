@@ -1,33 +1,23 @@
 import { useCallback } from 'react'
-import {
-  clamp,
-  clampTransform,
-  getShortestLoopStep,
-  getTrackPosition,
-  normalizeIndex
-} from '../../helpers'
-import { FIRST_SLIDE_INDEX, ONE_STEP } from '../../constants'
+import { clampToSnaps, getScrollToTarget, getStepTarget } from '../../geometry'
+import { ONE_STEP } from '../../constants'
 import { Navigation, UseNavigationReturn } from './types'
 
 export const useNavigation = ({
   isLoop,
-  lastIndex,
+  geometry,
   targetRef,
   animateTo,
-  slideWidth,
-  slidesCount,
   canScrollNext,
   canScrollPrev
 }: Navigation): UseNavigationReturn => {
   const scrollBy = useCallback(
     (step: number): void => {
-      const transform = targetRef.current - step * slideWidth
+      const transform = getStepTarget(targetRef.current, geometry, isLoop, step)
 
-      animateTo(
-        clampTransform({ transform, slideWidth, lastIndex, loop: isLoop })
-      )
+      animateTo(clampToSnaps(transform, geometry, isLoop))
     },
-    [animateTo, isLoop, lastIndex, slideWidth, targetRef]
+    [animateTo, isLoop, geometry, targetRef]
   )
 
   const nextImg = useCallback((): void => {
@@ -44,23 +34,9 @@ export const useNavigation = ({
 
   const scrollTo = useCallback(
     (index: number): void => {
-      if (!isLoop) {
-        animateTo(-clamp(index, FIRST_SLIDE_INDEX, lastIndex) * slideWidth)
-        return
-      }
-
-      const position = Math.round(
-        getTrackPosition(targetRef.current, slideWidth)
-      )
-      const step = getShortestLoopStep(
-        normalizeIndex(position, slidesCount),
-        normalizeIndex(index, slidesCount),
-        slidesCount
-      )
-
-      animateTo(-(position + step) * slideWidth)
+      animateTo(getScrollToTarget(targetRef.current, geometry, isLoop, index))
     },
-    [animateTo, isLoop, lastIndex, slideWidth, slidesCount, targetRef]
+    [animateTo, isLoop, geometry, targetRef]
   )
 
   return { nextImg, prevImg, scrollTo }

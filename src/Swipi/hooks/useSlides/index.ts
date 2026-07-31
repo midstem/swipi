@@ -3,10 +3,8 @@ import { ConfigService } from '../../configService'
 import {
   calculateSlideWidthWithCorner,
   hasSlidesOverflow,
-  returnCountOfDots,
   returnSlideWidth
 } from '../../helpers'
-import { FIRST_SLIDE_INDEX } from '../../constants'
 import { Slides, UseSlidesReturn } from './types'
 
 export const useSlides = ({
@@ -44,18 +42,10 @@ export const useSlides = ({
       : width
   }, [isCornerSlide, updateSlideWidthArgs, visibleCountSlides])
 
-  const isLoop = loop && hasOverflow
-
-  const lastIndex = isLoop
-    ? slidesCount - 1
-    : Math.max(slidesCount - visibleCountSlides, FIRST_SLIDE_INDEX)
-
   return {
-    isLoop,
-    lastIndex,
     slideWidth,
     hasOverflow,
     spaceBetween,
-    countShowDots: returnCountOfDots(slidesCount, visibleCountSlides, isLoop)
+    isLoop: loop && hasOverflow
   }
 }

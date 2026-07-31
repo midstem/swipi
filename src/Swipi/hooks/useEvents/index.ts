@@ -1,10 +1,7 @@
 import { PointerEvent, useRef } from 'react'
 import { DragState, TouchEvents, UseEventsReturn } from './types'
-import {
-  clampTransform,
-  getMomentumDuration,
-  getMomentumTarget
-} from '../../helpers'
+import { getMomentumDuration } from '../../helpers'
+import { clampToSnaps, getMomentumSnap } from '../../geometry'
 import { DRAG_THRESHOLD, PRIMARY_BUTTON } from '../../constants'
 import { capturePointer, getReleaseVelocity, noop } from './helpers'
 
@@ -13,8 +10,7 @@ export const useEvents = ({
   moveTo,
   dragFree,
   animateTo,
-  lastIndex,
-  slideWidth,
+  geometry,
   hasOverflow,
   animationSpeed,
   transformRef
@@ -80,14 +76,7 @@ export const useEvents = ({
     drag.lastX = event.clientX
     drag.lastAt = performance.now()
 
-    moveTo(
-      clampTransform({
-        transform: drag.startTransform + deltaX,
-        slideWidth,
-        lastIndex,
-        loop: isLoop
-      })
-    )
+    moveTo(clampToSnaps(drag.startTransform + deltaX, geometry, isLoop))
   }
 
   const onPointerUp = (event: PointerEvent<HTMLDivElement>): void => {
@@ -104,18 +93,18 @@ export const useEvents = ({
     const transform = transformRef.current
     const velocity = getReleaseVelocity(drag)
 
-    const target = clampTransform({
-      transform: getMomentumTarget({
+    const target = clampToSnaps(
+      getMomentumSnap({
         transform,
         velocity,
-        slideWidth,
         startTransform: drag.startTransform,
+        geometry,
+        loop: isLoop,
         dragFree
       }),
-      slideWidth,
-      lastIndex,
-      loop: isLoop
-    })
+      geometry,
+      isLoop
+    )
 
     animateTo(
       target,

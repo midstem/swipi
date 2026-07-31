@@ -683,6 +683,33 @@ describe('Swipi rendering', () => {
     expect(getSlideWidthVariable()).toBe('600px')
   })
 
+  it('does not add a snap for the gap after the last slide', () => {
+    render(
+      <Swipi showDots slidesNumber={3} spaceBetweenSlides={20}>
+        {renderSlides(6)}
+      </Swipi>
+    )
+
+    expect(screen.getAllByRole('button', { name: /Go to slide/ })).toHaveLength(
+      4
+    )
+  })
+
+  it('keeps the last slide flush with the end of the track', () => {
+    render(
+      <Swipi slidesNumber={3} spaceBetweenSlides={20}>
+        {renderSlides(6)}
+      </Swipi>
+    )
+
+    const slides = getSlides()
+    const gap = Number(getSlideGapVariable().replace('px', ''))
+    const width = Number(getSlideWidthVariable().replace('px', ''))
+
+    expect(slides[slides.length - 1].offsetWidth).toBe(width - gap)
+    expect(slides[0].offsetWidth).toBe(width)
+  })
+
   it('drives the slide geometry from the track instead of every slide', () => {
     render(
       <Swipi slidesNumber={2} spaceBetweenSlides={20}>

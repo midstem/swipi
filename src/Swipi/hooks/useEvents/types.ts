@@ -1,10 +1,10 @@
 import { MutableRefObject, PointerEvent } from 'react'
+import { SlidesGeometry } from '../../types'
 
 export type TouchEvents = {
   isLoop: boolean
   dragFree: boolean
-  lastIndex: number
-  slideWidth: number
+  geometry: SlidesGeometry
   hasOverflow: boolean
   animationSpeed: number
   transformRef: MutableRefObject<number>

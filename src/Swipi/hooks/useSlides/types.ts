@@ -13,9 +13,7 @@ export type Slides = {
 
 export type UseSlidesReturn = {
   isLoop: boolean
-  lastIndex: number
   slideWidth: number
   hasOverflow: boolean
   spaceBetween: number
-  countShowDots: number
 }

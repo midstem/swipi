@@ -1,10 +1,9 @@
 import { MutableRefObject } from 'react'
+import { SlidesGeometry } from '../../types'
 
 export type Navigation = {
   isLoop: boolean
-  lastIndex: number
-  slideWidth: number
-  slidesCount: number
+  geometry: SlidesGeometry
   canScrollNext: boolean
   canScrollPrev: boolean
   targetRef: MutableRefObject<number>

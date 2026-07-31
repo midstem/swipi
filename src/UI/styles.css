@@ -38,6 +38,11 @@
   padding-right: var(--swipi-slide-gap);
 }
 
+.swipi-slide:last-child {
+  width: calc(var(--swipi-slide-width) - var(--swipi-slide-gap));
+  padding-right: 0;
+}
+
 .dots-wrapper {
   position: relative;
   display: flex;
