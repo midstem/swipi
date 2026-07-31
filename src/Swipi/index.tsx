@@ -3,7 +3,8 @@ import {
   forwardRef,
   KeyboardEvent,
   useImperativeHandle,
-  useMemo
+  useMemo,
+  useState
 } from 'react'
 import { useSwipi } from './useSwipi'
 import { SwipiProps, SwipiRef } from './types'
@@ -14,6 +15,7 @@ import {
   toCoreConfig
 } from './helpers'
 import { ONE_SLIDE } from './constants'
+import { useSlideSizing } from './useSlideSizing'
 import { ANIMATIONS } from '../DotsAnimations'
 import { Slide } from '../UI/Slide'
 import LiveRegion from '../UI/LiveRegion'
@@ -84,22 +86,33 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
     [config, slidesAnimation]
   )
 
+  const [viewportWidth, setViewportWidth] = useState(0)
+
+  const { slideWidth, spaceBetween } = useSlideSizing({
+    viewportWidth,
+    spaceBetweenSlides,
+    config: coreConfig,
+    slidesNumber: isFadeIn ? ONE_SLIDE : slidesNumber,
+    biasRight: isFadeIn ? false : biasRight
+  })
+
   const { refs, state, handlers } = useSwipi({
     loop,
     autoplay,
     dragFree,
+    slideWidth,
+    spaceBetween,
     initialSlide,
     autoplaySpeed,
     animationSpeed,
-    spaceBetweenSlides,
-    config: coreConfig,
-    slidesNumber: isFadeIn ? ONE_SLIDE : slidesNumber,
-    biasRight: isFadeIn ? false : biasRight,
     onChange,
     onSelect
   })
 
   const { trackRef, slidesWrapperRef } = refs
+
+  if (viewportWidth !== state.viewportWidth)
+    setViewportWidth(state.viewportWidth)
   const { slideIndex, countShowDots, hasOverflow, isDisableButton } = state
   const { nextImg, prevImg, scrollTo } = handlers
 

@@ -71,7 +71,7 @@ export const Gallery = () => {
     getSlideProps,
     getDotProps,
     getLiveRegionProps
-  } = useSwipiCarousel({ loop: true, slidesNumber: 3, spaceBetweenSlides: 12 })
+  } = useSwipiCarousel({ loop: true })
 
   return (
     <div className="gallery">
@@ -127,15 +127,13 @@ are yours; only the declarations matter.
 
 .gallery__track {
   display: flex;
-  width: fit-content;
+  width: 100%;
   user-select: none;
 }
 
 .gallery__slide {
   box-sizing: border-box;
-  flex-shrink: 0;
-  width: var(--swipi-slide-width);
-  padding-right: var(--swipi-slide-gap);
+  flex: 0 0 50%;
 }
 
 .gallery__status {
@@ -148,9 +146,21 @@ are yours; only the declarations matter.
 }
 ```
 
-`--swipi-slide-width` and `--swipi-slide-gap` are set on the track element for
-you, derived from `slidesNumber` and `spaceBetweenSlides`. Sizing slides purely
-from your own CSS — `flex: 0 0 50%` and the like — is not supported yet.
+Slide widths are entirely yours. The carousel measures whatever your CSS
+produces and derives the snap positions from it, so `flex: 0 0 50%`, fixed
+pixel widths, breakpoints, and even a different width per slide all work.
+
+Two rules make that measuring reliable:
+
+- Keep `width: 100%` on the track rather than `fit-content`. A percentage
+  `flex-basis` resolves against the track, and a track sized by its own content
+  makes that circular — the browser will hand you widths you did not ask for.
+- Give slides `flex-shrink: 0` (the `0` in `flex: 0 0 50%`) so they keep the
+  width you set instead of being squeezed to fit the viewport.
+
+The number of snap positions follows from the measurements: the carousel stops
+once the remaining slides fit the viewport, so five half-width slides give four
+snaps rather than five.
 
 ### What the hook returns
 
@@ -172,10 +182,11 @@ from your own CSS — `flex: 0 0 50%` and the like — is not supported yet.
 | `getDotProps`         | Dot label, `aria-current` and the click handler                     |
 | `getLiveRegionProps`  | `aria-live` and `aria-atomic`                                       |
 
-The hook takes the same behavioural options as the component — `loop`,
-`dragFree`, `slidesNumber`, `spaceBetweenSlides`, `biasRight`, `config`,
-`initialSlide`, `animationSpeed`, `autoplay`, `autoplaySpeed`, `ariaLabel`,
-`onSelect`, `onChange` — and none of its visual ones.
+The hook takes the behavioural options — `loop`, `dragFree`, `initialSlide`,
+`animationSpeed`, `autoplay`, `autoplaySpeed`, `ariaLabel`, `onSelect`,
+`onChange` — and none of the component's visual ones. Sizing props such as
+`slidesNumber` and `spaceBetweenSlides` are deliberately absent: slide widths
+come from your CSS.
 
 ## **Imperative API (ref)**
 

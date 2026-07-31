@@ -13,13 +13,11 @@ export type UseSwipiType = {
   loop: boolean
   autoplay: boolean
   dragFree: boolean
-  biasRight?: boolean
-  config: ConfigType[]
-  slidesNumber: number
+  slideWidth?: number
+  spaceBetween?: number
   initialSlide: number
   autoplaySpeed: number
   animationSpeed: number
-  spaceBetweenSlides: number
   onChange: (value: SlidePositions) => void
   onSelect: (state: SwipiState) => void
 }
@@ -104,11 +102,14 @@ export type LoopGeometry = {
   loop: boolean
 }
 
-export type SlidesGeometry = {
+export type SlidesMeasurement = {
   positions: number[]
   sizes: number[]
-  snaps: number[]
   contentSize: number
+}
+
+export type SlidesGeometry = SlidesMeasurement & {
+  snaps: number[]
 }
 
 export type MomentumSnapType = {

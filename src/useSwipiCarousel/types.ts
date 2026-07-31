@@ -4,19 +4,17 @@ import {
   PointerEventHandler,
   RefObject
 } from 'react'
-import { ConfigType, SlidePositions, SwipiState } from '../Swipi/types'
+import { SlidePositions, SwipiState } from '../Swipi/types'
 
 export type SwipiCarouselOptions = {
   loop?: boolean
   dragFree?: boolean
-  biasRight?: boolean
   autoplay?: boolean
-  config?: ConfigType[]
-  slidesNumber?: number
+  slideWidth?: number
+  spaceBetween?: number
   initialSlide?: number
   autoplaySpeed?: number
   animationSpeed?: number
-  spaceBetweenSlides?: number
   ariaLabel?: string
   onChange?: (positions: SlidePositions) => void
   onSelect?: (state: SwipiState) => void

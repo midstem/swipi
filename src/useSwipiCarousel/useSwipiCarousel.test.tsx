@@ -16,7 +16,7 @@ const Carousel = (options: SwipiCarouselOptions): JSX.Element => {
     getSlideProps,
     getDotProps,
     getLiveRegionProps
-  } = useSwipiCarousel({ slidesNumber: 1, ...options })
+  } = useSwipiCarousel({ slideWidth: 900, ...options })
 
   return (
     <section>

@@ -6,8 +6,6 @@ import {
   DEFAULT_ARIA_LABEL,
   DEFAULT_AUTOPLAY_SPEED,
   DEFAULT_INITIAL_SLIDE,
-  DEFAULT_SLIDES_NUMBER,
-  DEFAULT_SPACE_BETWEEN,
   FOCUSABLE,
   GROUP_ROLE,
   SLIDE_ROLE_DESCRIPTION
@@ -33,29 +31,25 @@ import {
 export const useSwipiCarousel = ({
   loop = false,
   dragFree = false,
-  biasRight = false,
   autoplay = false,
-  config = [],
-  slidesNumber = DEFAULT_SLIDES_NUMBER,
+  slideWidth,
+  spaceBetween,
   initialSlide = DEFAULT_INITIAL_SLIDE,
   autoplaySpeed = DEFAULT_AUTOPLAY_SPEED,
   animationSpeed = DEFAULT_ANIMATION_SPEED,
-  spaceBetweenSlides = DEFAULT_SPACE_BETWEEN,
   ariaLabel = DEFAULT_ARIA_LABEL,
   onChange = noop,
   onSelect = noop
 }: SwipiCarouselOptions = {}): SwipiCarousel => {
   const { refs, state, handlers } = useSwipi({
     loop,
-    config,
     autoplay,
     dragFree,
-    biasRight,
-    slidesNumber,
+    slideWidth,
+    spaceBetween,
     initialSlide,
     autoplaySpeed,
     animationSpeed,
-    spaceBetweenSlides,
     onChange,
     onSelect
   })

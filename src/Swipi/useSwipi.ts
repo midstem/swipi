@@ -2,10 +2,10 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState
 } from 'react'
-import { useSlides } from './hooks/useSlides'
 import { useEvents } from './hooks/useEvents'
 import { useTrack } from './hooks/useTrack'
 import { useAutoplay } from './hooks/useAutoplay'
@@ -16,28 +16,23 @@ import { useElementWidth } from './hooks/useElementWidth'
 import { useSlidesCount } from './hooks/useSlidesCount'
 import { useSlidesGeometry } from './hooks/useSlidesGeometry'
 import { useTrackVariables } from './hooks/useTrackVariables'
-import { useWindowResize } from './hooks/useWindowResize'
 import { FIRST_SLIDE, FIRST_SLIDE_INDEX, NO_SLIDES } from './constants'
 import { UseSwipiType } from './types'
 import { clamp, getSlidePositions } from './helpers'
-import { getSnapIndex } from './geometry'
+import { getSnapIndex, toSnaps } from './geometry'
 
 export const useSwipi = ({
   loop,
-  config,
   autoplay,
   dragFree,
-  biasRight,
-  slidesNumber,
+  slideWidth,
+  spaceBetween,
   initialSlide,
   autoplaySpeed,
   animationSpeed,
-  spaceBetweenSlides,
   onChange,
   onSelect
 }: UseSwipiType) => {
-  const [windowWidth, setWindowWidth] = useState<number>(0)
-
   const timeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const trackRef = useRef<HTMLDivElement>(null)
   const slidesWrapperRef = useRef<HTMLDivElement>(null)
@@ -50,27 +45,24 @@ export const useSwipi = ({
   const onChangeRef = useLatestRef(onChange)
   const onSelectRef = useLatestRef(onSelect)
 
-  const { isLoop, slideWidth, hasOverflow, spaceBetween } = useSlides({
-    loop,
-    config,
-    biasRight,
-    windowWidth,
-    slidesCount,
-    containerWidth,
-    slidesNumber,
-    spaceBetweenSlides
-  })
-
   useTrackVariables({ trackRef, slideWidth, spaceBetween })
 
-  const geometry = useSlidesGeometry({
-    trackRef,
-    slidesCount,
-    slideWidth,
-    spaceBetween,
-    loop: isLoop,
-    viewportWidth: containerWidth
-  })
+  const measurement = useSlidesGeometry(trackRef)
+
+  const hasOverflow = measurement.contentSize > containerWidth
+  const isLoop = loop && hasOverflow
+
+  const geometry = useMemo(
+    () => ({
+      ...measurement,
+      snaps: toSnaps({
+        ...measurement,
+        viewportWidth: containerWidth,
+        loop: isLoop
+      })
+    }),
+    [measurement, containerWidth, isLoop]
+  )
 
   const countShowDots = geometry.snaps.length
   const lastIndex = Math.max(countShowDots - 1, FIRST_SLIDE_INDEX)
@@ -132,12 +124,6 @@ export const useSwipi = ({
     nextImg
   })
 
-  useWindowResize(() => setWindowWidth(window.innerWidth))
-
-  useLayoutEffect(() => {
-    setWindowWidth(window.innerWidth)
-  }, [])
-
   useLayoutEffect(() => {
     if (!geometry.snaps.length) return
 
@@ -150,13 +136,7 @@ export const useSwipi = ({
   })
 
   useEffect(() => {
-    if (
-      !isMeasured ||
-      !initialSlide ||
-      isInitialSlideApplied.current ||
-      slideWidth <= 0
-    )
-      return
+    if (!isMeasured || !initialSlide || isInitialSlideApplied.current) return
 
     isInitialSlideApplied.current = true
 
@@ -165,7 +145,7 @@ export const useSwipi = ({
         clamp(initialSlide, FIRST_SLIDE, countShowDots) - FIRST_SLIDE
       ]
     )
-  }, [isMeasured, initialSlide, countShowDots, slideWidth, geometry, moveTo])
+  }, [isMeasured, initialSlide, countShowDots, geometry, moveTo])
 
   useEffect(() => {
     if (!isMeasured) return
@@ -197,6 +177,7 @@ export const useSwipi = ({
       slideIndex,
       slidesCount,
       countShowDots,
+      viewportWidth: containerWidth,
       hasOverflow,
       isDisableButton
     },

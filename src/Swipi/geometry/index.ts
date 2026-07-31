@@ -5,7 +5,12 @@ import {
   NO_OFFSET,
   ONE_STEP
 } from '../constants'
-import { MomentumSnapType, SlidesGeometry, SnapsFromPositions } from '../types'
+import {
+  MomentumSnapType,
+  SlidesGeometry,
+  SlidesMeasurement,
+  SnapsFromPositions
+} from '../types'
 import { clamp, normalizeIndex } from '../helpers'
 
 export const EMPTY_GEOMETRY: SlidesGeometry = {
@@ -15,11 +20,7 @@ export const EMPTY_GEOMETRY: SlidesGeometry = {
   contentSize: 0
 }
 
-export const measureSlides = (
-  track: HTMLElement,
-  viewportWidth: number,
-  loop: boolean
-): SlidesGeometry => {
+export const measureSlides = (track: HTMLElement): SlidesMeasurement => {
   const { children } = track
   const positions: number[] = []
   const sizes: number[] = []
@@ -31,24 +32,13 @@ export const measureSlides = (
     sizes.push(slide.offsetWidth)
   }
 
-  if (!positions.length) return EMPTY_GEOMETRY
+  if (!positions.length) return { positions: [], sizes: [], contentSize: 0 }
 
   const origin = positions[0]
   const offsets = positions.map((position) => position - origin)
   const contentSize = offsets[offsets.length - 1] + sizes[sizes.length - 1]
 
-  return {
-    positions: offsets,
-    sizes,
-    contentSize,
-    snaps: toSnaps({
-      positions: offsets,
-      sizes,
-      contentSize,
-      viewportWidth,
-      loop
-    })
-  }
+  return { positions: offsets, sizes, contentSize }
 }
 
 const toSnap = (position: number): number => -position || INITIAL_TRANSFORM

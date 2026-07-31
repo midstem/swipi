@@ -1,37 +1,38 @@
 import { RefObject, useCallback, useLayoutEffect, useState } from 'react'
-import { EMPTY_GEOMETRY, measureSlides } from '../../geometry'
-import { SlidesGeometry } from '../../types'
+import { measureSlides } from '../../geometry'
+import { SlidesMeasurement } from '../../types'
 
-type UseSlidesGeometryProps = {
-  trackRef: RefObject<HTMLDivElement | null>
-  viewportWidth: number
-  slidesCount: number
-  slideWidth: number
-  spaceBetween: number
-  loop: boolean
+const EMPTY_MEASUREMENT: SlidesMeasurement = {
+  positions: [],
+  sizes: [],
+  contentSize: 0
 }
 
-export const useSlidesGeometry = ({
-  trackRef,
-  viewportWidth,
-  slidesCount,
-  slideWidth,
-  spaceBetween,
-  loop
-}: UseSlidesGeometryProps): SlidesGeometry => {
-  const [geometry, setGeometry] = useState<SlidesGeometry>(EMPTY_GEOMETRY)
+const isSame = (a: SlidesMeasurement, b: SlidesMeasurement): boolean =>
+  a.contentSize === b.contentSize &&
+  a.positions.length === b.positions.length &&
+  a.positions.every((position, index) => position === b.positions[index]) &&
+  a.sizes.every((size, index) => size === b.sizes[index])
+
+export const useSlidesGeometry = (
+  trackRef: RefObject<HTMLElement | null>
+): SlidesMeasurement => {
+  const [measurement, setMeasurement] =
+    useState<SlidesMeasurement>(EMPTY_MEASUREMENT)
 
   const measure = useCallback((): void => {
     const track = trackRef.current
 
     if (!track) return
 
-    setGeometry(measureSlides(track, viewportWidth, loop))
-  }, [trackRef, viewportWidth, loop])
+    const next = measureSlides(track)
+
+    setMeasurement((previous) => (isSame(previous, next) ? previous : next))
+  }, [trackRef])
 
   useLayoutEffect(() => {
     measure()
-  }, [measure, slidesCount, slideWidth, spaceBetween])
+  })
 
-  return geometry
+  return measurement
 }

@@ -25,39 +25,36 @@ describe('measureSlides', () => {
   test('should read equal widths from the track variable', () => {
     const track = buildTrack([0, 0, 0, 0], 250)
 
-    expect(measureSlides(track, 500, false)).toEqual({
+    expect(measureSlides(track)).toEqual({
       positions: [0, 250, 500, 750],
       sizes: [250, 250, 250, 250],
-      contentSize: 1000,
-      snaps: [0, -250, -500]
+      contentSize: 1000
     })
   })
 
   test('should read uneven widths from the slides themselves', () => {
     const track = buildTrack([200, 500, 100, 400])
 
-    expect(measureSlides(track, 400, false)).toEqual({
+    expect(measureSlides(track)).toEqual({
       positions: [0, 200, 700, 800],
       sizes: [200, 500, 100, 400],
-      contentSize: 1200,
-      snaps: [0, -200, -700, -800]
+      contentSize: 1200
     })
   })
 
-  test('should snap to every slide in loop mode', () => {
+  test('should report the total content size', () => {
     const track = buildTrack([200, 500, 100, 400])
 
-    expect(measureSlides(track, 400, true).snaps).toEqual([0, -200, -700, -800])
+    expect(measureSlides(track).contentSize).toBe(1200)
   })
 
   test('should report nothing for an empty track', () => {
     const track = buildTrack([])
 
-    expect(measureSlides(track, 400, false)).toEqual({
+    expect(measureSlides(track)).toEqual({
       positions: [],
       sizes: [],
-      contentSize: 0,
-      snaps: []
+      contentSize: 0
     })
   })
 
@@ -68,6 +65,6 @@ describe('measureSlides', () => {
     spacer.setAttribute('data-test-width', '120')
     track.parentElement?.insertBefore(spacer, track)
 
-    expect(measureSlides(track, 300, false).positions).toEqual([0, 300])
+    expect(measureSlides(track).positions).toEqual([0, 300])
   })
 })
