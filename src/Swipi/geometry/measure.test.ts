@@ -28,7 +28,8 @@ describe('measureSlides', () => {
     expect(measureSlides(track)).toEqual({
       positions: [0, 250, 500, 750],
       sizes: [250, 250, 250, 250],
-      contentSize: 1000
+      contentSize: 1000,
+      loopSize: 1000
     })
   })
 
@@ -38,7 +39,8 @@ describe('measureSlides', () => {
     expect(measureSlides(track)).toEqual({
       positions: [0, 200, 700, 800],
       sizes: [200, 500, 100, 400],
-      contentSize: 1200
+      contentSize: 1200,
+      loopSize: 1200
     })
   })
 
@@ -54,7 +56,8 @@ describe('measureSlides', () => {
     expect(measureSlides(track)).toEqual({
       positions: [],
       sizes: [],
-      contentSize: 0
+      contentSize: 0,
+      loopSize: 0
     })
   })
 

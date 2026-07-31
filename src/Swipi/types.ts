@@ -106,6 +106,7 @@ export type SlidesMeasurement = {
   positions: number[]
   sizes: number[]
   contentSize: number
+  loopSize: number
 }
 
 export type SlidesGeometry = SlidesMeasurement & {
