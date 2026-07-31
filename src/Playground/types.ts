@@ -1,7 +1,6 @@
 import type { ChangeEvent, ReactNode, RefObject } from 'react'
 import {
   ConfigType,
-  DotsAnimation,
   SlidePositions,
   SwipiRef,
   SwipiState
@@ -21,17 +20,7 @@ export type PlaygroundState = {
   autoplaySpeed: number
   animationSpeed: number
   spaceBetweenSlides: number
-  dotColor: string
-  activeDotColor: string
-  sizeForDefaultDot: number
-  sizeForDefaultActiveDot: number
-  dotsAnimation: DotsAnimation
   slidesAnimation: ValueOf<SlidesAnimation>
-  customDot: boolean
-  customActiveDot: boolean
-  nextButton: string
-  prevButton: string
-  className: string
   ariaLabel: string
   useConfig: boolean
   config: ConfigType[]

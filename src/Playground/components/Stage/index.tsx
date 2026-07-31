@@ -1,8 +1,6 @@
 import type { JSX } from 'react'
 import { useSwipiCarousel } from '../../../useSwipiCarousel'
 import { StageProps } from '../../types'
-import CustomActiveDot from '../CustomActiveDot'
-import CustomDot from '../CustomDot'
 import { useStage } from './useStage'
 import { getSlideStyle, getTrackStyle } from './helpers'
 
@@ -60,7 +58,7 @@ const Stage = ({
   return (
     <div className="pg-card">
       <div className="pg-stage__slider" style={{ width: state.stageWidth }}>
-        <div className={`pg-carousel ${state.className}`.trim()}>
+        <div className="pg-carousel">
           <span className="pg-visually-hidden" {...getLiveRegionProps()}>
             {carouselState.announcement}
           </span>
@@ -74,7 +72,7 @@ const Stage = ({
                 disabled={!carouselState.canScrollPrev}
                 onClick={scrollPrev}
               >
-                {state.prevButton}
+                ‹
               </button>
             )}
 
@@ -109,7 +107,7 @@ const Stage = ({
                 disabled={!carouselState.canScrollNext}
                 onClick={scrollNext}
               >
-                {state.nextButton}
+                ›
               </button>
             )}
           </div>
@@ -125,26 +123,11 @@ const Stage = ({
                     className="pg-carousel__dot"
                     {...getDotProps(index)}
                   >
-                    {state.customDot || state.customActiveDot ? (
-                      isActive && state.customActiveDot ? (
-                        <CustomActiveDot />
-                      ) : (
-                        state.customDot && <CustomDot />
-                      )
-                    ) : (
-                      <span
-                        className="pg-carousel__dot-mark"
-                        style={{
-                          width: isActive
-                            ? state.sizeForDefaultActiveDot
-                            : state.sizeForDefaultDot,
-                          backgroundColor: isActive
-                            ? state.activeDotColor
-                            : state.dotColor,
-                          transition: `${state.animationSpeed}ms`
-                        }}
-                      />
-                    )}
+                    <span
+                      className="pg-carousel__dot-mark"
+                      data-active={isActive}
+                      style={{ transition: `${state.animationSpeed}ms` }}
+                    />
                   </button>
                 )
               })}

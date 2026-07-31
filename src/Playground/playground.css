@@ -473,7 +473,14 @@ body {
 
 .pg-carousel__dot-mark {
   aspect-ratio: 1 / 1;
+  width: 12px;
+  background: #c7c7c7;
   border-radius: 50%;
+}
+
+.pg-carousel__dot-mark[data-active='true'] {
+  width: 14px;
+  background: #6c7ae0;
 }
 
 .pg-visually-hidden {
