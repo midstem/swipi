@@ -6,6 +6,13 @@ import {
 } from 'react'
 import { SlidePositions, SwipiState } from '../Swipi/types'
 
+export type CarouselLabels = {
+  carousel: string
+  slide: (index: number, total: number) => string
+  dot: (index: number) => string
+  announcement: (index: number, total: number) => string
+}
+
 export type SwipiCarouselOptions = {
   loop?: boolean
   dragFree?: boolean
@@ -15,7 +22,7 @@ export type SwipiCarouselOptions = {
   initialSlide?: number
   autoplaySpeed?: number
   animationSpeed?: number
-  ariaLabel?: string
+  labels?: Partial<CarouselLabels>
   onChange?: (positions: SlidePositions) => void
   onSelect?: (state: SwipiState) => void
 }

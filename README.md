@@ -195,10 +195,26 @@ README in step with it.
 | `getLiveRegionProps`  | `aria-live` and `aria-atomic`                                       |
 
 The hook takes the behavioural options — `loop`, `dragFree`, `initialSlide`,
-`animationSpeed`, `autoplay`, `autoplaySpeed`, `ariaLabel`, `onSelect`,
+`animationSpeed`, `autoplay`, `autoplaySpeed`, `labels`, `onSelect`,
 `onChange` — and none of the component's visual ones. Sizing props such as
 `slidesNumber` and `spaceBetweenSlides` are deliberately absent: slide widths
 come from your CSS.
+
+### Translating what screen readers hear
+
+Every string the hook generates can be replaced. Leave one out and it keeps its
+English wording. Indexes are 1-based, matching what a person actually hears.
+
+```tsx
+useSwipiCarousel({
+  labels: {
+    carousel: 'Галерея',
+    slide: (index, total) => `${index} з ${total}`,
+    dot: (index) => `Перейти до слайду ${index}`,
+    announcement: (index, total) => `Слайд ${index} з ${total}`
+  }
+})
+```
 
 ## **Imperative API (ref)**
 

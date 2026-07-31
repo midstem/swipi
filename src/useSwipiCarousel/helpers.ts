@@ -1,5 +1,6 @@
 import { DragEvent, KeyboardEvent } from 'react'
-import { FIRST_SLIDE } from '../Swipi/constants'
+import { CarouselLabels } from './types'
+import { DEFAULT_LABELS } from './constants'
 
 const ARROW_LEFT = 'ArrowLeft'
 
@@ -17,11 +18,6 @@ export const handleArrowKeys = (
   if (event.key === ARROW_RIGHT) scrollNext()
 }
 
-export const getPositionLabel = (index: number, total: number): string =>
-  `${index + FIRST_SLIDE} of ${total}`
-
-export const getDotLabel = (index: number): string =>
-  `Go to slide ${index + FIRST_SLIDE}`
-
-export const getAnnouncement = (index: number, total: number): string =>
-  `Slide ${index + FIRST_SLIDE} of ${total}`
+export const withDefaultLabels = (
+  labels?: Partial<CarouselLabels>
+): CarouselLabels => ({ ...DEFAULT_LABELS, ...labels })

@@ -1,9 +1,10 @@
 import { useCallback } from 'react'
+import { useLatestRef } from '../Swipi/hooks/useLatestRef'
 import { useSwipi } from '../Swipi/useSwipi'
 import {
   CAROUSEL_ROLE_DESCRIPTION,
+  FIRST_SLIDE,
   DEFAULT_ANIMATION_SPEED,
-  DEFAULT_ARIA_LABEL,
   DEFAULT_AUTOPLAY_SPEED,
   DEFAULT_INITIAL_SLIDE,
   FOCUSABLE,
@@ -11,13 +12,7 @@ import {
   SLIDE_ROLE_DESCRIPTION
 } from '../Swipi/constants'
 import { noop } from '../helpers'
-import {
-  getAnnouncement,
-  getDotLabel,
-  getPositionLabel,
-  handleArrowKeys,
-  preventDragStart
-} from './helpers'
+import { handleArrowKeys, preventDragStart, withDefaultLabels } from './helpers'
 import {
   DotPropsGetter,
   LiveRegionProps,
@@ -37,7 +32,7 @@ export const useSwipiCarousel = ({
   initialSlide = DEFAULT_INITIAL_SLIDE,
   autoplaySpeed = DEFAULT_AUTOPLAY_SPEED,
   animationSpeed = DEFAULT_ANIMATION_SPEED,
-  ariaLabel = DEFAULT_ARIA_LABEL,
+  labels,
   onChange = noop,
   onSelect = noop
 }: SwipiCarouselOptions = {}): SwipiCarousel => {
@@ -54,6 +49,8 @@ export const useSwipiCarousel = ({
     onSelect
   })
 
+  const text = useLatestRef(withDefaultLabels(labels))
+
   const { trackRef, slidesWrapperRef } = refs
   const { slideIndex, slidesCount, countShowDots, hasOverflow } = state
   const { nextImg, prevImg, scrollTo } = handlers
@@ -64,14 +61,14 @@ export const useSwipiCarousel = ({
       role: GROUP_ROLE,
       tabIndex: FOCUSABLE,
       'aria-roledescription': CAROUSEL_ROLE_DESCRIPTION,
-      'aria-label': ariaLabel,
+      'aria-label': text.current.carousel,
       onKeyDown: (event) => handleArrowKeys(event, prevImg, nextImg),
       onPointerDown: handlers.onPointerDown,
       onPointerMove: handlers.onPointerMove,
       onPointerUp: handlers.onPointerUp,
       onPointerCancel: handlers.onPointerUp
     }),
-    [slidesWrapperRef, ariaLabel, prevImg, nextImg, handlers]
+    [slidesWrapperRef, text, prevImg, nextImg, handlers]
   )
 
   const getTrackProps = useCallback(
@@ -83,19 +80,19 @@ export const useSwipiCarousel = ({
     (index: number): SlidePropsGetter => ({
       role: GROUP_ROLE,
       'aria-roledescription': SLIDE_ROLE_DESCRIPTION,
-      'aria-label': getPositionLabel(index, slidesCount)
+      'aria-label': text.current.slide(index + FIRST_SLIDE, slidesCount)
     }),
-    [slidesCount]
+    [slidesCount, text]
   )
 
   const getDotProps = useCallback(
     (index: number): DotPropsGetter => ({
       type: 'button',
-      'aria-label': getDotLabel(index),
+      'aria-label': text.current.dot(index + FIRST_SLIDE),
       'aria-current': index === slideIndex,
       onClick: () => scrollTo(index)
     }),
-    [slideIndex, scrollTo]
+    [slideIndex, scrollTo, text]
   )
 
   const getLiveRegionProps = useCallback(
@@ -111,7 +108,10 @@ export const useSwipiCarousel = ({
       snapCount: countShowDots,
       canScrollNext: !state.isDisableButton(true),
       canScrollPrev: !state.isDisableButton(),
-      announcement: getAnnouncement(slideIndex, countShowDots)
+      announcement: text.current.announcement(
+        slideIndex + FIRST_SLIDE,
+        countShowDots
+      )
     },
     scrollNext: nextImg,
     scrollPrev: prevImg,
