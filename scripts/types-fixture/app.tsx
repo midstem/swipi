@@ -1,11 +1,11 @@
-import { useRef, useState } from 'react'
-import Swipi, {
-  SwipiProps,
-  SwipiRef,
-  SwipiState,
-  useSwipiCarousel
+import { useState } from 'react'
+import { useSwipiCarousel } from 'swipi'
+import type {
+  SlidePositions,
+  SwipiCarousel,
+  SwipiCarouselRef,
+  SwipiState
 } from 'swipi'
-import type { SwipiCarousel, SwipiCarouselRef } from 'swipi'
 
 export const Headless = () => {
   const [carouselRef, carousel]: [SwipiCarouselRef, SwipiCarousel] =
@@ -27,45 +27,39 @@ export const Headless = () => {
   )
 }
 
-const config: SwipiProps['config'] = [
-  { maxWidth: 700, slidesNumber: 1, spaceBetween: 10, biasRight: true }
-]
-
 export const Consumer = () => {
-  const swipi = useRef<SwipiRef>(null)
   const [state, setState] = useState<SwipiState>()
+  const [positions, setPositions] = useState<SlidePositions>()
 
-  const scrollToLast = (): void => {
-    const snaps = swipi.current?.scrollSnapList() ?? []
+  const [carouselRef, carousel] = useSwipiCarousel({
+    loop: true,
+    autoplay: true,
+    slideWidth: 320,
+    spaceBetween: 10,
+    initialSlide: 1,
+    autoplaySpeed: 4000,
+    animationSpeed: 300,
+    onSelect: setState,
+    onChange: setPositions
+  })
 
-    swipi.current?.scrollTo(snaps.length - 1)
-  }
+  const scrollToLast = (): void => carousel.scrollTo(carousel.snapCount - 1)
 
   return (
     <>
-      <Swipi
-        ref={swipi}
-        loop
-        dragFree
-        showDots
-        showArrows
-        config={config}
-        slidesNumber={3}
-        initialSlide={1}
-        animationSpeed={300}
-        dotsAnimation="sliding"
-        slidesAnimation="fade-in"
-        spaceBetweenSlides={10}
-        ariaLabel="Gallery"
-        onSelect={setState}
-        onChange={({ prev, current, next }) => [prev, current, next]}
-      >
-        <div>one</div>
-        <div>two</div>
-      </Swipi>
+      <div ref={carouselRef}>
+        <div>
+          <div>one</div>
+          <div>two</div>
+        </div>
+      </div>
+
+      <button onClick={carousel.scrollPrev} disabled={!carousel.canScrollPrev}>
+        prev
+      </button>
 
       <button onClick={scrollToLast}>
-        {state?.selectedIndex} / {state?.snapCount}
+        {state?.selectedIndex} / {state?.snapCount} / {positions?.next}
       </button>
     </>
   )

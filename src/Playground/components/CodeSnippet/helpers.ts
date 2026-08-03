@@ -1,5 +1,5 @@
-import { REDUCE_SLIDE } from '../../../Swipi/constants'
-import { isFadeInAnimation } from '../../../Swipi/helpers'
+import { REDUCE_SLIDE } from '../../constants'
+import { isFadeInAnimation } from '../../helpers'
 import { PlaygroundState } from '../../types'
 
 const HOOK_OPTIONS = [

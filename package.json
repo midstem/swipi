@@ -1,24 +1,20 @@
 {
   "name": "swipi",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "type": "module",
   "license": "MIT",
   "author": "Maksym Tkachuk, Oleksandr Didyshen",
-  "description": "Lightweight TypeScript Slider",
+  "description": "Headless TypeScript carousel hook for React",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
-    "./style.css": "./dist/index.css",
-    "./dist/style.css": "./dist/index.css",
     "./package.json": "./package.json"
   },
   "peerDependencies": {
@@ -31,11 +27,15 @@
   "files": [
     "dist",
     "LICENSE",
-    "README.md"
+    "README.md",
+    "MIGRATION.md"
   ],
   "keywords": [
     "react",
     "typescript",
+    "headless",
+    "carousel",
+    "react-hook",
     "infinite-carousel",
     "image-carousel"
   ],
@@ -95,7 +95,6 @@
     "typescript": "^6.0.3",
     "vite": "^8.1.0",
     "vite-plugin-dts": "^5.0.3",
-    "vite-plugin-lib-inject-css": "^2.2.2",
     "vitest": "^4.1.9"
   },
   "pre-commit": "lint-tsc"

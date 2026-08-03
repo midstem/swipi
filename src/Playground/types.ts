@@ -1,11 +1,31 @@
 import type { ChangeEvent, ReactNode, RefObject } from 'react'
-import {
-  ConfigType,
-  SlidePositions,
-  SwipiRef,
-  SwipiState
-} from '../Swipi/types'
-import { SlidesAnimation, ValueOf } from '../types'
+import { SlidePositions, SwipiState } from '../Swipi/types'
+
+export enum SlidesAnimation {
+  DEFAULT = 'default',
+  FADE_IN = 'fade-in'
+}
+
+export type ValueOf<T extends string> = `${T}`
+
+export type ConfigType = {
+  maxWidth: number
+  biasRight?: boolean
+  slidesNumber: number
+  spaceBetween?: number
+}
+
+// The imperative surface the playground builds on top of the hook, kept here
+// so the stage and the panel below it agree on its shape.
+export type CarouselRef = {
+  scrollNext: () => void
+  scrollPrev: () => void
+  scrollTo: (index: number) => void
+  selectedScrollSnap: () => number
+  scrollSnapList: () => number[]
+  canScrollNext: () => boolean
+  canScrollPrev: () => boolean
+}
 
 export type PlaygroundState = {
   slidesCount: number
@@ -62,7 +82,7 @@ export type UsePlaygroundReturn = {
   slides: string[]
   events: PlaygroundEvent[]
   remountKey: string
-  swipiRef: RefObject<SwipiRef | null>
+  swipiRef: RefObject<CarouselRef | null>
   swipiState?: SwipiState
   positions?: SlidePositions
   update: UpdateState
@@ -191,7 +211,7 @@ export type StageProps = {
   state: PlaygroundState
   slides: string[]
   remountKey: string
-  swipiRef: RefObject<SwipiRef | null>
+  swipiRef: RefObject<CarouselRef | null>
   onSelect: (state: SwipiState) => void
   onChange: (positions: SlidePositions) => void
 }
@@ -210,7 +230,7 @@ export type UseStageReturn = {
 
 export type ImperativeApiProps = {
   slidesCount: number
-  swipiRef: RefObject<SwipiRef | null>
+  swipiRef: RefObject<CarouselRef | null>
 }
 
 export type UseImperativeApiProps = ImperativeApiProps

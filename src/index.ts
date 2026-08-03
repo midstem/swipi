@@ -1,5 +1,3 @@
-import Swipi from './Swipi'
-
 export { useSwipiCarousel } from './useSwipiCarousel'
 
 export type {
@@ -8,6 +6,4 @@ export type {
   SwipiCarouselRef
 } from './useSwipiCarousel/types'
 
-export type { SwipiRef, SwipiProps, SwipiState } from './Swipi/types'
-
-export default Swipi
+export type { SwipiState, SlidePositions } from './Swipi/types'

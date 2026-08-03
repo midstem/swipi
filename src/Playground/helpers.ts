@@ -1,5 +1,14 @@
 import { DEFAULT_STATE, STORAGE_KEY } from './constants'
-import { PlaygroundState, PlaygroundStateKey } from './types'
+import {
+  PlaygroundState,
+  PlaygroundStateKey,
+  SlidesAnimation,
+  ValueOf
+} from './types'
+
+export const isFadeInAnimation = (
+  animation: ValueOf<SlidesAnimation>
+): boolean => animation === SlidesAnimation.FADE_IN
 
 const isSameShape = (key: PlaygroundStateKey, value: unknown): boolean => {
   if (key === 'config') return Array.isArray(value)

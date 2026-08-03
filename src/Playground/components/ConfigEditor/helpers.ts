@@ -1,4 +1,4 @@
-import { ConfigType } from '../../../Swipi/types'
+import { ConfigType } from '../../types'
 import { NEW_CONFIG_ITEM } from './constants'
 
 export const updateConfigItem = (
