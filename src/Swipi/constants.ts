@@ -42,6 +42,8 @@ export const NO_SLIDES = 0
 
 export const SNAP_TOLERANCE = 1
 
+export const GEOMETRY_TOLERANCE = 0.01
+
 export const EMPTY_TRANSFORM = ''
 
 export const PROGRESS_END = 1

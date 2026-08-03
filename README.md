@@ -164,7 +164,7 @@ Slide widths are entirely yours. The carousel measures whatever your CSS
 produces and derives the snap positions from it, so `flex: 0 0 50%`, fixed
 pixel widths, breakpoints, and even a different width per slide all work.
 
-Three rules make that measuring reliable:
+Four rules make that measuring reliable:
 
 - Keep `width: 100%` on the track rather than `fit-content`. A percentage
   `flex-basis` resolves against the track, and a track sized by its own content
@@ -174,6 +174,14 @@ Three rules make that measuring reliable:
 - Space slides with `margin` rather than `padding`, and clear it on the last
   one. Padding sits inside the slide's box, so in `loop` mode the trailing gap
   becomes part of the repeat and the carousel drifts by that much every lap.
+- Keep `scale()` off the viewport, the track and the slides. Measuring goes
+  through `getBoundingClientRect()`, so a scaled slide is measured at its
+  on-screen size while the track still moves in unscaled pixels. Scaling
+  something inside a slide is fine.
+
+Measurements keep their fractions: widths that land between two pixels, as
+percentage widths usually do, are used as they are rather than rounded, so a
+`loop` stays seamless however many times it comes round.
 
 The number of snap positions follows from the measurements: the carousel stops
 once the remaining slides fit the viewport, so five half-width slides give four

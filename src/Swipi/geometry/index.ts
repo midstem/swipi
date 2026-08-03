@@ -8,6 +8,7 @@ import {
 } from '../constants'
 import {
   MomentumSnapType,
+  SlideOffsets,
   SlidesGeometry,
   SlidesMeasurement,
   SnapsFromPositions
@@ -27,16 +28,20 @@ const getGap = (positions: number[], sizes: number[]): number =>
     ? Math.max(positions[ONE_STEP] - (positions[0] + sizes[0]), NO_OFFSET)
     : NO_OFFSET
 
-export const measureSlides = (track: HTMLElement): SlidesMeasurement => {
+export const measureSlides = (
+  track: HTMLElement,
+  laps?: SlideOffsets
+): SlidesMeasurement => {
   const { children } = track
   const positions: number[] = []
   const sizes: number[] = []
 
   for (let index = 0; index < children.length; index += 1) {
     const slide = children[index] as HTMLElement
+    const { left, width } = slide.getBoundingClientRect()
 
-    positions.push(slide.offsetLeft)
-    sizes.push(slide.offsetWidth)
+    positions.push(left - (laps?.get(slide) ?? NO_OFFSET))
+    sizes.push(width)
   }
 
   if (!positions.length) {

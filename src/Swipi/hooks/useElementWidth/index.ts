@@ -9,7 +9,7 @@ export const useElementWidth = (ref: RefObject<HTMLElement | null>): number => {
 
     if (!element) return
 
-    const measure = (): void => setWidth(element.clientWidth)
+    const measure = (): void => setWidth(element.getBoundingClientRect().width)
 
     measure()
 

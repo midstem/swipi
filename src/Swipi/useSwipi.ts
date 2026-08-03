@@ -17,7 +17,7 @@ import { useSlidesCount } from './hooks/useSlidesCount'
 import { useSlidesGeometry } from './hooks/useSlidesGeometry'
 import { useTrackVariables } from './hooks/useTrackVariables'
 import { FIRST_SLIDE, FIRST_SLIDE_INDEX, NO_SLIDES } from './constants'
-import { UseSwipiType } from './types'
+import { SlideOffsets, UseSwipiType } from './types'
 import { clamp, getSlidePositions } from './helpers'
 import { getSnapIndex, toSnaps } from './geometry'
 
@@ -37,6 +37,7 @@ export const useSwipi = ({
   const trackRef = useRef<HTMLElement | null>(null)
   const viewportRef = useRef<HTMLElement | null>(null)
   const isInitialSlideApplied = useRef<boolean>(false)
+  const slideOffsetsRef = useRef<SlideOffsets>(new WeakMap())
 
   const carouselRef = useCallback((node: HTMLElement | null): void => {
     viewportRef.current = node
@@ -52,7 +53,7 @@ export const useSwipi = ({
 
   useTrackVariables({ trackRef, slideWidth, spaceBetween })
 
-  const measurement = useSlidesGeometry(trackRef)
+  const measurement = useSlidesGeometry(trackRef, slideOffsetsRef)
 
   const hasOverflow = measurement.contentSize > containerWidth
   const isLoop = loop && hasOverflow
@@ -72,7 +73,12 @@ export const useSwipi = ({
   const countShowDots = geometry.snaps.length
   const lastIndex = Math.max(countShowDots - 1, FIRST_SLIDE_INDEX)
 
-  const { render } = useTrack({ trackRef, loop: isLoop, geometry })
+  const { render } = useTrack({
+    trackRef,
+    loop: isLoop,
+    geometry,
+    offsetsRef: slideOffsetsRef
+  })
 
   const [slideIndex, setSlideIndex] = useState<number>(FIRST_SLIDE_INDEX)
 

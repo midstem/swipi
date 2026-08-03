@@ -20,13 +20,13 @@ const forEachSlide = (
 export const useTrack = ({
   loop,
   trackRef,
-  geometry
+  geometry,
+  offsetsRef
 }: UseTrackProps): UseTrackReturn => {
-  const appliedOffsetsRef = useRef(new WeakMap<HTMLElement, number>())
   const hasAppliedOffsetsRef = useRef(false)
 
   const renderSlideOffsets = (track: HTMLElement, transform: number): void => {
-    const appliedOffsets = appliedOffsetsRef.current
+    const appliedOffsets = offsetsRef.current
 
     forEachSlide(track, (slide, index) => {
       const offset = getSlideLap(index, transform, geometry)
@@ -46,7 +46,7 @@ export const useTrack = ({
       slide.style.transform = EMPTY_TRANSFORM
     })
 
-    appliedOffsetsRef.current = new WeakMap()
+    offsetsRef.current = new WeakMap()
     hasAppliedOffsetsRef.current = false
   }
 
