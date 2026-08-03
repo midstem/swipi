@@ -12,14 +12,6 @@ export const DEFAULT_SPACE_BETWEEN = 0
 
 export const DEFAULT_ARIA_LABEL = 'Slides'
 
-export const CAROUSEL_ROLE_DESCRIPTION = 'carousel'
-
-export const SLIDE_ROLE_DESCRIPTION = 'slide'
-
-export const GROUP_ROLE = 'group'
-
-export const FOCUSABLE = 0
-
 export const REDUCE_SLIDE = 0.35
 
 export const FIRST_SLIDE_IDENTIFIER = 1

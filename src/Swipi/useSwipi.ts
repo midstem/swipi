@@ -34,12 +34,17 @@ export const useSwipi = ({
   onSelect
 }: UseSwipiType) => {
   const timeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
-  const trackRef = useRef<HTMLDivElement>(null)
-  const slidesWrapperRef = useRef<HTMLDivElement>(null)
+  const trackRef = useRef<HTMLElement | null>(null)
+  const viewportRef = useRef<HTMLElement | null>(null)
   const isInitialSlideApplied = useRef<boolean>(false)
 
+  const carouselRef = useCallback((node: HTMLElement | null): void => {
+    viewportRef.current = node
+    trackRef.current = (node?.firstElementChild as HTMLElement | null) ?? null
+  }, [])
+
   const slidesCount = useSlidesCount(trackRef)
-  const containerWidth = useElementWidth(slidesWrapperRef)
+  const containerWidth = useElementWidth(viewportRef)
   const isMeasured = slidesCount > NO_SLIDES
 
   const onChangeRef = useLatestRef(onChange)
@@ -105,13 +110,14 @@ export const useSwipi = ({
     canScrollPrev
   })
 
-  const { onPointerDown, onPointerMove, onPointerUp } = useEvents({
+  useEvents({
     isLoop,
     moveTo,
     dragFree,
     animateTo,
     geometry,
     hasOverflow,
+    viewportRef,
     animationSpeed,
     transformRef
   })
@@ -172,22 +178,17 @@ export const useSwipi = ({
   ])
 
   return {
-    refs: { trackRef, slidesWrapperRef },
+    carouselRef,
     state: {
       slideIndex,
       slidesCount,
       countShowDots,
       viewportWidth: containerWidth,
       hasOverflow,
+      canScrollNext,
+      canScrollPrev,
       isDisableButton
     },
-    handlers: {
-      nextImg,
-      prevImg,
-      scrollTo,
-      onPointerDown,
-      onPointerMove,
-      onPointerUp
-    }
+    handlers: { nextImg, prevImg, scrollTo }
   }
 }

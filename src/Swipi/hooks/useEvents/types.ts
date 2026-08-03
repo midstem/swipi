@@ -1,4 +1,4 @@
-import { MutableRefObject, PointerEvent } from 'react'
+import { MutableRefObject, RefObject } from 'react'
 import { SlidesGeometry } from '../../types'
 
 export type TouchEvents = {
@@ -8,6 +8,7 @@ export type TouchEvents = {
   hasOverflow: boolean
   animationSpeed: number
   transformRef: MutableRefObject<number>
+  viewportRef: RefObject<HTMLElement | null>
   moveTo: (value: number) => void
   animateTo: (value: number, duration?: number) => void
 }
@@ -24,9 +25,9 @@ export type DragState = {
   isDragging: boolean
 }
 
-export type PointerHandler = (event: PointerEvent<HTMLDivElement>) => void
+export type PointerHandler = (event: PointerEvent) => void
 
-export type UseEventsReturn = {
+export type PointerHandlers = {
   onPointerDown: PointerHandler
   onPointerMove: PointerHandler
   onPointerUp: PointerHandler

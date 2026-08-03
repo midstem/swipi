@@ -1,5 +1,31 @@
 import { useRef, useState } from 'react'
-import Swipi, { SwipiProps, SwipiRef, SwipiState } from 'swipi'
+import Swipi, {
+  SwipiProps,
+  SwipiRef,
+  SwipiState,
+  useSwipiCarousel
+} from 'swipi'
+import type { SwipiCarousel, SwipiCarouselRef } from 'swipi'
+
+export const Headless = () => {
+  const [carouselRef, carousel]: [SwipiCarouselRef, SwipiCarousel] =
+    useSwipiCarousel({ loop: true, dragFree: true, onSelect: (state) => state })
+
+  return (
+    <>
+      <div ref={carouselRef}>
+        <div>
+          <div>one</div>
+          <div>two</div>
+        </div>
+      </div>
+
+      <button onClick={carousel.scrollNext} disabled={!carousel.canScrollNext}>
+        {carousel.selectedIndex} / {carousel.snapCount} / {carousel.slidesCount}
+      </button>
+    </>
+  )
+}
 
 const config: SwipiProps['config'] = [
   { maxWidth: 700, slidesNumber: 1, spaceBetween: 10, biasRight: true }

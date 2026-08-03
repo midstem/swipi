@@ -1,24 +1,22 @@
 import { getDragVelocity } from '../../helpers'
 import { NO_VELOCITY, VELOCITY_STALE_TIME } from '../../constants'
-import { PointerEvent } from 'react'
 import { DragState } from './types'
 
-export const noop = (): void => {}
-
 export const capturePointer = (
-  event: PointerEvent<HTMLDivElement>,
+  element: Element | null,
+  pointerId: number,
   isCapturing: boolean
 ): void => {
-  const element = event.currentTarget
+  if (!element) return
 
   try {
     if (isCapturing) {
-      element.setPointerCapture?.(event.pointerId)
+      element.setPointerCapture?.(pointerId)
       return
     }
 
-    if (element.hasPointerCapture?.(event.pointerId)) {
-      element.releasePointerCapture(event.pointerId)
+    if (element.hasPointerCapture?.(pointerId)) {
+      element.releasePointerCapture(pointerId)
     }
   } catch {
     /* the pointer is gone — nothing to capture or release */
@@ -33,3 +31,5 @@ export const getReleaseVelocity = (drag: DragState): number => {
     duration: drag.lastAt - drag.previousAt
   })
 }
+
+export const preventDragStart = (event: Event): void => event.preventDefault()

@@ -1,4 +1,4 @@
-import type { JSX } from 'react'
+import type { JSX, KeyboardEvent } from 'react'
 import { useSwipiCarousel } from '../../../useSwipiCarousel'
 import { StageProps } from '../../types'
 import { useStage } from './useStage'
@@ -20,47 +20,41 @@ const Stage = ({
     activeBreakpoint
   } = useStage({ state })
 
-  const {
-    state: carouselState,
-    scrollNext,
-    scrollPrev,
-    scrollTo,
-    getViewportProps,
-    getTrackProps,
-    getSlideProps,
-    getDotProps,
-    getLiveRegionProps
-  } = useSwipiCarousel({
+  const [carouselRef, carousel] = useSwipiCarousel({
     loop: state.loop,
     dragFree: state.dragFree,
     autoplay: state.autoplay,
     initialSlide: state.initialSlide,
     autoplaySpeed: state.autoplaySpeed,
     animationSpeed: state.animationSpeed,
-    labels: { carousel: state.ariaLabel },
     onSelect,
     onChange
   })
 
   swipiRef.current = {
-    scrollNext,
-    scrollPrev,
-    scrollTo,
-    selectedScrollSnap: () => carouselState.selectedIndex,
+    scrollNext: carousel.scrollNext,
+    scrollPrev: carousel.scrollPrev,
+    scrollTo: carousel.scrollTo,
+    selectedScrollSnap: () => carousel.selectedIndex,
     scrollSnapList: () =>
-      Array.from({ length: carouselState.snapCount }, (_, index) => index),
-    canScrollNext: () => carouselState.canScrollNext,
-    canScrollPrev: () => carouselState.canScrollPrev
+      Array.from({ length: carousel.snapCount }, (_, index) => index),
+    canScrollNext: () => carousel.canScrollNext,
+    canScrollPrev: () => carousel.canScrollPrev
   }
 
-  const showArrows = state.showArrows && carouselState.hasOverflow
+  const showArrows = state.showArrows && carousel.hasOverflow
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
+    if (event.key === 'ArrowLeft') carousel.scrollPrev()
+    if (event.key === 'ArrowRight') carousel.scrollNext()
+  }
 
   return (
     <div className="pg-card">
       <div className="pg-stage__slider" style={{ width: state.stageWidth }}>
         <div className="pg-carousel">
-          <span className="pg-visually-hidden" {...getLiveRegionProps()}>
-            {carouselState.announcement}
+          <span className="pg-visually-hidden" aria-live="polite" aria-atomic>
+            Slide {carousel.selectedIndex + 1} of {carousel.snapCount}
           </span>
 
           <div className="pg-carousel__row">
@@ -69,29 +63,38 @@ const Stage = ({
                 type="button"
                 className="pg-carousel__arrow"
                 aria-label="Previous slide"
-                disabled={!carouselState.canScrollPrev}
-                onClick={scrollPrev}
+                disabled={!carousel.canScrollPrev}
+                onClick={carousel.scrollPrev}
               >
                 ‹
               </button>
             )}
 
-            <div className="pg-carousel__viewport" {...getViewportProps()}>
+            <div
+              ref={carouselRef}
+              className="pg-carousel__viewport"
+              role="group"
+              tabIndex={0}
+              aria-roledescription="carousel"
+              aria-label={state.ariaLabel}
+              onKeyDown={handleKeyDown}
+            >
               <div
                 className="pg-carousel__track"
                 style={getTrackStyle(visibleSlides, spaceBetween, bias)}
-                {...getTrackProps()}
               >
                 {slides.map((color, index) => (
                   <div
                     key={color}
                     className="pg-carousel__slide"
+                    role="group"
+                    aria-roledescription="slide"
+                    aria-label={`${index + 1} of ${slides.length}`}
                     style={getSlideStyle(
                       state,
                       color,
-                      index === carouselState.selectedIndex
+                      index === carousel.selectedIndex
                     )}
-                    {...getSlideProps(index)}
                   >
                     {index + 1}
                   </div>
@@ -104,8 +107,8 @@ const Stage = ({
                 type="button"
                 className="pg-carousel__arrow"
                 aria-label="Next slide"
-                disabled={!carouselState.canScrollNext}
-                onClick={scrollNext}
+                disabled={!carousel.canScrollNext}
+                onClick={carousel.scrollNext}
               >
                 ›
               </button>
@@ -114,14 +117,17 @@ const Stage = ({
 
           {state.showDots && (
             <nav className="pg-carousel__dots">
-              {Array.from({ length: carouselState.snapCount }, (_, index) => {
-                const isActive = index === carouselState.selectedIndex
+              {Array.from({ length: carousel.snapCount }, (_, index) => {
+                const isActive = index === carousel.selectedIndex
 
                 return (
                   <button
                     key={index}
+                    type="button"
                     className="pg-carousel__dot"
-                    {...getDotProps(index)}
+                    aria-label={`Go to slide ${index + 1}`}
+                    aria-current={isActive}
+                    onClick={() => carousel.scrollTo(index)}
                   >
                     <span
                       className="pg-carousel__dot-mark"
@@ -144,7 +150,7 @@ const Stage = ({
           visible slides: <b>{visibleSlides}</b>
         </li>
         <li>
-          snap positions: <b>{carouselState.snapCount}</b>
+          snap positions: <b>{carousel.snapCount}</b>
         </li>
         <li>
           active breakpoint:{' '}

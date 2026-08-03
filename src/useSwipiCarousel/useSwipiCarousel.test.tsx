@@ -2,173 +2,115 @@ import { useState, type JSX } from 'react'
 import { describe, expect, it } from 'vitest'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { useSwipiCarousel } from '.'
-import { SwipiCarouselOptions } from './types'
+import { SwipiCarousel, SwipiCarouselOptions } from './types'
+import { isPointerCaptured } from '../test/setup'
 
 const SLIDE_LABELS = ['one', 'two', 'three', 'four']
 
-const Carousel = (options: SwipiCarouselOptions): JSX.Element => {
-  const {
-    state,
-    scrollNext,
-    scrollPrev,
-    getViewportProps,
-    getTrackProps,
-    getSlideProps,
-    getDotProps,
-    getLiveRegionProps
-  } = useSwipiCarousel({ slideWidth: 900, ...options })
+const POINTER_ID = 1
+
+type CarouselProps = SwipiCarouselOptions & {
+  onRender?: (carousel: SwipiCarousel) => void
+}
+
+const Carousel = ({ onRender, ...options }: CarouselProps): JSX.Element => {
+  const [carouselRef, carousel] = useSwipiCarousel({
+    slideWidth: 900,
+    ...options
+  })
+
+  onRender?.(carousel)
 
   return (
     <section>
-      <div data-testid="viewport" {...getViewportProps()}>
-        <div data-testid="track" {...getTrackProps()}>
-          {SLIDE_LABELS.map((label, index) => (
-            <article key={label} {...getSlideProps(index)}>
-              {label}
-            </article>
+      <div data-testid="viewport" ref={carouselRef}>
+        <div data-testid="track">
+          {SLIDE_LABELS.map((label) => (
+            <article key={label}>{label}</article>
           ))}
         </div>
       </div>
 
-      <span data-testid="live" {...getLiveRegionProps()}>
-        {state.announcement}
-      </span>
-
-      <button onClick={scrollPrev}>back</button>
-      <button onClick={scrollNext}>forward</button>
+      <button onClick={carousel.scrollPrev}>back</button>
+      <button onClick={carousel.scrollNext}>forward</button>
 
       <nav>
-        {Array.from({ length: state.snapCount }, (_, index) => (
-          <button key={index} {...getDotProps(index)} />
+        {Array.from({ length: carousel.snapCount }, (_, index) => (
+          <button key={index} onClick={() => carousel.scrollTo(index)}>
+            dot {index}
+          </button>
         ))}
       </nav>
 
       <p data-testid="state">
-        {state.selectedIndex}/{state.snapCount}/{String(state.canScrollPrev)}/
-        {String(state.canScrollNext)}
+        {carousel.selectedIndex}/{carousel.snapCount}/{carousel.slidesCount}/
+        {String(carousel.canScrollPrev)}/{String(carousel.canScrollNext)}/
+        {String(carousel.hasOverflow)}
       </p>
     </section>
   )
 }
 
+const Host = (props: CarouselProps): JSX.Element => {
+  const [, setTick] = useState(0)
+
+  return (
+    <>
+      <button onClick={() => setTick((tick) => tick + 1)}>rerender</button>
+      <Carousel {...props} />
+    </>
+  )
+}
+
 const readState = (): string => screen.getByTestId('state').textContent
 
-const getDots = (): HTMLElement[] =>
-  screen.getAllByRole('button', { name: /Go to slide/ })
+const getViewport = (): HTMLElement => screen.getByTestId('viewport')
+
+const getTrack = (): HTMLElement => screen.getByTestId('track')
+
+const getDot = (index: number): HTMLElement =>
+  screen.getByRole('button', { name: `dot ${index}` })
+
+const drag = (points: [number, number][]): void => {
+  const viewport = getViewport()
+
+  fireEvent.pointerDown(viewport, {
+    pointerId: POINTER_ID,
+    button: 0,
+    clientX: points[0][0],
+    clientY: points[0][1]
+  })
+
+  points.slice(1).forEach(([clientX, clientY]) => {
+    fireEvent.pointerMove(viewport, { pointerId: POINTER_ID, clientX, clientY })
+  })
+}
 
 describe('useSwipiCarousel wiring', () => {
-  it('marks the viewport as a focusable carousel', () => {
-    render(<Carousel labels={{ carousel: 'Gallery' }} />)
-
-    const viewport = screen.getByTestId('viewport')
-
-    expect(viewport.getAttribute('role')).toBe('group')
-    expect(viewport.getAttribute('aria-roledescription')).toBe('carousel')
-    expect(viewport.getAttribute('aria-label')).toBe('Gallery')
-    expect(viewport.getAttribute('tabindex')).toBe('0')
-  })
-
-  it('labels every slide with its position', () => {
+  it('finds the track as the only child of the viewport', () => {
     render(<Carousel />)
 
-    expect(screen.getByRole('group', { name: '1 of 4' })).toBeTruthy()
-    expect(screen.getByRole('group', { name: '4 of 4' })).toBeTruthy()
+    expect(getTrack().style.getPropertyValue('--swipi-slide-width')).toBe(
+      '900px'
+    )
+    expect(readState()).toBe('0/4/4/false/true/true')
   })
 
-  it('announces the selected slide through the live region', () => {
+  it('adds nothing of its own to the elements it is given', () => {
     render(<Carousel />)
 
-    const live = screen.getByTestId('live')
-
-    expect(live.getAttribute('aria-live')).toBe('polite')
-    expect(live.textContent).toBe('Slide 1 of 4')
-
-    fireEvent.click(screen.getByRole('button', { name: 'forward' }))
-
-    expect(live.textContent).toBe('Slide 2 of 4')
-  })
-})
-
-describe('useSwipiCarousel labels', () => {
-  const UKRAINIAN = {
-    carousel: 'Галерея',
-    slide: (index: number, total: number) => `${index} з ${total}`,
-    dot: (index: number) => `Перейти до слайду ${index}`,
-    announcement: (index: number, total: number) => `Слайд ${index} з ${total}`
-  }
-
-  it('translates every string it generates', () => {
-    render(<Carousel labels={UKRAINIAN} />)
-
-    expect(screen.getByTestId('viewport').getAttribute('aria-label')).toBe(
-      'Галерея'
-    )
-    expect(screen.getByRole('group', { name: '2 з 4' })).toBeTruthy()
-    expect(
-      screen.getByRole('button', { name: 'Перейти до слайду 3' })
-    ).toBeTruthy()
-    expect(screen.getByTestId('live').textContent).toBe('Слайд 1 з 4')
+    expect(getViewport().attributes).toHaveLength(1)
+    expect(getTrack().attributes).toHaveLength(2)
   })
 
-  it('keeps the english wording for the labels left out', () => {
-    render(<Carousel labels={{ carousel: 'Галерея' }} />)
+  it('leaves the carousel alone when everything fits', () => {
+    render(<Carousel slideWidth={100} />)
 
-    expect(screen.getByTestId('viewport').getAttribute('aria-label')).toBe(
-      'Галерея'
-    )
-    expect(screen.getByRole('group', { name: '2 of 4' })).toBeTruthy()
-    expect(screen.getByTestId('live').textContent).toBe('Slide 1 of 4')
-  })
-
-  it('counts from one so the wording matches what is heard', () => {
-    const seen: number[] = []
-
-    render(
-      <Carousel
-        labels={{
-          dot: (index) => {
-            seen.push(index)
-
-            return `dot ${index}`
-          }
-        }}
-      />
-    )
-
-    expect(seen).toContain(1)
-    expect(seen).not.toContain(0)
-  })
-
-  it('survives an inline labels object on a parent re-render', () => {
-    const Host = (): JSX.Element => {
-      const [, setTick] = useState(0)
-
-      return (
-        <>
-          <button onClick={() => setTick((tick) => tick + 1)}>rerender</button>
-          <Carousel labels={{ carousel: 'Галерея' }} />
-        </>
-      )
-    }
-
-    render(<Host />)
-
-    fireEvent.click(screen.getByRole('button', { name: 'rerender' }))
-
-    expect(screen.getByTestId('viewport').getAttribute('aria-label')).toBe(
-      'Галерея'
-    )
-    expect(readState()).toBe('0/4/false/true')
+    expect(readState()).toBe('0/1/4/false/false/false')
   })
 })
 
 describe('useSwipiCarousel navigation', () => {
-  it('reports the initial state', () => {
-    render(<Carousel />)
-
-    expect(readState()).toBe('0/4/false/true')
-  })
-
   it('moves through the snaps and updates the bounds', () => {
     render(<Carousel />)
 
@@ -178,37 +120,131 @@ describe('useSwipiCarousel navigation', () => {
     fireEvent.click(forward)
     fireEvent.click(forward)
 
-    expect(readState()).toBe('3/4/true/false')
-  })
-
-  it('responds to arrow keys with no arrows of ours on the page', () => {
-    render(<Carousel />)
-
-    const viewport = screen.getByTestId('viewport')
-
-    fireEvent.keyDown(viewport, { key: 'ArrowRight' })
-
-    expect(readState()).toBe('1/4/true/true')
-
-    fireEvent.keyDown(viewport, { key: 'ArrowLeft' })
-
-    expect(readState()).toBe('0/4/false/true')
+    expect(readState()).toBe('3/4/4/true/false/true')
   })
 
   it('scrolls to the snap behind a dot', () => {
     render(<Carousel />)
 
-    fireEvent.click(getDots()[2])
+    fireEvent.click(getDot(2))
 
-    expect(readState()).toBe('2/4/true/true')
-    expect(getDots()[2].getAttribute('aria-current')).toBe('true')
-    expect(getDots()[0].getAttribute('aria-current')).toBe('false')
+    expect(readState()).toBe('2/4/4/true/true/true')
   })
 
   it('keeps both directions open in loop mode', () => {
     render(<Carousel loop />)
 
-    expect(readState()).toBe('0/4/true/true')
+    expect(readState()).toBe('0/4/4/true/true/true')
+  })
+
+  it('moves the track to the selected snap', async () => {
+    render(<Carousel />)
+
+    fireEvent.click(getDot(1))
+
+    await waitFor(() =>
+      expect(getTrack().style.transform).toBe('translate3d(-900px, 0, 0)')
+    )
+  })
+
+  it('survives a re-render of the parent', () => {
+    render(<Host />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'rerender' }))
+
+    expect(readState()).toBe('0/4/4/false/true/true')
+  })
+
+  it('hands back the same carousel until something about it changes', () => {
+    const seen: SwipiCarousel[] = []
+
+    render(<Host onRender={(carousel) => seen.push(carousel)} />)
+
+    const mounted = seen.length
+
+    fireEvent.click(screen.getByRole('button', { name: 'rerender' }))
+
+    expect(seen.length).toBeGreaterThan(mounted)
+    expect(seen.at(-1)).toBe(seen[mounted - 1])
+
+    fireEvent.click(screen.getByRole('button', { name: 'forward' }))
+
+    expect(seen.at(-1)).not.toBe(seen[mounted - 1])
+  })
+})
+
+describe('useSwipiCarousel drag', () => {
+  it('follows the pointer through listeners of its own', () => {
+    render(<Carousel />)
+
+    drag([
+      [500, 0],
+      [400, 0],
+      [300, 0]
+    ])
+
+    expect(getTrack().style.transform).toBe('translate3d(-200px, 0, 0)')
+  })
+
+  it('captures the pointer and releases it on the way up', () => {
+    render(<Carousel />)
+
+    drag([
+      [500, 0],
+      [400, 0]
+    ])
+
+    expect(isPointerCaptured(POINTER_ID)).toBe(true)
+
+    fireEvent.pointerUp(getViewport(), { pointerId: POINTER_ID })
+
+    expect(isPointerCaptured(POINTER_ID)).toBe(false)
+  })
+
+  it('ignores a movement below the drag threshold', () => {
+    render(<Carousel />)
+
+    drag([
+      [500, 0],
+      [498, 0]
+    ])
+
+    expect(getTrack().style.transform).toBe('')
+  })
+
+  it('leaves the track alone when a vertical swipe wins', () => {
+    render(<Carousel />)
+
+    drag([
+      [500, 0],
+      [500, 40]
+    ])
+
+    expect(getTrack().style.transform).toBe('')
+  })
+
+  it('stops dragging when everything fits the viewport', () => {
+    render(<Carousel slideWidth={100} />)
+
+    drag([
+      [500, 0],
+      [400, 0]
+    ])
+
+    expect(getTrack().style.transform).toBe('')
+  })
+
+  it('prevents the native drag that would break the gesture', () => {
+    render(<Carousel />)
+
+    const dragStart = new Event('dragstart', {
+      bubbles: true,
+      cancelable: true
+    })
+
+    getTrack().dispatchEvent(dragStart)
+
+    expect(dragStart.defaultPrevented).toBe(true)
   })
 })
 
@@ -216,27 +252,22 @@ describe('useSwipiCarousel with slides sized by the consumer', () => {
   const WIDTHS = [200, 500, 100, 400]
 
   const UnevenCarousel = (options: SwipiCarouselOptions): JSX.Element => {
-    const { state, getViewportProps, getTrackProps, getSlideProps, scrollTo } =
-      useSwipiCarousel(options)
+    const [carouselRef, carousel] = useSwipiCarousel(options)
 
     return (
       <div>
-        <div data-testid="viewport" {...getViewportProps()}>
-          <div data-testid="track" {...getTrackProps()}>
-            {WIDTHS.map((width, index) => (
-              <article
-                key={width}
-                data-test-width={width}
-                {...getSlideProps(index)}
-              />
+        <div ref={carouselRef}>
+          <div data-testid="track">
+            {WIDTHS.map((width) => (
+              <article key={width} data-test-width={width} />
             ))}
           </div>
         </div>
 
-        <button onClick={() => scrollTo(2)}>third</button>
+        <button onClick={() => carousel.scrollTo(2)}>third</button>
 
         <p data-testid="state">
-          {state.selectedIndex}/{state.snapCount}
+          {carousel.selectedIndex}/{carousel.snapCount}
         </p>
       </div>
     )
@@ -250,9 +281,7 @@ describe('useSwipiCarousel with slides sized by the consumer', () => {
     fireEvent.click(screen.getByRole('button', { name: 'third' }))
 
     await waitFor(() =>
-      expect(screen.getByTestId('track').style.transform).toBe(
-        'translate3d(-300px, 0, 0)'
-      )
+      expect(getTrack().style.transform).toBe('translate3d(-300px, 0, 0)')
     )
   })
 
@@ -260,33 +289,5 @@ describe('useSwipiCarousel with slides sized by the consumer', () => {
     render(<UnevenCarousel loop />)
 
     expect(readState()).toBe('0/4')
-  })
-})
-
-describe('useSwipiCarousel geometry', () => {
-  it('drives the slide width from the track variable', () => {
-    render(<Carousel />)
-
-    const track = screen.getByTestId('track')
-
-    expect(track.style.getPropertyValue('--swipi-slide-width')).toBe('900px')
-  })
-
-  it('counts the slides it finds in the track', () => {
-    render(<Carousel />)
-
-    expect(screen.getByTestId('track').children).toHaveLength(4)
-  })
-
-  it('moves the track to the selected snap', async () => {
-    render(<Carousel />)
-
-    fireEvent.click(getDots()[1])
-
-    await waitFor(() =>
-      expect(screen.getByTestId('track').style.transform).toBe(
-        'translate3d(-900px, 0, 0)'
-      )
-    )
   })
 })

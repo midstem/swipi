@@ -2,10 +2,9 @@ import {
   CSSProperties,
   HTMLAttributes,
   MutableRefObject,
-  PointerEventHandler,
-  ReactNode,
-  RefObject
+  ReactNode
 } from 'react'
+import { SwipiCarouselRef } from '../useSwipiCarousel/types'
 
 export type ComponentBasicProps = {
   children: ReactNode
@@ -30,15 +29,11 @@ export type SwipiButtonProps = {
 
 export type SlidesWrapperProps = {
   children: ReactNode
-  slidesWrapperRef: RefObject<HTMLDivElement | null>
-  onPointerDown: PointerEventHandler<HTMLDivElement>
-  onPointerMove: PointerEventHandler<HTMLDivElement>
-  onPointerUp: PointerEventHandler<HTMLDivElement>
+  carouselRef: SwipiCarouselRef
 }
 
 export type SlidesContainerProps = {
   children: ReactNode
-  trackRef: RefObject<HTMLDivElement | null>
 }
 
 export type DotProps = {

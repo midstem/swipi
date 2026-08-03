@@ -8,8 +8,7 @@ const HOOK_OPTIONS = [
   'autoplay',
   'autoplaySpeed',
   'animationSpeed',
-  'initialSlide',
-  'ariaLabel'
+  'initialSlide'
 ] as const
 
 type OptionValue = string | number | boolean
@@ -20,8 +19,7 @@ const DEFAULTS: Record<(typeof HOOK_OPTIONS)[number], OptionValue> = {
   autoplay: false,
   autoplaySpeed: 4000,
   animationSpeed: 300,
-  initialSlide: 0,
-  ariaLabel: 'Slides'
+  initialSlide: 0
 }
 
 const toOption = (key: string, value: OptionValue): string =>
@@ -38,15 +36,19 @@ const getOptions = (state: PlaygroundState): string => {
 export const buildMarkup = (state: PlaygroundState): string => {
   const arrows = state.showArrows
     ? `
-      <button onClick={scrollPrev} disabled={!state.canScrollPrev}>‹</button>
-      <button onClick={scrollNext} disabled={!state.canScrollNext}>›</button>
+      <button onClick={carousel.scrollPrev} disabled={!carousel.canScrollPrev}>‹</button>
+      <button onClick={carousel.scrollNext} disabled={!carousel.canScrollNext}>›</button>
 `
     : ''
 
   const dots = state.showDots
     ? `
-      {Array.from({ length: state.snapCount }, (_, index) => (
-        <button className="carousel__dot" key={index} {...getDotProps(index)} />
+      {Array.from({ length: carousel.snapCount }, (_, index) => (
+        <button
+          className="carousel__dot"
+          key={index}
+          onClick={() => carousel.scrollTo(index)}
+        />
       ))}
 `
     : ''
@@ -54,32 +56,19 @@ export const buildMarkup = (state: PlaygroundState): string => {
   return `import { useSwipiCarousel } from 'swipi'
 
 export const Carousel = ({ items }) => {
-  const {
-    state,
-    scrollNext,
-    scrollPrev,
-    getViewportProps,
-    getTrackProps,
-    getSlideProps,
-    getDotProps,
-    getLiveRegionProps
-  } = useSwipiCarousel(${getOptions(state)})
+  const [carouselRef, carousel] = useSwipiCarousel(${getOptions(state)})
 
   return (
     <>
-      <div className="carousel__viewport" {...getViewportProps()}>
-        <div className="carousel__track" {...getTrackProps()}>
-          {items.map((item, index) => (
-            <div className="carousel__slide" key={item.id} {...getSlideProps(index)}>
+      <div className="carousel__viewport" ref={carouselRef}>
+        <div className="carousel__track">
+          {items.map((item) => (
+            <div className="carousel__slide" key={item.id}>
               {item.title}
             </div>
           ))}
         </div>
       </div>
-
-      <span className="carousel__status" {...getLiveRegionProps()}>
-        {state.announcement}
-      </span>
 ${arrows}${dots}    </>
   )
 }`
@@ -135,14 +124,5 @@ export const buildStyles = (state: PlaygroundState): string => {
 .carousel__slide {
   box-sizing: border-box;
   flex: 0 0 ${basis};${spacing}
-}
-
-.carousel__status {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
 }${fade}`
 }

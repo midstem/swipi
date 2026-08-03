@@ -96,7 +96,7 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
     biasRight: isFadeIn ? false : biasRight
   })
 
-  const { refs, state, handlers } = useSwipi({
+  const { carouselRef, state, handlers } = useSwipi({
     loop,
     autoplay,
     dragFree,
@@ -108,8 +108,6 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
     onChange,
     onSelect
   })
-
-  const { trackRef, slidesWrapperRef } = refs
 
   if (viewportWidth !== state.viewportWidth)
     setViewportWidth(state.viewportWidth)
@@ -159,13 +157,8 @@ const Swipi = forwardRef<SwipiRef, SwipiProps>(function Swipi(
             {prevButton}
           </SwipiButton>
         )}
-        <SlidesWrapper
-          slidesWrapperRef={slidesWrapperRef}
-          onPointerDown={handlers.onPointerDown}
-          onPointerMove={handlers.onPointerMove}
-          onPointerUp={handlers.onPointerUp}
-        >
-          <SlidesContainer trackRef={trackRef}>
+        <SlidesWrapper carouselRef={carouselRef}>
+          <SlidesContainer>
             {slides.map((slide, index) => (
               <Slide
                 key={getSlideKey(slide, index)}

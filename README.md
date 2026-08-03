@@ -53,8 +53,9 @@ The component above renders our markup, our dots and our arrows. When you want
 your own, take the hook instead: it gives you the carousel engine — drag,
 momentum, snapping, looping, autoplay — and you write every element yourself.
 
-Everything you need to wire up comes from a prop getter, so the accessibility
-comes with it rather than being something you have to remember.
+Wiring is a single ref on the viewport. The track is its only child and the
+slides are the children of the track — the same contract Embla uses. Everything
+else on the page, including the accessibility attributes, is markup you own.
 
 ```tsx
 import { useSwipiCarousel } from 'swipi'
@@ -62,50 +63,33 @@ import { useSwipiCarousel } from 'swipi'
 const items = ['One', 'Two', 'Three', 'Four', 'Five']
 
 export const Gallery = () => {
-  const {
-    state,
-    scrollNext,
-    scrollPrev,
-    getViewportProps,
-    getTrackProps,
-    getSlideProps,
-    getDotProps,
-    getLiveRegionProps
-  } = useSwipiCarousel({ loop: true })
+  const [carouselRef, carousel] = useSwipiCarousel({ loop: true })
 
   return (
     <div className="carousel">
-      <div className="carousel__viewport" {...getViewportProps()}>
-        <div className="carousel__track" {...getTrackProps()}>
-          {items.map((item, index) => (
-            <article
-              className="carousel__slide"
-              key={item}
-              {...getSlideProps(index)}
-            >
+      <div className="carousel__viewport" ref={carouselRef}>
+        <div className="carousel__track">
+          {items.map((item) => (
+            <article className="carousel__slide" key={item}>
               {item}
             </article>
           ))}
         </div>
       </div>
 
-      <span className="carousel__status" {...getLiveRegionProps()}>
-        {state.announcement}
-      </span>
-
-      <button onClick={scrollPrev} disabled={!state.canScrollPrev}>
+      <button onClick={carousel.scrollPrev} disabled={!carousel.canScrollPrev}>
         Previous
       </button>
-      <button onClick={scrollNext} disabled={!state.canScrollNext}>
+      <button onClick={carousel.scrollNext} disabled={!carousel.canScrollNext}>
         Next
       </button>
 
       <nav className="carousel__dots">
-        {Array.from({ length: state.snapCount }, (_, index) => (
+        {Array.from({ length: carousel.snapCount }, (_, index) => (
           <button
             className="carousel__dot"
             key={index}
-            {...getDotProps(index)}
+            onClick={() => carousel.scrollTo(index)}
           />
         ))}
       </nav>
@@ -140,15 +124,6 @@ are yours; only the declarations matter.
 .carousel__slide:last-child {
   margin-right: 0;
 }
-
-.carousel__status {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-}
 ```
 
 Slide widths are entirely yours. The carousel measures whatever your CSS
@@ -176,45 +151,39 @@ README in step with it.
 
 ### What the hook returns
 
-| Field                 | Description                                                         |
-| --------------------- | ------------------------------------------------------------------- |
-| `state.selectedIndex` | Index of the current snap position                                  |
-| `state.snapCount`     | Number of snap positions                                            |
-| `state.slidesCount`   | Number of slides found in the track                                 |
-| `state.canScrollNext` | Whether a next scroll is possible                                   |
-| `state.canScrollPrev` | Whether a previous scroll is possible                               |
-| `state.hasOverflow`   | Whether there are more slides than fit, i.e. dragging does anything |
-| `state.announcement`  | Text for the live region, e.g. `"Slide 2 of 5"`                     |
-| `scrollNext`          | Move to the next snap                                               |
-| `scrollPrev`          | Move to the previous snap                                           |
-| `scrollTo`            | Move to a given snap index                                          |
-| `getViewportProps`    | Ref, pointer handlers, `tabIndex`, carousel role and arrow keys     |
-| `getTrackProps`       | Ref and the native drag guard                                       |
-| `getSlideProps`       | Slide role and its `"2 of 5"` label                                 |
-| `getDotProps`         | Dot label, `aria-current` and the click handler                     |
-| `getLiveRegionProps`  | `aria-live` and `aria-atomic`                                       |
-
-The hook takes the behavioural options — `loop`, `dragFree`, `initialSlide`,
-`animationSpeed`, `autoplay`, `autoplaySpeed`, `labels`, `onSelect`,
-`onChange` — and none of the component's visual ones. Sizing props such as
-`slidesNumber` and `spaceBetweenSlides` are deliberately absent: slide widths
-come from your CSS.
-
-### Translating what screen readers hear
-
-Every string the hook generates can be replaced. Leave one out and it keeps its
-English wording. Indexes are 1-based, matching what a person actually hears.
+The hook returns a tuple: the ref for the viewport and the carousel itself.
 
 ```tsx
-useSwipiCarousel({
-  labels: {
-    carousel: 'Галерея',
-    slide: (index, total) => `${index} з ${total}`,
-    dot: (index) => `Перейти до слайду ${index}`,
-    announcement: (index, total) => `Слайд ${index} з ${total}`
-  }
-})
+const [carouselRef, carousel] = useSwipiCarousel()
 ```
+
+| Field                    | Description                                                         |
+| ------------------------ | ------------------------------------------------------------------- |
+| `carouselRef`            | Goes on the viewport; the track is found as its only child          |
+| `carousel.selectedIndex` | Index of the current snap position                                  |
+| `carousel.snapCount`     | Number of snap positions                                            |
+| `carousel.slidesCount`   | Number of slides found in the track                                 |
+| `carousel.canScrollNext` | Whether a next scroll is possible                                   |
+| `carousel.canScrollPrev` | Whether a previous scroll is possible                               |
+| `carousel.hasOverflow`   | Whether there are more slides than fit, i.e. dragging does anything |
+| `carousel.scrollNext`    | Move to the next snap                                               |
+| `carousel.scrollPrev`    | Move to the previous snap                                           |
+| `carousel.scrollTo`      | Move to a given snap index                                          |
+
+The hook takes the behavioural options — `loop`, `dragFree`, `initialSlide`,
+`animationSpeed`, `autoplay`, `autoplaySpeed`, `onSelect`, `onChange` — and
+none of the component's visual ones. Sizing props such as `slidesNumber` and
+`spaceBetweenSlides` are deliberately absent: slide widths come from your CSS.
+
+Pointer and drag listeners are attached to the viewport element directly, so
+nothing has to be spread onto your JSX and no handler of yours is overwritten.
+
+### The accessibility is yours
+
+The hook generates no attributes and no strings: roles, labels, `tabIndex`,
+arrow keys and the live region live in your markup, where you can word and
+translate them yourself. The playground (`npm start`) prints a starting point
+you can copy.
 
 ## **Imperative API (ref)**
 
@@ -296,7 +265,9 @@ export const App = () => {
 
 ## **Accessibility**
 
-Swipi ships with keyboard and screen-reader support out of the box:
+The `<Swipi>` component ships with keyboard and screen-reader support out of
+the box (with the hook, the markup — and therefore the accessibility — is
+yours):
 
 - The carousel exposes `role="group"` + `aria-roledescription="carousel"` with a
   configurable `aria-label` (via the `ariaLabel` prop), and each slide is a
