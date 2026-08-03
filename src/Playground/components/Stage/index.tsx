@@ -37,7 +37,7 @@ const Stage = ({
     initialSlide: state.initialSlide,
     autoplaySpeed: state.autoplaySpeed,
     animationSpeed: state.animationSpeed,
-    ariaLabel: state.ariaLabel,
+    labels: { carousel: state.ariaLabel },
     onSelect,
     onChange
   })

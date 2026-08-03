@@ -1,4 +1,4 @@
-import type { JSX } from 'react'
+import { useState, type JSX } from 'react'
 import { describe, expect, it } from 'vitest'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { useSwipiCarousel } from '.'
@@ -58,7 +58,7 @@ const getDots = (): HTMLElement[] =>
 
 describe('useSwipiCarousel wiring', () => {
   it('marks the viewport as a focusable carousel', () => {
-    render(<Carousel ariaLabel="Gallery" />)
+    render(<Carousel labels={{ carousel: 'Gallery' }} />)
 
     const viewport = screen.getByTestId('viewport')
 
@@ -86,6 +86,79 @@ describe('useSwipiCarousel wiring', () => {
     fireEvent.click(screen.getByRole('button', { name: 'forward' }))
 
     expect(live.textContent).toBe('Slide 2 of 4')
+  })
+})
+
+describe('useSwipiCarousel labels', () => {
+  const UKRAINIAN = {
+    carousel: 'Галерея',
+    slide: (index: number, total: number) => `${index} з ${total}`,
+    dot: (index: number) => `Перейти до слайду ${index}`,
+    announcement: (index: number, total: number) => `Слайд ${index} з ${total}`
+  }
+
+  it('translates every string it generates', () => {
+    render(<Carousel labels={UKRAINIAN} />)
+
+    expect(screen.getByTestId('viewport').getAttribute('aria-label')).toBe(
+      'Галерея'
+    )
+    expect(screen.getByRole('group', { name: '2 з 4' })).toBeTruthy()
+    expect(
+      screen.getByRole('button', { name: 'Перейти до слайду 3' })
+    ).toBeTruthy()
+    expect(screen.getByTestId('live').textContent).toBe('Слайд 1 з 4')
+  })
+
+  it('keeps the english wording for the labels left out', () => {
+    render(<Carousel labels={{ carousel: 'Галерея' }} />)
+
+    expect(screen.getByTestId('viewport').getAttribute('aria-label')).toBe(
+      'Галерея'
+    )
+    expect(screen.getByRole('group', { name: '2 of 4' })).toBeTruthy()
+    expect(screen.getByTestId('live').textContent).toBe('Slide 1 of 4')
+  })
+
+  it('counts from one so the wording matches what is heard', () => {
+    const seen: number[] = []
+
+    render(
+      <Carousel
+        labels={{
+          dot: (index) => {
+            seen.push(index)
+
+            return `dot ${index}`
+          }
+        }}
+      />
+    )
+
+    expect(seen).toContain(1)
+    expect(seen).not.toContain(0)
+  })
+
+  it('survives an inline labels object on a parent re-render', () => {
+    const Host = (): JSX.Element => {
+      const [, setTick] = useState(0)
+
+      return (
+        <>
+          <button onClick={() => setTick((tick) => tick + 1)}>rerender</button>
+          <Carousel labels={{ carousel: 'Галерея' }} />
+        </>
+      )
+    }
+
+    render(<Host />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'rerender' }))
+
+    expect(screen.getByTestId('viewport').getAttribute('aria-label')).toBe(
+      'Галерея'
+    )
+    expect(readState()).toBe('0/4/false/true')
   })
 })
 
