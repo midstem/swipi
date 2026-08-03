@@ -5,8 +5,9 @@ import {
   DEFAULT_AUTOPLAY_SPEED,
   DEFAULT_INITIAL_SLIDE
 } from '../Swipi/constants'
-import { noop } from '../helpers'
 import { SwipiCarousel, SwipiCarouselOptions, UseSwipiCarousel } from './types'
+
+const noop = (): void => {}
 
 export const useSwipiCarousel = ({
   loop = false,

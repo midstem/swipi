@@ -1,9 +1,8 @@
 import { CSSProperties } from 'react'
-import { ConfigService } from '../../../Swipi/configService'
-import { ONE_SLIDE, REDUCE_SLIDE } from '../../../Swipi/constants'
-import { isFadeInAnimation } from '../../../Swipi/helpers'
-import { ConfigType } from '../../../Swipi/types'
-import { PlaygroundState } from '../../types'
+import { ConfigService } from '../../configService'
+import { ONE_SLIDE, REDUCE_SLIDE } from '../../constants'
+import { isFadeInAnimation } from '../../helpers'
+import { ConfigType, PlaygroundState } from '../../types'
 
 const NO_BIAS = 1
 

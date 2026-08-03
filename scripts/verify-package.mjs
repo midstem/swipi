@@ -43,17 +43,6 @@ legacyEntries.forEach((entry) =>
 
 const esm = readDist('index.js')
 const cjs = readDist('index.cjs')
-const css = readDist('index.css')
-
-check(
-  'the ESM bundle does not import the stylesheet',
-  /import\s*['"]\.\/index\.css['"]/.test(esm)
-)
-
-check(
-  'the CJS bundle does not require the stylesheet',
-  /require\(['"]\.\/index\.css['"]\)/.test(cjs)
-)
 
 const publicExports = ['useSwipiCarousel']
 
@@ -75,21 +64,34 @@ publicExports.forEach((name) =>
   check(`the type entry does not export "${name}"`, types.includes(name))
 )
 
-const criticalRules = [
-  '.swipi-viewport',
-  '.swipi-track',
-  '.swipi-slide',
-  'overflow:hidden',
-  'var(--swipi-slide-width)'
+const publicTypes = [
+  'SwipiCarousel',
+  'SwipiCarouselOptions',
+  'SwipiCarouselRef',
+  'SwipiState',
+  'SlidePositions'
 ]
 
-criticalRules.forEach((rule) =>
-  check(`the stylesheet is missing "${rule}"`, css.includes(rule))
+publicTypes.forEach((name) =>
+  check(`the type entry does not export "${name}"`, types.includes(name))
+)
+
+// The carousel is headless: nothing it ships may pull a stylesheet in.
+const bundles = [
+  ['ESM', esm],
+  ['CJS', cjs]
+]
+
+bundles.forEach(([format, bundle]) =>
+  check(
+    `the ${format} bundle still pulls a stylesheet in`,
+    !/['"][^'"]*\.css['"]/.test(bundle)
+  )
 )
 
 check(
-  'the stylesheet leaks a global "button" selector',
-  !/(^|[},])button\s*\{/.test(css)
+  'the package still exposes a stylesheet entry',
+  !JSON.stringify(packageJson.exports).includes('.css')
 )
 
 const packed = JSON.parse(
@@ -101,12 +103,19 @@ const packedFiles = packed[0].files.map((file) => file.path)
 const requiredFiles = [
   'dist/index.js',
   'dist/index.cjs',
-  'dist/index.css',
-  'dist/index.d.ts'
+  'dist/index.d.ts',
+  'MIGRATION.md'
 ]
 
 requiredFiles.forEach((file) =>
   check(`"${file}" is not published`, packedFiles.includes(file))
+)
+
+const stylesheets = packedFiles.filter((file) => file.endsWith('.css'))
+
+check(
+  `the package still publishes a stylesheet (${stylesheets.join(', ')})`,
+  !stylesheets.length
 )
 
 if (failures.length) {

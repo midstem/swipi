@@ -1,7 +1,17 @@
-import { SlidesAnimation, ValueOf } from '../types'
-import { PlaygroundState, SelectOption, StagePreset } from './types'
+import {
+  PlaygroundState,
+  SelectOption,
+  SlidesAnimation,
+  StagePreset,
+  ValueOf
+} from './types'
 
 export const STORAGE_KEY = 'swipi-playground-state'
+
+export const ONE_SLIDE = 1
+
+// How much of a slide the next one takes over when biasRight is on.
+export const REDUCE_SLIDE = 0.35
 
 export const SLIDE_COLORS = [
   '#f94144',

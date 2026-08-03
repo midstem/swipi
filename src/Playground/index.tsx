@@ -31,8 +31,9 @@ const Playground = (): JSX.Element => {
         <div>
           <h1 className="pg-header__title">Swipi playground</h1>
           <p className="pg-hint">
-            Every prop of the component is editable here — the settings are kept
-            in <code>localStorage</code> between reloads.
+            Every option of the hook is editable here, next to the layout the
+            playground draws around it — the settings are kept in{' '}
+            <code>localStorage</code> between reloads.
           </p>
         </div>
         <div className="pg-header__actions">

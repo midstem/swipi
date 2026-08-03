@@ -29,7 +29,7 @@ const ControlsPanel = ({ state, update }: ControlsPanelProps): JSX.Element => {
       <Section title="Slides">
         <NumberField
           label="Slides in the playground"
-          hint="Amount of children passed to Swipi"
+          hint="Amount of slides inside the track"
           value={state.slidesCount}
           min={MIN_SLIDES_COUNT}
           max={MAX_SLIDES_COUNT}

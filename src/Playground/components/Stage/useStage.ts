@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { useWindowResize } from '../../../Swipi/hooks/useWindowResize'
+import { useWindowResize } from '../../hooks/useWindowResize'
 import { UseStageProps, UseStageReturn } from '../../types'
 import {
   getActiveBreakpoint,

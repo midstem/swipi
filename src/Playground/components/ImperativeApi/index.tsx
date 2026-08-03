@@ -21,7 +21,7 @@ const ImperativeApi = ({
 
   return (
     <div className="pg-card">
-      <h2 className="pg-card__title">Imperative API (ref)</h2>
+      <h2 className="pg-card__title">Carousel methods</h2>
       <div className="pg-row">
         <button type="button" className="pg-button" onClick={scrollPrev}>
           scrollPrev()
@@ -48,7 +48,7 @@ const ImperativeApi = ({
           className="pg-button pg-button--ghost"
           onClick={readState}
         >
-          Read ref state
+          Read carousel state
         </button>
       </div>
       {readings && (

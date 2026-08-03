@@ -2,7 +2,7 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { gzipSync } from 'node:zlib'
 
-const BUNDLES = ['index.js', 'index.cjs', 'index.css']
+const BUNDLES = ['index.js', 'index.cjs']
 
 const args = process.argv.slice(2)
 

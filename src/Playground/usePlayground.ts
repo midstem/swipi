@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { SlidePositions, SwipiRef, SwipiState } from '../Swipi/types'
+import { SlidePositions, SwipiState } from '../Swipi/types'
+import { CarouselRef } from './types'
 import { DEFAULT_STATE, MAX_EVENTS, SLIDE_COLORS } from './constants'
 import { loadState, saveState } from './helpers'
 import { PlaygroundEvent, PlaygroundState, UsePlaygroundReturn } from './types'
@@ -11,7 +12,7 @@ export const usePlayground = (): UsePlaygroundReturn => {
   const [events, setEvents] = useState<PlaygroundEvent[]>([])
   const [remountToken, setRemountToken] = useState<number>(0)
 
-  const swipiRef = useRef<SwipiRef>(null)
+  const swipiRef = useRef<CarouselRef>(null)
   const eventId = useRef<number>(0)
 
   useEffect(() => saveState(state), [state])

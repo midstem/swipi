@@ -1,5 +1,4 @@
-import { ConfigType } from '../../../Swipi/types'
-import { ConfigNumberFieldOption } from '../../types'
+import { ConfigNumberFieldOption, ConfigType } from '../../types'
 
 export const CONFIG_NUMBER_FIELDS: ConfigNumberFieldOption[] = [
   { key: 'maxWidth', label: 'maxWidth' },
