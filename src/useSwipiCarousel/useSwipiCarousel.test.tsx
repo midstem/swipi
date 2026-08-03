@@ -2,18 +2,24 @@ import { useState, type JSX } from 'react'
 import { describe, expect, it } from 'vitest'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { useSwipiCarousel } from '.'
-import { SwipiCarouselOptions } from './types'
+import { SwipiCarousel, SwipiCarouselOptions } from './types'
 import { isPointerCaptured } from '../test/setup'
 
 const SLIDE_LABELS = ['one', 'two', 'three', 'four']
 
 const POINTER_ID = 1
 
-const Carousel = (options: SwipiCarouselOptions): JSX.Element => {
+type CarouselProps = SwipiCarouselOptions & {
+  onRender?: (carousel: SwipiCarousel) => void
+}
+
+const Carousel = ({ onRender, ...options }: CarouselProps): JSX.Element => {
   const [carouselRef, carousel] = useSwipiCarousel({
     slideWidth: 900,
     ...options
   })
+
+  onRender?.(carousel)
 
   return (
     <section>
@@ -42,6 +48,17 @@ const Carousel = (options: SwipiCarouselOptions): JSX.Element => {
         {String(carousel.hasOverflow)}
       </p>
     </section>
+  )
+}
+
+const Host = (props: CarouselProps): JSX.Element => {
+  const [, setTick] = useState(0)
+
+  return (
+    <>
+      <button onClick={() => setTick((tick) => tick + 1)}>rerender</button>
+      <Carousel {...props} />
+    </>
   )
 }
 
@@ -131,22 +148,28 @@ describe('useSwipiCarousel navigation', () => {
   })
 
   it('survives a re-render of the parent', () => {
-    const Host = (): JSX.Element => {
-      const [, setTick] = useState(0)
-
-      return (
-        <>
-          <button onClick={() => setTick((tick) => tick + 1)}>rerender</button>
-          <Carousel />
-        </>
-      )
-    }
-
     render(<Host />)
 
     fireEvent.click(screen.getByRole('button', { name: 'rerender' }))
 
     expect(readState()).toBe('0/4/4/false/true/true')
+  })
+
+  it('hands back the same carousel until something about it changes', () => {
+    const seen: SwipiCarousel[] = []
+
+    render(<Host onRender={(carousel) => seen.push(carousel)} />)
+
+    const mounted = seen.length
+
+    fireEvent.click(screen.getByRole('button', { name: 'rerender' }))
+
+    expect(seen.length).toBeGreaterThan(mounted)
+    expect(seen.at(-1)).toBe(seen[mounted - 1])
+
+    fireEvent.click(screen.getByRole('button', { name: 'forward' }))
+
+    expect(seen.at(-1)).not.toBe(seen[mounted - 1])
   })
 })
 

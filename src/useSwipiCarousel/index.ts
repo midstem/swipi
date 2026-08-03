@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useSwipi } from '../Swipi/useSwipi'
 import {
   DEFAULT_ANIMATION_SPEED,
@@ -5,7 +6,7 @@ import {
   DEFAULT_INITIAL_SLIDE
 } from '../Swipi/constants'
 import { noop } from '../helpers'
-import { SwipiCarouselOptions, UseSwipiCarousel } from './types'
+import { SwipiCarousel, SwipiCarouselOptions, UseSwipiCarousel } from './types'
 
 export const useSwipiCarousel = ({
   loop = false,
@@ -32,9 +33,8 @@ export const useSwipiCarousel = ({
     onSelect
   })
 
-  return [
-    carouselRef,
-    {
+  const carousel = useMemo<SwipiCarousel>(
+    () => ({
       slidesCount: state.slidesCount,
       hasOverflow: state.hasOverflow,
       selectedIndex: state.slideIndex,
@@ -44,6 +44,19 @@ export const useSwipiCarousel = ({
       scrollNext: handlers.nextImg,
       scrollPrev: handlers.prevImg,
       scrollTo: handlers.scrollTo
-    }
-  ]
+    }),
+    [
+      state.slidesCount,
+      state.hasOverflow,
+      state.slideIndex,
+      state.countShowDots,
+      state.canScrollNext,
+      state.canScrollPrev,
+      handlers.nextImg,
+      handlers.prevImg,
+      handlers.scrollTo
+    ]
+  )
+
+  return [carouselRef, carousel]
 }
