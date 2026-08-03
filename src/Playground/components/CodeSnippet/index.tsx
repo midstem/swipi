@@ -31,8 +31,9 @@ const CodeSnippet = ({ state }: CodeSnippetProps): JSX.Element => {
       </header>
 
       <p className="pg-hint">
-        Everything the current settings need — the hook options above, the rest
-        as CSS.
+        Everything the current settings need: the hook options, the accessible
+        markup around them, the rest as CSS. The roles, labels and the live
+        region are yours to edit and translate once you paste this.
       </p>
 
       <pre className="pg-code">{markup}</pre>
