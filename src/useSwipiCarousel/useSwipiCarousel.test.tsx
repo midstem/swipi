@@ -599,6 +599,44 @@ describe('useSwipiCarousel drag', () => {
   })
 })
 
+describe('useSwipiCarousel with fractional slide widths', () => {
+  const FRACTIONAL_WIDTH = 100.5
+
+  const NARROW_VIEWPORT = 250
+
+  const LOOP_SIZE = FRACTIONAL_WIDTH * SLIDES_COUNT
+
+  it('snaps to a position between two pixels', async () => {
+    setContainerWidth(NARROW_VIEWPORT)
+
+    render(<Carousel slideWidth={FRACTIONAL_WIDTH} />)
+
+    fireEvent.click(getDot(1))
+
+    await waitFor(() => expect(getTrackOffset()).toBe(-FRACTIONAL_WIDTH))
+  })
+
+  it('wraps a looped slide by the exact loop size', () => {
+    setContainerWidth(NARROW_VIEWPORT)
+
+    render(<Carousel loop slideWidth={FRACTIONAL_WIDTH} />)
+
+    expect(lastOf(getSlides()).style.transform).toBe(
+      `translate3d(-${LOOP_SIZE}px, 0, 0)`
+    )
+  })
+
+  it('clamps the last snap to a fractional viewport width', async () => {
+    setContainerWidth(250.5)
+
+    render(<Carousel slideWidth={FRACTIONAL_WIDTH} />)
+
+    fireEvent.click(getDot(2))
+
+    await waitFor(() => expect(getTrackOffset()).toBe(-151.5))
+  })
+})
+
 describe('useSwipiCarousel with slides sized by the consumer', () => {
   const WIDTHS = [200, 500, 100, 400]
 

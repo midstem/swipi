@@ -61,6 +61,36 @@ describe('measureSlides', () => {
     })
   })
 
+  test('should keep widths that fall between two pixels', () => {
+    const track = buildTrack([100.5, 100.5, 100.5])
+
+    expect(measureSlides(track)).toEqual({
+      positions: [0, 100.5, 201],
+      sizes: [100.5, 100.5, 100.5],
+      contentSize: 301.5,
+      loopSize: 301.5
+    })
+  })
+
+  test('should ignore the transform the track is rendered with', () => {
+    const track = buildTrack([300, 300])
+
+    track.style.transform = 'translate3d(-450px, 0, 0)'
+
+    expect(measureSlides(track).positions).toEqual([0, 300])
+  })
+
+  test('should take back the lap a slide is shifted by', () => {
+    const track = buildTrack([300, 300, 300])
+    const [first] = Array.from(track.children) as HTMLElement[]
+
+    first.style.transform = 'translate3d(900px, 0, 0)'
+
+    const laps = new WeakMap<HTMLElement, number>([[first, 900]])
+
+    expect(measureSlides(track, laps).positions).toEqual([0, 300, 600])
+  })
+
   test('should ignore where the track sits on the page', () => {
     const track = buildTrack([300, 300])
     const spacer = document.createElement('div')

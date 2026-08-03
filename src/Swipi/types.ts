@@ -29,6 +29,8 @@ export type MomentumDurationType = {
   animationSpeed: number
 }
 
+export type SlideOffsets = WeakMap<HTMLElement, number>
+
 export type SlidesMeasurement = {
   positions: number[]
   sizes: number[]
