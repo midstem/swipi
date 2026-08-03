@@ -1,8 +1,8 @@
 import { useCallback, useLayoutEffect, useState } from 'react'
 import { measureSlides } from '../../geometry'
-import { GEOMETRY_TOLERANCE } from '../../constants'
 import { SlidesMeasurement } from '../../types'
 import { UseSlidesGeometryProps } from './types'
+import { isSame } from './helpers'
 
 const EMPTY_MEASUREMENT: SlidesMeasurement = {
   positions: [],
@@ -10,18 +10,6 @@ const EMPTY_MEASUREMENT: SlidesMeasurement = {
   contentSize: 0,
   loopSize: 0
 }
-
-const isClose = (a: number, b: number): boolean =>
-  Math.abs(a - b) < GEOMETRY_TOLERANCE
-
-const isSame = (a: SlidesMeasurement, b: SlidesMeasurement): boolean =>
-  isClose(a.contentSize, b.contentSize) &&
-  isClose(a.loopSize, b.loopSize) &&
-  a.positions.length === b.positions.length &&
-  a.positions.every((position, index) =>
-    isClose(position, b.positions[index])
-  ) &&
-  a.sizes.every((size, index) => isClose(size, b.sizes[index]))
 
 export const useSlidesGeometry = ({
   trackRef,
@@ -42,8 +30,6 @@ export const useSlidesGeometry = ({
     setMeasurement((previous) => (isSame(previous, next) ? previous : next))
   }, [trackRef, offsetsRef])
 
-  // The first measurement has to land before paint, and the sizes React itself
-  // writes to the track are not worth waiting an observer callback for.
   useLayoutEffect(measure, [measure, slideWidth, spaceBetween])
 
   useLayoutEffect(() => {
