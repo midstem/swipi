@@ -37,6 +37,52 @@ jobs:
       - name: Verify the published package
         run: npm run verify:package
 
+  bundle-size:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Measure this branch
+        run: |
+          cp scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
+          node scripts/report-size.mjs --json "$RUNNER_TEMP/head-size.json"
+
+      - name: Measure the base branch
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: |
+          git checkout --force ${{ github.event.pull_request.base.sha }}
+          npm ci
+          npm run build
+          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/base-size.json"
+
+      - name: Report
+        run: |
+          if [ -f "$RUNNER_TEMP/base-size.json" ]; then
+            node "$RUNNER_TEMP/report-size.mjs" \
+              --current "$RUNNER_TEMP/head-size.json" \
+              --base "$RUNNER_TEMP/base-size.json" >> "$GITHUB_STEP_SUMMARY"
+          else
+            node "$RUNNER_TEMP/report-size.mjs" \
+              --current "$RUNNER_TEMP/head-size.json" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
   react-compatibility:
     runs-on: ubuntu-latest
     name: react ${{ matrix.react }}
