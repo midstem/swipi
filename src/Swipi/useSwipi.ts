@@ -13,7 +13,6 @@ import { useTransform } from './hooks/useTransform'
 import { useLatestRef } from './hooks/useLatestRef'
 import { useNavigation } from './hooks/useNavigation'
 import { useElementWidth } from './hooks/useElementWidth'
-import { useSlidesCount } from './hooks/useSlidesCount'
 import { useSlidesGeometry } from './hooks/useSlidesGeometry'
 import { useTrackVariables } from './hooks/useTrackVariables'
 import { FIRST_SLIDE, FIRST_SLIDE_INDEX, NO_SLIDES } from './constants'
@@ -44,16 +43,21 @@ export const useSwipi = ({
     trackRef.current = (node?.firstElementChild as HTMLElement | null) ?? null
   }, [])
 
-  const slidesCount = useSlidesCount(trackRef)
-  const containerWidth = useElementWidth(viewportRef)
-  const isMeasured = slidesCount > NO_SLIDES
-
   const onChangeRef = useLatestRef(onChange)
   const onSelectRef = useLatestRef(onSelect)
 
   useTrackVariables({ trackRef, slideWidth, spaceBetween })
 
-  const measurement = useSlidesGeometry(trackRef, slideOffsetsRef)
+  const measurement = useSlidesGeometry({
+    trackRef,
+    offsetsRef: slideOffsetsRef,
+    slideWidth,
+    spaceBetween
+  })
+
+  const containerWidth = useElementWidth(viewportRef)
+  const slidesCount = measurement.sizes.length
+  const isMeasured = slidesCount > NO_SLIDES
 
   const hasOverflow = measurement.contentSize > containerWidth
   const isLoop = loop && hasOverflow
