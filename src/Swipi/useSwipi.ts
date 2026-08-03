@@ -38,7 +38,6 @@ export const useSwipi = ({
   const viewportRef = useRef<HTMLElement | null>(null)
   const isInitialSlideApplied = useRef<boolean>(false)
 
-  // The track is the only child of the viewport, so a single ref finds both.
   const carouselRef = useCallback((node: HTMLElement | null): void => {
     viewportRef.current = node
     trackRef.current = (node?.firstElementChild as HTMLElement | null) ?? null
