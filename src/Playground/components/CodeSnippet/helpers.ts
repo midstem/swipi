@@ -34,10 +34,29 @@ const getOptions = (state: PlaygroundState): string => {
 }
 
 export const buildMarkup = (state: PlaygroundState): string => {
+  const selected = isFadeInAnimation(state.slidesAnimation)
+    ? `
+              data-selected={index === carousel.selectedIndex}`
+    : ''
+
   const arrows = state.showArrows
     ? `
-      <button onClick={carousel.scrollPrev} disabled={!carousel.canScrollPrev}>‹</button>
-      <button onClick={carousel.scrollNext} disabled={!carousel.canScrollNext}>›</button>
+      <button
+        type="button"
+        aria-label="Previous slide"
+        onClick={carousel.scrollPrev}
+        disabled={!carousel.canScrollPrev}
+      >
+        ‹
+      </button>
+      <button
+        type="button"
+        aria-label="Next slide"
+        onClick={carousel.scrollNext}
+        disabled={!carousel.canScrollNext}
+      >
+        ›
+      </button>
 `
     : ''
 
@@ -45,8 +64,11 @@ export const buildMarkup = (state: PlaygroundState): string => {
     ? `
       {Array.from({ length: carousel.snapCount }, (_, index) => (
         <button
+          type="button"
           className="carousel__dot"
           key={index}
+          aria-label={\`Go to slide \${index + 1}\`}
+          aria-current={index === carousel.selectedIndex}
           onClick={() => carousel.scrollTo(index)}
         />
       ))}
@@ -58,17 +80,40 @@ export const buildMarkup = (state: PlaygroundState): string => {
 export const Carousel = ({ items }) => {
   const [carouselRef, carousel] = useSwipiCarousel(${getOptions(state)})
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'ArrowLeft') carousel.scrollPrev()
+    if (event.key === 'ArrowRight') carousel.scrollNext()
+  }
+
   return (
     <>
-      <div className="carousel__viewport" ref={carouselRef}>
+      <div
+        className="carousel__viewport"
+        ref={carouselRef}
+        role="group"
+        tabIndex={0}
+        aria-roledescription="carousel"
+        aria-label="${state.ariaLabel}"
+        onKeyDown={handleKeyDown}
+      >
         <div className="carousel__track">
-          {items.map((item) => (
-            <div className="carousel__slide" key={item.id}>
+          {items.map((item, index) => (
+            <div
+              className="carousel__slide"
+              key={item.id}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={\`\${index + 1} of \${items.length}\`}${selected}
+            >
               {item.title}
             </div>
           ))}
         </div>
       </div>
+
+      <span className="carousel__status" aria-live="polite" aria-atomic="true">
+        Slide {carousel.selectedIndex + 1} of {carousel.snapCount}
+      </span>
 ${arrows}${dots}    </>
   )
 }`
@@ -124,5 +169,14 @@ export const buildStyles = (state: PlaygroundState): string => {
 .carousel__slide {
   box-sizing: border-box;
   flex: 0 0 ${basis};${spacing}
+}
+
+.carousel__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
 }${fade}`
 }

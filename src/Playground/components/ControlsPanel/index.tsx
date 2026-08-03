@@ -138,6 +138,7 @@ const ControlsPanel = ({ state, update }: ControlsPanelProps): JSX.Element => {
       <Section title="Accessibility">
         <TextField
           label="ariaLabel"
+          hint="Goes into the generated markup — the hook has no say in it"
           value={state.ariaLabel}
           onChange={change('ariaLabel')}
         />

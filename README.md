@@ -54,46 +54,85 @@ your own, take the hook instead: it gives you the carousel engine — drag,
 momentum, snapping, looping, autoplay — and you write every element yourself.
 
 Wiring is a single ref on the viewport. The track is its only child and the
-slides are the children of the track — the same contract Embla uses. Everything
-else on the page, including the accessibility attributes, is markup you own.
+slides are the children of the track — the same contract Embla uses.
+Everything else on the page is markup you own, accessibility attributes
+included — so the playground prints them for you instead of the library
+inventing them at runtime.
+
+### The markup
+
+Roles, labels, `tabIndex`, the arrow keys and the live region are ordinary
+JSX here: reword them, translate them, drop what you do not need.
 
 ```tsx
 import { useSwipiCarousel } from 'swipi'
 
-const items = ['One', 'Two', 'Three', 'Four', 'Five']
-
-export const Gallery = () => {
+export const Carousel = ({ items }) => {
   const [carouselRef, carousel] = useSwipiCarousel({ loop: true })
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'ArrowLeft') carousel.scrollPrev()
+    if (event.key === 'ArrowRight') carousel.scrollNext()
+  }
+
   return (
-    <div className="carousel">
-      <div className="carousel__viewport" ref={carouselRef}>
+    <>
+      <div
+        className="carousel__viewport"
+        ref={carouselRef}
+        role="group"
+        tabIndex={0}
+        aria-roledescription="carousel"
+        aria-label="Slides"
+        onKeyDown={handleKeyDown}
+      >
         <div className="carousel__track">
-          {items.map((item) => (
-            <article className="carousel__slide" key={item}>
-              {item}
-            </article>
+          {items.map((item, index) => (
+            <div
+              className="carousel__slide"
+              key={item.id}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${index + 1} of ${items.length}`}
+            >
+              {item.title}
+            </div>
           ))}
         </div>
       </div>
 
-      <button onClick={carousel.scrollPrev} disabled={!carousel.canScrollPrev}>
-        Previous
+      <span className="carousel__status" aria-live="polite" aria-atomic="true">
+        Slide {carousel.selectedIndex + 1} of {carousel.snapCount}
+      </span>
+
+      <button
+        type="button"
+        aria-label="Previous slide"
+        onClick={carousel.scrollPrev}
+        disabled={!carousel.canScrollPrev}
+      >
+        ‹
       </button>
-      <button onClick={carousel.scrollNext} disabled={!carousel.canScrollNext}>
-        Next
+      <button
+        type="button"
+        aria-label="Next slide"
+        onClick={carousel.scrollNext}
+        disabled={!carousel.canScrollNext}
+      >
+        ›
       </button>
 
-      <nav className="carousel__dots">
-        {Array.from({ length: carousel.snapCount }, (_, index) => (
-          <button
-            className="carousel__dot"
-            key={index}
-            onClick={() => carousel.scrollTo(index)}
-          />
-        ))}
-      </nav>
-    </div>
+      {Array.from({ length: carousel.snapCount }, (_, index) => (
+        <button
+          type="button"
+          className="carousel__dot"
+          key={index}
+          aria-label={`Go to slide ${index + 1}`}
+          aria-current={index === carousel.selectedIndex}
+          onClick={() => carousel.scrollTo(index)}
+        />
+      ))}
+    </>
   )
 }
 ```
@@ -101,7 +140,8 @@ export const Gallery = () => {
 ### Required CSS
 
 This is a contract, not a suggestion — the geometry depends on it. Class names
-are yours; only the declarations matter.
+are yours; only the declarations matter. The last rule is the exception: it
+only hides the live region from the screen while leaving it to screen readers.
 
 ```css
 .carousel__viewport {
@@ -123,6 +163,15 @@ are yours; only the declarations matter.
 
 .carousel__slide:last-child {
   margin-right: 0;
+}
+
+.carousel__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
 }
 ```
 
@@ -180,10 +229,19 @@ nothing has to be spread onto your JSX and no handler of yours is overwritten.
 
 ### The accessibility is yours
 
-The hook generates no attributes and no strings: roles, labels, `tabIndex`,
-arrow keys and the live region live in your markup, where you can word and
-translate them yourself. The playground (`npm start`) prints a starting point
-you can copy.
+The hook generates no attributes and no strings. What the block above gives you
+instead is the whole thing as plain JSX:
+
+- the viewport is a focusable `role="group"` with
+  `aria-roledescription="carousel"` and a label you choose;
+- every slide is a labelled group, `"2 of 5"`;
+- <kbd>←</kbd> / <kbd>→</kbd> move between snaps while the viewport has focus;
+- a polite live region announces the slide that was selected;
+- arrows and dots are real `<button>`s with labels and `aria-current`.
+
+Because it is your code, translating it is editing it — no options to look up,
+no strings the library decides for you. `"Slide 2 of 5"` becomes
+`"Слайд 2 з 5"` where it is written.
 
 ## **Imperative API (ref)**
 
