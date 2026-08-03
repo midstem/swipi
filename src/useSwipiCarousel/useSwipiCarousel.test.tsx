@@ -1,5 +1,5 @@
 import { useState, type JSX } from 'react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { useSwipiCarousel } from '.'
 import { SwipiCarousel, SwipiCarouselOptions } from './types'
@@ -327,6 +327,42 @@ describe('useSwipiCarousel slide discovery', () => {
     })
 
     expect(readState()).toBe('0/3/4/false/true/true')
+  })
+
+  it('picks up a slide that grows outside a react render', async () => {
+    render(<Carousel slideWidth={300} />)
+
+    expect(readState()).toBe('0/2/4/false/true/true')
+
+    const [first] = getSlides()
+
+    act(() => {
+      getSlides().forEach((slide) =>
+        slide.setAttribute('data-test-width', '600')
+      )
+      triggerResize(first)
+    })
+
+    await waitFor(() => expect(readState()).toBe('0/4/4/false/true/true'))
+    expect(getTrackOffset()).toBe(0)
+
+    fireEvent.click(getDot(1))
+
+    await waitFor(() => expect(getTrackOffset()).toBe(-600))
+  })
+
+  it('reads nothing from the DOM while the consumer re-renders', () => {
+    render(<Host />)
+
+    const readLayout = vi.spyOn(Element.prototype, 'getBoundingClientRect')
+
+    fireEvent.click(rerenderButton())
+    fireEvent.click(rerenderButton())
+    fireEvent.click(rerenderButton())
+
+    expect(readLayout).not.toHaveBeenCalled()
+
+    readLayout.mockRestore()
   })
 })
 

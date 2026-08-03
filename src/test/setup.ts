@@ -14,28 +14,32 @@ class ResizeObserverMock {
 
   private readonly callback: () => void
 
+  private readonly targets = new Set<Element>()
+
   constructor(callback: () => void) {
     this.callback = callback
     ResizeObserverMock.instances.push(this)
   }
 
-  observe(): void {}
-
-  unobserve(): void {}
-
-  disconnect(): void {
-    ResizeObserverMock.instances = ResizeObserverMock.instances.filter(
-      (instance) => instance !== this
-    )
+  observe(target: Element): void {
+    this.targets.add(target)
   }
 
-  trigger(): void {
-    this.callback()
+  unobserve(target: Element): void {
+    this.targets.delete(target)
+  }
+
+  disconnect(): void {
+    this.targets.clear()
+  }
+
+  trigger(target?: Element): void {
+    if (target ? this.targets.has(target) : this.targets.size) this.callback()
   }
 }
 
-export const triggerResize = (): void =>
-  ResizeObserverMock.instances.forEach((instance) => instance.trigger())
+export const triggerResize = (target?: Element): void =>
+  ResizeObserverMock.instances.forEach((instance) => instance.trigger(target))
 
 Object.defineProperty(globalThis, 'ResizeObserver', {
   configurable: true,
@@ -142,4 +146,5 @@ afterEach(() => {
   cleanup()
   containerWidth = DEFAULT_CONTAINER_WIDTH
   capturedPointers.clear()
+  ResizeObserverMock.instances = []
 })

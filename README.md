@@ -164,7 +164,7 @@ Slide widths are entirely yours. The carousel measures whatever your CSS
 produces and derives the snap positions from it, so `flex: 0 0 50%`, fixed
 pixel widths, breakpoints, and even a different width per slide all work.
 
-Four rules make that measuring reliable:
+Five rules make that measuring reliable:
 
 - Keep `width: 100%` on the track rather than `fit-content`. A percentage
   `flex-basis` resolves against the track, and a track sized by its own content
@@ -178,6 +178,17 @@ Four rules make that measuring reliable:
   through `getBoundingClientRect()`, so a scaled slide is measured at its
   on-screen size while the track still moves in unscaled pixels. Scaling
   something inside a slide is fine.
+- Change the gap between slides through the `spaceBetween` option rather than a
+  media query on their `margin`. Sizes are watched with a `ResizeObserver`, and
+  a margin belongs to none of the boxes it can see, so a breakpoint that changes
+  only the gap — leaving the viewport and the slide widths as they are — is the
+  one layout change that goes unnoticed.
+
+Measuring follows the layout rather than React. The carousel re-measures when a
+slide changes size — an image that finishes loading, a webfont that swaps in, an
+accordion inside a slide that opens — and when slides are added to or removed
+from the track, none of which has to pass through a render. A re-render of the
+component around it, on the other hand, reads nothing from the DOM at all.
 
 Measurements keep their fractions: widths that land between two pixels, as
 percentage widths usually do, are used as they are rather than rounded, so a
