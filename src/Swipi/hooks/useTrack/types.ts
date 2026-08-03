@@ -3,7 +3,7 @@ import { SlidesGeometry } from '../../types'
 
 export type UseTrackProps = {
   loop: boolean
-  trackRef: RefObject<HTMLDivElement | null>
+  trackRef: RefObject<HTMLElement | null>
   geometry: SlidesGeometry
 }
 

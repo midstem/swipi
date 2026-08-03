@@ -1,9 +1,12 @@
-import { PointerEvent, useRef } from 'react'
-import { DragState, TouchEvents, UseEventsReturn } from './types'
+import { useEffect, useRef } from 'react'
+import { DragState, TouchEvents } from './types'
 import { getMomentumDuration } from '../../helpers'
+import { useLatestRef } from '../useLatestRef'
 import { clampToSnaps, getMomentumSnap } from '../../geometry'
 import { DRAG_THRESHOLD, PRIMARY_BUTTON } from '../../constants'
-import { capturePointer, getReleaseVelocity, noop } from './helpers'
+import { capturePointer, getReleaseVelocity, preventDragStart } from './helpers'
+
+const PASSIVE = { passive: true }
 
 export const useEvents = ({
   isLoop,
@@ -12,13 +15,14 @@ export const useEvents = ({
   animateTo,
   geometry,
   hasOverflow,
+  viewportRef,
   animationSpeed,
   transformRef
-}: TouchEvents): UseEventsReturn => {
+}: TouchEvents): void => {
   const dragRef = useRef<DragState | null>(null)
 
-  const onPointerDown = (event: PointerEvent<HTMLDivElement>): void => {
-    if (event.button !== PRIMARY_BUTTON) return
+  const onPointerDown = (event: PointerEvent): void => {
+    if (!hasOverflow || event.button !== PRIMARY_BUTTON) return
 
     const startedAt = performance.now()
 
@@ -37,7 +41,7 @@ export const useEvents = ({
 
   const lockAxis = (
     drag: DragState,
-    event: PointerEvent<HTMLDivElement>,
+    event: PointerEvent,
     deltaX: number,
     deltaY: number
   ): boolean => {
@@ -56,12 +60,12 @@ export const useEvents = ({
 
     drag.isDragging = true
 
-    capturePointer(event, true)
+    capturePointer(viewportRef.current, event.pointerId, true)
 
     return true
   }
 
-  const onPointerMove = (event: PointerEvent<HTMLDivElement>): void => {
+  const onPointerMove = (event: PointerEvent): void => {
     const drag = dragRef.current
 
     if (!drag || drag.pointerId !== event.pointerId) return
@@ -79,14 +83,14 @@ export const useEvents = ({
     moveTo(clampToSnaps(drag.startTransform + deltaX, geometry, isLoop))
   }
 
-  const onPointerUp = (event: PointerEvent<HTMLDivElement>): void => {
+  const onPointerUp = (event: PointerEvent): void => {
     const drag = dragRef.current
 
     if (!drag || drag.pointerId !== event.pointerId) return
 
     dragRef.current = null
 
-    capturePointer(event, false)
+    capturePointer(viewportRef.current, event.pointerId, false)
 
     if (!drag.isDragging) return
 
@@ -116,9 +120,38 @@ export const useEvents = ({
     )
   }
 
-  return {
-    onPointerDown: hasOverflow ? onPointerDown : noop,
-    onPointerMove: hasOverflow ? onPointerMove : noop,
-    onPointerUp: hasOverflow ? onPointerUp : noop
-  }
+  const handlersRef = useLatestRef({
+    onPointerDown,
+    onPointerMove,
+    onPointerUp
+  })
+
+  useEffect(() => {
+    const viewport = viewportRef.current
+
+    if (!viewport) return
+
+    const handleDown = (event: PointerEvent): void =>
+      handlersRef.current.onPointerDown(event)
+
+    const handleMove = (event: PointerEvent): void =>
+      handlersRef.current.onPointerMove(event)
+
+    const handleUp = (event: PointerEvent): void =>
+      handlersRef.current.onPointerUp(event)
+
+    viewport.addEventListener('pointerdown', handleDown, PASSIVE)
+    viewport.addEventListener('pointermove', handleMove, PASSIVE)
+    viewport.addEventListener('pointerup', handleUp, PASSIVE)
+    viewport.addEventListener('pointercancel', handleUp, PASSIVE)
+    viewport.addEventListener('dragstart', preventDragStart)
+
+    return () => {
+      viewport.removeEventListener('pointerdown', handleDown)
+      viewport.removeEventListener('pointermove', handleMove)
+      viewport.removeEventListener('pointerup', handleUp)
+      viewport.removeEventListener('pointercancel', handleUp)
+      viewport.removeEventListener('dragstart', preventDragStart)
+    }
+  }, [viewportRef, handlersRef])
 }

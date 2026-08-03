@@ -1,16 +1,8 @@
-import type { DragEvent, JSX } from 'react'
+import type { JSX } from 'react'
 import { SlidesContainerProps } from './types'
 
-const preventDragStart = (event: DragEvent<HTMLDivElement>): void =>
-  event.preventDefault()
-
-const SlidesContainer = ({
-  children,
-  trackRef
-}: SlidesContainerProps): JSX.Element => (
-  <div ref={trackRef} className="swipi-track" onDragStart={preventDragStart}>
-    {children}
-  </div>
+const SlidesContainer = ({ children }: SlidesContainerProps): JSX.Element => (
+  <div className="swipi-track">{children}</div>
 )
 
 export default SlidesContainer

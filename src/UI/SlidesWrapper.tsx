@@ -3,19 +3,9 @@ import { SlidesWrapperProps } from './types'
 
 const SlidesWrapper = ({
   children,
-  slidesWrapperRef,
-  onPointerDown,
-  onPointerMove,
-  onPointerUp
+  carouselRef
 }: SlidesWrapperProps): JSX.Element => (
-  <div
-    ref={slidesWrapperRef}
-    className="swipi-viewport"
-    onPointerDown={onPointerDown}
-    onPointerMove={onPointerMove}
-    onPointerUp={onPointerUp}
-    onPointerCancel={onPointerUp}
-  >
+  <div ref={carouselRef} className="swipi-viewport">
     {children}
   </div>
 )
