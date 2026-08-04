@@ -31,9 +31,6 @@ const isSameShape = (key: PlaygroundStateKey, value: unknown): boolean => {
   return typeof value === typeof DEFAULT_STATE[key]
 }
 
-// Reads key by key off DEFAULT_STATE rather than trusting the stored object,
-// so a renamed, dropped or retyped option falls back to its default instead of
-// reaching the panel in a shape no control can render.
 export const loadState = (): PlaygroundState => {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY)

@@ -16,8 +16,6 @@ export type ConfigType = {
   spaceBetween?: number
 }
 
-// The imperative surface the playground builds on top of the hook, kept here
-// so the stage and the panel below it agree on its shape.
 export type CarouselRef = {
   scrollNext: () => void
   scrollPrev: () => void
@@ -51,9 +49,6 @@ export type PlaygroundState = {
 
 export type PlaygroundStateKey = keyof PlaygroundState
 
-// Every option the hook takes except the callbacks, which the event log wires
-// instead of the panel. HOOK_OPTIONS is keyed by this, so a new option in
-// SwipiCarouselOptions fails to compile until the panel gains a control.
 export type HookOptionKey = Exclude<
   keyof SwipiCarouselOptions,
   'onChange' | 'onSelect'
@@ -103,8 +98,6 @@ export type UsePlaygroundReturn = {
   handleChange: (positions: SlidePositions) => void
 }
 
-// `hook` marks a section whose controls are options of useSwipiCarousel;
-// `playground` marks the layout and markup the stand draws around it.
 export type SectionOrigin = 'hook' | 'playground'
 
 export type SectionProps = {

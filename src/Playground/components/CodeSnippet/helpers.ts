@@ -2,8 +2,6 @@ import { NO_SLIDE_WIDTH, REDUCE_SLIDE } from '../../constants'
 import { isFadeInAnimation } from '../../helpers'
 import { PlaygroundState } from '../../types'
 
-// slideWidth and spaceBetween are left out on purpose: they only hand the
-// numbers to CSS, and the generated stylesheet already carries them in pixels.
 const SNIPPET_OPTIONS = [
   'loop',
   'dragFree',

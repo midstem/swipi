@@ -10,9 +10,6 @@ const renderPanel = (state: Partial<PlaygroundState> = {}): void => {
   )
 }
 
-// Every control of the panel is labelled with .pg-label. The breakpoint editor
-// repeats some of those names inside itself, and those are rows of a value,
-// not controls of the panel.
 const getControl = (label: string): HTMLElement => {
   const controls = screen
     .getAllByText(label, { selector: '.pg-label' })

@@ -57,8 +57,6 @@ export const getBias = (
 export const getSlideWidth = (state: PlaygroundState): number | undefined =>
   state.slideWidth > NO_SLIDE_WIDTH ? state.slideWidth : undefined
 
-// The gap comes from the hook's own custom property rather than a --pg- one,
-// so the stand shows what slideWidth and spaceBetween actually write.
 export const getTrackStyle = (
   visibleSlides: number,
   bias: number,
