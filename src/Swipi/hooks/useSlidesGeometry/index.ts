@@ -1,8 +1,9 @@
-import { useCallback, useLayoutEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { measureSlides } from '../../geometry'
 import { SlidesMeasurement } from '../../types'
 import { UseSlidesGeometryProps } from './types'
 import { isSame } from './helpers'
+import { useIsomorphicLayoutEffect } from '../useIsomorphicLayoutEffect'
 
 const EMPTY_MEASUREMENT: SlidesMeasurement = {
   positions: [],
@@ -30,9 +31,9 @@ export const useSlidesGeometry = ({
     setMeasurement((previous) => (isSame(previous, next) ? previous : next))
   }, [trackRef, offsetsRef])
 
-  useLayoutEffect(measure, [measure, slideWidth, spaceBetween])
+  useIsomorphicLayoutEffect(measure, [measure, slideWidth, spaceBetween])
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const track = trackRef.current
 
     if (!track) return

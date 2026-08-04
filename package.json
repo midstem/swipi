@@ -49,6 +49,7 @@
     "typecheck": "tsc --noEmit",
     "typecheck:package": "tsc -p scripts/types-fixture",
     "verify:package": "node scripts/verify-package.mjs",
+    "verify:published": "node scripts/verify-published.mjs",
     "size": "node scripts/report-size.mjs",
     "test": "vitest",
     "lint": "eslint .",

@@ -310,6 +310,31 @@ no strings the library decides for you. `"Slide 2 of 5"` becomes
 The one thing the hook does decide is motion: it skips its own animation under
 `prefers-reduced-motion`. Do the same for the transitions you write.
 
+## **Server rendering**
+
+The hook renders on the server. Nothing it does during render touches `window`,
+`document`, `ResizeObserver` or `MutationObserver` — every measurement lives in
+an effect, and the effects that need the layout fall back to `useEffect` when
+there is no `window`, so `renderToString` stays silent on React 18 as well as on
+React 19.
+
+What the server sends is your markup with an unmeasured carousel behind it:
+
+```tsx
+const [carouselRef, carousel] = useSwipiCarousel()
+
+carousel.slidesCount // 0
+carousel.snapCount // 0
+carousel.hasOverflow // false
+carousel.canScrollNext // false
+```
+
+The first client render returns the same values, so the markup hydrates without
+a mismatch; the measurement lands right after, in a layout effect, before the
+browser paints. Dots driven by `snapCount` therefore appear on hydration rather
+than in the server output — render them from your own data if you need them in
+the HTML.
+
 ## **Browsers support**
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Opera |
@@ -329,3 +354,33 @@ The playground drives the hook through every option, prints the markup and the
 CSS for the current settings, and keeps the layout controls — breakpoints,
 `biasRight`, fade-in — on its own side so you can see what the CSS in this
 README is doing.
+
+### Before publishing
+
+```bash
+$ npm run verify:published
+```
+
+The gate packs the tarball with `npm pack`, installs it into a throwaway Vite +
+React app built from `scripts/consumer-app`, and runs the package the way a
+consumer does. The install uses a cache directory of its own, so a `file:`
+tarball of a version npm has already seen can never be served from the cache.
+
+The app is then put through:
+
+- **entries** — `import 'swipi'` and `require('swipi')` both hand back
+  `useSwipiCarousel`, and nothing else at runtime;
+- **ssr** — `renderToString` produces the markup and writes nothing to the
+  console;
+- **client** — a StrictMode mount in jsdom measures the slides, moves to the
+  next snap and unmounts, with the console silent through all of it;
+- **dev** — the dev server pre-bundles the package, and an edit to the component
+  holding the carousel arrives as a hot update instead of a page reload;
+- **prod** — `vite build` output is minified, carries the carousel, works when
+  it is mounted, and drops the runtime entirely from a build that imports the
+  hook without calling it.
+
+Everything except the dev server and the production build runs twice, on React
+19 and on React 18. `npm run verify:package`, which checks what goes into the
+tarball rather than what the tarball does, stays where it is and keeps running
+on every pull request.

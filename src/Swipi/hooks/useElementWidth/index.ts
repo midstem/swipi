@@ -1,10 +1,11 @@
-import { RefObject, useLayoutEffect, useState } from 'react'
+import { RefObject, useState } from 'react'
 import { NO_WIDTH } from '../../constants'
+import { useIsomorphicLayoutEffect } from '../useIsomorphicLayoutEffect'
 
 export const useElementWidth = (ref: RefObject<HTMLElement | null>): number => {
   const [width, setWidth] = useState<number>(NO_WIDTH)
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const element = ref.current
 
     if (!element) return

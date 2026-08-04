@@ -1,11 +1,4 @@
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useEvents } from './hooks/useEvents'
 import { useTrack } from './hooks/useTrack'
 import { useAutoplay } from './hooks/useAutoplay'
@@ -15,6 +8,7 @@ import { useNavigation } from './hooks/useNavigation'
 import { useElementWidth } from './hooks/useElementWidth'
 import { useSlidesGeometry } from './hooks/useSlidesGeometry'
 import { useTrackVariables } from './hooks/useTrackVariables'
+import { useIsomorphicLayoutEffect } from './hooks/useIsomorphicLayoutEffect'
 import { FIRST_SLIDE_INDEX, NO_SLIDES } from './constants'
 import { SlideOffsets, UseSwipiType } from './types'
 import { clamp, getSlidePositions } from './helpers'
@@ -135,13 +129,13 @@ export const useSwipi = ({
     nextImg
   })
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!geometry.snaps.length) return
 
     moveTo(geometry.snaps[clamp(slideIndexRef.current, 0, lastIndex)])
   }, [geometry, lastIndex, moveTo, slideIndexRef])
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     render(transformRef.current)
     syncSlideIndex(targetRef.current)
   })
