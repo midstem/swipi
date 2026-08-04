@@ -309,7 +309,7 @@ describe('useSwipiCarousel slide discovery', () => {
   })
 
   it('does not add a snap for the gap after the last slide', () => {
-    setContainerWidth(940)
+    setContainerWidth(1000)
 
     render(<Carousel count={6} slideWidth={320} spaceBetween={20} />)
 
@@ -670,6 +670,46 @@ describe('useSwipiCarousel with fractional slide widths', () => {
     fireEvent.click(getDot(2))
 
     await waitFor(() => expect(getTrackOffset()).toBe(-151.5))
+  })
+})
+
+describe('useSwipiCarousel with a gap between slides', () => {
+  const GAPPED_WIDTH = 220
+
+  const GAP = 20
+
+  const GAPPED_VIEWPORT = 500
+
+  const renderGapped = (options: SwipiCarouselOptions = {}): void => {
+    setContainerWidth(GAPPED_VIEWPORT)
+
+    render(
+      <Carousel slideWidth={GAPPED_WIDTH} spaceBetween={GAP} {...options} />
+    )
+  }
+
+  it('snaps a slide and its gap at a time', async () => {
+    renderGapped()
+
+    expect(readState()).toBe('0/3/4/false/true/true')
+
+    fireEvent.click(getDot(1))
+
+    await waitFor(() => expect(getTrackOffset()).toBe(-(GAPPED_WIDTH + GAP)))
+  })
+
+  it('repeats over the gap that follows the last slide when looping', async () => {
+    renderGapped({ loop: true })
+
+    fireEvent.click(screen.getByRole('button', { name: 'back' }))
+
+    await waitFor(() => expect(getTrackOffset()).toBe(GAPPED_WIDTH + GAP))
+
+    const contentSize = SLIDES_COUNT * GAPPED_WIDTH + (SLIDES_COUNT - 1) * GAP
+
+    expect(lastOf(getSlides()).style.transform).toBe(
+      `translate3d(-${contentSize + GAP}px, 0, 0)`
+    )
   })
 })
 

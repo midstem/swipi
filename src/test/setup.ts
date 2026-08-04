@@ -67,14 +67,11 @@ const simulateWidth = (element: Element): number => {
   const width =
     parseFloat(parent.style.getPropertyValue(SLIDE_WIDTH_VARIABLE)) || 0
 
-  if (!width) return containerWidth
-
-  if (element !== parent.lastElementChild) return width
-
-  const gap = parseFloat(parent.style.getPropertyValue(SLIDE_GAP_VARIABLE)) || 0
-
-  return width - gap
+  return width || containerWidth
 }
+
+const simulateGap = (parent: HTMLElement): number =>
+  parseFloat(parent.style.getPropertyValue(SLIDE_GAP_VARIABLE)) || 0
 
 const simulateTranslate = (element: Element): number => {
   const match = TRANSLATE_PATTERN.exec((element as HTMLElement).style.transform)
@@ -87,6 +84,8 @@ const simulateLeft = (element: Element): number => {
 
   if (!parent || element === document.body) return 0
 
+  const gap = simulateGap(parent)
+
   let left = simulateLeft(parent) + simulateTranslate(element)
 
   for (let index = 0; index < parent.children.length; index += 1) {
@@ -94,7 +93,7 @@ const simulateLeft = (element: Element): number => {
 
     if (sibling === element) break
 
-    left += simulateWidth(sibling)
+    left += simulateWidth(sibling) + gap
   }
 
   return left
