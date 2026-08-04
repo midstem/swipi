@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react'
 import { ConfigService } from '../../configService'
-import { ONE_SLIDE, REDUCE_SLIDE } from '../../constants'
+import { NO_SLIDE_WIDTH, ONE_SLIDE, REDUCE_SLIDE } from '../../constants'
 import { isFadeInAnimation } from '../../helpers'
 import { ConfigType, PlaygroundState } from '../../types'
 
@@ -34,9 +34,7 @@ export const getSpaceBetween = (
   config: ConfigType[],
   windowWidth: number
 ): number =>
-  ConfigService(config, windowWidth).returnSpaceBetween(
-    state.spaceBetweenSlides
-  )
+  ConfigService(config, windowWidth).returnSpaceBetween(state.spaceBetween)
 
 export const getBias = (
   state: PlaygroundState,
@@ -56,15 +54,19 @@ export const getBias = (
   return isBiased ? NO_BIAS - REDUCE_SLIDE / visibleSlides : NO_BIAS
 }
 
+export const getSlideWidth = (state: PlaygroundState): number | undefined =>
+  state.slideWidth > NO_SLIDE_WIDTH ? state.slideWidth : undefined
+
 export const getTrackStyle = (
   visibleSlides: number,
-  spaceBetween: number,
-  bias: number
+  bias: number,
+  slideWidth?: number
 ): CSSProperties =>
   ({
-    '--pg-visible': visibleSlides,
-    '--pg-gap': `${spaceBetween}px`,
-    '--pg-bias': bias
+    '--pg-basis':
+      slideWidth === undefined
+        ? `calc((100% - (${visibleSlides} - 1) * var(--swipi-slide-gap, 0px)) / ${visibleSlides} * ${bias})`
+        : 'var(--swipi-slide-width)'
   }) as CSSProperties
 
 export const getSlideStyle = (

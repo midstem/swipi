@@ -99,11 +99,34 @@ body {
   border-radius: 10px;
 }
 
+.pg-section--hook {
+  border-left: 3px solid var(--pg-accent);
+}
+
 .pg-section__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   padding: 12px 14px;
   font-weight: 600;
   cursor: pointer;
   user-select: none;
+}
+
+.pg-section__badge {
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--pg-border);
+  border-radius: 999px;
+  color: var(--pg-muted);
+}
+
+.pg-section--hook .pg-section__badge {
+  border-color: var(--pg-accent);
+  color: var(--pg-accent);
 }
 
 .pg-section__body {
@@ -423,12 +446,8 @@ body {
 
 .pg-carousel__slide {
   box-sizing: border-box;
-  flex: 0 0
-    calc(
-      (100% - (var(--pg-visible) - 1) * var(--pg-gap)) / var(--pg-visible) *
-        var(--pg-bias)
-    );
-  margin-right: var(--pg-gap);
+  flex: 0 0 var(--pg-basis);
+  margin-right: var(--swipi-slide-gap, 0px);
   display: flex;
   align-items: center;
   justify-content: center;

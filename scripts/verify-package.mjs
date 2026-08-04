@@ -76,7 +76,6 @@ publicTypes.forEach((name) =>
   check(`the type entry does not export "${name}"`, types.includes(name))
 )
 
-// The carousel is headless: nothing it ships may pull a stylesheet in.
 const bundles = [
   ['ESM', esm],
   ['CJS', cjs]

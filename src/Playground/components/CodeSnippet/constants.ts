@@ -1,5 +1,5 @@
 export const README_PRESET = {
   slidesNumber: 2,
-  spaceBetweenSlides: 12,
+  spaceBetween: 12,
   biasRight: false
 }

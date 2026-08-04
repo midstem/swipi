@@ -9,8 +9,8 @@ export const ConfigService = (config: ConfigType[], windowWidth: number) => {
   const returnCountSlides = (slidesNumber: number): number =>
     getSwipiUpdatesParam('slidesNumber') || slidesNumber
 
-  const returnSpaceBetween = (spaceBetweenSlides: number): number =>
-    getSwipiUpdatesParam('spaceBetween') || spaceBetweenSlides
+  const returnSpaceBetween = (spaceBetween: number): number =>
+    getSwipiUpdatesParam('spaceBetween') || spaceBetween
 
   return {
     returnCountSlides,

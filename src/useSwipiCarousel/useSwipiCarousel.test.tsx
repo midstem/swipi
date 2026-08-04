@@ -136,6 +136,25 @@ describe('useSwipiCarousel wiring', () => {
 
     expect(readState()).toBe('0/1/4/false/false/false')
   })
+
+  it('writes the gap variable without a slide width beside it', () => {
+    render(<Carousel slideWidth={undefined} spaceBetween={24} />)
+
+    const style = getTrack().style
+
+    expect(style.getPropertyValue('--swipi-slide-gap')).toBe('24px')
+    expect(style.getPropertyValue('--swipi-slide-width')).toBe('')
+  })
+
+  it('takes a variable back when its option goes away', () => {
+    const { rerender } = render(<Carousel spaceBetween={24} />)
+
+    expect(getTrack().style.getPropertyValue('--swipi-slide-gap')).toBe('24px')
+
+    rerender(<Carousel />)
+
+    expect(getTrack().style.getPropertyValue('--swipi-slide-gap')).toBe('')
+  })
 })
 
 describe('useSwipiCarousel navigation', () => {

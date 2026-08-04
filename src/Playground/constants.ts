@@ -1,4 +1,5 @@
 import {
+  HookOptionKey,
   PlaygroundState,
   SelectOption,
   SlidesAnimation,
@@ -10,7 +11,6 @@ export const STORAGE_KEY = 'swipi-playground-state'
 
 export const ONE_SLIDE = 1
 
-// How much of a slide the next one takes over when biasRight is on.
 export const REDUCE_SLIDE = 0.35
 
 export const SLIDE_COLORS = [
@@ -36,21 +36,18 @@ export const MAX_EVENTS = 12
 
 export const JSON_INDENT = 2
 
-export const SWIPI_DEFAULTS = {
-  loop: false,
-  dragFree: false,
-  biasRight: false,
-  showDots: false,
-  autoplay: false,
-  showArrows: true,
-  startIndex: 0,
-  slidesNumber: 3,
-  autoplaySpeed: 4000,
-  animationSpeed: 300,
-  spaceBetweenSlides: 0,
-  slidesAnimation: 'default',
-  ariaLabel: 'Slides'
+export const HOOK_OPTIONS: Record<HookOptionKey, string> = {
+  loop: 'Behaviour',
+  dragFree: 'Behaviour',
+  autoplay: 'Behaviour',
+  autoplaySpeed: 'Behaviour',
+  animationSpeed: 'Behaviour',
+  startIndex: 'Geometry',
+  slideWidth: 'Geometry',
+  spaceBetween: 'Geometry'
 }
+
+export const NO_SLIDE_WIDTH = 0
 
 export const DEFAULT_STATE: PlaygroundState = {
   slidesCount: 5,
@@ -61,12 +58,13 @@ export const DEFAULT_STATE: PlaygroundState = {
   autoplay: false,
   showArrows: true,
   startIndex: 0,
+  slideWidth: NO_SLIDE_WIDTH,
   slidesNumber: 1,
   autoplaySpeed: 4000,
   animationSpeed: 300,
-  spaceBetweenSlides: 15,
+  spaceBetween: 15,
   slidesAnimation: 'default',
-  ariaLabel: SWIPI_DEFAULTS.ariaLabel,
+  ariaLabel: 'Slides',
   useConfig: false,
   config: [
     { maxWidth: 1200, slidesNumber: 3, spaceBetween: 20 },

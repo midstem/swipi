@@ -7,7 +7,19 @@ type UseTrackVariablesProps = {
   spaceBetween?: number
 }
 
-const toPixels = (value: number): string => `${value}px`
+const writeVariable = (
+  track: HTMLElement,
+  variable: string,
+  value?: number
+): void => {
+  if (value === undefined) {
+    track.style.removeProperty(variable)
+
+    return
+  }
+
+  track.style.setProperty(variable, `${value}px`)
+}
 
 export const useTrackVariables = ({
   trackRef,
@@ -17,9 +29,9 @@ export const useTrackVariables = ({
   useLayoutEffect(() => {
     const track = trackRef.current
 
-    if (!track || slideWidth === undefined) return
+    if (!track) return
 
-    track.style.setProperty(SLIDE_WIDTH_VARIABLE, toPixels(slideWidth))
-    track.style.setProperty(SLIDE_GAP_VARIABLE, toPixels(spaceBetween ?? 0))
+    writeVariable(track, SLIDE_WIDTH_VARIABLE, slideWidth)
+    writeVariable(track, SLIDE_GAP_VARIABLE, spaceBetween)
   }, [trackRef, slideWidth, spaceBetween])
 }

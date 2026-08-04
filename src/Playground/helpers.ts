@@ -1,5 +1,10 @@
-import { DEFAULT_STATE, STORAGE_KEY } from './constants'
 import {
+  DEFAULT_STATE,
+  SLIDES_ANIMATION_OPTIONS,
+  STORAGE_KEY
+} from './constants'
+import {
+  ConfigType,
   PlaygroundState,
   PlaygroundStateKey,
   SlidesAnimation,
@@ -10,8 +15,18 @@ export const isFadeInAnimation = (
   animation: ValueOf<SlidesAnimation>
 ): boolean => animation === SlidesAnimation.FADE_IN
 
+const isConfigItem = (value: unknown): value is ConfigType =>
+  typeof value === 'object' &&
+  value !== null &&
+  typeof (value as ConfigType).maxWidth === 'number' &&
+  typeof (value as ConfigType).slidesNumber === 'number'
+
 const isSameShape = (key: PlaygroundStateKey, value: unknown): boolean => {
-  if (key === 'config') return Array.isArray(value)
+  if (key === 'config') return Array.isArray(value) && value.every(isConfigItem)
+
+  if (key === 'slidesAnimation') {
+    return SLIDES_ANIMATION_OPTIONS.some((option) => option.value === value)
+  }
 
   return typeof value === typeof DEFAULT_STATE[key]
 }
