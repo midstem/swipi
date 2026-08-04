@@ -8,7 +8,7 @@ const HOOK_OPTIONS = [
   'autoplay',
   'autoplaySpeed',
   'animationSpeed',
-  'initialSlide'
+  'startIndex'
 ] as const
 
 type OptionValue = string | number | boolean
@@ -19,7 +19,7 @@ const DEFAULTS: Record<(typeof HOOK_OPTIONS)[number], OptionValue> = {
   autoplay: false,
   autoplaySpeed: 4000,
   animationSpeed: 300,
-  initialSlide: 0
+  startIndex: 0
 }
 
 const toOption = (key: string, value: OptionValue): string =>

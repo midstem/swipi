@@ -35,7 +35,7 @@ export type PlaygroundState = {
   showDots: boolean
   autoplay: boolean
   showArrows: boolean
-  initialSlide: number
+  startIndex: number
   slidesNumber: number
   autoplaySpeed: number
   animationSpeed: number
@@ -210,7 +210,6 @@ export type UseControlsPanelReturn = {
 export type StageProps = {
   state: PlaygroundState
   slides: string[]
-  remountKey: string
   swipiRef: RefObject<CarouselRef | null>
   onSelect: (state: SwipiState) => void
   onChange: (positions: SlidePositions) => void

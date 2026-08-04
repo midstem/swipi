@@ -272,11 +272,11 @@ describe('useSwipiCarousel reactive state', () => {
 
     render(<Carousel onChange={(value) => positions.push(value)} />)
 
-    expect(lastOf(positions)).toEqual({ prev: 1, current: 1, next: 2 })
+    expect(lastOf(positions)).toEqual({ prev: 0, current: 0, next: 1 })
 
     fireEvent.click(getDot(1))
 
-    expect(lastOf(positions)).toEqual({ prev: 1, current: 2, next: 3 })
+    expect(lastOf(positions)).toEqual({ prev: 0, current: 1, next: 2 })
   })
 
   it('wraps the neighbours around the ends in loop mode', () => {
@@ -284,7 +284,7 @@ describe('useSwipiCarousel reactive state', () => {
 
     render(<Carousel loop onChange={(value) => positions.push(value)} />)
 
-    expect(lastOf(positions)).toEqual({ prev: 4, current: 1, next: 2 })
+    expect(lastOf(positions)).toEqual({ prev: 3, current: 0, next: 1 })
   })
 })
 
@@ -366,16 +366,23 @@ describe('useSwipiCarousel slide discovery', () => {
   })
 })
 
-describe('useSwipiCarousel initialSlide', () => {
-  it('starts at the requested slide, counted from one', async () => {
-    render(<Carousel initialSlide={3} />)
+describe('useSwipiCarousel startIndex', () => {
+  it('starts at the requested index, counted from zero', async () => {
+    render(<Carousel startIndex={3} />)
 
-    await waitFor(() => expect(readState()).toBe('2/4/4/true/true/true'))
-    expect(getTrackOffset()).toBe(-1800)
+    await waitFor(() => expect(readState()).toBe('3/4/4/true/false/true'))
+    expect(getTrackOffset()).toBe(-2700)
   })
 
-  it('clamps a slide beyond the last one', async () => {
-    render(<Carousel initialSlide={9} />)
+  it('tells the first index from the second one', async () => {
+    render(<Carousel startIndex={1} />)
+
+    await waitFor(() => expect(readState()).toBe('1/4/4/true/true/true'))
+    expect(getTrackOffset()).toBe(-900)
+  })
+
+  it('clamps an index beyond the last one', async () => {
+    render(<Carousel startIndex={9} />)
 
     await waitFor(() => expect(readState()).toBe('3/4/4/true/false/true'))
   })

@@ -6,7 +6,7 @@ import {
 } from '../types'
 import {
   EASE_SPEED_FACTOR,
-  FIRST_SLIDE,
+  FIRST_SLIDE_INDEX,
   MAX_DRAG_VELOCITY,
   MAX_MOMENTUM_DURATION,
   MIN_MOMENTUM_DURATION,
@@ -57,21 +57,23 @@ export const getMomentumDuration = ({
 const getLoopSlidePositions = (
   slideIndex: number,
   dotsCount: number
-): SlidePositions => {
-  const prev = slideIndex <= FIRST_SLIDE ? dotsCount : slideIndex - ONE_STEP
-  const next = slideIndex < dotsCount ? slideIndex + ONE_STEP : FIRST_SLIDE
-
-  return { current: slideIndex, next, prev }
-}
+): SlidePositions => ({
+  prev: normalizeIndex(slideIndex - ONE_STEP, dotsCount),
+  current: slideIndex,
+  next: normalizeIndex(slideIndex + ONE_STEP, dotsCount)
+})
 
 const getRegularSlidePositions = (
   slideIndex: number,
   dotsCount: number
 ): SlidePositions => {
-  const prev = slideIndex <= FIRST_SLIDE ? FIRST_SLIDE : slideIndex - ONE_STEP
-  const next = slideIndex < dotsCount ? slideIndex + ONE_STEP : dotsCount
+  const lastIndex = dotsCount - ONE_STEP
 
-  return { current: slideIndex, next, prev }
+  return {
+    prev: clamp(slideIndex - ONE_STEP, FIRST_SLIDE_INDEX, lastIndex),
+    current: slideIndex,
+    next: clamp(slideIndex + ONE_STEP, FIRST_SLIDE_INDEX, lastIndex)
+  }
 }
 
 export const getSlidePositions = (
@@ -80,10 +82,10 @@ export const getSlidePositions = (
   loop: boolean
 ): SlidePositions => {
   if (loop) {
-    return getLoopSlidePositions(slideIndex + 1, dotsCount)
+    return getLoopSlidePositions(slideIndex, dotsCount)
   }
 
-  return getRegularSlidePositions(slideIndex + 1, dotsCount)
+  return getRegularSlidePositions(slideIndex, dotsCount)
 }
 
 export const easeOutCubic = (progress: number): number =>

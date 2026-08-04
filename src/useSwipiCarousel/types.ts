@@ -6,7 +6,7 @@ export type SwipiCarouselOptions = {
   autoplay?: boolean
   slideWidth?: number
   spaceBetween?: number
-  initialSlide?: number
+  startIndex?: number
   autoplaySpeed?: number
   animationSpeed?: number
   onChange?: (positions: SlidePositions) => void
