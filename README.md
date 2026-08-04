@@ -17,8 +17,9 @@ small object of state. The markup, the CSS and the accessibility stay yours, so
 nothing of ours ends up in your DOM and there is no stylesheet to import.</p>
 
 > Upgrading from Swipi 2? The `<Swipi>` component and its ~30 props are gone in
-> 3.0 — [MIGRATION.md](MIGRATION.md) maps every one of them to a hook option or
-> a line of CSS.
+> 3.0 —
+> [MIGRATION.md](https://github.com/midstem/swipi/blob/main/MIGRATION.md) maps
+> every one of them to a hook option or a line of CSS.
 
 ### Installation
 

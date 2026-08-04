@@ -4,8 +4,9 @@ set -euo pipefail
 TAG="${TAG:-}"
 VERSION=$(node -p "require('./package.json').version")
 
-if [ "$TAG" != "$VERSION" ] && [ "$TAG" != "v$VERSION" ]; then
-  echo "package.json is $VERSION, but the release is tagged ${TAG:-nothing}"
+if [ "$TAG" != "v$VERSION" ]; then
+  echo "package.json is $VERSION, so the release must be tagged v$VERSION"
+  echo "it is tagged ${TAG:-nothing}"
   exit 1
 fi
 

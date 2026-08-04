@@ -27,7 +27,8 @@ on CI. Wait for it to go green.
 
 ## 4. Create the GitHub release
 
-Tag it with the version from `package.json` like `3.0.0`, anything else fails the first step.
+Tag it with the version from `package.json` under a `v` prefix — `3.0.0` in
+`package.json` means the tag is `v3.0.0`. Anything else fails the first step.
 
 Publishing the release starts the `build` workflow, which checks the tag against
 `package.json`, runs lint, typecheck, tests, the build, both package checks and

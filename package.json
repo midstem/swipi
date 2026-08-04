@@ -27,8 +27,7 @@
   "files": [
     "dist",
     "LICENSE",
-    "README.md",
-    "MIGRATION.md"
+    "README.md"
   ],
   "keywords": [
     "react",
