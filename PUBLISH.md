@@ -34,6 +34,15 @@ gh release create v3.0.0 --target main --title "v3.0.0" --generate-notes
 Swap `3.0.0` for the version in `package.json`. The tag carries a `v` prefix and
 the version in `package.json` does not — anything else fails the first step.
 
+`--generate-notes` lists every pull request merged since the previous tag, which
+for a major says nothing about what broke. Add `--notes` to put a summary above
+that list:
+
+```bash
+gh release create v3.0.0 --target main --title "v3.0.0" --generate-notes \
+  --notes "The \`<Swipi>\` component is gone — \`useSwipiCarousel\` replaces it. See [MIGRATION.md](https://github.com/midstem/swipi/blob/main/MIGRATION.md)."
+```
+
 Publishing the release starts the `build` workflow, which checks the tag against
 `package.json`, runs lint, typecheck, tests, the build, both package checks and
 the consumer gate, and only then runs `npm publish`.
