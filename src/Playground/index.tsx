@@ -51,10 +51,10 @@ const Playground = (): JSX.Element => {
 
         <main className="pg-stage">
           <Stage
+            key={remountKey}
             state={state}
             slides={slides}
             swipiRef={swipiRef}
-            remountKey={remountKey}
             onSelect={handleSelect}
             onChange={handleChange}
           />

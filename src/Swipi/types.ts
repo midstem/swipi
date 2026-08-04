@@ -4,7 +4,7 @@ export type UseSwipiType = {
   dragFree: boolean
   slideWidth?: number
   spaceBetween?: number
-  initialSlide: number
+  startIndex: number
   autoplaySpeed: number
   animationSpeed: number
   onChange: (value: SlidePositions) => void

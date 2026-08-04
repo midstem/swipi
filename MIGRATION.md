@@ -36,8 +36,8 @@ The rest of this document maps every removed prop to what replaces it. The
 
 These moved as they are, from JSX props to the object you pass to the hook:
 
-`loop`, `dragFree`, `autoplay`, `autoplaySpeed`, `animationSpeed`,
-`initialSlide`, `onSelect`, `onChange`.
+`loop`, `dragFree`, `autoplay`, `autoplaySpeed`, `animationSpeed`, `onSelect`,
+`onChange`.
 
 ```tsx
 // 2.x
@@ -45,6 +45,38 @@ These moved as they are, from JSX props to the object you pass to the hook:
 
 // 3.0
 useSwipiCarousel({ loop: true, dragFree: true, autoplaySpeed: 2000, onSelect: setState })
+```
+
+## `initialSlide` → `startIndex`, and everything counts from zero
+
+Version 2 mixed two ways of counting: `initialSlide` and `onChange` counted
+slides from one, while `scrollTo` and `selectedScrollSnap` counted indexes from
+zero. Version 3 has one base — zero, everywhere.
+
+`initialSlide` is renamed to `startIndex` on purpose. The values it takes have
+shifted by one, and a silent shift is the worst kind: the types would not have
+moved, so the carousel would simply have opened on the wrong slide. Under the
+new name TypeScript stops your old call instead.
+
+```tsx
+// 2.x — the third slide
+<Swipi initialSlide={3}>
+
+// 3.0 — the same slide
+useSwipiCarousel({ startIndex: 2 })
+```
+
+`onChange` moved with it. `{ prev, current, next }` are now indexes, matching
+`carousel.selectedIndex` and the argument `carousel.scrollTo` expects. On the
+first slide of a four-snap carousel it used to report
+`{ prev: 1, current: 1, next: 2 }` and now reports
+`{ prev: 0, current: 0, next: 1 }`; in `loop` mode, `{ prev: 4, current: 1,
+next: 2 }` became `{ prev: 3, current: 0, next: 1 }`.
+
+If you were printing those numbers, add the `+ 1` back where you print them:
+
+```tsx
+onChange: ({ current }) => setLabel(`Slide ${current + 1} of ${snapCount}`)
 ```
 
 ## Imperative API → the `carousel` object
@@ -180,8 +212,9 @@ movement; do the same for your transitions.
 
 ## Things that behave the same
 
-- `initialSlide` is still counted from one and still applies on mount only.
-- `onChange` still reports `{ prev, current, next }` as one-based positions.
+- The slide to open on still applies on mount only — it is `startIndex` now,
+  and it counts from zero.
+- `onChange` still fires with `{ prev, current, next }` — as indexes now.
 - `loop` still moves the real slides instead of rendering clones, so every
   slide stays a single DOM node.
 - The number of snaps still follows the measurements: the carousel stops once
@@ -197,4 +230,6 @@ movement; do the same for your transitions.
 4. Move `slidesNumber`, `spaceBetweenSlides`, `biasRight` and `config` into
    your CSS.
 5. Replace `ref` reads with fields of `carousel`.
-6. Check the gap is a `margin`, not a `padding`, if you use `loop`.
+6. Rename `initialSlide` to `startIndex` and subtract one from its value; do
+   the same wherever you read `onChange`.
+7. Check the gap is a `margin`, not a `padding`, if you use `loop`.

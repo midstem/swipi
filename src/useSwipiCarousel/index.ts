@@ -3,7 +3,7 @@ import { useSwipi } from '../Swipi/useSwipi'
 import {
   DEFAULT_ANIMATION_SPEED,
   DEFAULT_AUTOPLAY_SPEED,
-  DEFAULT_INITIAL_SLIDE
+  DEFAULT_START_INDEX
 } from '../Swipi/constants'
 import { SwipiCarousel, SwipiCarouselOptions, UseSwipiCarousel } from './types'
 
@@ -15,7 +15,7 @@ export const useSwipiCarousel = ({
   autoplay = false,
   slideWidth,
   spaceBetween,
-  initialSlide = DEFAULT_INITIAL_SLIDE,
+  startIndex = DEFAULT_START_INDEX,
   autoplaySpeed = DEFAULT_AUTOPLAY_SPEED,
   animationSpeed = DEFAULT_ANIMATION_SPEED,
   onChange = noop,
@@ -27,7 +27,7 @@ export const useSwipiCarousel = ({
     dragFree,
     slideWidth,
     spaceBetween,
-    initialSlide,
+    startIndex,
     autoplaySpeed,
     animationSpeed,
     onChange,

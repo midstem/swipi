@@ -242,11 +242,11 @@ carousel.
 | `autoplay`       | Advances the carousel on its own                                                                                                                                                         | `false`    | `boolean`                             |
 | `autoplaySpeed`  | Interval between automatic moves, ms                                                                                                                                                     | `4000`     | `number`                              |
 | `animationSpeed` | Duration of the carousel's own movement, ms. Ignored under `prefers-reduced-motion`                                                                                                      | `300`      | `number`                              |
-| `initialSlide`   | The slide to open on, counted from one. Applied once, on mount; `0` and `1` both mean the first slide                                                                                    | `0`        | `number`                              |
+| `startIndex`     | Index of the snap position to open on, counted from zero like every other index in the API. Applied once, on mount, and clamped to the last snap                                         | `0`        | `number`                              |
 | `slideWidth`     | Optional. Written onto the track as the `--swipi-slide-width` custom property, for stylesheets that would rather take the number from JavaScript. Measuring still happens in the DOM     | —          | `number`                              |
 | `spaceBetween`   | The same for the gap, as `--swipi-slide-gap`                                                                                                                                             | —          | `number`                              |
 | `onSelect`       | Called on every state change with the full navigable state                                                                                                                               | `() => {}` | `(state: SwipiState) => void`         |
-| `onChange`       | Called when the current index changes, with the previous, current and next positions counted from one                                                                                    | `() => {}` | `(positions: SlidePositions) => void` |
+| `onChange`       | Called when the current index changes, with the previous, current and next indexes, counted from zero                                                                                    | `() => {}` | `(positions: SlidePositions) => void` |
 
 ## **Reactive state (`onSelect`)**
 

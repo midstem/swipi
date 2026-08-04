@@ -15,7 +15,7 @@ import { useNavigation } from './hooks/useNavigation'
 import { useElementWidth } from './hooks/useElementWidth'
 import { useSlidesGeometry } from './hooks/useSlidesGeometry'
 import { useTrackVariables } from './hooks/useTrackVariables'
-import { FIRST_SLIDE, FIRST_SLIDE_INDEX, NO_SLIDES } from './constants'
+import { FIRST_SLIDE_INDEX, NO_SLIDES } from './constants'
 import { SlideOffsets, UseSwipiType } from './types'
 import { clamp, getSlidePositions } from './helpers'
 import { getSnapIndex, toSnaps } from './geometry'
@@ -26,7 +26,7 @@ export const useSwipi = ({
   dragFree,
   slideWidth,
   spaceBetween,
-  initialSlide,
+  startIndex,
   autoplaySpeed,
   animationSpeed,
   onChange,
@@ -35,7 +35,7 @@ export const useSwipi = ({
   const timeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const trackRef = useRef<HTMLElement | null>(null)
   const viewportRef = useRef<HTMLElement | null>(null)
-  const isInitialSlideApplied = useRef<boolean>(false)
+  const isStartIndexApplied = useRef<boolean>(false)
   const slideOffsetsRef = useRef<SlideOffsets>(new WeakMap())
 
   const carouselRef = useCallback((node: HTMLElement | null): void => {
@@ -106,11 +106,6 @@ export const useSwipi = ({
   const canScrollNext = isLoop || slideIndex < lastIndex
   const canScrollPrev = isLoop || slideIndex > FIRST_SLIDE_INDEX
 
-  const isDisableButton = useCallback(
-    (isNext?: boolean): boolean => !(isNext ? canScrollNext : canScrollPrev),
-    [canScrollNext, canScrollPrev]
-  )
-
   const { nextImg, prevImg, scrollTo } = useNavigation({
     isLoop,
     geometry,
@@ -152,16 +147,12 @@ export const useSwipi = ({
   })
 
   useEffect(() => {
-    if (!isMeasured || !initialSlide || isInitialSlideApplied.current) return
+    if (!isMeasured || isStartIndexApplied.current) return
 
-    isInitialSlideApplied.current = true
+    isStartIndexApplied.current = true
 
-    moveTo(
-      geometry.snaps[
-        clamp(initialSlide, FIRST_SLIDE, countShowDots) - FIRST_SLIDE
-      ]
-    )
-  }, [isMeasured, initialSlide, countShowDots, geometry, moveTo])
+    moveTo(geometry.snaps[clamp(startIndex, FIRST_SLIDE_INDEX, lastIndex)])
+  }, [isMeasured, startIndex, lastIndex, geometry, moveTo])
 
   useEffect(() => {
     if (!isMeasured) return
@@ -196,8 +187,7 @@ export const useSwipi = ({
       viewportWidth: containerWidth,
       hasOverflow,
       canScrollNext,
-      canScrollPrev,
-      isDisableButton
+      canScrollPrev
     },
     handlers: { nextImg, prevImg, scrollTo }
   }

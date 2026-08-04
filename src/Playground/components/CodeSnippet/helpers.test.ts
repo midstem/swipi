@@ -26,7 +26,7 @@ const VARIANTS: Partial<PlaygroundState>[] = [
   { showDots: false, showArrows: false },
   { showDots: true, showArrows: true, loop: false },
   { slidesAnimation: 'fade-in' },
-  { autoplay: true, dragFree: true, initialSlide: 2, ariaLabel: 'Галерея' }
+  { autoplay: true, dragFree: true, startIndex: 2, ariaLabel: 'Галерея' }
 ]
 
 describe('the generated markup', () => {

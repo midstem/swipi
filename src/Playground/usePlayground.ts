@@ -81,7 +81,7 @@ export const usePlayground = (): UsePlaygroundReturn => {
     swipiRef,
     swipiState,
     positions,
-    remountKey: `${remountToken}-${state.initialSlide}`,
+    remountKey: `${remountToken}-${state.startIndex}`,
     update,
     remount,
     reset,

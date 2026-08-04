@@ -1,4 +1,4 @@
-export const DEFAULT_INITIAL_SLIDE = 0
+export const DEFAULT_START_INDEX = 0
 
 export const DEFAULT_AUTOPLAY_SPEED = 4000
 
@@ -25,8 +25,6 @@ export const MIN_MOMENTUM_DURATION = 120
 export const MAX_MOMENTUM_DURATION = 600
 
 export const ONE_STEP = 1
-
-export const FIRST_SLIDE = 1
 
 export const FIRST_SLIDE_INDEX = 0
 

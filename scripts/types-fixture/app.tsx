@@ -36,7 +36,7 @@ export const Consumer = () => {
     autoplay: true,
     slideWidth: 320,
     spaceBetween: 10,
-    initialSlide: 1,
+    startIndex: 1,
     autoplaySpeed: 4000,
     animationSpeed: 300,
     onSelect: setState,

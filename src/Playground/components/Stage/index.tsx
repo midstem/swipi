@@ -24,7 +24,7 @@ const Stage = ({
     loop: state.loop,
     dragFree: state.dragFree,
     autoplay: state.autoplay,
-    initialSlide: state.initialSlide,
+    startIndex: state.startIndex,
     autoplaySpeed: state.autoplaySpeed,
     animationSpeed: state.animationSpeed,
     onSelect,

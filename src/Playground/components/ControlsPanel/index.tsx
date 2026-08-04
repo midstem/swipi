@@ -2,6 +2,7 @@ import type { JSX } from 'react'
 import {
   MAX_SLIDES_COUNT,
   MIN_SLIDES_COUNT,
+  ONE_SLIDE,
   SLIDES_ANIMATION_OPTIONS,
   STAGE_PRESETS
 } from '../../constants'
@@ -49,12 +50,12 @@ const ControlsPanel = ({ state, update }: ControlsPanelProps): JSX.Element => {
           onChange={change('spaceBetweenSlides')}
         />
         <NumberField
-          label="initialSlide"
-          hint="1-based, applied on mount only — changing it remounts the slider"
-          value={state.initialSlide}
+          label="startIndex"
+          hint="0-based, applied on mount only — changing it remounts the slider"
+          value={state.startIndex}
           min={0}
-          max={state.slidesCount}
-          onChange={change('initialSlide')}
+          max={state.slidesCount - ONE_SLIDE}
+          onChange={change('startIndex')}
         />
         <SelectField
           label="slidesAnimation"

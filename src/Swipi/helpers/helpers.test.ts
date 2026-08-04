@@ -78,27 +78,27 @@ describe('getMomentumDuration', () => {
 describe('getSlidePositions', () => {
   test('should keep the neighbours inside the list without a loop', () => {
     expect(getSlidePositions(0, 4, false)).toEqual({
-      prev: 1,
-      current: 1,
-      next: 2
+      prev: 0,
+      current: 0,
+      next: 1
     })
     expect(getSlidePositions(3, 4, false)).toEqual({
-      prev: 3,
-      current: 4,
-      next: 4
+      prev: 2,
+      current: 3,
+      next: 3
     })
   })
 
   test('should wrap the neighbours around the ends with a loop', () => {
     expect(getSlidePositions(0, 4, true)).toEqual({
-      prev: 4,
-      current: 1,
-      next: 2
+      prev: 3,
+      current: 0,
+      next: 1
     })
     expect(getSlidePositions(3, 4, true)).toEqual({
-      prev: 3,
-      current: 4,
-      next: 1
+      prev: 2,
+      current: 3,
+      next: 0
     })
   })
 })
