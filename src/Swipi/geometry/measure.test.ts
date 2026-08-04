@@ -1,12 +1,18 @@
 import { describe, expect, test } from 'vitest'
 import { measureSlides } from '.'
 
-const buildTrack = (widths: number[], slideWidth?: number): HTMLElement => {
+const buildTrack = (
+  widths: number[],
+  slideWidth?: number,
+  gap?: number
+): HTMLElement => {
   const track = document.createElement('div')
 
   if (slideWidth) {
     track.style.setProperty('--swipi-slide-width', `${slideWidth}px`)
   }
+
+  if (gap) track.style.setProperty('--swipi-slide-gap', `${gap}px`)
 
   widths.forEach((width) => {
     const slide = document.createElement('div')
@@ -31,6 +37,26 @@ describe('measureSlides', () => {
       contentSize: 1000,
       loopSize: 1000
     })
+  })
+
+  test('should keep the gap out of the slide widths', () => {
+    const track = buildTrack([0, 0, 0, 0], 250, 10)
+
+    expect(measureSlides(track)).toEqual({
+      positions: [0, 260, 520, 780],
+      sizes: [250, 250, 250, 250],
+      contentSize: 1030,
+      loopSize: 1040
+    })
+  })
+
+  test('should repeat over the gap that follows the last slide', () => {
+    const track = buildTrack([0, 0, 0], 200, 24)
+
+    const { contentSize, loopSize } = measureSlides(track)
+
+    expect(contentSize).toBe(648)
+    expect(loopSize).toBe(contentSize + 24)
   })
 
   test('should read uneven widths from the slides themselves', () => {
