@@ -13,9 +13,9 @@ const Stage = ({
 }: StageProps): JSX.Element => {
   const {
     bias,
+    slideWidth,
     spaceBetween,
     visibleSlides,
-    areArrowsAvailable,
     windowWidth,
     activeBreakpoint
   } = useStage({ state })
@@ -27,6 +27,8 @@ const Stage = ({
     startIndex: state.startIndex,
     autoplaySpeed: state.autoplaySpeed,
     animationSpeed: state.animationSpeed,
+    slideWidth,
+    spaceBetween,
     onSelect,
     onChange
   })
@@ -81,7 +83,7 @@ const Stage = ({
             >
               <div
                 className="pg-carousel__track"
-                style={getTrackStyle(visibleSlides, spaceBetween, bias)}
+                style={getTrackStyle(visibleSlides, bias, slideWidth)}
               >
                 {slides.map((color, index) => (
                   <div
@@ -162,11 +164,11 @@ const Stage = ({
         </li>
       </ul>
 
-      {!areArrowsAvailable && (
+      {!carousel.hasOverflow && (
         <p className="pg-warning">
           All slides fit on the screen, so arrows, dots navigation and{' '}
-          <code>loop</code> are disabled — add more slides or decrease{' '}
-          <code>slidesNumber</code>.
+          <code>loop</code> are disabled — add more slides, decrease{' '}
+          <code>slidesNumber</code> or narrow the stage.
         </p>
       )}
     </div>

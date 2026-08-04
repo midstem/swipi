@@ -1,8 +1,10 @@
-import { REDUCE_SLIDE } from '../../constants'
+import { NO_SLIDE_WIDTH, REDUCE_SLIDE } from '../../constants'
 import { isFadeInAnimation } from '../../helpers'
 import { PlaygroundState } from '../../types'
 
-const HOOK_OPTIONS = [
+// slideWidth and spaceBetween are left out on purpose: they only hand the
+// numbers to CSS, and the generated stylesheet already carries them in pixels.
+const SNIPPET_OPTIONS = [
   'loop',
   'dragFree',
   'autoplay',
@@ -13,7 +15,7 @@ const HOOK_OPTIONS = [
 
 type OptionValue = string | number | boolean
 
-const DEFAULTS: Record<(typeof HOOK_OPTIONS)[number], OptionValue> = {
+const DEFAULTS: Record<(typeof SNIPPET_OPTIONS)[number], OptionValue> = {
   loop: false,
   dragFree: false,
   autoplay: false,
@@ -26,9 +28,9 @@ const toOption = (key: string, value: OptionValue): string =>
   typeof value === 'string' ? `${key}: '${value}'` : `${key}: ${String(value)}`
 
 const getOptions = (state: PlaygroundState): string => {
-  const used = HOOK_OPTIONS.filter((key) => state[key] !== DEFAULTS[key]).map(
-    (key) => toOption(key, state[key])
-  )
+  const used = SNIPPET_OPTIONS.filter(
+    (key) => state[key] !== DEFAULTS[key]
+  ).map((key) => toOption(key, state[key]))
 
   return used.length ? `{ ${used.join(', ')} }` : ''
 }
@@ -123,15 +125,17 @@ export const buildStyles = (state: PlaygroundState): string => {
   const visible = isFadeInAnimation(state.slidesAnimation)
     ? 1
     : state.slidesNumber
-  const gap = state.spaceBetweenSlides
+  const gap = state.spaceBetween
   const bias =
     state.biasRight && !isFadeInAnimation(state.slidesAnimation)
       ? ` * ${(1 - REDUCE_SLIDE / visible).toFixed(3)}`
       : ''
 
   const gaps = gap > 0 && visible > 1 ? ` - ${visible - 1} * ${gap}px` : ''
-  const basis =
+  const shared =
     visible > 1 || bias ? `calc((100%${gaps}) / ${visible}${bias})` : '100%'
+  const basis =
+    state.slideWidth > NO_SLIDE_WIDTH ? `${state.slideWidth}px` : shared
 
   const fade = isFadeInAnimation(state.slidesAnimation)
     ? `

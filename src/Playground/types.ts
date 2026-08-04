@@ -1,5 +1,6 @@
 import type { ChangeEvent, ReactNode, RefObject } from 'react'
 import { SlidePositions, SwipiState } from '../Swipi/types'
+import { SwipiCarouselOptions } from '../useSwipiCarousel/types'
 
 export enum SlidesAnimation {
   DEFAULT = 'default',
@@ -36,10 +37,11 @@ export type PlaygroundState = {
   autoplay: boolean
   showArrows: boolean
   startIndex: number
+  slideWidth: number
   slidesNumber: number
   autoplaySpeed: number
   animationSpeed: number
-  spaceBetweenSlides: number
+  spaceBetween: number
   slidesAnimation: ValueOf<SlidesAnimation>
   ariaLabel: string
   useConfig: boolean
@@ -48,6 +50,14 @@ export type PlaygroundState = {
 }
 
 export type PlaygroundStateKey = keyof PlaygroundState
+
+// Every option the hook takes except the callbacks, which the event log wires
+// instead of the panel. HOOK_OPTIONS is keyed by this, so a new option in
+// SwipiCarouselOptions fails to compile until the panel gains a control.
+export type HookOptionKey = Exclude<
+  keyof SwipiCarouselOptions,
+  'onChange' | 'onSelect'
+>
 
 export type UpdateState = <Key extends PlaygroundStateKey>(
   key: Key,
@@ -93,8 +103,14 @@ export type UsePlaygroundReturn = {
   handleChange: (positions: SlidePositions) => void
 }
 
+// `hook` marks a section whose controls are options of useSwipiCarousel;
+// `playground` marks the layout and markup the stand draws around it.
+export type SectionOrigin = 'hook' | 'playground'
+
 export type SectionProps = {
   title: string
+  origin: SectionOrigin
+  hint?: string
   children: ReactNode
 }
 
@@ -139,15 +155,6 @@ export type TextFieldProps = {
 }
 
 export type UseTextFieldProps = Pick<TextFieldProps, 'onChange'>
-
-export type ColorFieldProps = {
-  label: string
-  hint?: string
-  value: string
-  onChange: (value: string) => void
-}
-
-export type UseColorFieldProps = Pick<ColorFieldProps, 'onChange'>
 
 export type SelectFieldProps<Value extends string> = {
   label: string
@@ -219,11 +226,11 @@ export type UseStageProps = Pick<StageProps, 'state'>
 
 export type UseStageReturn = {
   bias: number
+  slideWidth?: number
   spaceBetween: number
   config: ConfigType[]
   windowWidth: number
   visibleSlides: number
-  areArrowsAvailable: boolean
   activeBreakpoint?: ConfigType
 }
 
@@ -256,12 +263,4 @@ export type EventLogProps = {
 
 export type CodeSnippetProps = {
   state: PlaygroundState
-}
-
-export type UseCodeSnippetProps = CodeSnippetProps
-
-export type UseCodeSnippetReturn = {
-  code: string
-  isCopied: boolean
-  copy: () => void
 }

@@ -5,6 +5,7 @@ import {
   getActiveBreakpoint,
   getBias,
   getConfig,
+  getSlideWidth,
   getSpaceBetween,
   getVisibleSlides
 } from './helpers'
@@ -22,9 +23,9 @@ export const useStage = ({ state }: UseStageProps): UseStageReturn => {
     config,
     windowWidth,
     visibleSlides,
+    slideWidth: getSlideWidth(state),
     spaceBetween: getSpaceBetween(state, config, windowWidth),
     bias: getBias(state, config, windowWidth, visibleSlides),
-    areArrowsAvailable: state.slidesCount > visibleSlides,
     activeBreakpoint: getActiveBreakpoint(config, windowWidth)
   }
 }
