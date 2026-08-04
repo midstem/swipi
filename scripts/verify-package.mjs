@@ -99,15 +99,16 @@ const packed = JSON.parse(
 
 const packedFiles = packed[0].files.map((file) => file.path)
 
-const requiredFiles = [
-  'dist/index.js',
-  'dist/index.cjs',
-  'dist/index.d.ts',
-  'MIGRATION.md'
-]
+const requiredFiles = ['dist/index.js', 'dist/index.cjs', 'dist/index.d.ts']
 
 requiredFiles.forEach((file) =>
   check(`"${file}" is not published`, packedFiles.includes(file))
+)
+
+const excludedFiles = ['MIGRATION.md', 'PUBLISH.md']
+
+excludedFiles.forEach((file) =>
+  check(`"${file}" is published`, !packedFiles.includes(file))
 )
 
 const stylesheets = packedFiles.filter((file) => file.endsWith('.css'))

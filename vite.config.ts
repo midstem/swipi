@@ -10,8 +10,26 @@ const FILE_NAME_BY_FORMAT: Record<string, string> = {
 
 export default defineConfig({
   test: {
-    environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts']
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: 'dom',
+          environment: 'jsdom',
+          setupFiles: ['./src/test/setup.ts'],
+          include: ['src/**/*.test.{ts,tsx}'],
+          exclude: ['src/**/*.ssr.test.{ts,tsx}']
+        }
+      },
+      {
+        extends: true,
+        test: {
+          name: 'ssr',
+          environment: 'node',
+          include: ['src/**/*.ssr.test.{ts,tsx}']
+        }
+      }
+    ]
   },
   server: {
     port: 3000
