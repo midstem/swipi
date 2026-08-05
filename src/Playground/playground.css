@@ -372,6 +372,53 @@ body {
   gap: 8px;
 }
 
+/* A caption plus its switch, so a toggle never reads as a plain button. */
+.pg-toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pg-toolbar-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pg-muted);
+}
+
+.pg-segmented {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  background: var(--pg-code-bg);
+  border: 1px solid var(--pg-border);
+  border-radius: 8px;
+}
+
+.pg-segment {
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--pg-muted);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pg-segment[aria-pressed='true'] {
+  color: #fff;
+  background: var(--pg-accent);
+}
+
+.pg-toolbar-divider {
+  align-self: stretch;
+  width: 1px;
+  background: var(--pg-border);
+}
+
 .pg-row__group {
   display: flex;
   align-items: center;

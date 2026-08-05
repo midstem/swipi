@@ -32,18 +32,25 @@ const CodeSnippet = ({ state }: CodeSnippetProps): JSX.Element => {
       <header className="pg-card__header">
         <h2 className="pg-card__title">Generated code</h2>
         <div className="pg-row">
-          {VARIANTS.map((variant) => (
-            <button
-              key={variant.title}
-              type="button"
-              className={`pg-button${
-                variant.minimal === minimal ? '' : ' pg-button--ghost'
-              }`}
-              onClick={() => setMinimal(variant.minimal)}
-            >
-              {variant.title}
-            </button>
-          ))}
+          <div className="pg-toolbar-group">
+            <span className="pg-toolbar-label">Markup</span>
+            <div className="pg-segmented">
+              {VARIANTS.map((variant) => (
+                <button
+                  key={variant.title}
+                  type="button"
+                  className="pg-segment"
+                  aria-pressed={variant.minimal === minimal}
+                  onClick={() => setMinimal(variant.minimal)}
+                >
+                  {variant.title}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <span className="pg-toolbar-divider" />
+
           <button type="button" className="pg-button" onClick={copy}>
             {copied ? 'Copied' : 'Copy'}
           </button>
