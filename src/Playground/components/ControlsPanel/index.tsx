@@ -68,6 +68,12 @@ const ControlsPanel = ({ state, update }: ControlsPanelProps): JSX.Element => {
           {...ANIMATION_SPEED_LIMITS}
           onChange={change('animationSpeed')}
         />
+        <Toggle
+          label="respectReducedMotion"
+          hint="Drops the hook's own animation while the system asks for reduced motion — off by default"
+          checked={state.respectReducedMotion}
+          onChange={change('respectReducedMotion')}
+        />
       </Section>
 
       <Section

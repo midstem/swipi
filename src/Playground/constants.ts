@@ -42,6 +42,7 @@ export const HOOK_OPTIONS: Record<HookOptionKey, string> = {
   autoplay: 'Behaviour',
   autoplaySpeed: 'Behaviour',
   animationSpeed: 'Behaviour',
+  respectReducedMotion: 'Behaviour',
   startIndex: 'Geometry',
   slideWidth: 'Geometry',
   spaceBetween: 'Geometry'
@@ -62,6 +63,7 @@ export const DEFAULT_STATE: PlaygroundState = {
   slidesNumber: 1,
   autoplaySpeed: 4000,
   animationSpeed: 300,
+  respectReducedMotion: false,
   spaceBetween: 16,
   slidesAnimation: 'default',
   ariaLabel: 'Slides',

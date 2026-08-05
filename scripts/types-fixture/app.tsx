@@ -39,6 +39,7 @@ export const Consumer = () => {
     startIndex: 1,
     autoplaySpeed: 4000,
     animationSpeed: 300,
+    respectReducedMotion: true,
     onSelect: setState,
     onChange: setPositions
   })

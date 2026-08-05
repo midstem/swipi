@@ -9,6 +9,7 @@ export type SwipiCarouselOptions = {
   startIndex?: number
   autoplaySpeed?: number
   animationSpeed?: number
+  respectReducedMotion?: boolean
   onChange?: (positions: SlidePositions) => void
   onSelect?: (state: SwipiState) => void
 }

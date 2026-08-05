@@ -2,6 +2,7 @@ import { MutableRefObject } from 'react'
 
 export type UseTransformProps = {
   animationSpeed: number
+  respectReducedMotion: boolean
   render: (transform: number) => void
   onTarget: (target: number) => void
 }

@@ -23,6 +23,7 @@ export const useSwipi = ({
   startIndex,
   autoplaySpeed,
   animationSpeed,
+  respectReducedMotion,
   onChange,
   onSelect
 }: UseSwipiType) => {
@@ -91,6 +92,7 @@ export const useSwipi = ({
 
   const { transformRef, targetRef, moveTo, animateTo } = useTransform({
     animationSpeed,
+    respectReducedMotion,
     render,
     onTarget: syncSlideIndex
   })

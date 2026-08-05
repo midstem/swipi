@@ -7,10 +7,11 @@ import { UseTransformProps, UseTransformReturn } from './types'
 
 export const useTransform = ({
   animationSpeed,
+  respectReducedMotion,
   render,
   onTarget
 }: UseTransformProps): UseTransformReturn => {
-  const prefersReducedMotion = usePrefersReducedMotion()
+  const prefersReducedMotion = usePrefersReducedMotion(respectReducedMotion)
 
   const transformRef = useRef(INITIAL_TRANSFORM)
   const targetRef = useRef(INITIAL_TRANSFORM)

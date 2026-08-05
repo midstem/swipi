@@ -7,6 +7,7 @@ export type UseSwipiType = {
   startIndex: number
   autoplaySpeed: number
   animationSpeed: number
+  respectReducedMotion: boolean
   onChange: (value: SlidePositions) => void
   onSelect: (state: SwipiState) => void
 }

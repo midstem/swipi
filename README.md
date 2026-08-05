@@ -278,18 +278,19 @@ nothing has to be spread onto your JSX and no handler of yours is overwritten.
 Every option is optional — `useSwipiCarousel()` on its own is a working
 carousel.
 
-| Option           | Description                                                                                                                                                                                           | Default    | Type                                  |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------------------------------- |
-| `loop`           | Makes the carousel infinite. The real slides are moved around, not cloned, so every slide stays a single DOM node                                                                                     | `false`    | `boolean`                             |
-| `dragFree`       | Keeps the momentum of a drag without snapping to a slide — the track coasts and rests wherever it stops. With `false` one gesture moves by one slide at most, however far it was dragged              | `false`    | `boolean`                             |
-| `autoplay`       | Advances the carousel on its own                                                                                                                                                                      | `false`    | `boolean`                             |
-| `autoplaySpeed`  | Interval between automatic moves, ms                                                                                                                                                                  | `4000`     | `number`                              |
-| `animationSpeed` | Duration of the carousel's own movement, ms. Ignored under `prefers-reduced-motion`                                                                                                                   | `300`      | `number`                              |
-| `startIndex`     | Index of the snap position to open on, counted from zero like every other index in the API. Applied once, on mount, and clamped to the last snap                                                      | `0`        | `number`                              |
-| `slideWidth`     | Written onto the track as the `--swipi-slide-width` custom property and nothing else. Sizes a slide only if your CSS reads it — see [Required CSS](#required-css). Measuring still happens in the DOM | —          | `number`                              |
-| `spaceBetween`   | The same for the gap, as `--swipi-slide-gap`                                                                                                                                                          | —          | `number`                              |
-| `onSelect`       | Called on every state change with the full navigable state                                                                                                                                            | `() => {}` | `(state: SwipiState) => void`         |
-| `onChange`       | Called when the current index changes, with the previous, current and next indexes, counted from zero                                                                                                 | `() => {}` | `(positions: SlidePositions) => void` |
+| Option                 | Description                                                                                                                                                                                           | Default    | Type                                  |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------------------------------- |
+| `loop`                 | Makes the carousel infinite. The real slides are moved around, not cloned, so every slide stays a single DOM node                                                                                     | `false`    | `boolean`                             |
+| `dragFree`             | Keeps the momentum of a drag without snapping to a slide — the track coasts and rests wherever it stops. With `false` one gesture moves by one slide at most, however far it was dragged              | `false`    | `boolean`                             |
+| `autoplay`             | Advances the carousel on its own                                                                                                                                                                      | `false`    | `boolean`                             |
+| `autoplaySpeed`        | Interval between automatic moves, ms                                                                                                                                                                  | `4000`     | `number`                              |
+| `animationSpeed`       | Duration of the carousel's own movement, ms                                                                                                                                                           | `300`      | `number`                              |
+| `respectReducedMotion` | Watches `prefers-reduced-motion` and jumps to the target instead of animating while it is set. Off by default — the carousel animates the same for everyone until you ask it not to                   | `false`    | `boolean`                             |
+| `startIndex`           | Index of the snap position to open on, counted from zero like every other index in the API. Applied once, on mount, and clamped to the last snap                                                      | `0`        | `number`                              |
+| `slideWidth`           | Written onto the track as the `--swipi-slide-width` custom property and nothing else. Sizes a slide only if your CSS reads it — see [Required CSS](#required-css). Measuring still happens in the DOM | —          | `number`                              |
+| `spaceBetween`         | The same for the gap, as `--swipi-slide-gap`                                                                                                                                                          | —          | `number`                              |
+| `onSelect`             | Called on every state change with the full navigable state                                                                                                                                            | `() => {}` | `(state: SwipiState) => void`         |
+| `onChange`             | Called when the current index changes, with the previous, current and next indexes, counted from zero                                                                                                 | `() => {}` | `(positions: SlidePositions) => void` |
 
 ## **Reactive state (`onSelect`)**
 
@@ -350,8 +351,13 @@ Because it is your code, translating it is editing it — no options to look up,
 no strings the library decides for you. `"Slide 2 of 5"` becomes
 `"Слайд 2 з 5"` where it is written.
 
-The one thing the hook does decide is motion: it skips its own animation under
-`prefers-reduced-motion`. Do the same for the transitions you write.
+Motion is yours as well. The hook animates the same for everyone until you pass
+`respectReducedMotion`; with it the carousel jumps straight to the target while
+the system asks for reduced motion. Do the same for the transitions you write.
+
+```tsx
+const [carouselRef, carousel] = useSwipiCarousel({ respectReducedMotion: true })
+```
 
 ## **Server rendering**
 

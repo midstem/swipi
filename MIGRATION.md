@@ -230,9 +230,11 @@ const handleKeyDown = (event) => {
 }
 ```
 
-One thing the component did for free is worth keeping by hand: it disabled
-animations under `prefers-reduced-motion`. The hook still does that for its own
-movement; do the same for your transitions.
+One thing the component did for free is now an option: it disabled animations
+under `prefers-reduced-motion`. The hook does it only with
+`respectReducedMotion: true`, so a user with the setting on still gets the
+animation unless you ask for it. Turn it on to keep the old behaviour, and do
+the same for your transitions.
 
 ```css
 @media (prefers-reduced-motion: reduce) {

@@ -1,5 +1,5 @@
 import { StrictMode, useState, type JSX } from 'react'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { useSwipiCarousel } from '.'
 import { SwipiCarousel, SwipiCarouselOptions } from './types'
@@ -780,6 +780,54 @@ describe('useSwipiCarousel with slides sized by the consumer', () => {
     render(<UnevenCarousel loop />)
 
     expect(readState()).toBe('0/4')
+  })
+})
+
+describe('useSwipiCarousel under prefers-reduced-motion', () => {
+  const stubReducedMotion = (matches: boolean): void => {
+    vi.stubGlobal(
+      'matchMedia',
+      (media: string) =>
+        ({
+          media,
+          matches,
+          addEventListener: (): void => {},
+          removeEventListener: (): void => {}
+        }) as unknown as MediaQueryList
+    )
+  }
+
+  const scrollForward = (): void => {
+    fireEvent.click(screen.getByRole('button', { name: 'forward' }))
+  }
+
+  afterEach(() => vi.unstubAllGlobals())
+
+  it('animates like everywhere else while the option is off', () => {
+    stubReducedMotion(true)
+
+    render(<Carousel />)
+    scrollForward()
+
+    expect(getTrackOffset()).toBe(0)
+  })
+
+  it('jumps straight to the snap once the option is on', () => {
+    stubReducedMotion(true)
+
+    render(<Carousel respectReducedMotion />)
+    scrollForward()
+
+    expect(getTrackOffset()).toBe(-SLIDE_WIDTH)
+  })
+
+  it('keeps the animation with the option on and the setting off', () => {
+    stubReducedMotion(false)
+
+    render(<Carousel respectReducedMotion />)
+    scrollForward()
+
+    expect(getTrackOffset()).toBe(0)
   })
 })
 

@@ -18,6 +18,7 @@ export const useSwipiCarousel = ({
   startIndex = DEFAULT_START_INDEX,
   autoplaySpeed = DEFAULT_AUTOPLAY_SPEED,
   animationSpeed = DEFAULT_ANIMATION_SPEED,
+  respectReducedMotion = false,
   onChange = noop,
   onSelect = noop
 }: SwipiCarouselOptions = {}): UseSwipiCarousel => {
@@ -30,6 +31,7 @@ export const useSwipiCarousel = ({
     startIndex,
     autoplaySpeed,
     animationSpeed,
+    respectReducedMotion,
     onChange,
     onSelect
   })
