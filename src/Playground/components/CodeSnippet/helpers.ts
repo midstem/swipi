@@ -33,14 +33,29 @@ const getOptions = (state: PlaygroundState): string => {
   return used.length ? `{ ${used.join(', ')} }` : ''
 }
 
-export const buildMarkup = (state: PlaygroundState): string => {
-  const selected = isFadeInAnimation(state.slidesAnimation)
-    ? `
-              data-selected={index === carousel.selectedIndex}`
-    : ''
+const buildArrows = (state: PlaygroundState, minimal: boolean): string => {
+  if (!state.showArrows) return ''
 
-  const arrows = state.showArrows
-    ? `
+  if (minimal) {
+    return `
+      <button
+        type="button"
+        onClick={carousel.scrollPrev}
+        disabled={!carousel.canScrollPrev}
+      >
+        ‹
+      </button>
+      <button
+        type="button"
+        onClick={carousel.scrollNext}
+        disabled={!carousel.canScrollNext}
+      >
+        ›
+      </button>
+`
+  }
+
+  return `
       <button
         type="button"
         aria-label="Previous slide"
@@ -58,21 +73,75 @@ export const buildMarkup = (state: PlaygroundState): string => {
         ›
       </button>
 `
-    : ''
+}
 
-  const dots = state.showDots
+const buildDots = (state: PlaygroundState, minimal: boolean): string => {
+  if (!state.showDots) return ''
+
+  const marker = minimal
     ? `
+          data-active={index === carousel.selectedIndex}`
+    : `
+          aria-label={\`Go to slide \${index + 1}\`}
+          aria-current={index === carousel.selectedIndex}`
+
+  return `
       {Array.from({ length: carousel.snapCount }, (_, index) => (
         <button
           type="button"
           className="carousel__dot"
-          key={index}
-          aria-label={\`Go to slide \${index + 1}\`}
-          aria-current={index === carousel.selectedIndex}
+          key={index}${marker}
           onClick={() => carousel.scrollTo(index)}
         />
       ))}
 `
+}
+
+/**
+ * The minimal variant is the same carousel with everything optional taken off:
+ * no roles, no labels, no live region, no arrow keys. It works and it is short
+ * — the accessible one is what you want to ship.
+ */
+const buildMinimalMarkup = (state: PlaygroundState): string => {
+  const isFadeIn = isFadeInAnimation(state.slidesAnimation)
+
+  const selected = isFadeIn
+    ? `
+              data-selected={index === carousel.selectedIndex}`
+    : ''
+
+  const params = isFadeIn ? '(item, index)' : '(item)'
+
+  return `import { useSwipiCarousel } from 'swipi'
+
+export const Carousel = ({ items }) => {
+  const [carouselRef, carousel] = useSwipiCarousel(${getOptions(state)})
+
+  return (
+    <>
+      <div className="carousel__viewport" ref={carouselRef}>
+        <div className="carousel__track">
+          {items.map(${params} => (
+            <div className="carousel__slide" key={item.id}${selected}>
+              {item.title}
+            </div>
+          ))}
+        </div>
+      </div>
+${buildArrows(state, true)}${buildDots(state, true)}    </>
+  )
+}`
+}
+
+export const buildMarkup = (
+  state: PlaygroundState,
+  minimal = false
+): string => {
+  if (minimal) return buildMinimalMarkup(state)
+
+  const selected = isFadeInAnimation(state.slidesAnimation)
+    ? `
+              data-selected={index === carousel.selectedIndex}`
     : ''
 
   return `import { useSwipiCarousel } from 'swipi'
@@ -114,12 +183,15 @@ export const Carousel = ({ items }) => {
       <span className="carousel__status" aria-live="polite" aria-atomic="true">
         Slide {carousel.selectedIndex + 1} of {carousel.snapCount}
       </span>
-${arrows}${dots}    </>
+${buildArrows(state, false)}${buildDots(state, false)}    </>
   )
 }`
 }
 
-export const buildStyles = (state: PlaygroundState): string => {
+export const buildStyles = (
+  state: PlaygroundState,
+  minimal = false
+): string => {
   const visible = isFadeInAnimation(state.slidesAnimation)
     ? 1
     : state.slidesNumber
@@ -156,6 +228,20 @@ export const buildStyles = (state: PlaygroundState): string => {
   const trackGap = gap ? `\n  margin-left: -${gap}px;` : ''
   const slideGap = gap ? `\n  padding-left: ${gap}px;` : ''
 
+  /* Only the accessible markup renders a live region to hide. */
+  const status = minimal
+    ? ''
+    : `
+
+.carousel__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}`
+
   return `.carousel__viewport {
   overflow: hidden;
   touch-action: pan-y;
@@ -170,14 +256,5 @@ export const buildStyles = (state: PlaygroundState): string => {
 .carousel__slide {
   box-sizing: border-box;
   flex: 0 0 ${basis};${slideGap}
-}
-
-.carousel__status {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-}${fade}`
+}${status}${fade}`
 }

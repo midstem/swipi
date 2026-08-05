@@ -9,11 +9,17 @@ type CodeSnippetProps = {
 
 const COPIED_TIMEOUT = 1500
 
+const VARIANTS = [
+  { minimal: false, title: 'Accessible' },
+  { minimal: true, title: 'Minimal' }
+]
+
 const CodeSnippet = ({ state }: CodeSnippetProps): JSX.Element => {
   const [copied, setCopied] = useState(false)
+  const [minimal, setMinimal] = useState(false)
 
-  const markup = useMemo(() => buildMarkup(state), [state])
-  const styles = useMemo(() => buildStyles(state), [state])
+  const markup = useMemo(() => buildMarkup(state, minimal), [state, minimal])
+  const styles = useMemo(() => buildStyles(state, minimal), [state, minimal])
 
   const copy = (): void => {
     void navigator.clipboard.writeText(`${markup}\n\n/* CSS */\n${styles}`)
@@ -25,15 +31,29 @@ const CodeSnippet = ({ state }: CodeSnippetProps): JSX.Element => {
     <section className="pg-card">
       <header className="pg-card__header">
         <h2 className="pg-card__title">Generated code</h2>
-        <button type="button" className="pg-button" onClick={copy}>
-          {copied ? 'Copied' : 'Copy'}
-        </button>
+        <div className="pg-row">
+          {VARIANTS.map((variant) => (
+            <button
+              key={variant.title}
+              type="button"
+              className={`pg-button${
+                variant.minimal === minimal ? '' : ' pg-button--ghost'
+              }`}
+              onClick={() => setMinimal(variant.minimal)}
+            >
+              {variant.title}
+            </button>
+          ))}
+          <button type="button" className="pg-button" onClick={copy}>
+            {copied ? 'Copied' : 'Copy'}
+          </button>
+        </div>
       </header>
 
       <p className="pg-hint">
-        Everything the current settings need: the hook options, the accessible
-        markup around them, the rest as CSS. The roles, labels and the live
-        region are yours to edit and translate once you paste this.
+        {minimal
+          ? 'The same carousel with everything optional taken off: no roles, no labels, no live region, no arrow keys. Shortest thing that works — reach for the accessible variant before you ship.'
+          : 'Everything the current settings need: the hook options, the accessible markup around them, the rest as CSS. The roles, labels and the live region are yours to edit and translate once you paste this.'}
       </p>
 
       <pre className="pg-code">{markup}</pre>
