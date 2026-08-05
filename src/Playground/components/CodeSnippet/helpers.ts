@@ -33,6 +33,117 @@ const getOptions = (state: PlaygroundState): string => {
   return used.length ? `{ ${used.join(', ')} }` : ''
 }
 
+const ONE_SLIDE = 1
+
+const BIAS_PRECISION = 3
+
+const FADE_DURATION = 350
+
+const EASING = 'cubic-bezier(0.25, 1, 0.5, 1)'
+
+/** The fractions Tailwind ships as flex-basis utilities. */
+const BASIS_FRACTIONS: Record<number, string> = {
+  1: 'full',
+  2: '1/2',
+  3: '1/3',
+  4: '1/4',
+  5: '1/5',
+  6: '1/6',
+  12: '1/12'
+}
+
+/**
+ * Tailwind reads an arbitrary value as a single token, so every space inside
+ * the brackets has to be an underscore.
+ */
+const toArbitrary = (value: string): string => value.replace(/\s/g, '_')
+
+const getVisibleSlides = (state: PlaygroundState): number =>
+  isFadeInAnimation(state.slidesAnimation) ? ONE_SLIDE : state.slidesNumber
+
+const getBias = (state: PlaygroundState): string => {
+  if (!state.biasRight || isFadeInAnimation(state.slidesAnimation)) return ''
+
+  const visible = getVisibleSlides(state)
+
+  return ` * ${(1 - REDUCE_SLIDE / visible).toFixed(BIAS_PRECISION)}`
+}
+
+/**
+ * The gap is a padding inside the slide, so the basis stays a plain fraction of
+ * the viewport — `calc(100% / 3)` rather than a subtraction no utility class
+ * can express.
+ */
+export const getBasis = (state: PlaygroundState): string => {
+  const gap = state.spaceBetween
+
+  if (state.slideWidth > NO_SLIDE_WIDTH) {
+    return gap
+      ? `calc(${state.slideWidth}px + ${gap}px)`
+      : `${state.slideWidth}px`
+  }
+
+  const visible = getVisibleSlides(state)
+  const bias = getBias(state)
+
+  return visible > ONE_SLIDE || bias ? `calc(100% / ${visible}${bias})` : '100%'
+}
+
+type ClassNames = {
+  viewport: string
+  track: string
+  slide: string
+  status: string
+}
+
+const CSS_CLASS_NAMES: ClassNames = {
+  viewport: 'carousel__viewport',
+  track: 'carousel__track',
+  slide: 'carousel__slide',
+  status: 'carousel__status'
+}
+
+const buildSlideClasses = (state: PlaygroundState): string => {
+  const gap = state.spaceBetween
+  const plain = state.slideWidth <= NO_SLIDE_WIDTH && !getBias(state)
+  const fraction = plain ? BASIS_FRACTIONS[getVisibleSlides(state)] : undefined
+
+  const classes = [
+    'box-border',
+    fraction ? `basis-${fraction}` : `basis-[${toArbitrary(getBasis(state))}]`
+  ]
+
+  if (gap) classes.push(`pl-[${gap}px]`)
+
+  if (isFadeInAnimation(state.slidesAnimation)) {
+    classes.push(
+      'opacity-0',
+      'transition-opacity',
+      `duration-[${FADE_DURATION}ms]`,
+      `ease-[${toArbitrary(EASING)}]`,
+      'data-[selected=true]:opacity-100'
+    )
+  }
+
+  return classes.join(' ')
+}
+
+const getClassNames = (
+  state: PlaygroundState,
+  tailwind: boolean
+): ClassNames => {
+  if (!tailwind) return CSS_CLASS_NAMES
+
+  const gap = state.spaceBetween
+
+  return {
+    viewport: 'overflow-hidden touch-pan-y',
+    track: `flex w-full${gap ? ` -ml-[${gap}px]` : ''} select-none`,
+    slide: buildSlideClasses(state),
+    status: 'sr-only'
+  }
+}
+
 const buildArrows = (state: PlaygroundState, minimal: boolean): string => {
   if (!state.showArrows) return ''
 
@@ -102,7 +213,10 @@ const buildDots = (state: PlaygroundState, minimal: boolean): string => {
  * no roles, no labels, no live region, no arrow keys. It works and it is short
  * — the accessible one is what you want to ship.
  */
-const buildMinimalMarkup = (state: PlaygroundState): string => {
+const buildMinimalMarkup = (
+  state: PlaygroundState,
+  classes: ClassNames
+): string => {
   const isFadeIn = isFadeInAnimation(state.slidesAnimation)
 
   const selected = isFadeIn
@@ -119,10 +233,10 @@ export const Carousel = ({ items }) => {
 
   return (
     <>
-      <div className="carousel__viewport" ref={carouselRef}>
-        <div className="carousel__track">
+      <div className="${classes.viewport}" ref={carouselRef}>
+        <div className="${classes.track}">
           {items.map(${params} => (
-            <div className="carousel__slide" key={item.id}${selected}>
+            <div className="${classes.slide}" key={item.id}${selected}>
               {item.title}
             </div>
           ))}
@@ -135,9 +249,12 @@ ${buildArrows(state, true)}${buildDots(state, true)}    </>
 
 export const buildMarkup = (
   state: PlaygroundState,
-  minimal = false
+  minimal = false,
+  tailwind = false
 ): string => {
-  if (minimal) return buildMinimalMarkup(state)
+  const classes = getClassNames(state, tailwind)
+
+  if (minimal) return buildMinimalMarkup(state, classes)
 
   const selected = isFadeInAnimation(state.slidesAnimation)
     ? `
@@ -157,7 +274,7 @@ export const Carousel = ({ items }) => {
   return (
     <>
       <div
-        className="carousel__viewport"
+        className="${classes.viewport}"
         ref={carouselRef}
         role="group"
         tabIndex={0}
@@ -165,10 +282,10 @@ export const Carousel = ({ items }) => {
         aria-label="${state.ariaLabel}"
         onKeyDown={handleKeyDown}
       >
-        <div className="carousel__track">
+        <div className="${classes.track}">
           {items.map((item, index) => (
             <div
-              className="carousel__slide"
+              className="${classes.slide}"
               key={item.id}
               role="group"
               aria-roledescription="slide"
@@ -180,7 +297,7 @@ export const Carousel = ({ items }) => {
         </div>
       </div>
 
-      <span className="carousel__status" aria-live="polite" aria-atomic="true">
+      <span className="${classes.status}" aria-live="polite" aria-atomic="true">
         Slide {carousel.selectedIndex + 1} of {carousel.snapCount}
       </span>
 ${buildArrows(state, false)}${buildDots(state, false)}    </>
@@ -192,32 +309,15 @@ export const buildStyles = (
   state: PlaygroundState,
   minimal = false
 ): string => {
-  const visible = isFadeInAnimation(state.slidesAnimation)
-    ? 1
-    : state.slidesNumber
   const gap = state.spaceBetween
-  const bias =
-    state.biasRight && !isFadeInAnimation(state.slidesAnimation)
-      ? ` * ${(1 - REDUCE_SLIDE / visible).toFixed(3)}`
-      : ''
-
-  /**
-   * The gap is a padding inside the slide, so the basis stays a plain fraction
-   * of the viewport — `calc(100% / 3)` rather than a subtraction no utility
-   * class can express.
-   */
-  const shared = visible > 1 || bias ? `calc(100% / ${visible}${bias})` : '100%'
-  const fixed = gap
-    ? `calc(${state.slideWidth}px + ${gap}px)`
-    : `${state.slideWidth}px`
-  const basis = state.slideWidth > NO_SLIDE_WIDTH ? fixed : shared
+  const basis = getBasis(state)
 
   const fade = isFadeInAnimation(state.slidesAnimation)
     ? `
 
 .carousel__slide {
   opacity: 0;
-  transition: opacity 350ms cubic-bezier(0.25, 1, 0.5, 1);
+  transition: opacity ${FADE_DURATION}ms ${EASING};
 }
 
 .carousel__slide[data-selected='true'] {

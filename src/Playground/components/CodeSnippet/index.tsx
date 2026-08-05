@@ -14,15 +14,31 @@ const VARIANTS = [
   { minimal: true, title: 'Minimal' }
 ]
 
+const FLAVOURS = [
+  { tailwind: true, title: 'Tailwind' },
+  { tailwind: false, title: 'CSS' }
+]
+
 const CodeSnippet = ({ state }: CodeSnippetProps): JSX.Element => {
   const [copied, setCopied] = useState(false)
   const [minimal, setMinimal] = useState(false)
+  const [tailwind, setTailwind] = useState(true)
 
-  const markup = useMemo(() => buildMarkup(state, minimal), [state, minimal])
-  const styles = useMemo(() => buildStyles(state, minimal), [state, minimal])
+  const markup = useMemo(
+    () => buildMarkup(state, minimal, tailwind),
+    [state, minimal, tailwind]
+  )
+
+  /* Tailwind carries the layout in the class names, so there is no stylesheet. */
+  const styles = useMemo(
+    () => (tailwind ? '' : buildStyles(state, minimal)),
+    [state, minimal, tailwind]
+  )
 
   const copy = (): void => {
-    void navigator.clipboard.writeText(`${markup}\n\n/* CSS */\n${styles}`)
+    const source = styles ? `${markup}\n\n/* CSS */\n${styles}` : markup
+
+    void navigator.clipboard.writeText(source)
     setCopied(true)
     setTimeout(() => setCopied(false), COPIED_TIMEOUT)
   }
@@ -49,6 +65,23 @@ const CodeSnippet = ({ state }: CodeSnippetProps): JSX.Element => {
             </div>
           </div>
 
+          <div className="pg-toolbar-group">
+            <span className="pg-toolbar-label">Styles</span>
+            <div className="pg-segmented">
+              {FLAVOURS.map((flavour) => (
+                <button
+                  key={flavour.title}
+                  type="button"
+                  className="pg-segment"
+                  aria-pressed={flavour.tailwind === tailwind}
+                  onClick={() => setTailwind(flavour.tailwind)}
+                >
+                  {flavour.title}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <span className="pg-toolbar-divider" />
 
           <button type="button" className="pg-button" onClick={copy}>
@@ -59,12 +92,16 @@ const CodeSnippet = ({ state }: CodeSnippetProps): JSX.Element => {
 
       <p className="pg-hint">
         {minimal
-          ? 'The same carousel with everything optional taken off: no roles, no labels, no live region, no arrow keys. Shortest thing that works — reach for the accessible variant before you ship.'
-          : 'Everything the current settings need: the hook options, the accessible markup around them, the rest as CSS. The roles, labels and the live region are yours to edit and translate once you paste this.'}
+          ? `The same carousel with everything optional taken off: no roles, no labels, no live region, no arrow keys — the layout as ${
+              tailwind ? 'Tailwind classes' : 'CSS'
+            }. Shortest thing that works; reach for the accessible variant before you ship.`
+          : `Everything the current settings need: the hook options, the accessible markup around them, the rest as ${
+              tailwind ? 'Tailwind classes' : 'CSS'
+            }. The roles, labels and the live region are yours to edit and translate once you paste this.`}
       </p>
 
       <pre className="pg-code">{markup}</pre>
-      <pre className="pg-code">{styles}</pre>
+      {styles && <pre className="pg-code">{styles}</pre>}
     </section>
   )
 }
