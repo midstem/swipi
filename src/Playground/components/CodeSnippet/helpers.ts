@@ -129,7 +129,6 @@ const buildSlideClasses = (state: PlaygroundState): string => {
   const plain = state.slideWidth <= NO_SLIDE_WIDTH && !getBias(state)
   const fraction = plain ? BASIS_FRACTIONS[getVisibleSlides(state)] : undefined
 
-  /* No `box-border`: Tailwind's preflight already makes every box border-box. */
   const classes = [
     'min-w-0',
     'shrink-0',
@@ -349,7 +348,6 @@ export const buildStyles = (
   const trackGap = gap ? `\n  margin-left: -${gap}px;` : ''
   const slideGap = gap ? `\n  padding-left: ${gap}px;` : ''
 
-  /* Only the accessible markup renders a live region to hide. */
   const status = minimal
     ? ''
     : `

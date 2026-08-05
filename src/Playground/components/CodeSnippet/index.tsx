@@ -29,7 +29,6 @@ const CodeSnippet = ({ state }: CodeSnippetProps): JSX.Element => {
     [state, minimal, tailwind]
   )
 
-  /* Tailwind carries the layout in the class names, so there is no stylesheet. */
   const styles = useMemo(
     () => (tailwind ? '' : buildStyles(state, minimal)),
     [state, minimal, tailwind]
