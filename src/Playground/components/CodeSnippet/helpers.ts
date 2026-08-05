@@ -8,6 +8,7 @@ const SNIPPET_OPTIONS = [
   'autoplay',
   'autoplaySpeed',
   'animationSpeed',
+  'respectReducedMotion',
   'startIndex'
 ] as const
 
@@ -19,6 +20,7 @@ const DEFAULTS: Record<(typeof SNIPPET_OPTIONS)[number], OptionValue> = {
   autoplay: false,
   autoplaySpeed: 4000,
   animationSpeed: 300,
+  respectReducedMotion: false,
   startIndex: 0
 }
 

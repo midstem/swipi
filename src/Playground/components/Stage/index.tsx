@@ -27,6 +27,7 @@ const Stage = ({
     startIndex: state.startIndex,
     autoplaySpeed: state.autoplaySpeed,
     animationSpeed: state.animationSpeed,
+    respectReducedMotion: state.respectReducedMotion,
     slideWidth,
     spaceBetween,
     onSelect,

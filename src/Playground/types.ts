@@ -39,6 +39,7 @@ export type PlaygroundState = {
   slidesNumber: number
   autoplaySpeed: number
   animationSpeed: number
+  respectReducedMotion: boolean
   spaceBetween: number
   slidesAnimation: ValueOf<SlidesAnimation>
   ariaLabel: string

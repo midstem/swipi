@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { REDUCED_MOTION_QUERY } from '../../constants'
 
-export const usePrefersReducedMotion = (): boolean => {
+export const usePrefersReducedMotion = (enabled: boolean): boolean => {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
   useEffect(() => {
-    if (typeof window.matchMedia !== 'function') return
+    if (!enabled || typeof window.matchMedia !== 'function') {
+      setPrefersReducedMotion(false)
+      return
+    }
 
     const mediaQuery = window.matchMedia(REDUCED_MOTION_QUERY)
     const handleChange = (event: MediaQueryListEvent): void =>
@@ -15,7 +18,7 @@ export const usePrefersReducedMotion = (): boolean => {
     mediaQuery.addEventListener('change', handleChange)
 
     return () => mediaQuery.removeEventListener('change', handleChange)
-  }, [])
+  }, [enabled])
 
   return prefersReducedMotion
 }
