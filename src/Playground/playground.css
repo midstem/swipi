@@ -436,6 +436,7 @@ body {
 .pg-carousel__track {
   display: flex;
   width: 100%;
+  margin-left: calc(-1 * var(--swipi-slide-gap, 0px));
   cursor: grab;
   user-select: none;
 }
@@ -447,20 +448,18 @@ body {
 .pg-carousel__slide {
   box-sizing: border-box;
   flex: 0 0 var(--pg-basis);
-  margin-right: var(--swipi-slide-gap, 0px);
+  padding-left: var(--swipi-slide-gap, 0px);
   display: flex;
   align-items: center;
   justify-content: center;
   height: 250px;
+  /* The colour is the slide itself here, so keep it out of the gap. */
+  background-clip: content-box;
   font-size: 48px;
   font-weight: 700;
   color: #fff;
   border-radius: 8px;
   user-select: none;
-}
-
-.pg-carousel__slide:last-child {
-  margin-right: 0;
 }
 
 .pg-carousel__arrow {

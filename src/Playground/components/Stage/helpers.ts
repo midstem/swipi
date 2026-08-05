@@ -65,8 +65,8 @@ export const getTrackStyle = (
   ({
     '--pg-basis':
       slideWidth === undefined
-        ? `calc((100% - (${visibleSlides} - 1) * var(--swipi-slide-gap, 0px)) / ${visibleSlides} * ${bias})`
-        : 'var(--swipi-slide-width)'
+        ? `calc(100% / ${visibleSlides} * ${bias})`
+        : 'calc(var(--swipi-slide-width) + var(--swipi-slide-gap, 0px))'
   }) as CSSProperties
 
 export const getSlideStyle = (

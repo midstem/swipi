@@ -143,17 +143,14 @@ only hides the live region from the screen while leaving it to screen readers.
 .carousel__track {
   display: flex;
   width: 100%;
+  margin-left: -12px;
   user-select: none;
 }
 
 .carousel__slide {
   box-sizing: border-box;
-  flex: 0 0 calc((100% - 1 * 12px) / 2);
-  margin-right: 12px;
-}
-
-.carousel__slide:last-child {
-  margin-right: 0;
+  flex: 0 0 calc(100% / 2);
+  padding-left: 12px;
 }
 
 .carousel__status {
@@ -172,13 +169,17 @@ only hides the live region from the screen while leaving it to screen readers.
 > screen — the carousel goes on measuring whatever your stylesheet actually
 > produced.
 
-Read them in the slide rule to let the hook drive the layout:
+Read them in the track and the slide rule to let the hook drive the layout:
 
 ```css
+.carousel__track {
+  margin-left: calc(-1 * var(--swipi-slide-gap, 0px));
+}
+
 .carousel__slide {
   box-sizing: border-box;
-  flex: 0 0 var(--swipi-slide-width, 300px);
-  margin-right: var(--swipi-slide-gap, 0px);
+  flex: 0 0 calc(var(--swipi-slide-width, 300px) + var(--swipi-slide-gap, 0px));
+  padding-left: var(--swipi-slide-gap, 0px);
 }
 ```
 
@@ -198,18 +199,28 @@ Five rules make that measuring reliable:
   makes that circular — the browser will hand you widths you did not ask for.
 - Give slides `flex-shrink: 0` (the `0` in `flex: 0 0 …`) so they keep the width
   you set instead of being squeezed to fit the viewport.
-- Space slides with `margin` rather than `padding`, and clear it on the last
-  one. Padding sits inside the slide's box, so in `loop` mode the trailing gap
-  becomes part of the repeat and the carousel drifts by that much every lap.
+- Space slides with a `padding-left` and cancel the first one with a matching
+  negative `margin-left` on the track, as above. Every slide box then measures
+  the same and they sit flush against each other, which is what keeps `loop`
+  uniform — and it leaves the basis a plain `1 / N` fraction. Do not add a
+  trailing `padding-right` instead: it makes the last slide different from the
+  rest and the carousel drifts by that much every lap.
 - Keep `scale()` off the viewport, the track and the slides. Measuring goes
   through `getBoundingClientRect()`, so a scaled slide is measured at its
   on-screen size while the track still moves in unscaled pixels. Scaling
   something inside a slide is fine.
 - Change the gap between slides through the `spaceBetween` option rather than a
-  media query on their `margin`. Sizes are watched with a `ResizeObserver`, and
-  a margin belongs to none of the boxes it can see, so a breakpoint that changes
-  only the gap — leaving the viewport and the slide widths as they are — is the
-  one layout change that goes unnoticed.
+  media query. Sizes are watched with a `ResizeObserver`, and a slide's box
+  keeps the same width when only its padding changes, so a breakpoint that
+  changes only the gap — leaving the viewport and the slide widths as they are —
+  is the one layout change that goes unnoticed.
+
+The gap belongs to the slide here, so give the slide's background to an element
+inside it. A background on `.carousel__slide` itself would fill the gap unless
+you add `background-clip: content-box`.
+
+In Tailwind the same two rules are `-ml-[12px]` on the track and
+`basis-1/2 pl-[12px]` on the slide.
 
 Measuring follows the layout rather than React. The carousel re-measures when a
 slide changes size — an image that finishes loading, a webfont that swaps in, an

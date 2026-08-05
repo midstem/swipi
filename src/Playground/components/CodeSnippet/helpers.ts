@@ -129,11 +129,16 @@ export const buildStyles = (state: PlaygroundState): string => {
       ? ` * ${(1 - REDUCE_SLIDE / visible).toFixed(3)}`
       : ''
 
-  const gaps = gap > 0 && visible > 1 ? ` - ${visible - 1} * ${gap}px` : ''
-  const shared =
-    visible > 1 || bias ? `calc((100%${gaps}) / ${visible}${bias})` : '100%'
-  const basis =
-    state.slideWidth > NO_SLIDE_WIDTH ? `${state.slideWidth}px` : shared
+  /**
+   * The gap is a padding inside the slide, so the basis stays a plain fraction
+   * of the viewport — `calc(100% / 3)` rather than a subtraction no utility
+   * class can express.
+   */
+  const shared = visible > 1 || bias ? `calc(100% / ${visible}${bias})` : '100%'
+  const fixed = gap
+    ? `calc(${state.slideWidth}px + ${gap}px)`
+    : `${state.slideWidth}px`
+  const basis = state.slideWidth > NO_SLIDE_WIDTH ? fixed : shared
 
   const fade = isFadeInAnimation(state.slidesAnimation)
     ? `
@@ -148,14 +153,8 @@ export const buildStyles = (state: PlaygroundState): string => {
 }`
     : ''
 
-  const spacing = gap
-    ? `
-  margin-right: ${gap}px;
-}
-
-.carousel__slide:last-child {
-  margin-right: 0;`
-    : '\n}'
+  const trackGap = gap ? `\n  margin-left: -${gap}px;` : ''
+  const slideGap = gap ? `\n  padding-left: ${gap}px;` : ''
 
   return `.carousel__viewport {
   overflow: hidden;
@@ -164,13 +163,13 @@ export const buildStyles = (state: PlaygroundState): string => {
 
 .carousel__track {
   display: flex;
-  width: 100%;
+  width: 100%;${trackGap}
   user-select: none;
 }
 
 .carousel__slide {
   box-sizing: border-box;
-  flex: 0 0 ${basis};${spacing}
+  flex: 0 0 ${basis};${slideGap}
 }
 
 .carousel__status {
