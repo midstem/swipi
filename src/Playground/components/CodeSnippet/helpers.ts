@@ -145,6 +145,9 @@ const buildSlideClasses = (state: PlaygroundState): string => {
   const fraction = plain ? BASIS_FRACTIONS[getVisibleSlides(state)] : undefined
 
   const classes = [
+    'min-w-0',
+    'shrink-0',
+    'grow-0',
     'box-border',
     fraction ? `basis-${fraction}` : `basis-[${toArbitrary(getBasis(state))}]`
   ]
@@ -175,10 +178,8 @@ const getClassNames = (
   return {
     viewport: 'overflow-hidden touch-pan-y',
     track: gap
-      ? `flex w-[${toArbitrary(
-          `calc(100% + ${gap}px)`
-        )}] ${toSpacing('-ml', gap)} select-none`
-      : 'flex w-full select-none',
+      ? `flex ${toSpacing('-ml', gap)} select-none`
+      : 'flex select-none',
     slide: buildSlideClasses(state),
     status: 'sr-only'
   }
@@ -365,7 +366,6 @@ export const buildStyles = (
 }`
     : ''
 
-  const trackWidth = gap ? `calc(100% + ${gap}px)` : '100%'
   const trackGap = gap ? `\n  margin-left: -${gap}px;` : ''
   const slideGap = gap ? `\n  padding-left: ${gap}px;` : ''
 
@@ -389,13 +389,13 @@ export const buildStyles = (
 }
 
 .carousel__track {
-  display: flex;
-  width: ${trackWidth};${trackGap}
+  display: flex;${trackGap}
   user-select: none;
 }
 
 .carousel__slide {
   box-sizing: border-box;
-  flex: 0 0 ${basis};${slideGap}
+  flex: 0 0 ${basis};
+  min-width: 0;${slideGap}
 }${status}${fade}`
 }

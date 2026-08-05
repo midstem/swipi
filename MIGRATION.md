@@ -101,33 +101,37 @@ Slide widths are measured from the DOM now, so anything that used to compute
 them is a rule in your stylesheet. `N` below is the number of slides you want
 in view, `G` the gap in pixels.
 
-| 2.x prop                 | CSS                                                                                               |
-| ------------------------ | ------------------------------------------------------------------------------------------------- |
-| `slidesNumber={N}`       | `flex: 0 0 calc(100% / N)` on the slide                                                           |
-| `spaceBetweenSlides={G}` | `padding-left: Gpx` on the slide + `margin-left: -Gpx` and `width: calc(100% + Gpx)` on the track |
-| `biasRight`              | multiply the basis by `1 - 0.35 / N`, e.g. `calc(100% / 2 * 0.825)`                               |
-| `config` (breakpoints)   | `@media` queries around the same rules                                                            |
+| 2.x prop                 | CSS                                                                 |
+| ------------------------ | ------------------------------------------------------------------- |
+| `slidesNumber={N}`       | `flex: 0 0 calc(100% / N)` on the slide                             |
+| `spaceBetweenSlides={G}` | `padding-left: Gpx` on the slide + `margin-left: -Gpx` on the track |
+| `biasRight`              | multiply the basis by `1 - 0.35 / N`, e.g. `calc(100% / 2 * 0.825)` |
+| `config` (breakpoints)   | `@media` queries around the same rules                              |
 
 ```css
 .carousel__track {
-  width: calc(100% + 12px);
   margin-left: -12px;
 }
 
 .carousel__slide {
   box-sizing: border-box;
   flex: 0 0 calc(100% / 3);
+  min-width: 0;
   padding-left: 12px;
 }
 ```
 
-The gap lives inside the slide and the track pulls itself back by one gap — and
-grows by that same gap, or every slide ends up a gap too narrow. The padding
-never shows in front of the first slide. Every slide box is exactly
-`1 / N` of the viewport — no subtraction to write, and a utility class works as
-it is: `w-[calc(100%_+_12px)] -ml-3` on the track and `basis-1/3 pl-3` on the
-slide in Tailwind. `loop` stays uniform because all the boxes measure the same and sit
-flush against each other.
+The gap lives inside the slide, and the track pulls itself back by one gap so
+the padding never shows in front of the first slide. Leave the track's width
+alone: automatically it fills the viewport, and the negative margin widens it by
+that same gap, which is what lets the last slide reach the right edge.
+
+Every slide box is then exactly `1 / N` of the viewport — no subtraction to
+write, and utility classes work as they are: `flex -ml-3` on the track and
+`min-w-0 shrink-0 grow-0 basis-1/3 pl-3` on the slide. Those are the classes
+shadcn's carousel puts on its own container and items, so its components work
+over this hook unchanged. `loop` stays uniform because all the boxes measure the
+same and sit flush against each other.
 
 Two things follow from the gap being part of the slide. Give the slide's
 background to an element inside it, or the gap gets filled — `background-clip:
@@ -142,7 +146,6 @@ pick up — the measuring still happens in the DOM.
 
 ```css
 .carousel__track {
-  width: calc(100% + var(--swipi-slide-gap, 0px));
   margin-left: calc(-1 * var(--swipi-slide-gap, 0px));
 }
 

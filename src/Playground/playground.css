@@ -482,7 +482,6 @@ body {
 
 .pg-carousel__track {
   display: flex;
-  width: calc(100% + var(--swipi-slide-gap, 0px));
   margin-left: calc(-1 * var(--swipi-slide-gap, 0px));
   cursor: grab;
   user-select: none;
@@ -495,6 +494,7 @@ body {
 .pg-carousel__slide {
   box-sizing: border-box;
   flex: 0 0 var(--pg-basis);
+  min-width: 0;
   padding-left: var(--swipi-slide-gap, 0px);
   height: 250px;
 }
