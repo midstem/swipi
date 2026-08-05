@@ -94,11 +94,15 @@ const Stage = ({
                     aria-label={`${index + 1} of ${slides.length}`}
                     style={getSlideStyle(
                       state,
-                      color,
                       index === carousel.selectedIndex
                     )}
                   >
-                    {index + 1}
+                    <div
+                      className="pg-carousel__slide-box"
+                      style={{ backgroundColor: color }}
+                    >
+                      {index + 1}
+                    </div>
                   </div>
                 ))}
               </div>

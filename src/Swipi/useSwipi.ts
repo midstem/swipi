@@ -49,7 +49,7 @@ export const useSwipi = ({
     spaceBetween
   })
 
-  const containerWidth = useElementWidth(viewportRef)
+  const containerWidth = useElementWidth(trackRef)
   const slidesCount = measurement.sizes.length
   const isMeasured = slidesCount > NO_SLIDES
 

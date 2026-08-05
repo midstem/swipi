@@ -65,21 +65,17 @@ export const getTrackStyle = (
   ({
     '--pg-basis':
       slideWidth === undefined
-        ? `calc((100% - (${visibleSlides} - 1) * var(--swipi-slide-gap, 0px)) / ${visibleSlides} * ${bias})`
-        : 'var(--swipi-slide-width)'
+        ? `calc(100% / ${visibleSlides} * ${bias})`
+        : 'calc(var(--swipi-slide-width) + var(--swipi-slide-gap, 0px))'
   }) as CSSProperties
 
 export const getSlideStyle = (
   state: PlaygroundState,
-  color: string,
   isSelected: boolean
 ): CSSProperties => {
-  const background = { backgroundColor: color }
-
-  if (!isFadeInAnimation(state.slidesAnimation)) return background
+  if (!isFadeInAnimation(state.slidesAnimation)) return {}
 
   return {
-    ...background,
     opacity: isSelected ? 1 : 0,
     transition: `opacity ${FADE_DURATION}ms cubic-bezier(0.25, 1, 0.5, 1) 0s`
   }
