@@ -49,12 +49,6 @@ export const useSwipi = ({
     spaceBetween
   })
 
-  /**
-   * The track, not the viewport: slide offsets are measured inside the track,
-   * so the scroll limit has to be in the same coordinates. They are the same
-   * width until the track carries a negative margin to pull a leading slide
-   * padding back — and then the track is the one that matches the slides.
-   */
   const containerWidth = useElementWidth(trackRef)
   const slidesCount = measurement.sizes.length
   const isMeasured = slidesCount > NO_SLIDES

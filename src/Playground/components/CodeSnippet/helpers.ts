@@ -41,7 +41,6 @@ const FADE_DURATION = 350
 
 const EASING = 'cubic-bezier(0.25, 1, 0.5, 1)'
 
-/** The fractions Tailwind ships as flex-basis utilities. */
 const BASIS_FRACTIONS: Record<number, string> = {
   1: 'full',
   2: '1/2',
@@ -52,13 +51,8 @@ const BASIS_FRACTIONS: Record<number, string> = {
   12: '1/12'
 }
 
-/**
- * Tailwind reads an arbitrary value as a single token, so every space inside
- * the brackets has to be an underscore.
- */
 const toArbitrary = (value: string): string => value.replace(/\s/g, '_')
 
-/** Tailwind's default spacing scale: pixels → the suffix of the utility. */
 const SPACING_SCALE: Record<number, string> = {
   0: '0',
   1: 'px',
@@ -84,10 +78,6 @@ const SPACING_SCALE: Record<number, string> = {
   96: '24'
 }
 
-/**
- * A length off the scale has to stay an arbitrary value; everything on it
- * reads better as the utility — `pl-4` rather than `pl-[16px]`.
- */
 const toSpacing = (prefix: string, px: number): string => {
   const step = SPACING_SCALE[px]
 
@@ -105,11 +95,6 @@ const getBias = (state: PlaygroundState): string => {
   return ` * ${(1 - REDUCE_SLIDE / visible).toFixed(BIAS_PRECISION)}`
 }
 
-/**
- * The gap is a padding inside the slide, so the basis stays a plain fraction of
- * the viewport — `calc(100% / 3)` rather than a subtraction no utility class
- * can express.
- */
 export const getBasis = (state: PlaygroundState): string => {
   const gap = state.spaceBetween
 
@@ -249,11 +234,6 @@ const buildDots = (state: PlaygroundState, minimal: boolean): string => {
 `
 }
 
-/**
- * The minimal variant is the same carousel with everything optional taken off:
- * no roles, no labels, no live region, no arrow keys. It works and it is short
- * — the accessible one is what you want to ship.
- */
 const buildMinimalMarkup = (
   state: PlaygroundState,
   classes: ClassNames

@@ -3,13 +3,6 @@ import { describe, expect, it } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { useSwipiCarousel } from '.'
 
-/**
- * The gap can live as a `padding-left` on every slide, with the track pulling
- * itself back by the same amount — the layout shadcn's carousel uses. The track
- * is then one gap wider than the viewport, and the scroll limit has to follow
- * the track: measuring the viewport instead leaves room for one extra snap that
- * scrolls a gap past the last slide.
- */
 const VIEWPORT_WIDTH = 900
 
 const GAP = 16
