@@ -58,6 +58,42 @@ const BASIS_FRACTIONS: Record<number, string> = {
  */
 const toArbitrary = (value: string): string => value.replace(/\s/g, '_')
 
+/** Tailwind's default spacing scale: pixels → the suffix of the utility. */
+const SPACING_SCALE: Record<number, string> = {
+  0: '0',
+  1: 'px',
+  2: '0.5',
+  4: '1',
+  6: '1.5',
+  8: '2',
+  10: '2.5',
+  12: '3',
+  14: '3.5',
+  16: '4',
+  20: '5',
+  24: '6',
+  28: '7',
+  32: '8',
+  36: '9',
+  40: '10',
+  44: '11',
+  48: '12',
+  56: '14',
+  64: '16',
+  80: '20',
+  96: '24'
+}
+
+/**
+ * A length off the scale has to stay an arbitrary value; everything on it
+ * reads better as the utility — `pl-4` rather than `pl-[16px]`.
+ */
+const toSpacing = (prefix: string, px: number): string => {
+  const step = SPACING_SCALE[px]
+
+  return step ? `${prefix}-${step}` : `${prefix}-[${px}px]`
+}
+
 const getVisibleSlides = (state: PlaygroundState): number =>
   isFadeInAnimation(state.slidesAnimation) ? ONE_SLIDE : state.slidesNumber
 
@@ -113,7 +149,7 @@ const buildSlideClasses = (state: PlaygroundState): string => {
     fraction ? `basis-${fraction}` : `basis-[${toArbitrary(getBasis(state))}]`
   ]
 
-  if (gap) classes.push(`pl-[${gap}px]`)
+  if (gap) classes.push(toSpacing('pl', gap))
 
   if (isFadeInAnimation(state.slidesAnimation)) {
     classes.push(
@@ -138,7 +174,7 @@ const getClassNames = (
 
   return {
     viewport: 'overflow-hidden touch-pan-y',
-    track: `flex w-full${gap ? ` -ml-[${gap}px]` : ''} select-none`,
+    track: `flex w-full${gap ? ` ${toSpacing('-ml', gap)}` : ''} select-none`,
     slide: buildSlideClasses(state),
     status: 'sr-only'
   }

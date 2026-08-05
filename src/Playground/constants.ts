@@ -62,7 +62,7 @@ export const DEFAULT_STATE: PlaygroundState = {
   slidesNumber: 1,
   autoplaySpeed: 4000,
   animationSpeed: 300,
-  spaceBetween: 15,
+  spaceBetween: 16,
   slidesAnimation: 'default',
   ariaLabel: 'Slides',
   useConfig: false,
