@@ -142,7 +142,7 @@ only hides the live region from the screen while leaving it to screen readers.
 
 .carousel__track {
   display: flex;
-  width: 100%;
+  width: calc(100% + 12px);
   margin-left: -12px;
   user-select: none;
 }
@@ -173,6 +173,7 @@ Read them in the track and the slide rule to let the hook drive the layout:
 
 ```css
 .carousel__track {
+  width: calc(100% + var(--swipi-slide-gap, 0px));
   margin-left: calc(-1 * var(--swipi-slide-gap, 0px));
 }
 
@@ -194,13 +195,15 @@ pixel widths, breakpoints, and even a different width per slide all work.
 
 Five rules make that measuring reliable:
 
-- Keep `width: 100%` on the track rather than `fit-content`. A percentage
-  `flex-basis` resolves against the track, and a track sized by its own content
-  makes that circular — the browser will hand you widths you did not ask for.
+- Keep a definite width on the track — `calc(100% + Gpx)`, never `fit-content`.
+  A percentage `flex-basis` resolves against the track, and a track sized by its
+  own content makes that circular. The `+ Gpx` pays back what the negative
+  margin takes away; without it every slide is a gap too narrow and the last one
+  stops short of the right edge.
 - Give slides `flex-shrink: 0` (the `0` in `flex: 0 0 …`) so they keep the width
   you set instead of being squeezed to fit the viewport.
 - Space slides with a `padding-left` and cancel the first one with a matching
-  negative `margin-left` on the track, as above. Every slide box then measures
+  negative `margin-left` on the track, widening the track by the same gap. Every slide box then measures
   the same and they sit flush against each other, which is what keeps `loop`
   uniform — and it leaves the basis a plain `1 / N` fraction. Do not add a
   trailing `padding-right` instead: it makes the last slide different from the
@@ -219,8 +222,8 @@ The gap belongs to the slide here, so give the slide's background to an element
 inside it. A background on `.carousel__slide` itself would fill the gap unless
 you add `background-clip: content-box`.
 
-In Tailwind the same two rules are `-ml-[12px]` on the track and
-`basis-1/2 pl-[12px]` on the slide.
+In Tailwind the same two rules are `w-[calc(100%_+_12px)] -ml-3` on the track
+and `basis-1/2 pl-3` on the slide.
 
 Measuring follows the layout rather than React. The carousel re-measures when a
 slide changes size — an image that finishes loading, a webfont that swaps in, an

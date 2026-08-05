@@ -71,15 +71,11 @@ export const getTrackStyle = (
 
 export const getSlideStyle = (
   state: PlaygroundState,
-  color: string,
   isSelected: boolean
 ): CSSProperties => {
-  const background = { backgroundColor: color }
-
-  if (!isFadeInAnimation(state.slidesAnimation)) return background
+  if (!isFadeInAnimation(state.slidesAnimation)) return {}
 
   return {
-    ...background,
     opacity: isSelected ? 1 : 0,
     transition: `opacity ${FADE_DURATION}ms cubic-bezier(0.25, 1, 0.5, 1) 0s`
   }

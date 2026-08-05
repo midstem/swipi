@@ -174,7 +174,11 @@ const getClassNames = (
 
   return {
     viewport: 'overflow-hidden touch-pan-y',
-    track: `flex w-full${gap ? ` ${toSpacing('-ml', gap)}` : ''} select-none`,
+    track: gap
+      ? `flex w-[${toArbitrary(
+          `calc(100% + ${gap}px)`
+        )}] ${toSpacing('-ml', gap)} select-none`
+      : 'flex w-full select-none',
     slide: buildSlideClasses(state),
     status: 'sr-only'
   }
@@ -361,6 +365,7 @@ export const buildStyles = (
 }`
     : ''
 
+  const trackWidth = gap ? `calc(100% + ${gap}px)` : '100%'
   const trackGap = gap ? `\n  margin-left: -${gap}px;` : ''
   const slideGap = gap ? `\n  padding-left: ${gap}px;` : ''
 
@@ -385,7 +390,7 @@ export const buildStyles = (
 
 .carousel__track {
   display: flex;
-  width: 100%;${trackGap}
+  width: ${trackWidth};${trackGap}
   user-select: none;
 }
 

@@ -482,7 +482,7 @@ body {
 
 .pg-carousel__track {
   display: flex;
-  width: 100%;
+  width: calc(100% + var(--swipi-slide-gap, 0px));
   margin-left: calc(-1 * var(--swipi-slide-gap, 0px));
   cursor: grab;
   user-select: none;
@@ -496,12 +496,17 @@ body {
   box-sizing: border-box;
   flex: 0 0 var(--pg-basis);
   padding-left: var(--swipi-slide-gap, 0px);
+  height: 250px;
+}
+
+/* The gap is a padding on the slide, so the colour goes on this box instead —
+   clipping the slide's own background would square off its left corners. */
+.pg-carousel__slide-box {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 250px;
-  /* The colour is the slide itself here, so keep it out of the gap. */
-  background-clip: content-box;
+  height: 100%;
+  width: 100%;
   font-size: 48px;
   font-weight: 700;
   color: #fff;

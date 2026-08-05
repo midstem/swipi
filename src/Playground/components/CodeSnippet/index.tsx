@@ -21,7 +21,7 @@ const FLAVOURS = [
 
 const CodeSnippet = ({ state }: CodeSnippetProps): JSX.Element => {
   const [copied, setCopied] = useState(false)
-  const [minimal, setMinimal] = useState(false)
+  const [minimal, setMinimal] = useState(true)
   const [tailwind, setTailwind] = useState(true)
 
   const markup = useMemo(
