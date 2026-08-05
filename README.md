@@ -179,6 +179,7 @@ Read them in the track and the slide rule to let the hook drive the layout:
 .carousel__slide {
   box-sizing: border-box;
   flex: 0 0 calc(var(--swipi-slide-width, 300px) + var(--swipi-slide-gap, 0px));
+  min-width: 0;
   padding-left: var(--swipi-slide-gap, 0px);
 }
 ```
