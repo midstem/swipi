@@ -93,6 +93,36 @@ export const Carousel = ({ items }) => {
 
 ## CSS Layout Details & Troubleshooting
 
+### Required CSS
+
+The README writes the layout as Tailwind classes. Without Tailwind, the same
+contract reads like this — class names are yours, only the declarations matter:
+
+```css
+.carousel__viewport {
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.carousel__track {
+  display: flex;
+  margin-left: -12px;
+  user-select: none;
+}
+
+.carousel__slide {
+  box-sizing: border-box;
+  flex: 0 0 calc(100% / 2);
+  min-width: 0;
+  padding-left: 12px;
+}
+```
+
+`flex: 0 0 calc(100% / 2)` sets how many slides are visible, and the `12px` pair
+— the slide's `padding-left` and the track's matching negative `margin-left` —
+sets the space between them. The rest of this section is why those declarations
+are the ones that matter.
+
 > **`slideWidth` and `spaceBetween` size nothing by themselves.** They only
 > write `--swipi-slide-width` and `--swipi-slide-gap` onto the track. If your
 > CSS never reads those properties, passing the options changes nothing on the

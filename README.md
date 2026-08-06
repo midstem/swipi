@@ -47,7 +47,7 @@ $ yarn add swipi
 Wiring is a single ref on the viewport. The track is its only child and the
 slides are the children of the track.
 
-### 1. The markup
+### The markup
 
 ```tsx
 import { useSwipiCarousel } from 'swipi'
@@ -57,10 +57,13 @@ export const Carousel = ({ items }) => {
 
   return (
     <>
-      <div className="carousel__viewport" ref={carouselRef}>
-        <div className="carousel__track">
+      <div className="overflow-hidden touch-pan-y" ref={carouselRef}>
+        <div className="flex -ml-3 select-none">
           {items.map((item) => (
-            <div className="carousel__slide" key={item.id}>
+            <div
+              className="min-w-0 shrink-0 grow-0 basis-1/2 pl-3"
+              key={item.id}
+            >
               {item.title}
             </div>
           ))}
@@ -86,33 +89,15 @@ export const Carousel = ({ items }) => {
 }
 ```
 
-### 2. Required CSS
+### The classes
 
-This is a contract, not a suggestion — the geometry depends on it.
+Those three class lists are a contract, not decoration — the geometry depends on
+them. Two of them are yours to tune: `basis-1/2` sets how many slides are
+visible, and the `pl-3` on the slide with the matching `-ml-3` on the track sets
+the space between them. Everything else on the page is styling you own.
 
-```css
-.carousel__viewport {
-  overflow: hidden;
-  touch-action: pan-y;
-}
-
-.carousel__track {
-  display: flex;
-  margin-left: -12px;
-  user-select: none;
-}
-
-.carousel__slide {
-  box-sizing: border-box;
-  flex: 0 0 calc(100% / 2);
-  min-width: 0;
-  padding-left: 12px;
-}
-```
-
-Two numbers are yours to change: `flex: 0 0 calc(100% / 2)` sets how many slides
-are visible, and the `12px` pair — the slide's `padding-left` and the track's
-matching negative `margin-left` — sets the space between them.
+Not using Tailwind? The same contract as plain CSS is in
+[DOCUMENTATION.md](./DOCUMENTATION.md#required-css).
 
 ## **Documentation**
 

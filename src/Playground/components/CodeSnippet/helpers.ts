@@ -235,6 +235,27 @@ const buildDots = (state: PlaygroundState, minimal: boolean): string => {
 `
 }
 
+const MAX_LINE_LENGTH = 80
+
+const SLIDE_INDENT = '            '
+
+const ATTRIBUTE_INDENT = '              '
+
+const buildSlideTag = (className: string, selected: string): string => {
+  const inline = `<div className="${className}" key={item.id}>`
+
+  if (!selected && SLIDE_INDENT.length + inline.length <= MAX_LINE_LENGTH) {
+    return inline
+  }
+
+  return [
+    '<div',
+    `${ATTRIBUTE_INDENT}className="${className}"`,
+    `${ATTRIBUTE_INDENT}key={item.id}${selected}`,
+    `${SLIDE_INDENT}>`
+  ].join('\n')
+}
+
 const buildMinimalMarkup = (
   state: PlaygroundState,
   classes: ClassNames
@@ -243,7 +264,7 @@ const buildMinimalMarkup = (
 
   const selected = isFadeIn
     ? `
-              data-selected={index === carousel.selectedIndex}`
+${ATTRIBUTE_INDENT}data-selected={index === carousel.selectedIndex}`
     : ''
 
   const params = isFadeIn ? '(item, index)' : '(item)'
@@ -258,7 +279,7 @@ export const Carousel = ({ items }) => {
       <div className="${classes.viewport}" ref={carouselRef}>
         <div className="${classes.track}">
           {items.map(${params} => (
-            <div className="${classes.slide}" key={item.id}${selected}>
+            ${buildSlideTag(classes.slide, selected)}
               {item.title}
             </div>
           ))}
