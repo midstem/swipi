@@ -4,7 +4,7 @@
 
 [npm-image]: https://img.shields.io/npm/v/swipi.svg
 [npm-url]: http://npmjs.org/package/swipi
-[bundlephobia-image]: https://badgen.net/bundlephobia/minzip/swipi
+[bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/swipi?color=%238ab4f8&label=gzip%20size
 [bundlephobia-url]: https://bundlephobia.com/result?p=swipi
 
 <a href='https://midstem.net'>

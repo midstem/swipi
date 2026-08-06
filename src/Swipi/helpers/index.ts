@@ -26,6 +26,11 @@ export const startAutoplay = (
   nextImg: () => void
 ) => {
   timeout.current = setTimeout(() => {
+    if (typeof document !== 'undefined' && document.hidden) {
+      startAutoplay(autoplaySpeed, timeout, nextImg)
+      return
+    }
+
     nextImg()
   }, autoplaySpeed)
 }
