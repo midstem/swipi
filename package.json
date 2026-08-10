@@ -1,60 +1,35 @@
 {
-  "name": "swipi",
-  "version": "3.0.1",
+  "name": "swipi-monorepo",
+  "private": true,
   "type": "module",
   "license": "MIT",
   "author": "Maksym Tkachuk, Oleksandr Didyshen",
-  "description": "Headless TypeScript carousel hook for React",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    "./package.json": "./package.json"
-  },
-  "peerDependencies": {
-    "react": ">=18"
-  },
+  "description": "Monorepo for the Swipi carousel: a framework-agnostic core and the adapters built on it",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/midstem/swipi.git"
   },
-  "files": [
-    "dist",
-    "LICENSE",
-    "README.md"
-  ],
-  "keywords": [
-    "react",
-    "typescript",
-    "headless",
-    "carousel",
-    "react-hook",
-    "infinite-carousel",
-    "image-carousel"
-  ],
   "bugs": {
     "url": "https://github.com/midstem/swipi/issues"
   },
   "homepage": "https://midstem.github.io/swipi-landing/",
   "scripts": {
-    "start": "vite --open --host",
-    "build": "vite build",
-    "typecheck": "tsc --noEmit",
-    "typecheck:package": "tsc -p scripts/types-fixture",
-    "verify:package": "node scripts/verify-package.mjs",
-    "verify:published": "node scripts/verify-published.mjs",
-    "size": "node scripts/report-size.mjs",
+    "start": "npm run start --workspace @swipi/playground",
+    "build": "npm run build --workspace @swipi/core --workspace swipi",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "typecheck:package": "npm run typecheck:package --workspace swipi",
+    "verify:package": "npm run verify:package --workspace swipi",
+    "verify:published": "npm run verify:published --workspace swipi",
+    "size": "npm run size --workspace swipi",
     "test": "vitest",
+    "test:run": "npm run test:run --workspaces --if-present",
     "lint": "eslint .",
-    "lint:fix": "eslint --cache ./src --quiet --fix",
+    "lint:fix": "eslint --cache ./packages ./apps --quiet --fix",
     "lint:format": "prettier --write --log-level warn \"./**/*.{js,jsx,mjs,ts,tsx,css,md,json}\"",
-    "test:run": "vitest run",
     "lint-tsc": "npm run build && npm run verify:package && npm run lint:format && npm run lint:fix && npm run typecheck && npm run test:run"
   },
   "browserslist": {
@@ -71,6 +46,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
+    "@microsoft/api-extractor": "^7.58.12",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.2",
     "@types/react": "^19.2.17",

@@ -1,3 +1,5 @@
+export { stump } from '@swipi/core'
+
 export { useSwipiCarousel } from './useSwipiCarousel'
 
 export type {

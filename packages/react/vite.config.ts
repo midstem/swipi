@@ -31,18 +31,12 @@ export default defineConfig({
       }
     ]
   },
-  server: {
-    port: 3000
-  },
-  preview: {
-    port: 8080
-  },
   plugins: [
     react(),
     dts({
+      bundleTypes: { bundledPackages: ['@swipi/core'] },
       include: ['src'],
       exclude: [
-        'src/Playground',
         'src/test',
         'src/Swipi/hooks',
         'src/Swipi/helpers',

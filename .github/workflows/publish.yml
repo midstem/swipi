@@ -49,6 +49,6 @@ jobs:
         run: npm run verify:published
 
       - name: Publish
-        run: npm publish
+        run: npm publish --workspace swipi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

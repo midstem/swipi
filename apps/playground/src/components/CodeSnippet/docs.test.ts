@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
-import readme from '../../../../README.md?raw'
-import documentation from '../../../../DOCUMENTATION.md?raw'
+import readme from '../../../../../README.md?raw'
+import documentation from '../../../../../DOCUMENTATION.md?raw'
 import { buildMarkup, buildStyles } from './helpers'
 import { DEFAULT_STATE } from '../../constants'
 import { README_PRESET } from './constants'

@@ -105,10 +105,21 @@ For advanced usage, available options, responsive layout specifics, state manage
 
 ## 🛠 **Development**
 
-Run the local playground (`src/Playground`) with hot-reload to try changes:
+The repository is an npm workspaces monorepo:
+
+| Path              | What it is                                                                |
+| ----------------- | ------------------------------------------------------------------------- |
+| `packages/core`   | the framework-agnostic engine — not published, bundled into every adapter |
+| `packages/react`  | the `swipi` package on npm: the React adapter and everything it publishes |
+| `apps/playground` | the interactive playground, run against the adapter source                |
+
+Run the local playground with hot-reload to try changes:
 
 ```bash
 $ npm start
 ```
+
+Every root script fans out to the workspaces, so `npm run test:run`,
+`npm run typecheck` and `npm run lint` still cover the whole repository.
 
 For more details on the verification process, check [DOCUMENTATION.md](./DOCUMENTATION.md#development--verification).
