@@ -18,10 +18,10 @@ export default [
   {
     ignores: [
       'eslint.config.js',
-      'vite.config.ts',
-      'scripts/**',
-      'dist/**',
-      'node_modules/**'
+      '**/vite.config.ts',
+      '**/scripts/**',
+      '**/dist/**',
+      '**/node_modules/**'
     ]
   },
 
@@ -33,7 +33,7 @@ export default [
     files: ['**/*.{ts,tsx,js,jsx}'],
     languageOptions: {
       parserOptions: {
-        project: 'tsconfig.json',
+        projectService: true,
         tsconfigRootDir: __dirname
       },
       globals: {
@@ -51,7 +51,6 @@ export default [
     settings: {
       'import/resolver': {
         node: {
-          paths: ['src'],
           extensions: ['.js', '.jsx', '.ts', '.tsx']
         }
       },

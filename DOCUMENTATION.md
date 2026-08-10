@@ -355,7 +355,7 @@ $ npm run verify:published
 ```
 
 The gate packs the tarball with `npm pack`, installs it into a throwaway Vite +
-React app built from `scripts/consumer-app`, and runs the package the way a
+React app built from `packages/react/scripts/consumer-app`, and runs the package the way a
 consumer does. The install uses a cache directory of its own, so a `file:`
 tarball of a version npm has already seen can never be served from the cache.
 

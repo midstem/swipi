@@ -44,7 +44,7 @@ legacyEntries.forEach((entry) =>
 const esm = readDist('index.js')
 const cjs = readDist('index.cjs')
 
-const publicExports = ['useSwipiCarousel']
+const publicExports = ['useSwipiCarousel', 'stump']
 
 publicExports.forEach((name) => {
   check(
@@ -93,13 +93,39 @@ check(
   !JSON.stringify(packageJson.exports).includes('.css')
 )
 
+const WORKSPACE_ONLY = '@swipi/core'
+
+check(
+  `"${WORKSPACE_ONLY}" is a dependency, but it is not published to the registry`,
+  !Object.keys(packageJson.dependencies ?? {}).includes(WORKSPACE_ONLY)
+)
+
+const artifacts = [
+  ['ESM', esm],
+  ['CJS', cjs],
+  ['type', types]
+]
+
+artifacts.forEach(([kind, artifact]) =>
+  check(
+    `the ${kind} bundle imports "${WORKSPACE_ONLY}" instead of inlining it`,
+    !artifact.includes(WORKSPACE_ONLY)
+  )
+)
+
 const packed = JSON.parse(
   execFileSync('npm', ['pack', '--dry-run', '--json'], { encoding: 'utf8' })
 )
 
 const packedFiles = packed[0].files.map((file) => file.path)
 
-const requiredFiles = ['dist/index.js', 'dist/index.cjs', 'dist/index.d.ts']
+const requiredFiles = [
+  'dist/index.js',
+  'dist/index.cjs',
+  'dist/index.d.ts',
+  'README.md',
+  'LICENSE'
+]
 
 requiredFiles.forEach((file) =>
   check(`"${file}" is not published`, packedFiles.includes(file))

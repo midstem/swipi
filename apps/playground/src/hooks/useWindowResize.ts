@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useLatestRef } from '../../Swipi/hooks/useLatestRef'
+import { useLatestRef } from './useLatestRef'
 
 export const useWindowResize = (callback: () => void) => {
   const callbackRef = useLatestRef(callback)

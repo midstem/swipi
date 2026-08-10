@@ -5,6 +5,8 @@ const require = createRequire(import.meta.url)
 
 const expectedVersion = process.argv[2]
 
+const EXPECTED_EXPORTS = ['stump', 'useSwipiCarousel']
+
 const esm = await import('swipi')
 
 assert.equal(
@@ -14,9 +16,11 @@ assert.equal(
 )
 
 assert.deepEqual(
-  Object.keys(esm).filter((name) => name !== 'default'),
-  ['useSwipiCarousel'],
-  'the ESM entry exports more than useSwipiCarousel at runtime'
+  Object.keys(esm)
+    .filter((name) => name !== 'default')
+    .sort(),
+  EXPECTED_EXPORTS,
+  `the ESM entry exports more than ${EXPECTED_EXPORTS.join(', ')} at runtime`
 )
 
 const cjs = require('swipi')
@@ -28,9 +32,9 @@ assert.equal(
 )
 
 assert.deepEqual(
-  Object.keys(cjs),
-  ['useSwipiCarousel'],
-  'the CJS entry exports more than useSwipiCarousel at runtime'
+  Object.keys(cjs).sort(),
+  EXPECTED_EXPORTS,
+  `the CJS entry exports more than ${EXPECTED_EXPORTS.join(', ')} at runtime`
 )
 
 const manifest = require('swipi/package.json')
@@ -42,6 +46,18 @@ assert.equal(
 )
 
 assert.equal(manifest.sideEffects, false, 'the package is not side-effect free')
+
+assert.equal(
+  esm.stump(),
+  'swipi core',
+  'the core was not bundled into the published tarball'
+)
+
+assert.equal(
+  manifest.dependencies,
+  undefined,
+  'the package declares dependencies, but @swipi/core is not published'
+)
 
 console.log(
   `entries: ESM and CJS both expose useSwipiCarousel (${manifest.version})`

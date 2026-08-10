@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { SlidePositions, SwipiState } from '../Swipi/types'
+import { SlidePositions, SwipiState } from 'swipi'
 import { CarouselRef } from './types'
 import { DEFAULT_STATE, MAX_EVENTS, SLIDE_COLORS } from './constants'
 import { loadState, saveState } from './helpers'

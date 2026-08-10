@@ -1,6 +1,5 @@
 import type { ChangeEvent, ReactNode, RefObject } from 'react'
-import { SlidePositions, SwipiState } from '../Swipi/types'
-import { SwipiCarouselOptions } from '../useSwipiCarousel/types'
+import { SlidePositions, SwipiCarouselOptions, SwipiState } from 'swipi'
 
 export enum SlidesAnimation {
   DEFAULT = 'default',
