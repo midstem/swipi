@@ -1,7 +1,16 @@
-import { FIRST_SLIDE_INDEX, NO_SLIDES } from '../constants'
+import {
+  EMPTY_GEOMETRY,
+  EMPTY_MEASUREMENT,
+  FIRST_SLIDE_INDEX,
+  INITIAL_TRANSFORM,
+  NO_SLIDES
+} from '../constants'
 import { clamp } from '../modules/math'
-import { SlidesGeometry, SlidesMeasurement, SwipiOptions } from '../types'
-import { EMPTY_MEASUREMENT } from '../modules/orchestration/observers'
+import {
+  ResolvedSwipiOptions,
+  SlidesGeometry,
+  SlidesMeasurement
+} from '../types'
 import { toSnaps, getSnapIndex } from '../modules/geometry'
 
 export type GeometryState = {
@@ -20,15 +29,15 @@ export type GeometryState = {
 }
 
 export type SetupGeometrySyncProps = {
-  getOptions: () => SwipiOptions
-  syncStateAndNotify: (state: GeometryState) => void
+  getOptions: () => ResolvedSwipiOptions
+  onState: (state: GeometryState) => void
   moveTo: (target: number) => void
   restartAutoplay: () => void
 }
 
 export const setupGeometrySync = ({
   getOptions,
-  syncStateAndNotify,
+  onState,
   moveTo,
   restartAutoplay
 }: SetupGeometrySyncProps) => {
@@ -36,7 +45,7 @@ export const setupGeometrySync = ({
     slideIndex: FIRST_SLIDE_INDEX,
     containerWidth: 0,
     measurement: EMPTY_MEASUREMENT,
-    geometry: { ...EMPTY_MEASUREMENT, snaps: [] },
+    geometry: EMPTY_GEOMETRY,
     hasOverflow: false,
     isLoop: false,
     canScrollNext: false,
@@ -71,23 +80,20 @@ export const setupGeometrySync = ({
     state.canScrollNext = state.isLoop || state.slideIndex < state.lastIndex
     state.canScrollPrev = state.isLoop || state.slideIndex > FIRST_SLIDE_INDEX
 
-    syncStateAndNotify(state)
+    onState(state)
 
-    if (state.isMeasured) {
-      if (!state.isStartIndexApplied) {
-        state.isStartIndexApplied = true
-        const startIndex = getOptions().startIndex ?? FIRST_SLIDE_INDEX
-        moveTo(
-          state.geometry.snaps[
-            clamp(startIndex, FIRST_SLIDE_INDEX, state.lastIndex)
-          ] ?? 0
-        )
-      } else {
-        moveTo(
-          state.geometry.snaps[clamp(state.slideIndex, 0, state.lastIndex)] ?? 0
-        )
-      }
-    }
+    if (!state.isMeasured) return
+
+    const index = state.isStartIndexApplied
+      ? state.slideIndex
+      : getOptions().startIndex
+
+    state.isStartIndexApplied = true
+
+    moveTo(
+      state.geometry.snaps[clamp(index, FIRST_SLIDE_INDEX, state.lastIndex)] ??
+        INITIAL_TRANSFORM
+    )
   }
 
   const syncSlideIndex = (target: number): void => {
@@ -98,7 +104,7 @@ export const setupGeometrySync = ({
       state.canScrollPrev = state.isLoop || state.slideIndex > FIRST_SLIDE_INDEX
 
       restartAutoplay()
-      syncStateAndNotify(state)
+      onState(state)
     }
   }
 

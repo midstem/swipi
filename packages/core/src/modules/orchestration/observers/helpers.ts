@@ -1,4 +1,5 @@
-import { GEOMETRY_TOLERANCE, SlidesMeasurement } from '../../../index'
+import { GEOMETRY_TOLERANCE } from '../../../constants'
+import { SlidesMeasurement } from '../../../types'
 
 export const isClose = (a: number, b: number): boolean =>
   Math.abs(a - b) < GEOMETRY_TOLERANCE

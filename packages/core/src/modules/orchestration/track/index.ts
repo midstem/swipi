@@ -1,12 +1,12 @@
 import {
   EMPTY_TRANSFORM,
-  getSlideLap,
-  SlidesGeometry,
-  SlideOffsets,
   SLIDE_GAP_VARIABLE,
   SLIDE_WIDTH_VARIABLE
-} from '../../../index'
+} from '../../../constants'
+import { SlidesGeometry, SlideOffsets } from '../../../types'
+import { getSlideLap } from '../../geometry'
 import { toTranslate, forEachSlide } from './helpers'
+import { RenderTrackProps } from './types'
 
 export const writeVariable = (
   track: HTMLElement,
@@ -38,52 +38,52 @@ export const renderSlideOffsets = (
   track: HTMLElement,
   transform: number,
   geometry: SlidesGeometry,
-  offsets: SlideOffsets,
-  onOffsetApplied: () => void
-): void => {
+  offsets: SlideOffsets
+): boolean => {
+  let hasApplied = false
+
   forEachSlide(track, (slide, index) => {
     const offset = getSlideLap(index, transform, geometry)
 
     if (offsets.get(slide) === offset) return
 
     offsets.set(slide, offset)
-    onOffsetApplied()
+    hasApplied = true
     slide.style.transform = toTranslate(offset)
   })
+
+  return hasApplied
 }
 
-export const resetSlideOffsets = (
-  track: HTMLElement,
-  onReset: () => void
-): void => {
+export const resetSlideOffsets = (track: HTMLElement): void => {
   forEachSlide(track, (slide) => {
     slide.style.transform = EMPTY_TRANSFORM
   })
-  onReset()
 }
 
-export const renderTrack = (
-  track: HTMLElement,
-  transform: number,
-  loop: boolean,
-  geometry: SlidesGeometry,
-  offsets: SlideOffsets,
-  hasAppliedOffsets: boolean,
-  onOffsetApplied: () => void,
-  onResetOffsets: () => void
-): void => {
+export const renderTrack = ({
+  track,
+  transform,
+  loop,
+  geometry,
+  offsets,
+  hasAppliedOffsets
+}: RenderTrackProps): boolean => {
   track.style.transform = toTranslate(transform)
 
   if (!loop) {
-    if (hasAppliedOffsets) {
-      resetSlideOffsets(track, onResetOffsets)
-    }
-    return
+    if (hasAppliedOffsets) resetSlideOffsets(track)
+
+    return false
   }
 
-  renderSlideOffsets(track, transform, geometry, offsets, onOffsetApplied)
+  return (
+    renderSlideOffsets(track, transform, geometry, offsets) || hasAppliedOffsets
+  )
 }
 
 export const clearTrackTransform = (track: HTMLElement): void => {
   track.style.transform = EMPTY_TRANSFORM
 }
+
+export type { RenderTrackProps }

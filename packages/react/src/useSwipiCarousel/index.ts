@@ -7,9 +7,7 @@ import {
 } from 'react'
 import {
   createSwipi,
-  DEFAULT_ANIMATION_SPEED,
-  DEFAULT_AUTOPLAY_SPEED,
-  DEFAULT_START_INDEX,
+  DEFAULT_OPTIONS,
   SwipiApi,
   SwipiSnapshot
 } from '@swipi/core'
@@ -52,13 +50,7 @@ export const useSwipiCarousel = (
   const engineRef = useRef<SwipiApi | null>(null)
   const [engine, setEngine] = useState<SwipiApi | null>(null)
   const fullOptions = {
-    loop: false,
-    dragFree: false,
-    autoplay: false,
-    startIndex: DEFAULT_START_INDEX,
-    autoplaySpeed: DEFAULT_AUTOPLAY_SPEED,
-    animationSpeed: DEFAULT_ANIMATION_SPEED,
-    respectReducedMotion: false,
+    ...DEFAULT_OPTIONS,
     onChange: noop,
     onSelect: noop,
     slideWidth: undefined,
@@ -96,7 +88,19 @@ export const useSwipiCarousel = (
 
   useIsomorphicLayoutEffect(() => {
     engineRef.current?.update(fullOptions)
-  }, Object.values(fullOptions))
+  }, [
+    fullOptions.loop,
+    fullOptions.dragFree,
+    fullOptions.autoplay,
+    fullOptions.startIndex,
+    fullOptions.autoplaySpeed,
+    fullOptions.animationSpeed,
+    fullOptions.respectReducedMotion,
+    fullOptions.slideWidth,
+    fullOptions.spaceBetween,
+    fullOptions.onChange,
+    fullOptions.onSelect
+  ])
 
   useIsomorphicLayoutEffect(() => {
     engineRef.current?.sync()

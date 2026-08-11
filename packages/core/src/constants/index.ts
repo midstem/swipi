@@ -1,4 +1,4 @@
-import { SlidesGeometry } from '../types'
+import { SlidesGeometry, SlidesMeasurement } from '../types'
 
 export const DEFAULT_START_INDEX = 0
 
@@ -36,10 +36,14 @@ export const SLIDE_WIDTH_VARIABLE = '--swipi-slide-width'
 
 export const SLIDE_GAP_VARIABLE = '--swipi-slide-gap'
 
-export const EMPTY_GEOMETRY: SlidesGeometry = {
+export const EMPTY_MEASUREMENT: SlidesMeasurement = {
   positions: [],
   sizes: [],
-  snaps: [],
   contentSize: 0,
   loopSize: 0
+}
+
+export const EMPTY_GEOMETRY: SlidesGeometry = {
+  ...EMPTY_MEASUREMENT,
+  snaps: []
 }

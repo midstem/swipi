@@ -1,10 +1,6 @@
-import {
-  clampToSnaps,
-  DRAG_THRESHOLD,
-  getMomentumDuration,
-  getMomentumSnap,
-  PRIMARY_BUTTON
-} from '../../../index'
+import { DRAG_THRESHOLD, PRIMARY_BUTTON } from '../../../constants'
+import { getMomentumDuration } from '../../drag'
+import { clampToSnaps, getMomentumSnap } from '../../geometry'
 import { PASSIVE } from './constants'
 import { DragState, SetupEventsProps } from './types'
 import { capturePointer, getReleaseVelocity, preventDragStart } from './helpers'

@@ -1,5 +1,9 @@
-import { FIRST_SLIDE_INDEX } from '../constants'
-import { SwipiOptions, SwipiApi, SlideOffsets } from '../types'
+import {
+  ResolvedSwipiOptions,
+  SwipiOptions,
+  SwipiApi,
+  SlideOffsets
+} from '../types'
 import { measureSlides } from '../modules/geometry'
 import { getSlidePositions } from '../modules/neighbours'
 import {
@@ -15,37 +19,31 @@ import { setupObservers } from '../modules/orchestration/observers'
 import { setupAutoplay } from '../modules/orchestration/autoplay'
 import { setupPrefersReducedMotion } from '../modules/orchestration/prefersReducedMotion'
 
+import { DEFAULT_OPTIONS, MISSING_TRACK_ERROR } from './constants'
+import { toStoreState } from './helpers'
 import { setupStore } from './store'
 import { setupScroll } from './scroll'
-import { setupGeometrySync, GeometryState } from './geometrySync'
-
-const DEFAULT_OPTIONS: SwipiOptions = {
-  loop: false,
-  dragFree: false,
-  autoplay: false,
-  startIndex: FIRST_SLIDE_INDEX,
-  autoplaySpeed: 3000,
-  animationSpeed: 300,
-  respectReducedMotion: false
-}
+import { setupGeometrySync } from './geometrySync'
 
 export const createSwipi = (
   viewport: HTMLElement,
   options: SwipiOptions = {}
 ): SwipiApi => {
   const track = viewport.firstElementChild as HTMLElement | null
-  if (!track) {
-    throw new Error(
-      'Swipi: Viewport must have at least one child element (the track).'
-    )
-  }
+  if (!track) throw new Error(MISSING_TRACK_ERROR)
 
-  let currentOptions = { ...DEFAULT_OPTIONS, ...options }
+  let currentOptions: ResolvedSwipiOptions = { ...DEFAULT_OPTIONS, ...options }
   let prefersReducedMotion = false
 
   const offsets: SlideOffsets = new WeakMap()
   let hasAppliedOffsets = false
-  let destroyPrefersReducedMotion: () => void
+
+  const watchReducedMotion = (): (() => void) =>
+    setupPrefersReducedMotion((reduced) => {
+      prefersReducedMotion = currentOptions.respectReducedMotion
+        ? reduced
+        : false
+    })
 
   const store = setupStore({
     onChange: (positions) => currentOptions.onChange?.(positions),
@@ -55,39 +53,22 @@ export const createSwipi = (
     getIsLoop: () => sync.state.isLoop
   })
 
-  const syncStateAndNotify = (state: GeometryState) => {
-    store.updateSnapshot({
-      slideIndex: state.slideIndex,
-      snapCount: state.countShowDots,
-      slidesCount: state.measurement.sizes.length,
-      hasOverflow: state.hasOverflow,
-      canScrollNext: state.canScrollNext,
-      canScrollPrev: state.canScrollPrev
-    })
-  }
-
   const sync = setupGeometrySync({
     getOptions: () => currentOptions,
-    syncStateAndNotify,
+    onState: (state) => store.updateSnapshot(toStoreState(state)),
     moveTo: (target) => transformApi.moveTo(target),
     restartAutoplay: () => autoplayApi.restart()
   })
 
-  const render = (transformValue: number) => {
-    renderTrack(
+  const render = (transformValue: number): void => {
+    hasAppliedOffsets = renderTrack({
       track,
-      transformValue,
-      sync.state.isLoop,
-      sync.state.geometry,
+      transform: transformValue,
+      loop: sync.state.isLoop,
+      geometry: sync.state.geometry,
       offsets,
-      hasAppliedOffsets,
-      () => {
-        hasAppliedOffsets = true
-      },
-      () => {
-        hasAppliedOffsets = false
-      }
-    )
+      hasAppliedOffsets
+    })
   }
 
   const transformApi = setupTransform({ render, onTarget: sync.syncSlideIndex })
@@ -95,16 +76,16 @@ export const createSwipi = (
   const destroyEvents = setupEvents({
     viewport,
     getIsLoop: () => sync.state.isLoop,
-    getDragFree: () => !!currentOptions.dragFree,
+    getDragFree: () => currentOptions.dragFree,
     getGeometry: () => sync.state.geometry,
     getHasOverflow: () => sync.state.hasOverflow,
-    getAnimationSpeed: () => currentOptions.animationSpeed ?? 300,
+    getAnimationSpeed: () => currentOptions.animationSpeed,
     getTransform: () => transformApi.getContext().transform,
     moveTo: transformApi.moveTo,
     animateTo: (value, duration) =>
       transformApi.animateTo(
         value,
-        duration ?? currentOptions.animationSpeed ?? 300,
+        duration ?? currentOptions.animationSpeed,
         prefersReducedMotion
       )
   })
@@ -115,22 +96,20 @@ export const createSwipi = (
     getTarget: () => transformApi.getContext().target,
     getGeometry: () => sync.state.geometry,
     getIsLoop: () => sync.state.isLoop,
-    getAnimationSpeed: () => currentOptions.animationSpeed ?? 300,
+    getAnimationSpeed: () => currentOptions.animationSpeed,
     getPrefersReducedMotion: () => prefersReducedMotion,
     animateTo: transformApi.animateTo
   })
 
   const autoplayApi = setupAutoplay({
-    getAutoplay: () => !!currentOptions.autoplay,
-    getAutoplaySpeed: () => currentOptions.autoplaySpeed ?? 3000,
-    nextImg: scrollApi.scrollNext
+    getAutoplay: () => currentOptions.autoplay,
+    getAutoplaySpeed: () => currentOptions.autoplaySpeed,
+    onTick: scrollApi.scrollNext
   })
 
   autoplayApi.restart()
 
-  destroyPrefersReducedMotion = setupPrefersReducedMotion((reduced) => {
-    prefersReducedMotion = currentOptions.respectReducedMotion ? reduced : false
-  })
+  let destroyPrefersReducedMotion = watchReducedMotion()
 
   applyTrackVariables(
     track,
@@ -138,7 +117,7 @@ export const createSwipi = (
     currentOptions.spaceBetween
   )
 
-  const destroyObservers = setupObservers({
+  const observers = setupObservers({
     track,
     offsets,
     onMeasure: sync.syncGeometry
@@ -148,15 +127,7 @@ export const createSwipi = (
     scrollNext: scrollApi.scrollNext,
     scrollPrev: scrollApi.scrollPrev,
     scrollTo: scrollApi.scrollTo,
-    getSnapshot: () =>
-      store.getSnapshot({
-        slideIndex: sync.state.slideIndex,
-        snapCount: sync.state.countShowDots,
-        slidesCount: sync.state.measurement.sizes.length,
-        hasOverflow: sync.state.hasOverflow,
-        canScrollNext: sync.state.canScrollNext,
-        canScrollPrev: sync.state.canScrollPrev
-      }),
+    getSnapshot: () => store.getSnapshot(toStoreState(sync.state)),
     subscribe: store.subscribe,
     update: (newOptions) => {
       const prevOptions = currentOptions
@@ -192,29 +163,24 @@ export const createSwipi = (
         prevOptions.respectReducedMotion !== currentOptions.respectReducedMotion
       ) {
         destroyPrefersReducedMotion()
-        destroyPrefersReducedMotion = setupPrefersReducedMotion((reduced) => {
-          prefersReducedMotion = currentOptions.respectReducedMotion
-            ? reduced
-            : false
-        })
+        destroyPrefersReducedMotion = watchReducedMotion()
       }
     },
-    measure: () => {},
+    measure: observers.measure,
     sync: () => {
       render(transformApi.getContext().transform)
       sync.syncSlideIndex(transformApi.getContext().target)
     },
     destroy: () => {
       destroyEvents()
-      destroyObservers()
+      observers.destroy()
       destroyPrefersReducedMotion()
       autoplayApi.destroy()
       transformApi.destroy()
       removeTrackVariables(track)
       clearTrackTransform(track)
-      resetSlideOffsets(track, () => {
-        hasAppliedOffsets = false
-      })
+      resetSlideOffsets(track)
+      hasAppliedOffsets = false
     }
   }
 }

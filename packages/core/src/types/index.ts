@@ -12,6 +12,20 @@ export type SwipiOptions = {
   onSelect?: (state: SwipiState) => void
 }
 
+export type ResolvedSwipiOptions = SwipiOptions &
+  Required<
+    Pick<
+      SwipiOptions,
+      | 'loop'
+      | 'dragFree'
+      | 'autoplay'
+      | 'startIndex'
+      | 'autoplaySpeed'
+      | 'animationSpeed'
+      | 'respectReducedMotion'
+    >
+  >
+
 export type SwipiSnapshot = {
   selectedIndex: number
   snapCount: number

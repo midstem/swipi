@@ -3,7 +3,7 @@ import { startAutoplay, TimeoutRef } from '../../autoplay'
 export type SetupAutoplayProps = {
   getAutoplay: () => boolean
   getAutoplaySpeed: () => number
-  nextImg: () => void
+  onTick: () => void
 }
 
 export type AutoplayApi = {
@@ -14,7 +14,7 @@ export type AutoplayApi = {
 export const setupAutoplay = ({
   getAutoplay,
   getAutoplaySpeed,
-  nextImg
+  onTick
 }: SetupAutoplayProps): AutoplayApi => {
   const timeoutRef: TimeoutRef = { current: undefined }
 
@@ -30,7 +30,7 @@ export const setupAutoplay = ({
 
     if (!getAutoplay()) return
 
-    startAutoplay(getAutoplaySpeed(), timeoutRef, nextImg)
+    startAutoplay(getAutoplaySpeed(), timeoutRef, onTick)
   }
 
   return { restart, destroy: clear }

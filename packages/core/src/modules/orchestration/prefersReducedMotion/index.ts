@@ -1,4 +1,4 @@
-import { REDUCED_MOTION_QUERY } from '../../../index'
+import { REDUCED_MOTION_QUERY } from '../../../constants'
 
 export const setupPrefersReducedMotion = (
   onChange: (prefersReducedMotion: boolean) => void
@@ -16,7 +16,6 @@ export const setupPrefersReducedMotion = (
     onChange(event.matches)
   }
 
-  // Initial read
   onChange(mediaQuery.matches)
 
   mediaQuery.addEventListener('change', handleChange)

@@ -1,13 +1,13 @@
-import { measureSlides, NO_WIDTH } from '../../../index'
-import { EMPTY_MEASUREMENT } from './constants'
+import { EMPTY_MEASUREMENT, NO_WIDTH } from '../../../constants'
+import { measureSlides } from '../../geometry'
 import { isClose, isSameMeasurement } from './helpers'
-import { SetupObserversProps } from './types'
+import { ObserversApi, SetupObserversProps } from './types'
 
 export const setupObservers = ({
   track,
   offsets,
   onMeasure
-}: SetupObserversProps): (() => void) => {
+}: SetupObserversProps): ObserversApi => {
   let lastWidth = NO_WIDTH
   let lastMeasurement = EMPTY_MEASUREMENT
 
@@ -32,7 +32,6 @@ export const setupObservers = ({
     }
   }
 
-  // Initial measure
   measure()
 
   const hasResizeObserver = typeof ResizeObserver !== 'undefined'
@@ -62,13 +61,15 @@ export const setupObservers = ({
 
   if (!hasResizeObserver) window.addEventListener('resize', measure)
 
-  return () => {
-    sizes?.disconnect()
-    children?.disconnect()
+  return {
+    measure,
+    destroy: () => {
+      sizes?.disconnect()
+      children?.disconnect()
 
-    if (!hasResizeObserver) window.removeEventListener('resize', measure)
+      if (!hasResizeObserver) window.removeEventListener('resize', measure)
+    }
   }
 }
 
-export { EMPTY_MEASUREMENT }
-export type { SetupObserversProps }
+export type { ObserversApi, SetupObserversProps }

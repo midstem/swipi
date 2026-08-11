@@ -1,4 +1,4 @@
-import { SlidesGeometry } from '../../../index'
+import { SlidesGeometry } from '../../../types'
 
 export type DragState = {
   pointerId: number
