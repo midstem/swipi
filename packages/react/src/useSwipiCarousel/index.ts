@@ -14,8 +14,8 @@ import {
   SwipiSnapshot
 } from '@swipi/core'
 import { SwipiCarousel, SwipiCarouselOptions, UseSwipiCarousel } from './types'
-import { useIsomorphicLayoutEffect } from '../Swipi/hooks/useIsomorphicLayoutEffect'
-import { useLatestRef } from '../Swipi/hooks/useLatestRef'
+import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect'
+import { useLatestRef } from '../hooks/useLatestRef'
 
 const noop = (): void => {}
 const noopSubscribe = () => noop
