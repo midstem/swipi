@@ -1,6 +1,6 @@
-import { FIRST_SLIDE_INDEX, ONE_STEP } from '../../constants'
-import { clamp, normalizeIndex } from '../math'
-import { SlidePositions } from '../../types'
+import { FIRST_SLIDE_INDEX, ONE_STEP } from '#src/constants'
+import { clamp, normalizeIndex } from '#src/modules/math'
+import { SlidePositions } from '#src/types'
 
 export const getLoopSlidePositions = (
   slideIndex: number,

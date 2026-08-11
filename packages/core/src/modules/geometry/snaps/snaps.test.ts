@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import { clampToSnaps, getSnapIndex } from '.'
-import { EMPTY_GEOMETRY } from '../../../constants'
+import { EMPTY_GEOMETRY } from '#src/constants'
 import { build } from '../__test__/build'
 
 describe('toSnaps with equal slides', () => {

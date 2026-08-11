@@ -1,4 +1,4 @@
-import { ONE_STEP } from '../../../constants'
+import { ONE_STEP } from '#src/constants'
 import { NO_OFFSET } from './constants'
 
 export const getGap = (positions: number[], sizes: number[]): number =>

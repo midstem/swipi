@@ -2,9 +2,9 @@ import {
   clampToSnaps,
   getScrollToTarget,
   getStepTarget
-} from '../modules/geometry'
-import { ONE_STEP } from '../constants'
-import { SlidesGeometry } from '../types'
+} from '#src/modules/geometry'
+import { ONE_STEP } from '#src/constants'
+import { SlidesGeometry } from '#src/types'
 
 export type SetupScrollProps = {
   getCanScrollNext: () => boolean

@@ -1,4 +1,4 @@
-import { startAutoplay, TimeoutRef } from '../../autoplay'
+import { startAutoplay, TimeoutRef } from '#src/modules/autoplay'
 
 export type SetupAutoplayProps = {
   getAutoplay: () => boolean

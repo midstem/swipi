@@ -1,4 +1,4 @@
-import { SlidesGeometry, SlidesMeasurement } from '../types'
+import { SlidesGeometry, SlidesMeasurement } from '#src/types'
 
 export const DEFAULT_START_INDEX = 0
 

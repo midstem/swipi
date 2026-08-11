@@ -2,8 +2,8 @@ import {
   DEFAULT_ANIMATION_SPEED,
   DEFAULT_AUTOPLAY_SPEED,
   DEFAULT_START_INDEX
-} from '../constants'
-import { ResolvedSwipiOptions } from '../types'
+} from '#src/constants'
+import { ResolvedSwipiOptions } from '#src/types'
 
 export const DEFAULT_OPTIONS: ResolvedSwipiOptions = {
   loop: false,

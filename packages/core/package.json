@@ -7,6 +7,9 @@
   "description": "Framework-agnostic carousel engine. Consumed as source and bundled by the adapters, never published on its own.",
   "sideEffects": false,
   "main": "./src/index.ts",
+  "imports": {
+    "#src/*": "./src/*/index.ts"
+  },
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {

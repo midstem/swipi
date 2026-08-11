@@ -3,21 +3,21 @@ import {
   SwipiOptions,
   SwipiApi,
   SlideOffsets
-} from '../types'
-import { measureSlides } from '../modules/geometry'
-import { getSlidePositions } from '../modules/neighbours'
+} from '#src/types'
+import { measureSlides } from '#src/modules/geometry'
+import { getSlidePositions } from '#src/modules/neighbours'
 import {
   applyTrackVariables,
   removeTrackVariables,
   renderTrack,
   clearTrackTransform,
   resetSlideOffsets
-} from '../modules/orchestration/track'
-import { setupTransform } from '../modules/orchestration/transform'
-import { setupEvents } from '../modules/orchestration/events'
-import { setupObservers } from '../modules/orchestration/observers'
-import { setupAutoplay } from '../modules/orchestration/autoplay'
-import { setupPrefersReducedMotion } from '../modules/orchestration/prefersReducedMotion'
+} from '#src/modules/orchestration/track'
+import { setupTransform } from '#src/modules/orchestration/transform'
+import { setupEvents } from '#src/modules/orchestration/events'
+import { setupObservers } from '#src/modules/orchestration/observers'
+import { setupAutoplay } from '#src/modules/orchestration/autoplay'
+import { setupPrefersReducedMotion } from '#src/modules/orchestration/prefersReducedMotion'
 
 import { DEFAULT_OPTIONS, MISSING_TRACK_ERROR } from './constants'
 import { toStoreState } from './helpers'

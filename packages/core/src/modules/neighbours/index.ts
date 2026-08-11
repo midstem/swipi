@@ -1,4 +1,4 @@
-import { SlidePositions } from '../../types'
+import { SlidePositions } from '#src/types'
 import { getLoopSlidePositions, getRegularSlidePositions } from './helpers'
 
 export const getSlidePositions = (

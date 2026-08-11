@@ -1,5 +1,5 @@
-import { EMPTY_MEASUREMENT, NO_WIDTH } from '../../../constants'
-import { measureSlides } from '../../geometry'
+import { EMPTY_MEASUREMENT, NO_WIDTH } from '#src/constants'
+import { measureSlides } from '#src/modules/geometry'
 import { isClose, isSameMeasurement } from './helpers'
 import { ObserversApi, SetupObserversProps } from './types'
 

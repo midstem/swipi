@@ -2,9 +2,9 @@ import {
   EMPTY_TRANSFORM,
   SLIDE_GAP_VARIABLE,
   SLIDE_WIDTH_VARIABLE
-} from '../../../constants'
-import { SlidesGeometry, SlideOffsets } from '../../../types'
-import { getSlideLap } from '../../geometry'
+} from '#src/constants'
+import { SlidesGeometry, SlideOffsets } from '#src/types'
+import { getSlideLap } from '#src/modules/geometry'
 import { toTranslate, forEachSlide } from './helpers'
 import { RenderTrackProps } from './types'
 

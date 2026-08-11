@@ -1,4 +1,4 @@
-import { SlideOffsets, SlidesMeasurement } from '../../../types'
+import { SlideOffsets, SlidesMeasurement } from '#src/types'
 
 export type SetupObserversProps = {
   track: HTMLElement

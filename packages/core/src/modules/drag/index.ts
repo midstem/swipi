@@ -1,4 +1,4 @@
-import { clamp } from '../math'
+import { clamp } from '#src/modules/math'
 import {
   EASE_SPEED_FACTOR,
   MAX_DRAG_VELOCITY,

@@ -33,6 +33,18 @@ Each subject owns a folder, and everything only that subject needs — its
 Nothing inside `src` imports that barrel back; a module reaches for the exact
 folder it needs, so there is no cycle through the entry point.
 
+Crossing from one subject to another goes through the single subpath import
+declared in `package.json`, `"#src/*": "./src/*/index.ts"`, so a file five
+folders deep writes `#src/constants` and says where it is going instead of
+counting `../` to get there. The `#` is not decoration — it is what marks the
+specifier as internal to this package, and Node would otherwise go looking for
+`src` in `node_modules`. Inside a subject the imports stay relative.
+
+Node, TypeScript and Vite all read that one line from the manifest, so no
+bundler config or tsconfig in the repo repeats it, and it never reaches npm: the
+adapter's build inlines the core into its own bundle and rolls its declarations
+up before packing.
+
 `src/createSwipi` wires the engine together:
 
 - `store` — the snapshot the host subscribes to, and the `onChange`/`onSelect`

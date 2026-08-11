@@ -1,4 +1,4 @@
-import { SwipiSnapshot, SlidePositions } from '../types'
+import { SwipiSnapshot, SlidePositions } from '#src/types'
 
 export type StoreState = {
   slideIndex: number

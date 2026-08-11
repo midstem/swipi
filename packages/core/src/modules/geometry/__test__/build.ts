@@ -1,4 +1,4 @@
-import { SlidesGeometry } from '../../../types'
+import { SlidesGeometry } from '#src/types'
 import { toSnaps } from '../snaps'
 
 export const build = (

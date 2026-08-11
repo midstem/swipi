@@ -1,5 +1,5 @@
-import { INITIAL_TRANSFORM, PROGRESS_END } from '../../../constants'
-import { easeOutCubic } from '../../animation'
+import { INITIAL_TRANSFORM, PROGRESS_END } from '#src/constants'
+import { easeOutCubic } from '#src/modules/animation'
 import { SetupTransformProps, TransformApi, TransformContext } from './types'
 
 export const setupTransform = ({

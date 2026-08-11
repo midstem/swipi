@@ -1,4 +1,4 @@
-import { SlideOffsets, SlidesGeometry, SlidesMeasurement } from '../../../types'
+import { SlideOffsets, SlidesGeometry, SlidesMeasurement } from '#src/types'
 import { NO_OFFSET } from './constants'
 import { getGap } from './helpers'
 

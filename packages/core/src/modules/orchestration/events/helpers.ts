@@ -1,5 +1,5 @@
-import { NO_VELOCITY, VELOCITY_STALE_TIME } from '../../../constants'
-import { getDragVelocity } from '../../drag'
+import { NO_VELOCITY, VELOCITY_STALE_TIME } from '#src/constants'
+import { getDragVelocity } from '#src/modules/drag'
 import { DragState } from './types'
 
 export const capturePointer = (

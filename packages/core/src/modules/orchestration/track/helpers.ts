@@ -1,4 +1,4 @@
-import { EMPTY_TRANSFORM } from '../../../constants'
+import { EMPTY_TRANSFORM } from '#src/constants'
 
 export const toTranslate = (value: number): string =>
   value ? `translate3d(${value}px, 0, 0)` : EMPTY_TRANSFORM

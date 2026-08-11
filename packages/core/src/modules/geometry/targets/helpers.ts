@@ -1,5 +1,5 @@
-import { ONE_STEP } from '../../../constants'
-import { SlidesGeometry } from '../../../types'
+import { ONE_STEP } from '#src/constants'
+import { SlidesGeometry } from '#src/types'
 
 export const getStride = (
   { positions, loopSize }: SlidesGeometry,

@@ -1,4 +1,4 @@
-import { SlidesGeometry, SlideOffsets } from '../../../types'
+import { SlidesGeometry, SlideOffsets } from '#src/types'
 
 export type RenderTrackProps = {
   track: HTMLElement

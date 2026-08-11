@@ -4,14 +4,14 @@ import {
   FIRST_SLIDE_INDEX,
   INITIAL_TRANSFORM,
   NO_SLIDES
-} from '../constants'
-import { clamp } from '../modules/math'
+} from '#src/constants'
+import { clamp } from '#src/modules/math'
 import {
   ResolvedSwipiOptions,
   SlidesGeometry,
   SlidesMeasurement
-} from '../types'
-import { toSnaps, getSnapIndex } from '../modules/geometry'
+} from '#src/types'
+import { toSnaps, getSnapIndex } from '#src/modules/geometry'
 
 export type GeometryState = {
   slideIndex: number

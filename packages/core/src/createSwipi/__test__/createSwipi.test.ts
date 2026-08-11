@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { SLIDE_WIDTH_VARIABLE, SLIDE_GAP_VARIABLE } from '../../constants'
-import { SwipiApi } from '../../types'
+import { SLIDE_WIDTH_VARIABLE, SLIDE_GAP_VARIABLE } from '#src/constants'
+import { SwipiApi } from '#src/types'
 import { createSwipi } from '../index'
 import { MISSING_TRACK_ERROR } from '../constants'
 import {
