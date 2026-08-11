@@ -1,9 +1,0 @@
-import { MutableRefObject } from 'react'
-
-export type Autoplay = {
-  autoplay: boolean
-  autoplaySpeed: number
-  slideIndex: number
-  nextImg: () => void
-  timeout: MutableRefObject<ReturnType<typeof setTimeout> | undefined>
-}

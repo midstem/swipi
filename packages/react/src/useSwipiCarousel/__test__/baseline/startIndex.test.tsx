@@ -43,6 +43,10 @@ describe('baseline: startIndex', () => {
       'change prev=0 current=0 next=1',
       'select index=0 snaps=4 canPrev=false canNext=true',
       'change prev=1 current=2 next=3',
+      'select index=2 snaps=4 canPrev=true canNext=true',
+      'change prev=0 current=0 next=1',
+      'select index=0 snaps=4 canPrev=false canNext=true',
+      'change prev=1 current=2 next=3',
       'select index=2 snaps=4 canPrev=true canNext=true'
     ])
   })

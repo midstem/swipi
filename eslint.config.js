@@ -19,6 +19,7 @@ export default [
     ignores: [
       'eslint.config.js',
       '**/vite.config.ts',
+      '**/vitest.config.ts',
       '**/scripts/**',
       '**/dist/**',
       '**/node_modules/**'
