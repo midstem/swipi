@@ -1,3 +1,5 @@
+import { SlidesGeometry } from '../types'
+
 export const DEFAULT_START_INDEX = 0
 
 export const DEFAULT_AUTOPLAY_SPEED = 4000
@@ -8,37 +10,19 @@ export const DRAG_THRESHOLD = 5
 
 export const PRIMARY_BUTTON = 0
 
-export const MOMENTUM_DECAY_TIME = 250
-
-export const MAX_DRAG_VELOCITY = 3
-
 export const VELOCITY_STALE_TIME = 100
 
-export const MIN_SAMPLE_TIME = 1
-
 export const NO_VELOCITY = 0
-
-export const EASE_SPEED_FACTOR = 3
-
-export const MIN_MOMENTUM_DURATION = 120
-
-export const MAX_MOMENTUM_DURATION = 600
 
 export const ONE_STEP = 1
 
 export const FIRST_SLIDE_INDEX = 0
 
-export const HALF = 0.5
-
 export const INITIAL_TRANSFORM = 0
-
-export const NO_OFFSET = 0
 
 export const NO_WIDTH = 0
 
 export const NO_SLIDES = 0
-
-export const SNAP_TOLERANCE = 1
 
 export const GEOMETRY_TOLERANCE = 0.01
 
@@ -51,3 +35,11 @@ export const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
 export const SLIDE_WIDTH_VARIABLE = '--swipi-slide-width'
 
 export const SLIDE_GAP_VARIABLE = '--swipi-slide-gap'
+
+export const EMPTY_GEOMETRY: SlidesGeometry = {
+  positions: [],
+  sizes: [],
+  snaps: [],
+  contentSize: 0,
+  loopSize: 0
+}
