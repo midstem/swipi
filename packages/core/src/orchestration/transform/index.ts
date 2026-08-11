@@ -1,25 +1,5 @@
-import { easeOutCubic, INITIAL_TRANSFORM, PROGRESS_END } from '../index'
-
-export type TransformContext = {
-  transform: number
-  target: number
-}
-
-export type SetupTransformProps = {
-  render: (value: number) => void
-  onTarget: (value: number) => void
-}
-
-export type TransformApi = {
-  getContext: () => TransformContext
-  moveTo: (value: number) => void
-  animateTo: (
-    value: number,
-    duration: number,
-    prefersReducedMotion: boolean
-  ) => void
-  destroy: () => void
-}
+import { easeOutCubic, INITIAL_TRANSFORM, PROGRESS_END } from '../../index'
+import { SetupTransformProps, TransformApi, TransformContext } from './types'
 
 export const setupTransform = ({
   render,
@@ -90,3 +70,5 @@ export const setupTransform = ({
 
   return { getContext: () => context, moveTo, animateTo, destroy }
 }
+
+export type { SetupTransformProps, TransformApi, TransformContext }

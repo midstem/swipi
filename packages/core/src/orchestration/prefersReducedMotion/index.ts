@@ -1,4 +1,4 @@
-import { REDUCED_MOTION_QUERY } from '../index'
+import { REDUCED_MOTION_QUERY } from '../../index'
 
 export const setupPrefersReducedMotion = (
   onChange: (prefersReducedMotion: boolean) => void

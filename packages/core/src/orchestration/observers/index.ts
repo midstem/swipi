@@ -1,38 +1,7 @@
-import {
-  GEOMETRY_TOLERANCE,
-  measureSlides,
-  NO_WIDTH,
-  SlideOffsets,
-  SlidesMeasurement
-} from '../index'
-
-export const EMPTY_MEASUREMENT: SlidesMeasurement = {
-  positions: [],
-  sizes: [],
-  contentSize: 0,
-  loopSize: 0
-}
-
-const isClose = (a: number, b: number): boolean =>
-  Math.abs(a - b) < GEOMETRY_TOLERANCE
-
-export const isSameMeasurement = (
-  a: SlidesMeasurement,
-  b: SlidesMeasurement
-): boolean =>
-  isClose(a.contentSize, b.contentSize) &&
-  isClose(a.loopSize, b.loopSize) &&
-  a.positions.length === b.positions.length &&
-  a.positions.every((position, index) =>
-    isClose(position, b.positions[index])
-  ) &&
-  a.sizes.every((size, index) => isClose(size, b.sizes[index]))
-
-export type SetupObserversProps = {
-  track: HTMLElement
-  offsets: SlideOffsets
-  onMeasure: (width: number, measurement: SlidesMeasurement) => void
-}
+import { measureSlides, NO_WIDTH } from '../../index'
+import { EMPTY_MEASUREMENT } from './constants'
+import { isClose, isSameMeasurement } from './helpers'
+import { SetupObserversProps } from './types'
 
 export const setupObservers = ({
   track,
@@ -100,3 +69,6 @@ export const setupObservers = ({
     if (!hasResizeObserver) window.removeEventListener('resize', measure)
   }
 }
+
+export { EMPTY_MEASUREMENT }
+export type { SetupObserversProps }

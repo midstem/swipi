@@ -5,21 +5,8 @@ import {
   SlideOffsets,
   SLIDE_GAP_VARIABLE,
   SLIDE_WIDTH_VARIABLE
-} from '../index'
-
-const toTranslate = (value: number): string =>
-  value ? `translate3d(${value}px, 0, 0)` : EMPTY_TRANSFORM
-
-const forEachSlide = (
-  track: HTMLElement,
-  visit: (slide: HTMLElement, index: number) => void
-): void => {
-  const { children } = track
-
-  for (let index = 0; index < children.length; index += 1) {
-    visit(children[index] as HTMLElement, index)
-  }
-}
+} from '../../index'
+import { toTranslate, forEachSlide } from './helpers'
 
 export const writeVariable = (
   track: HTMLElement,
