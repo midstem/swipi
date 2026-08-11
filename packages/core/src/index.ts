@@ -1,16 +1,16 @@
-export * from './animation'
+export * from './modules/animation'
 
-export * from './autoplay'
+export * from './modules/autoplay'
 
 export * from './constants'
 
-export * from './drag'
+export * from './modules/drag'
 
-export * from './geometry'
+export * from './modules/geometry'
 
-export * from './math'
+export * from './modules/math'
 
-export * from './neighbours'
+export * from './modules/neighbours'
 
 export * from './types'
 export * from './createSwipi'
