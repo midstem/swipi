@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { measureSlides } from '@swipi/core'
+import { measureSlides } from '../index'
 
 const buildTrack = (
   widths: number[],
