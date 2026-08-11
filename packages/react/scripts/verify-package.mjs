@@ -44,7 +44,7 @@ legacyEntries.forEach((entry) =>
 const esm = readDist('index.js')
 const cjs = readDist('index.cjs')
 
-const publicExports = ['useSwipiCarousel', 'stump']
+const publicExports = ['useSwipiCarousel']
 
 publicExports.forEach((name) => {
   check(

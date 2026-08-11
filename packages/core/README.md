@@ -15,7 +15,7 @@ Two rules follow from that, and both are enforced by
 - the built bundle must not contain an import of `@swipi/core`; if it does, the
   bundler treated the core as external and the tarball is broken.
 
-Right now the package holds a single `stump()` function that exists only to
-prove the wiring end to end: workspace resolution, typecheck, bundling and the
-published tarball. The real engine described in
-[AGNOSTIC.md](../../AGNOSTIC.md) moves in here later.
+Right now the package holds the React-free half of the engine — `constants`,
+`types`, `geometry` and `helpers` — and every one of its modules is free of
+React imports. The stateful part still lives in the hooks of `packages/react`
+and moves in here later.

@@ -1,5 +1,5 @@
 import { RefObject, useState } from 'react'
-import { NO_WIDTH } from '../../constants'
+import { NO_WIDTH } from '@swipi/core'
 import { useIsomorphicLayoutEffect } from '../useIsomorphicLayoutEffect'
 
 export const useElementWidth = (ref: RefObject<HTMLElement | null>): number => {

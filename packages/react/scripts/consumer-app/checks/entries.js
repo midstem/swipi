@@ -5,7 +5,7 @@ const require = createRequire(import.meta.url)
 
 const expectedVersion = process.argv[2]
 
-const EXPECTED_EXPORTS = ['stump', 'useSwipiCarousel']
+const EXPECTED_EXPORTS = ['useSwipiCarousel']
 
 const esm = await import('swipi')
 
@@ -46,12 +46,6 @@ assert.equal(
 )
 
 assert.equal(manifest.sideEffects, false, 'the package is not side-effect free')
-
-assert.equal(
-  esm.stump(),
-  'swipi core',
-  'the core was not bundled into the published tarball'
-)
 
 assert.equal(
   manifest.dependencies,

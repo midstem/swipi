@@ -1,5 +1,5 @@
 import { RefObject } from 'react'
-import { SLIDE_GAP_VARIABLE, SLIDE_WIDTH_VARIABLE } from '../../constants'
+import { SLIDE_GAP_VARIABLE, SLIDE_WIDTH_VARIABLE } from '@swipi/core'
 import { useIsomorphicLayoutEffect } from '../useIsomorphicLayoutEffect'
 
 type UseTrackVariablesProps = {

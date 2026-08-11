@@ -4,7 +4,7 @@ import {
   DEFAULT_ANIMATION_SPEED,
   DEFAULT_AUTOPLAY_SPEED,
   DEFAULT_START_INDEX
-} from '../Swipi/constants'
+} from '@swipi/core'
 import { SwipiCarousel, SwipiCarouselOptions, UseSwipiCarousel } from './types'
 
 const noop = (): void => {}

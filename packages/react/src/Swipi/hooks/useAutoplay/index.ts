@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Autoplay } from './types'
-import { startAutoplay } from '../../helpers'
+import { startAutoplay } from '@swipi/core'
 import { useLatestRef } from '../useLatestRef'
 
 export const useAutoplay = ({

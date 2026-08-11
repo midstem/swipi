@@ -1,8 +1,8 @@
-import { MutableRefObject } from 'react'
 import {
   DragVelocityType,
   MomentumDurationType,
-  SlidePositions
+  SlidePositions,
+  TimeoutRef
 } from '../types'
 import {
   EASE_SPEED_FACTOR,
@@ -22,7 +22,7 @@ export const normalizeIndex = (index: number, slidesCount: number): number =>
 
 export const startAutoplay = (
   autoplaySpeed: number,
-  timeout: MutableRefObject<ReturnType<typeof setTimeout> | undefined>,
+  timeout: TimeoutRef,
   nextImg: () => void
 ) => {
   timeout.current = setTimeout(() => {

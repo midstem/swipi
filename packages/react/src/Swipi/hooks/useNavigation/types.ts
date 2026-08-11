@@ -1,5 +1,5 @@
 import { MutableRefObject } from 'react'
-import { SlidesGeometry } from '../../types'
+import { SlidesGeometry } from '@swipi/core'
 
 export type Navigation = {
   isLoop: boolean

@@ -1,5 +1,4 @@
-import { getDragVelocity } from '../../helpers'
-import { NO_VELOCITY, VELOCITY_STALE_TIME } from '../../constants'
+import { getDragVelocity, NO_VELOCITY, VELOCITY_STALE_TIME } from '@swipi/core'
 import { DragState } from './types'
 
 export const capturePointer = (

@@ -65,3 +65,7 @@ export type SlidePositions = {
   current: number
   next: number
 }
+
+export type TimeoutRef = {
+  current: ReturnType<typeof setTimeout> | undefined
+}

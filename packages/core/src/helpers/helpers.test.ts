@@ -1,5 +1,4 @@
 import { describe, expect, test, vi } from 'vitest'
-import { MutableRefObject } from 'react'
 import {
   clamp,
   getDragVelocity,
@@ -13,6 +12,7 @@ import {
   MAX_MOMENTUM_DURATION,
   MIN_MOMENTUM_DURATION
 } from '../constants'
+import { TimeoutRef } from '../types'
 
 describe('clamp', () => {
   test('should keep a value inside the bounds', () => {
@@ -106,10 +106,7 @@ describe('getSlidePositions', () => {
 describe('startAutoplay', () => {
   test('should start autoplay', () => {
     vi.useFakeTimers()
-    const timeout: MutableRefObject<ReturnType<typeof setTimeout> | undefined> =
-      {
-        current: undefined
-      }
+    const timeout: TimeoutRef = { current: undefined }
     const nextImg = vi.fn()
     const autoplaySpeed = 3000
 
