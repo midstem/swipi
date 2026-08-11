@@ -1,15 +1,38 @@
-export type UseSwipiType = {
-  loop: boolean
-  autoplay: boolean
-  dragFree: boolean
+export type SwipiOptions = {
+  loop?: boolean
+  dragFree?: boolean
+  autoplay?: boolean
   slideWidth?: number
   spaceBetween?: number
-  startIndex: number
-  autoplaySpeed: number
-  animationSpeed: number
-  respectReducedMotion: boolean
-  onChange: (value: SlidePositions) => void
-  onSelect: (state: SwipiState) => void
+  startIndex?: number
+  autoplaySpeed?: number
+  animationSpeed?: number
+  respectReducedMotion?: boolean
+  onChange?: (value: SlidePositions) => void
+  onSelect?: (state: SwipiState) => void
+}
+
+export type SwipiSnapshot = {
+  selectedIndex: number
+  snapCount: number
+  slidesCount: number
+  hasOverflow: boolean
+  canScrollNext: boolean
+  canScrollPrev: boolean
+}
+
+export type SwipiApi = {
+  scrollNext(): void
+  scrollPrev(): void
+  scrollTo(index: number): void
+
+  getSnapshot(): SwipiSnapshot
+  subscribe(listener: () => void): () => void
+
+  update(options: Partial<SwipiOptions>): void
+  measure(): void
+  sync(): void
+  destroy(): void
 }
 
 export type SwipiState = {
