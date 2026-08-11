@@ -50,8 +50,17 @@ up before packing.
 - `store` — the snapshot the host subscribes to, and the `onChange`/`onSelect`
   callbacks fired next to it;
 - `geometrySync` — the single mutable state: re-derives snaps, overflow and the
-  scroll flags from a fresh measurement, and applies `startIndex` once;
+  scroll flags from a fresh measurement. It reports rather than commands —
+  `syncGeometry` returns the transform to move to, or `null` when there is
+  nothing measured yet, and `syncSlideIndex` returns whether the index actually
+  moved — so it needs no reference to the pieces that act on the answer;
 - `scroll` — turns `scrollNext`/`scrollPrev`/`scrollTo` into a target.
+
+That is what keeps `createSwipi` a straight line: every piece is built after the
+pieces it names, so nothing is referenced before it exists. The one exception is
+the autoplay tick, which reaches forward to `scroll`; it can only fire from a
+timer, long after the constructor has returned, and `createSwipi.test.ts` holds
+it in place by letting autoplay advance twice.
 
 `src/modules/orchestration` is the half that touches the DOM and the browser:
 

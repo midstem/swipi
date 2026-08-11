@@ -29,34 +29,35 @@ export type GeometryState = {
 }
 
 export type SetupGeometrySyncProps = {
+  state: GeometryState
   getOptions: () => ResolvedSwipiOptions
   onState: (state: GeometryState) => void
-  moveTo: (target: number) => void
-  restartAutoplay: () => void
 }
 
-export const setupGeometrySync = ({
-  getOptions,
-  onState,
-  moveTo,
-  restartAutoplay
-}: SetupGeometrySyncProps) => {
-  const state: GeometryState = {
-    slideIndex: FIRST_SLIDE_INDEX,
-    containerWidth: 0,
-    measurement: EMPTY_MEASUREMENT,
-    geometry: EMPTY_GEOMETRY,
-    hasOverflow: false,
-    isLoop: false,
-    canScrollNext: false,
-    canScrollPrev: false,
-    countShowDots: 0,
-    lastIndex: FIRST_SLIDE_INDEX,
-    isMeasured: false,
-    isStartIndexApplied: false
-  }
+export const createGeometryState = (): GeometryState => ({
+  slideIndex: FIRST_SLIDE_INDEX,
+  containerWidth: 0,
+  measurement: EMPTY_MEASUREMENT,
+  geometry: EMPTY_GEOMETRY,
+  hasOverflow: false,
+  isLoop: false,
+  canScrollNext: false,
+  canScrollPrev: false,
+  countShowDots: 0,
+  lastIndex: FIRST_SLIDE_INDEX,
+  isMeasured: false,
+  isStartIndexApplied: false
+})
 
-  const syncGeometry = (width: number, measure: SlidesMeasurement) => {
+export const setupGeometrySync = ({
+  state,
+  getOptions,
+  onState
+}: SetupGeometrySyncProps) => {
+  const syncGeometry = (
+    width: number,
+    measure: SlidesMeasurement
+  ): number | null => {
     state.containerWidth = width
     state.measurement = measure
     const slidesCount = state.measurement.sizes.length
@@ -82,7 +83,7 @@ export const setupGeometrySync = ({
 
     onState(state)
 
-    if (!state.isMeasured) return
+    if (!state.isMeasured) return null
 
     const index = state.isStartIndexApplied
       ? state.slideIndex
@@ -90,23 +91,25 @@ export const setupGeometrySync = ({
 
     state.isStartIndexApplied = true
 
-    moveTo(
+    return (
       state.geometry.snaps[clamp(index, FIRST_SLIDE_INDEX, state.lastIndex)] ??
-        INITIAL_TRANSFORM
+      INITIAL_TRANSFORM
     )
   }
 
-  const syncSlideIndex = (target: number): void => {
+  const syncSlideIndex = (target: number): boolean => {
     const index = getSnapIndex(target, state.geometry, state.isLoop)
-    if (state.slideIndex !== index) {
-      state.slideIndex = index
-      state.canScrollNext = state.isLoop || state.slideIndex < state.lastIndex
-      state.canScrollPrev = state.isLoop || state.slideIndex > FIRST_SLIDE_INDEX
 
-      restartAutoplay()
-      onState(state)
-    }
+    if (state.slideIndex === index) return false
+
+    state.slideIndex = index
+    state.canScrollNext = state.isLoop || state.slideIndex < state.lastIndex
+    state.canScrollPrev = state.isLoop || state.slideIndex > FIRST_SLIDE_INDEX
+
+    onState(state)
+
+    return true
   }
 
-  return { state, syncGeometry, syncSlideIndex }
+  return { syncGeometry, syncSlideIndex }
 }

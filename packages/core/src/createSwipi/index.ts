@@ -2,7 +2,8 @@ import {
   ResolvedSwipiOptions,
   SwipiOptions,
   SwipiApi,
-  SlideOffsets
+  SlideOffsets,
+  SlidesMeasurement
 } from '#src/types'
 import { measureSlides } from '#src/modules/geometry'
 import { getSlidePositions } from '#src/modules/neighbours'
@@ -23,7 +24,7 @@ import { DEFAULT_OPTIONS, MISSING_TRACK_ERROR } from './constants'
 import { toStoreState } from './helpers'
 import { setupStore } from './store'
 import { setupScroll } from './scroll'
-import { setupGeometrySync } from './geometrySync'
+import { createGeometryState, setupGeometrySync } from './geometrySync'
 
 export const createSwipi = (
   viewport: HTMLElement,
@@ -45,40 +46,71 @@ export const createSwipi = (
         : false
     })
 
+  const state = createGeometryState()
+
   const store = setupStore({
     onChange: (positions) => currentOptions.onChange?.(positions),
-    onSelect: (state) => currentOptions.onSelect?.(state),
+    onSelect: (selection) => currentOptions.onSelect?.(selection),
     getSlidePositions,
-    getIsMeasured: () => sync.state.isMeasured,
-    getIsLoop: () => sync.state.isLoop
+    getIsMeasured: () => state.isMeasured,
+    getIsLoop: () => state.isLoop
   })
 
   const sync = setupGeometrySync({
+    state,
     getOptions: () => currentOptions,
-    onState: (state) => store.updateSnapshot(toStoreState(state)),
-    moveTo: (target) => transformApi.moveTo(target),
-    restartAutoplay: () => autoplayApi.restart()
+    onState: (next) => store.updateSnapshot(toStoreState(next))
   })
 
   const render = (transformValue: number): void => {
     hasAppliedOffsets = renderTrack({
       track,
       transform: transformValue,
-      loop: sync.state.isLoop,
-      geometry: sync.state.geometry,
+      loop: state.isLoop,
+      geometry: state.geometry,
       offsets,
       hasAppliedOffsets
     })
   }
 
-  const transformApi = setupTransform({ render, onTarget: sync.syncSlideIndex })
+  const autoplayApi = setupAutoplay({
+    getAutoplay: () => currentOptions.autoplay,
+    getAutoplaySpeed: () => currentOptions.autoplaySpeed,
+    onTick: () => scrollApi.scrollNext()
+  })
+
+  const syncSlideIndex = (target: number): void => {
+    if (sync.syncSlideIndex(target)) autoplayApi.restart()
+  }
+
+  const transformApi = setupTransform({ render, onTarget: syncSlideIndex })
+
+  const syncGeometry = (
+    width: number,
+    measurement: SlidesMeasurement
+  ): void => {
+    const target = sync.syncGeometry(width, measurement)
+
+    if (target !== null) transformApi.moveTo(target)
+  }
+
+  const scrollApi = setupScroll({
+    getCanScrollNext: () => state.canScrollNext,
+    getCanScrollPrev: () => state.canScrollPrev,
+    getTarget: () => transformApi.getContext().target,
+    getGeometry: () => state.geometry,
+    getIsLoop: () => state.isLoop,
+    getAnimationSpeed: () => currentOptions.animationSpeed,
+    getPrefersReducedMotion: () => prefersReducedMotion,
+    animateTo: transformApi.animateTo
+  })
 
   const destroyEvents = setupEvents({
     viewport,
-    getIsLoop: () => sync.state.isLoop,
+    getIsLoop: () => state.isLoop,
     getDragFree: () => currentOptions.dragFree,
-    getGeometry: () => sync.state.geometry,
-    getHasOverflow: () => sync.state.hasOverflow,
+    getGeometry: () => state.geometry,
+    getHasOverflow: () => state.hasOverflow,
     getAnimationSpeed: () => currentOptions.animationSpeed,
     getTransform: () => transformApi.getContext().transform,
     moveTo: transformApi.moveTo,
@@ -88,23 +120,6 @@ export const createSwipi = (
         duration ?? currentOptions.animationSpeed,
         prefersReducedMotion
       )
-  })
-
-  const scrollApi = setupScroll({
-    getCanScrollNext: () => sync.state.canScrollNext,
-    getCanScrollPrev: () => sync.state.canScrollPrev,
-    getTarget: () => transformApi.getContext().target,
-    getGeometry: () => sync.state.geometry,
-    getIsLoop: () => sync.state.isLoop,
-    getAnimationSpeed: () => currentOptions.animationSpeed,
-    getPrefersReducedMotion: () => prefersReducedMotion,
-    animateTo: transformApi.animateTo
-  })
-
-  const autoplayApi = setupAutoplay({
-    getAutoplay: () => currentOptions.autoplay,
-    getAutoplaySpeed: () => currentOptions.autoplaySpeed,
-    onTick: scrollApi.scrollNext
   })
 
   autoplayApi.restart()
@@ -120,14 +135,14 @@ export const createSwipi = (
   const observers = setupObservers({
     track,
     offsets,
-    onMeasure: sync.syncGeometry
+    onMeasure: syncGeometry
   })
 
   return {
     scrollNext: scrollApi.scrollNext,
     scrollPrev: scrollApi.scrollPrev,
     scrollTo: scrollApi.scrollTo,
-    getSnapshot: () => store.getSnapshot(toStoreState(sync.state)),
+    getSnapshot: () => store.getSnapshot(toStoreState(state)),
     subscribe: store.subscribe,
     update: (newOptions) => {
       const prevOptions = currentOptions
@@ -142,13 +157,10 @@ export const createSwipi = (
           currentOptions.slideWidth,
           currentOptions.spaceBetween
         )
-        sync.syncGeometry(
-          sync.state.containerWidth,
-          measureSlides(track, offsets)
-        )
+        syncGeometry(state.containerWidth, measureSlides(track, offsets))
         render(transformApi.getContext().transform)
       } else if (prevOptions.loop !== currentOptions.loop) {
-        sync.syncGeometry(sync.state.containerWidth, sync.state.measurement)
+        syncGeometry(state.containerWidth, state.measurement)
         render(transformApi.getContext().transform)
       }
 
@@ -169,7 +181,7 @@ export const createSwipi = (
     measure: observers.measure,
     sync: () => {
       render(transformApi.getContext().transform)
-      sync.syncSlideIndex(transformApi.getContext().target)
+      syncSlideIndex(transformApi.getContext().target)
     },
     destroy: () => {
       destroyEvents()

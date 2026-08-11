@@ -14,6 +14,8 @@ import {
 
 const INSTANT = { animationSpeed: 0, slideWidth: SLIDE_WIDTH }
 
+const AUTOPLAY_SPEED = 100
+
 let engine: SwipiApi | null = null
 let viewport: HTMLElement
 
@@ -75,6 +77,24 @@ describe('createSwipi', () => {
     swipi.scrollNext()
 
     expect(listener).not.toHaveBeenCalled()
+  })
+
+  it('keeps advancing on its own while autoplay is on', () => {
+    vi.useFakeTimers()
+
+    try {
+      const swipi = mount({ autoplay: true, autoplaySpeed: AUTOPLAY_SPEED })
+
+      vi.advanceTimersByTime(AUTOPLAY_SPEED)
+
+      expect(swipi.getSnapshot().selectedIndex).toBe(1)
+
+      vi.advanceTimersByTime(AUTOPLAY_SPEED)
+
+      expect(swipi.getSnapshot().selectedIndex).toBe(2)
+    } finally {
+      vi.useRealTimers()
+    }
   })
 
   it('starts on the requested index', () => {

@@ -11,7 +11,7 @@ tarball.
 
 | Bundle                                                   |    Raw |  Gzip | × swipi |
 | -------------------------------------------------------- | -----: | ----: | ------: |
-| `swipi` (this tree, unreleased)                          | 15,650 | 5,071 |    1.00 |
+| `swipi` (this tree, unreleased)                          | 15,534 | 5,069 |    1.00 |
 | `embla-carousel-react` 8.6.0                             | 25,533 | 8,612 |    1.70 |
 | `embla-carousel-react` + `embla-carousel-autoplay` 8.6.0 | 28,474 | 9,390 |    1.85 |
 
@@ -25,7 +25,7 @@ set; the middle row is there so nobody has to take that judgement on trust.
 
 Swipi grew to get here. The same run measured the published 3.0.0 at 12,834 raw
 and 4,371 gzip, so moving the engine out of the React hooks and into a
-framework-agnostic core cost **700 bytes gzipped** — the store the host
+framework-agnostic core cost **698 bytes gzipped** — the store the host
 subscribes to, the option diffing behind `update()`, and the seam that lets a
 non-React adapter drive the same engine. The ratio against Embla fell from 2.15×
 to 1.85×, and the claim in the README moved with it.
