@@ -1,8 +1,8 @@
 import { StrictMode, type JSX } from 'react'
 import { renderToString } from 'react-dom/server'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { useSwipiCarousel } from '.'
-import { SwipiCarouselOptions } from './types'
+import { useSwipiCarousel } from '..'
+import { SwipiCarouselOptions } from '../types'
 
 const Carousel = (options: SwipiCarouselOptions): JSX.Element => {
   const [carouselRef, carousel] = useSwipiCarousel(options)

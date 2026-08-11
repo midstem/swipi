@@ -1,7 +1,7 @@
 import { type JSX } from 'react'
 import { describe, expect, it } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { useSwipiCarousel } from '.'
+import { useSwipiCarousel } from '..'
 
 const VIEWPORT_WIDTH = 900
 
