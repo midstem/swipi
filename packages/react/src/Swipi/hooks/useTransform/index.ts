@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react'
-import { easeOutCubic } from '../../helpers'
-import { INITIAL_TRANSFORM, PROGRESS_END } from '../../constants'
+import { easeOutCubic, INITIAL_TRANSFORM, PROGRESS_END } from '@swipi/core'
 import { useLatestRef } from '../useLatestRef'
 import { usePrefersReducedMotion } from '../usePrefersReducedMotion'
 import { UseTransformProps, UseTransformReturn } from './types'

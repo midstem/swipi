@@ -1,6 +1,5 @@
 import { useRef } from 'react'
-import { EMPTY_TRANSFORM } from '../../constants'
-import { getSlideLap } from '../../geometry'
+import { EMPTY_TRANSFORM, getSlideLap } from '@swipi/core'
 import { UseTrackProps, UseTrackReturn } from './types'
 
 const toTranslate = (value: number): string =>

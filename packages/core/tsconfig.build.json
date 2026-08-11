@@ -1,5 +1,6 @@
 {
   "extends": "./tsconfig.json",
+  "exclude": ["node_modules", "src/**/*.test.ts", "src/**/__test__/**"],
   "compilerOptions": {
     "noEmit": false,
     "emitDeclarationOnly": true,

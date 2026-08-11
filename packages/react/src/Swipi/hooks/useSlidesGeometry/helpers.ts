@@ -1,5 +1,4 @@
-import { GEOMETRY_TOLERANCE } from '../../constants'
-import { SlidesMeasurement } from '../../types'
+import { GEOMETRY_TOLERANCE, SlidesMeasurement } from '@swipi/core'
 
 export const isClose = (a: number, b: number): boolean =>
   Math.abs(a - b) < GEOMETRY_TOLERANCE

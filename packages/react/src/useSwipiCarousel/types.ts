@@ -1,4 +1,4 @@
-import { SlidePositions, SwipiState } from '../Swipi/types'
+import { SlidePositions, SwipiState } from '@swipi/core'
 
 export type SwipiCarouselOptions = {
   loop?: boolean

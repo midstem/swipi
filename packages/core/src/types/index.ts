@@ -19,17 +19,6 @@ export type SwipiState = {
   canScrollPrev: boolean
 }
 
-export type DragVelocityType = {
-  distance: number
-  duration: number
-}
-
-export type MomentumDurationType = {
-  distance: number
-  velocity: number
-  animationSpeed: number
-}
-
 export type SlideOffsets = WeakMap<HTMLElement, number>
 
 export type SlidesMeasurement = {
@@ -41,23 +30,6 @@ export type SlidesMeasurement = {
 
 export type SlidesGeometry = SlidesMeasurement & {
   snaps: number[]
-}
-
-export type MomentumSnapType = {
-  transform: number
-  velocity: number
-  startTransform: number
-  geometry: SlidesGeometry
-  loop: boolean
-  dragFree: boolean
-}
-
-export type SnapsFromPositions = {
-  positions: number[]
-  sizes: number[]
-  contentSize: number
-  viewportWidth: number
-  loop: boolean
 }
 
 export type SlidePositions = {

@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { describe, expect, it } from 'vitest'
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
-import { SwipiState } from '../../Swipi/types'
+import { SwipiState } from '@swipi/core'
 import { setContainerWidth, triggerResize } from '../../test/setup'
 import { Carousel, CarouselProps } from './carousel'
 import { addSlide, getDot, getTrack, readState } from './dom'

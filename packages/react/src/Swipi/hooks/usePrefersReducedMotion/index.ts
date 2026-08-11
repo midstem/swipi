@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { REDUCED_MOTION_QUERY } from '../../constants'
+import { REDUCED_MOTION_QUERY } from '@swipi/core'
 
 export const usePrefersReducedMotion = (enabled: boolean): boolean => {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)

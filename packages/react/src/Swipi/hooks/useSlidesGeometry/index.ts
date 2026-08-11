@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react'
-import { measureSlides } from '../../geometry'
-import { SlidesMeasurement } from '../../types'
+import { measureSlides, SlidesMeasurement } from '@swipi/core'
 import { UseSlidesGeometryProps } from './types'
 import { isSame } from './helpers'
 import { useIsomorphicLayoutEffect } from '../useIsomorphicLayoutEffect'

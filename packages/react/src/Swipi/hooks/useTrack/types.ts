@@ -1,5 +1,5 @@
 import { RefObject } from 'react'
-import { SlideOffsets, SlidesGeometry } from '../../types'
+import { SlideOffsets, SlidesGeometry } from '@swipi/core'
 
 export type UseTrackProps = {
   loop: boolean

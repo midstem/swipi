@@ -1,5 +1,3 @@
-export { stump } from '@swipi/core'
-
 export { useSwipiCarousel } from './useSwipiCarousel'
 
 export type {
@@ -8,4 +6,4 @@ export type {
   SwipiCarouselRef
 } from './useSwipiCarousel/types'
 
-export type { SwipiState, SlidePositions } from './Swipi/types'
+export type { SwipiState, SlidePositions } from '@swipi/core'

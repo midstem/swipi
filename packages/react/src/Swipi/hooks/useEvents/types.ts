@@ -1,5 +1,5 @@
 import { MutableRefObject, RefObject } from 'react'
-import { SlidesGeometry } from '../../types'
+import { SlidesGeometry } from '@swipi/core'
 
 export type TouchEvents = {
   isLoop: boolean

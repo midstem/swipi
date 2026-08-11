@@ -9,10 +9,16 @@ import { useElementWidth } from './hooks/useElementWidth'
 import { useSlidesGeometry } from './hooks/useSlidesGeometry'
 import { useTrackVariables } from './hooks/useTrackVariables'
 import { useIsomorphicLayoutEffect } from './hooks/useIsomorphicLayoutEffect'
-import { FIRST_SLIDE_INDEX, NO_SLIDES } from './constants'
-import { SlideOffsets, UseSwipiType } from './types'
-import { clamp, getSlidePositions } from './helpers'
-import { getSnapIndex, toSnaps } from './geometry'
+import {
+  clamp,
+  FIRST_SLIDE_INDEX,
+  getSlidePositions,
+  getSnapIndex,
+  NO_SLIDES,
+  SlideOffsets,
+  toSnaps,
+  UseSwipiType
+} from '@swipi/core'
 
 export const useSwipi = ({
   loop,

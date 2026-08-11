@@ -39,7 +39,6 @@ export default defineConfig({
       exclude: [
         'src/test',
         'src/Swipi/hooks',
-        'src/Swipi/helpers',
         'src/**/__test__/**',
         'src/**/*.test.{ts,tsx}'
       ]

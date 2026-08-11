@@ -19,6 +19,7 @@
     "prepare": "npm run build",
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
-    "test:run": "vitest run --passWithNoTests"
+    "test:run": "vitest run",
+    "test": "vitest"
   }
 }

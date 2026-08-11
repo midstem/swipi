@@ -1,5 +1,5 @@
 import { RefObject } from 'react'
-import { SlideOffsets } from '../../types'
+import { SlideOffsets } from '@swipi/core'
 
 export type UseSlidesGeometryProps = {
   trackRef: RefObject<HTMLElement | null>

@@ -1,6 +1,10 @@
 import { useCallback } from 'react'
-import { clampToSnaps, getScrollToTarget, getStepTarget } from '../../geometry'
-import { ONE_STEP } from '../../constants'
+import {
+  clampToSnaps,
+  getScrollToTarget,
+  getStepTarget,
+  ONE_STEP
+} from '@swipi/core'
 import { Navigation, UseNavigationReturn } from './types'
 
 export const useNavigation = ({

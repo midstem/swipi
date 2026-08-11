@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { fireEvent, render } from '@testing-library/react'
-import { SlidePositions, SwipiState } from '../../Swipi/types'
+import { SlidePositions, SwipiState } from '@swipi/core'
 import { Carousel, forwardButton, Host, rerenderButton } from './carousel'
 import { getDot, lastOf } from './dom'
 

@@ -1,9 +1,13 @@
 import { useEffect, useRef } from 'react'
 import { DragState, TouchEvents } from './types'
-import { getMomentumDuration } from '../../helpers'
+import {
+  clampToSnaps,
+  DRAG_THRESHOLD,
+  getMomentumDuration,
+  getMomentumSnap,
+  PRIMARY_BUTTON
+} from '@swipi/core'
 import { useLatestRef } from '../useLatestRef'
-import { clampToSnaps, getMomentumSnap } from '../../geometry'
-import { DRAG_THRESHOLD, PRIMARY_BUTTON } from '../../constants'
 import { capturePointer, getReleaseVelocity, preventDragStart } from './helpers'
 
 const PASSIVE = { passive: true }
