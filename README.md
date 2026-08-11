@@ -96,30 +96,8 @@ them. Two of them are yours to tune: `basis-1/2` sets how many slides are
 visible, and the `pl-3` on the slide with the matching `-ml-3` on the track sets
 the space between them. Everything else on the page is styling you own.
 
-Not using Tailwind? The same contract as plain CSS is in
-[DOCUMENTATION.md](./DOCUMENTATION.md#required-css).
+Not using Tailwind? Our documentation provides examples using both Tailwind and plain CSS.
 
 ## **Documentation**
 
-For advanced usage, available options, responsive layout specifics, state management, and accessibility guidelines, please refer to the full [DOCUMENTATION.md](./DOCUMENTATION.md).
-
-## 🛠 **Development**
-
-The repository is an npm workspaces monorepo:
-
-| Path              | What it is                                                                |
-| ----------------- | ------------------------------------------------------------------------- |
-| `packages/core`   | the framework-agnostic engine — not published, bundled into every adapter |
-| `packages/react`  | the `swipi` package on npm: the React adapter and everything it publishes |
-| `apps/playground` | the interactive playground, run against the adapter source                |
-
-Run the local playground with hot-reload to try changes:
-
-```bash
-$ npm start
-```
-
-Every root script fans out to the workspaces, so `npm run test:run`,
-`npm run typecheck` and `npm run lint` still cover the whole repository.
-
-For more details on the verification process, check [DOCUMENTATION.md](./DOCUMENTATION.md#development--verification).
+For advanced usage, available options, responsive layout specifics, state management, and accessibility guidelines, please refer to our full documentation at [https://swipi.midstem.net/docs/](https://swipi.midstem.net/docs/).
