@@ -45,7 +45,7 @@
   "bugs": {
     "url": "https://github.com/midstem/swipi/issues"
   },
-  "homepage": "https://midstem.github.io/swipi-landing/",
+  "homepage": "https://swipi.midstem.net/",
   "scripts": {
     "build": "vite build",
     "typecheck": "tsc --noEmit",
