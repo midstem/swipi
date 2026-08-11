@@ -17,7 +17,7 @@
   "bugs": {
     "url": "https://github.com/midstem/swipi/issues"
   },
-  "homepage": "https://midstem.github.io/swipi-landing/",
+  "homepage": "https://swipi.midstem.net/",
   "scripts": {
     "start": "npm run start --workspace @swipi/playground",
     "build": "npm run build --workspace @swipi/core --workspace swipi",
