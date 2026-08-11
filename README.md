@@ -16,7 +16,7 @@
 small object of state. The markup, the CSS and the accessibility stay yours, so
 nothing of ours ends up in your DOM and there is no stylesheet to import.</p>
 
-<p>It weighs <b>4.4 KB gzipped</b> — 2.15× less than
+<p>It weighs <b>5.1 KB gzipped</b> — 1.85× less than
 <code>embla-carousel-react</code> with its autoplay plugin, measured through the
 same build in
 <a href="https://github.com/midstem/swipi/blob/main/SIZE.md">SIZE.md</a>.</p>
