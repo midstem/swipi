@@ -5,6 +5,7 @@ import { SwipiState } from '@swipi/core'
 import { setContainerWidth, triggerResize } from '../../test/setup'
 import { Carousel, CarouselProps } from './carousel'
 import { addSlide, getDot, getTrack, readState } from './dom'
+import { perStrictAttach } from './strict'
 
 const renderStrict = (props: CarouselProps = {}) =>
   render(
@@ -58,6 +59,8 @@ describe('useSwipiCarousel in StrictMode', () => {
     renderStrict({ startIndex: 2, onSelect: (state) => states.push(state) })
 
     await waitFor(() => expect(readState()).toBe('2/4/4/true/true/true'))
-    expect(states.map((state) => state.selectedIndex)).toEqual([0, 2, 0, 2])
+    expect(states.map((state) => state.selectedIndex)).toEqual(
+      perStrictAttach([0, 2])
+    )
   })
 })

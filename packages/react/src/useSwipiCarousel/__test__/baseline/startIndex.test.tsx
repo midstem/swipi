@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { act, waitFor } from '@testing-library/react'
 import { addSlide, rest } from '../dom'
+import { perStrictAttach } from '../strict'
 import { renderBaseline } from './recorder'
 
 const AFTER_MOUNT = 2
@@ -39,16 +40,14 @@ describe('baseline: startIndex', () => {
 
     await rest()
 
-    expect(events).toEqual([
-      'change prev=0 current=0 next=1',
-      'select index=0 snaps=4 canPrev=false canNext=true',
-      'change prev=1 current=2 next=3',
-      'select index=2 snaps=4 canPrev=true canNext=true',
-      'change prev=0 current=0 next=1',
-      'select index=0 snaps=4 canPrev=false canNext=true',
-      'change prev=1 current=2 next=3',
-      'select index=2 snaps=4 canPrev=true canNext=true'
-    ])
+    expect(events).toEqual(
+      perStrictAttach([
+        'change prev=0 current=0 next=1',
+        'select index=0 snaps=4 canPrev=false canNext=true',
+        'change prev=1 current=2 next=3',
+        'select index=2 snaps=4 canPrev=true canNext=true'
+      ])
+    )
   })
 
   it('says nothing before the measurement under a double mount', async () => {
