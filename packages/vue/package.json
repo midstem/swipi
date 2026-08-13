@@ -1,0 +1,61 @@
+{
+  "name": "swipi-vue",
+  "version": "3.1.0",
+  "type": "module",
+  "license": "MIT",
+  "author": "Maksym Tkachuk, Oleksandr Didyshen",
+  "description": "Headless TypeScript carousel composable for Vue",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "vue": ">=3.2.0"
+  },
+  "devDependencies": {
+    "@swipi/core": "*",
+    "vue": "^3.5.12"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/midstem/swipi.git",
+    "directory": "packages/vue"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "keywords": [
+    "vue",
+    "typescript",
+    "headless",
+    "carousel",
+    "vue-composable",
+    "infinite-carousel",
+    "image-carousel"
+  ],
+  "bugs": {
+    "url": "https://github.com/midstem/swipi/issues"
+  },
+  "homepage": "https://swipi.midstem.net/",
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "typecheck:package": "tsc -p scripts/types-fixture",
+    "verify:package": "node scripts/verify-package.mjs",
+    "verify:published": "node scripts/verify-published.mjs",
+    "size": "node scripts/report-size.mjs",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "prepack": "node scripts/copy-root-docs.mjs"
+  }
+}
