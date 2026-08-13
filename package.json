@@ -19,8 +19,9 @@
   },
   "homepage": "https://swipi.midstem.net/",
   "scripts": {
-    "start": "npm run start --workspace @swipi/playground",
-    "build": "npm run build --workspace @swipi/core --workspace swipi --workspace swipi-vue",
+    "start": "npm run start --workspace @swipi/playground-react",
+    "start:vue": "npm run start --workspace @swipi/playground-vue",
+    "build": "npm run build --workspace @swipi/core --workspace @swipi/playground-core --workspace swipi --workspace swipi-vue",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "typecheck:package": "npm run typecheck:package --workspace swipi --workspace swipi-vue",
     "verify:package": "npm run verify:package --workspace swipi --workspace swipi-vue",

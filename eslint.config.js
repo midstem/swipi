@@ -22,7 +22,8 @@ export default [
       '**/vitest.config.ts',
       '**/scripts/**',
       '**/dist/**',
-      '**/node_modules/**'
+      '**/node_modules/**',
+      'apps/playground-vue/**/*.vue'
     ]
   },
 
@@ -127,6 +128,17 @@ export default [
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
       'react/jsx-props-no-spreading': 'off'
+    }
+  },
+  {
+    files: ['apps/**/*.{ts,tsx,js,jsx}'],
+    rules: {
+      '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off'
     }
   },
 
