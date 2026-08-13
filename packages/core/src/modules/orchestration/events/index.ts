@@ -1,4 +1,5 @@
 import { DRAG_THRESHOLD, PRIMARY_BUTTON } from '#src/constants'
+import { getCrossPoint, getMainPoint } from '#src/modules/axis'
 import { getMomentumDuration } from '#src/modules/drag'
 import { clampToSnaps, getMomentumSnap } from '#src/modules/geometry'
 import { PASSIVE } from './constants'
@@ -7,6 +8,7 @@ import { capturePointer, getReleaseVelocity, preventDragStart } from './helpers'
 
 export const setupEvents = ({
   viewport,
+  getAxis,
   getIsLoop,
   getDragFree,
   getGeometry,
@@ -22,15 +24,17 @@ export const setupEvents = ({
     if (!getHasOverflow() || event.button !== PRIMARY_BUTTON) return
 
     const startedAt = performance.now()
+    const axis = getAxis()
+    const main = getMainPoint(event, axis)
 
     dragState = {
       pointerId: event.pointerId,
-      startX: event.clientX,
-      startY: event.clientY,
+      startMain: main,
+      startCross: getCrossPoint(event, axis),
       startTransform: getTransform(),
-      lastX: event.clientX,
+      lastMain: main,
       lastAt: startedAt,
-      previousX: event.clientX,
+      previousMain: main,
       previousAt: startedAt,
       isDragging: false
     }
@@ -39,17 +43,17 @@ export const setupEvents = ({
   const lockAxis = (
     drag: DragState,
     event: PointerEvent,
-    deltaX: number,
-    deltaY: number
+    deltaMain: number,
+    deltaCross: number
   ): boolean => {
     if (
-      Math.abs(deltaX) < DRAG_THRESHOLD &&
-      Math.abs(deltaY) < DRAG_THRESHOLD
+      Math.abs(deltaMain) < DRAG_THRESHOLD &&
+      Math.abs(deltaCross) < DRAG_THRESHOLD
     ) {
       return false
     }
 
-    if (Math.abs(deltaY) > Math.abs(deltaX)) {
+    if (Math.abs(deltaCross) > Math.abs(deltaMain)) {
       dragState = null
       return false
     }
@@ -63,19 +67,23 @@ export const setupEvents = ({
     const drag = dragState
     if (!drag || drag.pointerId !== event.pointerId) return
 
-    const deltaX = event.clientX - drag.startX
-    const deltaY = event.clientY - drag.startY
+    const axis = getAxis()
+    const main = getMainPoint(event, axis)
+    const deltaMain = main - drag.startMain
+    const deltaCross = getCrossPoint(event, axis) - drag.startCross
 
-    if (!drag.isDragging && !lockAxis(drag, event, deltaX, deltaY)) return
+    if (!drag.isDragging && !lockAxis(drag, event, deltaMain, deltaCross)) {
+      return
+    }
 
-    drag.previousX = drag.lastX
+    drag.previousMain = drag.lastMain
     drag.previousAt = drag.lastAt
-    drag.lastX = event.clientX
+    drag.lastMain = main
     drag.lastAt = performance.now()
 
     const isLoop = getIsLoop()
     const geometry = getGeometry()
-    moveTo(clampToSnaps(drag.startTransform + deltaX, geometry, isLoop))
+    moveTo(clampToSnaps(drag.startTransform + deltaMain, geometry, isLoop))
   }
 
   const onPointerUp = (event: PointerEvent): void => {

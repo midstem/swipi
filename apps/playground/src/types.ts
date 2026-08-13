@@ -1,5 +1,10 @@
 import type { ChangeEvent, ReactNode, RefObject } from 'react'
-import { SlidePositions, SwipiCarouselOptions, SwipiState } from 'swipi'
+import {
+  SlidePositions,
+  SwipiAxis,
+  SwipiCarouselOptions,
+  SwipiState
+} from 'swipi'
 
 export enum SlidesAnimation {
   DEFAULT = 'default',
@@ -26,6 +31,7 @@ export type CarouselRef = {
 }
 
 export type PlaygroundState = {
+  axis: SwipiAxis
   slidesCount: number
   loop: boolean
   dragFree: boolean
@@ -45,6 +51,7 @@ export type PlaygroundState = {
   useConfig: boolean
   config: ConfigType[]
   stageWidth: number
+  stageHeight: number
 }
 
 export type PlaygroundStateKey = keyof PlaygroundState
@@ -219,6 +226,7 @@ export type UseStageProps = Pick<StageProps, 'state'>
 
 export type UseStageReturn = {
   bias: number
+  isVertical: boolean
   slideWidth?: number
   spaceBetween: number
   config: ConfigType[]

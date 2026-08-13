@@ -1,6 +1,7 @@
-import { SlidePositions, SwipiState } from '@swipi/core'
+import { SlidePositions, SwipiAxis, SwipiState } from '@swipi/core'
 
 export type SwipiCarouselOptions = {
+  axis?: SwipiAxis
   loop?: boolean
   dragFree?: boolean
   autoplay?: boolean

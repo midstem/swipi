@@ -1,11 +1,13 @@
 import type { JSX } from 'react'
 import {
+  AXIS_OPTIONS,
   MAX_SLIDES_COUNT,
   MIN_SLIDES_COUNT,
   NO_SLIDE_WIDTH,
   ONE_SLIDE,
   SLIDES_ANIMATION_OPTIONS,
-  STAGE_PRESETS
+  STAGE_PRESETS,
+  VERTICAL_AXIS
 } from '../../constants'
 import { ControlsPanelProps } from '../../types'
 import ConfigEditor from '../ConfigEditor'
@@ -20,6 +22,7 @@ import {
   SLIDES_NUMBER_LIMITS,
   SLIDE_WIDTH_LIMITS,
   SPACE_BETWEEN_LIMITS,
+  STAGE_HEIGHT_LIMITS,
   STAGE_WIDTH_LIMITS
 } from './constants'
 import { useControlsPanel } from './useControlsPanel'
@@ -28,6 +31,7 @@ const ControlsPanel = ({ state, update }: ControlsPanelProps): JSX.Element => {
   const { change, changeStageWidth } = useControlsPanel({ update })
 
   const hasFixedWidth = state.slideWidth > NO_SLIDE_WIDTH
+  const isVertical = state.axis === VERTICAL_AXIS
 
   return (
     <aside className="pg-controls">
@@ -81,6 +85,13 @@ const ControlsPanel = ({ state, update }: ControlsPanelProps): JSX.Element => {
         origin="hook"
         hint="slideWidth and spaceBetween only write --swipi-slide-width and --swipi-slide-gap onto the track; the CSS below reads them and the hook still measures the DOM."
       >
+        <SelectField
+          label="axis"
+          hint="Direction the track moves in — x reads widths and left offsets, y reads heights and top ones"
+          value={state.axis}
+          options={AXIS_OPTIONS}
+          onChange={change('axis')}
+        />
         <NumberField
           label="startIndex"
           hint="0-based, applied on mount only — changing it remounts the slider"
@@ -91,7 +102,11 @@ const ControlsPanel = ({ state, update }: ControlsPanelProps): JSX.Element => {
         />
         <NumberField
           label="slideWidth"
-          hint="Fixed slide width, px. 0 leaves the option off and slidesNumber back in charge"
+          hint={
+            isVertical
+              ? 'Fixed slide size along the axis — a height while axis is y. 0 leaves the option off and slidesNumber back in charge'
+              : 'Fixed slide width, px. 0 leaves the option off and slidesNumber back in charge'
+          }
           value={state.slideWidth}
           {...SLIDE_WIDTH_LIMITS}
           onChange={change('slideWidth')}
@@ -184,6 +199,14 @@ const ControlsPanel = ({ state, update }: ControlsPanelProps): JSX.Element => {
           value={state.stageWidth}
           {...STAGE_WIDTH_LIMITS}
           onChange={change('stageWidth')}
+        />
+        <NumberField
+          label="Stage height"
+          hint="Height of the viewport, px — the vertical axis needs one to measure against"
+          value={state.stageHeight}
+          {...STAGE_HEIGHT_LIMITS}
+          disabled={!isVertical}
+          onChange={change('stageHeight')}
         />
         <div className="pg-row">
           {STAGE_PRESETS.map((preset) => (

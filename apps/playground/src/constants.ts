@@ -1,3 +1,4 @@
+import type { SwipiAxis } from 'swipi'
 import {
   HookOptionKey,
   PlaygroundState,
@@ -37,6 +38,7 @@ export const MAX_EVENTS = 12
 export const JSON_INDENT = 2
 
 export const HOOK_OPTIONS: Record<HookOptionKey, string> = {
+  axis: 'Geometry',
   loop: 'Behaviour',
   dragFree: 'Behaviour',
   autoplay: 'Behaviour',
@@ -51,6 +53,7 @@ export const HOOK_OPTIONS: Record<HookOptionKey, string> = {
 export const NO_SLIDE_WIDTH = 0
 
 export const DEFAULT_STATE: PlaygroundState = {
+  axis: 'x',
   slidesCount: 5,
   loop: true,
   dragFree: false,
@@ -73,8 +76,16 @@ export const DEFAULT_STATE: PlaygroundState = {
     { maxWidth: 768, slidesNumber: 2, spaceBetween: 12 },
     { maxWidth: 480, slidesNumber: 1, spaceBetween: 8 }
   ],
-  stageWidth: 640
+  stageWidth: 640,
+  stageHeight: 360
 }
+
+export const VERTICAL_AXIS: SwipiAxis = 'y'
+
+export const AXIS_OPTIONS: SelectOption<SwipiAxis>[] = [
+  { value: 'x', label: 'x — horizontal' },
+  { value: 'y', label: 'y — vertical' }
+]
 
 export const SLIDES_ANIMATION_OPTIONS: SelectOption<
   ValueOf<SlidesAnimation>

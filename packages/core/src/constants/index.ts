@@ -1,4 +1,7 @@
 import { SlidesGeometry, SlidesMeasurement } from '#src/types'
+import { HORIZONTAL_AXIS } from '../modules/axis/constants'
+
+export const DEFAULT_AXIS = HORIZONTAL_AXIS
 
 export const DEFAULT_START_INDEX = 0
 

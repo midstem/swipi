@@ -20,8 +20,13 @@ export const getSlides = (): HTMLElement[] =>
 export const getDot = (index: number): HTMLElement =>
   screen.getByRole('button', { name: `dot ${index}` })
 
-export const getTrackOffset = (): number => {
-  const offset = /translate3d\((-?[\d.]+)px/.exec(getTrack().style.transform)
+const TRANSLATE_PATTERN = {
+  x: /translate3d\((-?[\d.]+)px/,
+  y: /translate3d\([^,]+,\s*(-?[\d.]+)px/
+}
+
+export const getTrackOffset = (axis: 'x' | 'y' = 'x'): number => {
+  const offset = TRANSLATE_PATTERN[axis].exec(getTrack().style.transform)
 
   return offset ? Number(offset[1]) : 0
 }

@@ -1,4 +1,5 @@
 import {
+  AXIS_OPTIONS,
   DEFAULT_STATE,
   SLIDES_ANIMATION_OPTIONS,
   STORAGE_KEY
@@ -26,6 +27,10 @@ const isSameShape = (key: PlaygroundStateKey, value: unknown): boolean => {
 
   if (key === 'slidesAnimation') {
     return SLIDES_ANIMATION_OPTIONS.some((option) => option.value === value)
+  }
+
+  if (key === 'axis') {
+    return AXIS_OPTIONS.some((option) => option.value === value)
   }
 
   return typeof value === typeof DEFAULT_STATE[key]

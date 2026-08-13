@@ -1,11 +1,13 @@
 import {
   DEFAULT_ANIMATION_SPEED,
   DEFAULT_AUTOPLAY_SPEED,
+  DEFAULT_AXIS,
   DEFAULT_START_INDEX
 } from '#src/constants'
 import { ResolvedSwipiOptions } from '#src/types'
 
 export const DEFAULT_OPTIONS: ResolvedSwipiOptions = {
+  axis: DEFAULT_AXIS,
   loop: false,
   dragFree: false,
   autoplay: false,

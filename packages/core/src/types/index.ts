@@ -1,4 +1,7 @@
+export type SwipiAxis = 'x' | 'y'
+
 export type SwipiOptions = {
+  axis?: SwipiAxis
   loop?: boolean
   dragFree?: boolean
   autoplay?: boolean
@@ -16,6 +19,7 @@ export type ResolvedSwipiOptions = SwipiOptions &
   Required<
     Pick<
       SwipiOptions,
+      | 'axis'
       | 'loop'
       | 'dragFree'
       | 'autoplay'

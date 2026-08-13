@@ -2,6 +2,8 @@ export * from './modules/animation'
 
 export * from './modules/autoplay'
 
+export * from './modules/axis'
+
 export * from './constants'
 
 export * from './modules/drag'

@@ -24,7 +24,7 @@ export const getReleaseVelocity = (drag: DragState): number => {
   if (performance.now() - drag.lastAt > VELOCITY_STALE_TIME) return NO_VELOCITY
 
   return getDragVelocity({
-    distance: drag.lastX - drag.previousX,
+    distance: drag.lastMain - drag.previousMain,
     duration: drag.lastAt - drag.previousAt
   })
 }

@@ -2,10 +2,13 @@ import { useState } from 'react'
 import { useSwipiCarousel } from 'swipi'
 import type {
   SlidePositions,
+  SwipiAxis,
   SwipiCarousel,
   SwipiCarouselRef,
   SwipiState
 } from 'swipi'
+
+const AXIS: SwipiAxis = 'y'
 
 export const Headless = () => {
   const [carouselRef, carousel]: [SwipiCarouselRef, SwipiCarousel] =
@@ -32,6 +35,7 @@ export const Consumer = () => {
   const [positions, setPositions] = useState<SlidePositions>()
 
   const [carouselRef, carousel] = useSwipiCarousel({
+    axis: AXIS,
     loop: true,
     autoplay: true,
     slideWidth: 320,

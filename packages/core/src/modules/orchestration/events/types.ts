@@ -1,19 +1,20 @@
-import { SlidesGeometry } from '#src/types'
+import { SlidesGeometry, SwipiAxis } from '#src/types'
 
 export type DragState = {
   pointerId: number
-  startX: number
-  startY: number
+  startMain: number
+  startCross: number
   startTransform: number
-  lastX: number
+  lastMain: number
   lastAt: number
-  previousX: number
+  previousMain: number
   previousAt: number
   isDragging: boolean
 }
 
 export type SetupEventsProps = {
   viewport: HTMLElement
+  getAxis: () => SwipiAxis
   getIsLoop: () => boolean
   getDragFree: () => boolean
   getGeometry: () => SlidesGeometry

@@ -1,19 +1,26 @@
 import { EMPTY_MEASUREMENT, NO_WIDTH } from '#src/constants'
+import { getElementSize } from '#src/modules/axis'
 import { measureSlides } from '#src/modules/geometry'
+import { SlidesMeasurement } from '#src/types'
 import { isClose, isSameMeasurement } from './helpers'
 import { ObserversApi, SetupObserversProps } from './types'
 
 export const setupObservers = ({
   track,
   offsets,
+  getAxis,
   onMeasure
 }: SetupObserversProps): ObserversApi => {
   let lastWidth = NO_WIDTH
   let lastMeasurement = EMPTY_MEASUREMENT
 
+  const read = (): [number, SlidesMeasurement] => [
+    getElementSize(track, getAxis()),
+    measureSlides(track, offsets, getAxis())
+  ]
+
   const measure = (): void => {
-    const nextWidth = track.getBoundingClientRect().width
-    const nextMeasurement = measureSlides(track, offsets)
+    const [nextWidth, nextMeasurement] = read()
 
     let changed = false
 
@@ -30,6 +37,15 @@ export const setupObservers = ({
     if (changed) {
       onMeasure(lastWidth, lastMeasurement)
     }
+  }
+
+  const remeasure = (): void => {
+    const [nextWidth, nextMeasurement] = read()
+
+    lastWidth = nextWidth
+    lastMeasurement = nextMeasurement
+
+    onMeasure(lastWidth, lastMeasurement)
   }
 
   measure()
@@ -63,6 +79,7 @@ export const setupObservers = ({
 
   return {
     measure,
+    remeasure,
     destroy: () => {
       sizes?.disconnect()
       children?.disconnect()
