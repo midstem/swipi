@@ -54,6 +54,24 @@ export const getBias = (
   return isBiased ? NO_BIAS - REDUCE_SLIDE / visibleSlides : NO_BIAS
 }
 
+export const getViewportStyle = (
+  state: PlaygroundState,
+  isVertical: boolean
+): CSSProperties => (isVertical ? { height: state.stageHeight } : {})
+
+export const getArrows = (isVertical: boolean): [string, string] =>
+  isVertical ? ['↑', '↓'] : ['‹', '›']
+
+const PREVIOUS_KEYS = ['ArrowLeft', 'ArrowUp']
+
+const NEXT_KEYS = ['ArrowRight', 'ArrowDown']
+
+export const isPreviousKey = (key: string, isVertical: boolean): boolean =>
+  key === PREVIOUS_KEYS[isVertical ? 1 : 0]
+
+export const isNextKey = (key: string, isVertical: boolean): boolean =>
+  key === NEXT_KEYS[isVertical ? 1 : 0]
+
 export const getSlideWidth = (state: PlaygroundState): number | undefined =>
   state.slideWidth > NO_SLIDE_WIDTH ? state.slideWidth : undefined
 

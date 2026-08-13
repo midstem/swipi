@@ -6,4 +6,4 @@ export type {
   SwipiCarouselRef
 } from './useSwipiCarousel/types'
 
-export type { SwipiState, SlidePositions } from '@swipi/core'
+export type { SwipiState, SlidePositions, SwipiAxis } from '@swipi/core'

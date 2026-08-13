@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useWindowResize } from '../../hooks/useWindowResize'
+import { VERTICAL_AXIS } from '../../constants'
 import { UseStageProps, UseStageReturn } from '../../types'
 import {
   getActiveBreakpoint,
@@ -23,6 +24,7 @@ export const useStage = ({ state }: UseStageProps): UseStageReturn => {
     config,
     windowWidth,
     visibleSlides,
+    isVertical: state.axis === VERTICAL_AXIS,
     slideWidth: getSlideWidth(state),
     spaceBetween: getSpaceBetween(state, config, windowWidth),
     bias: getBias(state, config, windowWidth, visibleSlides),

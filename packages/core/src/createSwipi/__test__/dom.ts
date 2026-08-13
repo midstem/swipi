@@ -22,8 +22,16 @@ export const getTrack = (viewport: HTMLElement): HTMLElement =>
 export const getSlides = (viewport: HTMLElement): HTMLElement[] =>
   Array.from(getTrack(viewport).children) as HTMLElement[]
 
-export const getTrackOffset = (viewport: HTMLElement): number => {
-  const offset = /translate3d\((-?[\d.]+)px/.exec(
+const TRANSLATE_PATTERN = {
+  x: /translate3d\((-?[\d.]+)px/,
+  y: /translate3d\([^,]+,\s*(-?[\d.]+)px/
+}
+
+export const getTrackOffset = (
+  viewport: HTMLElement,
+  axis: 'x' | 'y' = 'x'
+): number => {
+  const offset = TRANSLATE_PATTERN[axis].exec(
     getTrack(viewport).style.transform
   )
 

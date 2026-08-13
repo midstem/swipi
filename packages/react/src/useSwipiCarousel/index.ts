@@ -89,6 +89,7 @@ export const useSwipiCarousel = (
   useIsomorphicLayoutEffect(() => {
     engineRef.current?.update(fullOptions)
   }, [
+    fullOptions.axis,
     fullOptions.loop,
     fullOptions.dragFree,
     fullOptions.autoplay,

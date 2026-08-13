@@ -9,3 +9,5 @@ export const AUTOPLAY_SPEED_LIMITS = { min: 500, max: 10000, step: 100 }
 export const ANIMATION_SPEED_LIMITS = { min: 0, max: 2000, step: 50 }
 
 export const STAGE_WIDTH_LIMITS = { min: 240, max: 1440, step: 10 }
+
+export const STAGE_HEIGHT_LIMITS = { min: 160, max: 900, step: 10 }

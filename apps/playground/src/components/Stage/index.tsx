@@ -2,7 +2,14 @@ import type { JSX, KeyboardEvent } from 'react'
 import { useSwipiCarousel } from 'swipi'
 import { StageProps } from '../../types'
 import { useStage } from './useStage'
-import { getSlideStyle, getTrackStyle } from './helpers'
+import {
+  getArrows,
+  getSlideStyle,
+  getTrackStyle,
+  getViewportStyle,
+  isNextKey,
+  isPreviousKey
+} from './helpers'
 
 const Stage = ({
   state,
@@ -13,6 +20,7 @@ const Stage = ({
 }: StageProps): JSX.Element => {
   const {
     bias,
+    isVertical,
     slideWidth,
     spaceBetween,
     visibleSlides,
@@ -21,6 +29,7 @@ const Stage = ({
   } = useStage({ state })
 
   const [carouselRef, carousel] = useSwipiCarousel({
+    axis: state.axis,
     loop: state.loop,
     dragFree: state.dragFree,
     autoplay: state.autoplay,
@@ -47,15 +56,19 @@ const Stage = ({
 
   const showArrows = state.showArrows && carousel.hasOverflow
 
+  const [previousArrow, nextArrow] = getArrows(isVertical)
+
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
-    if (event.key === 'ArrowLeft') carousel.scrollPrev()
-    if (event.key === 'ArrowRight') carousel.scrollNext()
+    if (isPreviousKey(event.key, isVertical)) carousel.scrollPrev()
+    if (isNextKey(event.key, isVertical)) carousel.scrollNext()
   }
 
   return (
     <div className="pg-card">
       <div className="pg-stage__slider" style={{ width: state.stageWidth }}>
-        <div className="pg-carousel">
+        <div
+          className={`pg-carousel${isVertical ? ' pg-carousel--vertical' : ''}`}
+        >
           <span className="pg-visually-hidden" aria-live="polite" aria-atomic>
             Slide {carousel.selectedIndex + 1} of {carousel.snapCount}
           </span>
@@ -69,13 +82,14 @@ const Stage = ({
                 disabled={!carousel.canScrollPrev}
                 onClick={carousel.scrollPrev}
               >
-                ‹
+                {previousArrow}
               </button>
             )}
 
             <div
               ref={carouselRef}
               className="pg-carousel__viewport"
+              style={getViewportStyle(state, isVertical)}
               role="group"
               tabIndex={0}
               aria-roledescription="carousel"
@@ -117,7 +131,7 @@ const Stage = ({
                 disabled={!carousel.canScrollNext}
                 onClick={carousel.scrollNext}
               >
-                ›
+                {nextArrow}
               </button>
             )}
           </div>

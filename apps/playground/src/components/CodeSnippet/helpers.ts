@@ -1,8 +1,9 @@
-import { NO_SLIDE_WIDTH, REDUCE_SLIDE } from '../../constants'
+import { NO_SLIDE_WIDTH, REDUCE_SLIDE, VERTICAL_AXIS } from '../../constants'
 import { isFadeInAnimation } from '../../helpers'
 import { PlaygroundState } from '../../types'
 
 const SNIPPET_OPTIONS = [
+  'axis',
   'loop',
   'dragFree',
   'autoplay',
@@ -15,6 +16,7 @@ const SNIPPET_OPTIONS = [
 type OptionValue = string | number | boolean
 
 const DEFAULTS: Record<(typeof SNIPPET_OPTIONS)[number], OptionValue> = {
+  axis: 'x',
   loop: false,
   dragFree: false,
   autoplay: false,
@@ -86,6 +88,9 @@ const toSpacing = (prefix: string, px: number): string => {
   return step ? `${prefix}-${step}` : `${prefix}-[${px}px]`
 }
 
+export const isVerticalAxis = (state: PlaygroundState): boolean =>
+  state.axis === VERTICAL_AXIS
+
 const getVisibleSlides = (state: PlaygroundState): number =>
   isFadeInAnimation(state.slidesAnimation) ? ONE_SLIDE : state.slidesNumber
 
@@ -128,17 +133,18 @@ const CSS_CLASS_NAMES: ClassNames = {
 
 const buildSlideClasses = (state: PlaygroundState): string => {
   const gap = state.spaceBetween
+  const vertical = isVerticalAxis(state)
   const plain = state.slideWidth <= NO_SLIDE_WIDTH && !getBias(state)
   const fraction = plain ? BASIS_FRACTIONS[getVisibleSlides(state)] : undefined
 
   const classes = [
-    'min-w-0',
+    vertical ? 'min-h-0' : 'min-w-0',
     'shrink-0',
     'grow-0',
     fraction ? `basis-${fraction}` : `basis-[${toArbitrary(getBasis(state))}]`
   ]
 
-  if (gap) classes.push(toSpacing('pl', gap))
+  if (gap) classes.push(toSpacing(vertical ? 'pt' : 'pl', gap))
 
   if (isFadeInAnimation(state.slidesAnimation)) {
     classes.push(
@@ -153,62 +159,74 @@ const buildSlideClasses = (state: PlaygroundState): string => {
   return classes.join(' ')
 }
 
+const buildViewportClasses = (state: PlaygroundState): string =>
+  isVerticalAxis(state)
+    ? `overflow-hidden touch-pan-x h-[${state.stageHeight}px]`
+    : 'overflow-hidden touch-pan-y'
+
+const buildTrackClasses = (state: PlaygroundState): string => {
+  const gap = state.spaceBetween
+  const vertical = isVerticalAxis(state)
+  const classes = ['flex']
+
+  if (vertical) classes.push('flex-col', 'h-full')
+
+  if (gap) classes.push(toSpacing(vertical ? '-mt' : '-ml', gap))
+
+  classes.push('select-none')
+
+  return classes.join(' ')
+}
+
 const getClassNames = (
   state: PlaygroundState,
   tailwind: boolean
 ): ClassNames => {
   if (!tailwind) return CSS_CLASS_NAMES
 
-  const gap = state.spaceBetween
-
   return {
-    viewport: 'overflow-hidden touch-pan-y',
-    track: gap
-      ? `flex ${toSpacing('-ml', gap)} select-none`
-      : 'flex select-none',
+    viewport: buildViewportClasses(state),
+    track: buildTrackClasses(state),
     slide: buildSlideClasses(state),
     status: 'sr-only'
   }
 }
 
+const ARROWS = {
+  x: ['‹', '›'],
+  y: ['↑', '↓']
+}
+
+const KEYS = {
+  x: ['ArrowLeft', 'ArrowRight'],
+  y: ['ArrowUp', 'ArrowDown']
+}
+
 const buildArrows = (state: PlaygroundState, minimal: boolean): string => {
   if (!state.showArrows) return ''
 
-  if (minimal) {
-    return `
-      <button
-        type="button"
-        onClick={carousel.scrollPrev}
-        disabled={!carousel.canScrollPrev}
-      >
-        ‹
-      </button>
-      <button
-        type="button"
-        onClick={carousel.scrollNext}
-        disabled={!carousel.canScrollNext}
-      >
-        ›
-      </button>
-`
-  }
+  const [previous, next] = ARROWS[state.axis]
+
+  const label = (text: string): string =>
+    minimal
+      ? ''
+      : `
+        aria-label="${text}"`
 
   return `
       <button
-        type="button"
-        aria-label="Previous slide"
+        type="button"${label('Previous slide')}
         onClick={carousel.scrollPrev}
         disabled={!carousel.canScrollPrev}
       >
-        ‹
+        ${previous}
       </button>
       <button
-        type="button"
-        aria-label="Next slide"
+        type="button"${label('Next slide')}
         onClick={carousel.scrollNext}
         disabled={!carousel.canScrollNext}
       >
-        ›
+        ${next}
       </button>
 `
 }
@@ -304,14 +322,16 @@ export const buildMarkup = (
               data-selected={index === carousel.selectedIndex}`
     : ''
 
+  const [previousKey, nextKey] = KEYS[state.axis]
+
   return `import { useSwipiCarousel } from 'swipi'
 
 export const Carousel = ({ items }) => {
   const [carouselRef, carousel] = useSwipiCarousel(${getOptions(state)})
 
   const handleKeyDown = (event) => {
-    if (event.key === 'ArrowLeft') carousel.scrollPrev()
-    if (event.key === 'ArrowRight') carousel.scrollNext()
+    if (event.key === '${previousKey}') carousel.scrollPrev()
+    if (event.key === '${nextKey}') carousel.scrollNext()
   }
 
   return (
@@ -368,8 +388,19 @@ export const buildStyles = (
 }`
     : ''
 
-  const trackGap = gap ? `\n  margin-left: -${gap}px;` : ''
-  const slideGap = gap ? `\n  padding-left: ${gap}px;` : ''
+  const vertical = isVerticalAxis(state)
+
+  const trackGap = gap
+    ? `\n  margin-${vertical ? 'top' : 'left'}: -${gap}px;`
+    : ''
+  const slideGap = gap
+    ? `\n  padding-${vertical ? 'top' : 'left'}: ${gap}px;`
+    : ''
+
+  const viewportSize = vertical ? `\n  height: ${state.stageHeight}px;` : ''
+  const trackDirection = vertical
+    ? '\n  flex-direction: column;\n  height: 100%;'
+    : ''
 
   const status = minimal
     ? ''
@@ -386,17 +417,17 @@ export const buildStyles = (
 
   return `.carousel__viewport {
   overflow: hidden;
-  touch-action: pan-y;
+  touch-action: pan-${vertical ? 'x' : 'y'};${viewportSize}
 }
 
 .carousel__track {
-  display: flex;${trackGap}
+  display: flex;${trackDirection}${trackGap}
   user-select: none;
 }
 
 .carousel__slide {
   box-sizing: border-box;
   flex: 0 0 ${basis};
-  min-width: 0;${slideGap}
+  min-${vertical ? 'height' : 'width'}: 0;${slideGap}
 }${status}${fade}`
 }

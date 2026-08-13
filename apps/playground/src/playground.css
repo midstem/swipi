@@ -511,6 +511,28 @@ body {
   user-select: none;
 }
 
+.pg-carousel--vertical .pg-carousel__row {
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pg-carousel--vertical .pg-carousel__viewport {
+  touch-action: pan-x;
+}
+
+.pg-carousel--vertical .pg-carousel__track {
+  flex-direction: column;
+  height: 100%;
+  margin-left: 0;
+  margin-top: calc(-1 * var(--swipi-slide-gap, 0px));
+}
+
+.pg-carousel--vertical .pg-carousel__slide {
+  height: auto;
+  padding-left: 0;
+  padding-top: var(--swipi-slide-gap, 0px);
+}
+
 .pg-carousel__arrow {
   z-index: 1;
   background: transparent;

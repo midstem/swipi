@@ -3,7 +3,7 @@ import {
   SLIDE_GAP_VARIABLE,
   SLIDE_WIDTH_VARIABLE
 } from '#src/constants'
-import { SlidesGeometry, SlideOffsets } from '#src/types'
+import { SlidesGeometry, SlideOffsets, SwipiAxis } from '#src/types'
 import { getSlideLap } from '#src/modules/geometry'
 import { toTranslate, forEachSlide } from './helpers'
 import { RenderTrackProps } from './types'
@@ -38,7 +38,8 @@ export const renderSlideOffsets = (
   track: HTMLElement,
   transform: number,
   geometry: SlidesGeometry,
-  offsets: SlideOffsets
+  offsets: SlideOffsets,
+  axis: SwipiAxis
 ): boolean => {
   let hasApplied = false
 
@@ -49,36 +50,42 @@ export const renderSlideOffsets = (
 
     offsets.set(slide, offset)
     hasApplied = true
-    slide.style.transform = toTranslate(offset)
+    slide.style.transform = toTranslate(offset, axis)
   })
 
   return hasApplied
 }
 
-export const resetSlideOffsets = (track: HTMLElement): void => {
+export const resetSlideOffsets = (
+  track: HTMLElement,
+  offsets?: SlideOffsets
+): void => {
   forEachSlide(track, (slide) => {
     slide.style.transform = EMPTY_TRANSFORM
+    offsets?.delete(slide)
   })
 }
 
 export const renderTrack = ({
   track,
   transform,
+  axis,
   loop,
   geometry,
   offsets,
   hasAppliedOffsets
 }: RenderTrackProps): boolean => {
-  track.style.transform = toTranslate(transform)
+  track.style.transform = toTranslate(transform, axis)
 
   if (!loop) {
-    if (hasAppliedOffsets) resetSlideOffsets(track)
+    if (hasAppliedOffsets) resetSlideOffsets(track, offsets)
 
     return false
   }
 
   return (
-    renderSlideOffsets(track, transform, geometry, offsets) || hasAppliedOffsets
+    renderSlideOffsets(track, transform, geometry, offsets, axis) ||
+    hasAppliedOffsets
   )
 }
 

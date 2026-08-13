@@ -2,10 +2,18 @@ import { afterEach } from 'vitest'
 
 const DEFAULT_CONTAINER_WIDTH = 900
 
+const DEFAULT_AXIS = 'x'
+
 let containerWidth = DEFAULT_CONTAINER_WIDTH
+
+let axis: 'x' | 'y' = DEFAULT_AXIS
 
 export const setContainerWidth = (width: number): void => {
   containerWidth = width
+}
+
+export const setAxis = (next: 'x' | 'y'): void => {
+  axis = next
 }
 
 class ResizeObserverMock {
@@ -52,9 +60,12 @@ const SLIDE_GAP_VARIABLE = '--swipi-slide-gap'
 
 const TEST_WIDTH_ATTRIBUTE = 'data-test-width'
 
-const TRANSLATE_PATTERN = /translate3d\((-?[\d.]+)px/
+const TRANSLATE_PATTERN: Record<string, RegExp> = {
+  x: /translate3d\((-?[\d.]+)px/,
+  y: /translate3d\([^,]+,\s*(-?[\d.]+)px/
+}
 
-const simulateWidth = (element: Element): number => {
+const simulateSize = (element: Element): number => {
   const override = element.getAttribute(TEST_WIDTH_ATTRIBUTE)
 
   if (override) return Number(override)
@@ -73,26 +84,28 @@ const simulateGap = (parent: HTMLElement): number =>
   parseFloat(parent.style.getPropertyValue(SLIDE_GAP_VARIABLE)) || 0
 
 const simulateTranslate = (element: Element): number => {
-  const match = TRANSLATE_PATTERN.exec((element as HTMLElement).style.transform)
+  const match = TRANSLATE_PATTERN[axis].exec(
+    (element as HTMLElement).style.transform
+  )
 
   return match ? Number(match[1]) : 0
 }
 
-const simulateLeft = (element: Element): number => {
+const simulateStart = (element: Element): number => {
   const parent = element.parentElement
 
   if (!parent || element === document.body) return 0
 
   const gap = simulateGap(parent)
 
-  let left = simulateLeft(parent) + simulateTranslate(element)
+  let left = simulateStart(parent) + simulateTranslate(element)
 
   for (let index = 0; index < parent.children.length; index += 1) {
     const sibling = parent.children[index]
 
     if (sibling === element) break
 
-    left += simulateWidth(sibling) + gap
+    left += simulateSize(sibling) + gap
   }
 
   return left
@@ -101,18 +114,19 @@ const simulateLeft = (element: Element): number => {
 Element.prototype.getBoundingClientRect = function getBoundingClientRect(
   this: Element
 ): DOMRect {
-  const width = simulateWidth(this)
-  const left = simulateLeft(this)
+  const size = simulateSize(this)
+  const start = simulateStart(this)
+  const isVertical = axis === 'y'
 
   return {
-    x: left,
-    y: 0,
-    top: 0,
-    left,
-    right: left + width,
-    bottom: 0,
-    width,
-    height: 0,
+    x: isVertical ? 0 : start,
+    y: isVertical ? start : 0,
+    top: isVertical ? start : 0,
+    left: isVertical ? 0 : start,
+    right: isVertical ? 0 : start + size,
+    bottom: isVertical ? start + size : 0,
+    width: isVertical ? 0 : size,
+    height: isVertical ? size : 0,
     toJSON: () => ({})
   }
 }
@@ -142,6 +156,7 @@ export const isPointerCaptured = (pointerId: number): boolean =>
 
 afterEach(() => {
   containerWidth = DEFAULT_CONTAINER_WIDTH
+  axis = DEFAULT_AXIS
   capturedPointers.clear()
   ResizeObserverMock.instances = []
 })

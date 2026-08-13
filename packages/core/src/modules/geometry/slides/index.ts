@@ -1,10 +1,18 @@
-import { SlideOffsets, SlidesGeometry, SlidesMeasurement } from '#src/types'
+import { DEFAULT_AXIS } from '#src/constants'
+import { getRectSize, getRectStart } from '#src/modules/axis'
+import {
+  SlideOffsets,
+  SlidesGeometry,
+  SlidesMeasurement,
+  SwipiAxis
+} from '#src/types'
 import { NO_OFFSET } from './constants'
 import { getGap } from './helpers'
 
 export const measureSlides = (
   track: HTMLElement,
-  laps?: SlideOffsets
+  laps?: SlideOffsets,
+  axis: SwipiAxis = DEFAULT_AXIS
 ): SlidesMeasurement => {
   const { children } = track
   const positions: number[] = []
@@ -12,10 +20,10 @@ export const measureSlides = (
 
   for (let index = 0; index < children.length; index += 1) {
     const slide = children[index] as HTMLElement
-    const { left, width } = slide.getBoundingClientRect()
+    const rect = slide.getBoundingClientRect()
 
-    positions.push(left - (laps?.get(slide) ?? NO_OFFSET))
-    sizes.push(width)
+    positions.push(getRectStart(rect, axis) - (laps?.get(slide) ?? NO_OFFSET))
+    sizes.push(getRectSize(rect, axis))
   }
 
   if (!positions.length) {

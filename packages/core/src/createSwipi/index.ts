@@ -66,6 +66,7 @@ export const createSwipi = (
     hasAppliedOffsets = renderTrack({
       track,
       transform: transformValue,
+      axis: currentOptions.axis,
       loop: state.isLoop,
       geometry: state.geometry,
       offsets,
@@ -107,6 +108,7 @@ export const createSwipi = (
 
   const destroyEvents = setupEvents({
     viewport,
+    getAxis: () => currentOptions.axis,
     getIsLoop: () => state.isLoop,
     getDragFree: () => currentOptions.dragFree,
     getGeometry: () => state.geometry,
@@ -135,6 +137,7 @@ export const createSwipi = (
   const observers = setupObservers({
     track,
     offsets,
+    getAxis: () => currentOptions.axis,
     onMeasure: syncGeometry
   })
 
@@ -148,7 +151,18 @@ export const createSwipi = (
       const prevOptions = currentOptions
       currentOptions = { ...currentOptions, ...newOptions }
 
-      if (
+      if (prevOptions.axis !== currentOptions.axis) {
+        resetSlideOffsets(track, offsets)
+        hasAppliedOffsets = false
+        clearTrackTransform(track)
+        applyTrackVariables(
+          track,
+          currentOptions.slideWidth,
+          currentOptions.spaceBetween
+        )
+        observers.remeasure()
+        render(transformApi.getContext().transform)
+      } else if (
         prevOptions.slideWidth !== currentOptions.slideWidth ||
         prevOptions.spaceBetween !== currentOptions.spaceBetween
       ) {
@@ -157,7 +171,10 @@ export const createSwipi = (
           currentOptions.slideWidth,
           currentOptions.spaceBetween
         )
-        syncGeometry(state.containerWidth, measureSlides(track, offsets))
+        syncGeometry(
+          state.containerWidth,
+          measureSlides(track, offsets, currentOptions.axis)
+        )
         render(transformApi.getContext().transform)
       } else if (prevOptions.loop !== currentOptions.loop) {
         syncGeometry(state.containerWidth, state.measurement)
