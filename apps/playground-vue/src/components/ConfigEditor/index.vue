@@ -2,7 +2,11 @@
   <div :class="['pg-config', { 'pg-field--disabled': disabled }]">
     <div v-for="(item, index) in config" :key="index" class="pg-config__item">
       <div class="pg-config__grid">
-        <label v-for="{ key, label } in CONFIG_NUMBER_FIELDS" :key="key" class="pg-config__cell">
+        <label
+          v-for="{ key, label } in CONFIG_NUMBER_FIELDS"
+          :key="key"
+          class="pg-config__cell"
+        >
           <span class="pg-hint">{{ label }}</span>
           <input
             type="number"
@@ -46,18 +50,25 @@
     </button>
 
     <p class="pg-hint">
-      Breakpoints are matched against <code>window.innerWidth</code>: every
-      item with <code>maxWidth &gt;= window width</code> matches and the last
+      Breakpoints are matched against <code>window.innerWidth</code>: every item
+      with <code>maxWidth &gt;= window width</code> matches and the last
       matching one wins — keep them ordered from the widest to the narrowest.
     </p>
   </div>
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
-const CONFIG_NUMBER_FIELDS = ['maxWidth', 'slidesNumber', 'spaceBetween']; // polyfill
-const EMPTY_FIELD_VALUE = ''; // polyfill
-import type { ConfigEditorProps } from '@swipi/playground-core'
+import {
+  CONFIG_NUMBER_FIELDS,
+  EMPTY_FIELD_VALUE,
+  addConfigItem,
+  removeConfigItem,
+  updateConfigItem
+} from '@swipi/playground-core'
+import type {
+  ConfigEditorProps,
+  ConfigNumberField
+} from '@swipi/playground-core'
 
 const props = defineProps<ConfigEditorProps>()
 
@@ -69,28 +80,29 @@ const update = (next: ConfigEditorProps['config']) => {
   emit('change', next)
 }
 
-const addItem = () => {
-  update([...props.config, { maxWidth: EMPTY_FIELD_VALUE }])
-}
+const addItem = (): void => update(addConfigItem(props.config))
 
-const removeItem = (index: number) => () => {
-  update(props.config.filter((_, i) => i !== index))
-}
+const removeItem = (index: number) => (): void =>
+  update(removeConfigItem(props.config, index))
 
-const changeNumber = (index: number, key: string) => (e: Event) => {
-  const target = e.target as HTMLInputElement
-  const rawValue = parseFloat(target.value)
-  const value = isNaN(rawValue) ? undefined : rawValue
+const changeNumber =
+  (index: number, field: ConfigNumberField) =>
+  (event: Event): void => {
+    const { value } = event.target as HTMLInputElement
+    const parsed = parseFloat(value)
 
-  const next = [...props.config]
-  next[index] = { ...next[index], [key]: value }
-  update(next)
-}
+    update(
+      updateConfigItem(props.config, index, {
+        [field]: Number.isNaN(parsed) ? EMPTY_FIELD_VALUE : parsed
+      })
+    )
+  }
 
-const changeBiasRight = (index: number) => (e: Event) => {
-  const target = e.target as HTMLInputElement
-  const next = [...props.config]
-  next[index] = { ...next[index], biasRight: target.checked }
-  update(next)
-}
+const changeBiasRight =
+  (index: number) =>
+  (event: Event): void => {
+    const { checked } = event.target as HTMLInputElement
+
+    update(updateConfigItem(props.config, index, { biasRight: checked }))
+  }
 </script>

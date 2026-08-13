@@ -6,6 +6,8 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y'
 import importPlugin from 'eslint-plugin-import'
 import htmlPlugin from 'eslint-plugin-html'
+import vuePlugin from 'eslint-plugin-vue'
+import vueParser from 'vue-eslint-parser'
 import prettierRecommended from 'eslint-plugin-prettier/recommended'
 import globals from 'globals'
 import { fileURLToPath } from 'url'
@@ -22,8 +24,7 @@ export default [
       '**/vitest.config.ts',
       '**/scripts/**',
       '**/dist/**',
-      '**/node_modules/**',
-      'apps/playground-vue/**/*.vue'
+      '**/node_modules/**'
     ]
   },
 
@@ -130,15 +131,25 @@ export default [
       'react/jsx-props-no-spreading': 'off'
     }
   },
+  ...vuePlugin.configs['flat/recommended'],
+
   {
-    files: ['apps/**/*.{ts,tsx,js,jsx}'],
+    files: ['**/*.vue'],
+    languageOptions: {
+      parser: vueParser,
+      parserOptions: {
+        parser: tsParser,
+        projectService: true,
+        tsconfigRootDir: __dirname,
+        extraFileExtensions: ['.vue']
+      },
+      globals: {
+        ...globals.browser,
+        ...globals.es2021
+      }
+    },
     rules: {
-      '@typescript-eslint/ban-ts-comment': 'off',
-      '@typescript-eslint/no-unsafe-argument': 'off',
-      '@typescript-eslint/no-unsafe-assignment': 'off',
-      '@typescript-eslint/no-unsafe-return': 'off',
-      '@typescript-eslint/no-unsafe-call': 'off',
-      '@typescript-eslint/no-unsafe-member-access': 'off'
+      'vue/multi-word-component-names': 'off'
     }
   },
 

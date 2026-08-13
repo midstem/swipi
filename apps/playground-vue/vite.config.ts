@@ -26,7 +26,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
-    include: ['src/**/*.test.{ts,vue}']
+    include: ['src/**/*.test.ts']
   },
   server: {
     port: 3000

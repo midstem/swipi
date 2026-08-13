@@ -36,35 +36,47 @@
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
-import { ref, computed } from 'vue'
-const JSON_INDENT = 2; const FIRST_INDEX = 0; const getLastIndex = () => 0;
-import { } from '@swipi/playground-core'
-import type { ImperativeApiProps } from '@swipi/playground-core'
+import { computed, ref } from 'vue'
+import {
+  FIRST_INDEX,
+  JSON_INDENT,
+  clampIndex,
+  getLastIndex
+} from '@swipi/playground-core'
+import type { ImperativeReadings } from '@swipi/playground-core'
+import type { ImperativeApiProps } from '../../types'
 
 const props = defineProps<ImperativeApiProps>()
 
 const index = ref(FIRST_INDEX)
-const readings = ref<any>(null)
+const readings = ref<ImperativeReadings>()
 
-const readingsStr = computed(() => readings.value ? JSON.stringify(readings.value, null, JSON_INDENT) : '')
+const readingsStr = computed(() =>
+  readings.value ? JSON.stringify(readings.value, null, JSON_INDENT) : ''
+)
 
-const changeIndex = (e: Event) => {
-  const val = parseInt((e.target as HTMLInputElement).value, 10)
-  if (!isNaN(val)) index.value = val
+const changeIndex = (event: Event): void => {
+  const { value } = event.target as HTMLInputElement
+
+  index.value = clampIndex(parseInt(value, 10), props.slidesCount)
 }
 
-const scrollPrev = () => props.swipiRef?.scrollPrev()
-const scrollNext = () => props.swipiRef?.scrollNext()
-const scrollTo = () => props.swipiRef?.scrollTo(index.value)
-const readState = () => {
-  if (props.swipiRef) {
-    readings.value = {
-      canScrollNext: props.swipiRef.canScrollNext(),
-      canScrollPrev: props.swipiRef.canScrollPrev(),
-      scrollSnapList: props.swipiRef.scrollSnapList(),
-      selectedScrollSnap: props.swipiRef.selectedScrollSnap()
-    }
+const scrollPrev = (): void => props.carousel?.scrollPrev()
+
+const scrollNext = (): void => props.carousel?.scrollNext()
+
+const scrollTo = (): void => props.carousel?.scrollTo(index.value)
+
+const readState = (): void => {
+  const { carousel } = props
+
+  if (!carousel) return
+
+  readings.value = {
+    canScrollNext: carousel.canScrollNext(),
+    canScrollPrev: carousel.canScrollPrev(),
+    scrollSnapList: carousel.scrollSnapList(),
+    selectedScrollSnap: carousel.selectedScrollSnap()
   }
 }
 </script>

@@ -16,11 +16,10 @@
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
 import { ref } from 'vue'
 import type { TextFieldProps } from '@swipi/playground-core'
 
-const props = defineProps<TextFieldProps>()
+defineProps<TextFieldProps>()
 
 defineEmits<{
   (e: 'change', value: string): void

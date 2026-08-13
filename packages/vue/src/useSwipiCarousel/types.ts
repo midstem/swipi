@@ -1,3 +1,4 @@
+import type { ComponentPublicInstance } from 'vue'
 import { SlidePositions, SwipiAxis, SwipiState } from '@swipi/core'
 
 export type SwipiCarouselOptions = {
@@ -15,7 +16,9 @@ export type SwipiCarouselOptions = {
   onSelect?: (state: SwipiState) => void
 }
 
-export type SwipiCarouselRef = (node: HTMLElement | null) => void
+export type SwipiCarouselRef = (
+  node: Element | ComponentPublicInstance | null
+) => void
 
 export type SwipiCarousel = SwipiState & {
   slidesCount: number

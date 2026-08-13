@@ -1,25 +1,17 @@
-// @ts-nocheck
 import { describe, expect, it } from 'vitest'
-import ts from 'typescript'
-import { buildMarkup, buildStyles } from './helpers'
+import { parse } from '@vue/compiler-sfc'
+import { buildStyles } from '@swipi/playground-core'
 import { DEFAULT_STATE } from '@swipi/playground-core'
 import { PlaygroundState } from '@swipi/playground-core'
+import { buildMarkup } from './helpers'
 
 const build = (state: Partial<PlaygroundState>): string =>
   buildMarkup({ ...DEFAULT_STATE, ...state })
 
 const getSyntaxErrors = (code: string): string[] => {
-  const { diagnostics = [] } = ts.transpileModule(code, {
-    reportDiagnostics: true,
-    compilerOptions: {
-      jsx: ts.JsxEmit.Preserve,
-      target: ts.ScriptTarget.ESNext
-    }
-  })
+  const { errors } = parse(code)
 
-  return diagnostics.map((diagnostic) =>
-    ts.flattenDiagnosticMessageText(diagnostic.messageText, ' ')
-  )
+  return errors.map((error) => error.message)
 }
 
 const VARIANTS: Partial<PlaygroundState>[] = [
@@ -32,8 +24,12 @@ const VARIANTS: Partial<PlaygroundState>[] = [
 ]
 
 describe('the generated markup', () => {
-  it.each(VARIANTS)('parses as TSX with %o', (variant) => {
+  it.each(VARIANTS)('parses as a single file component with %o', (variant) => {
     expect(getSyntaxErrors(build(variant))).toEqual([])
+  })
+
+  it('imports the composable from the vue adapter', () => {
+    expect(build({})).toContain("import { useSwipiCarousel } from 'swipi-vue'")
   })
 
   it('labels the carousel with the name from the playground', () => {
@@ -43,13 +39,13 @@ describe('the generated markup', () => {
   it('leaves the arrow keys wired even without arrows on the page', () => {
     const markup = build({ showArrows: false })
 
-    expect(markup).toContain('onKeyDown={handleKeyDown}')
+    expect(markup).toContain('@keydown="handleKeyDown"')
     expect(markup).not.toContain('Previous slide')
   })
 
   it('announces the selected slide through a live region', () => {
     expect(build({})).toContain(
-      '<span className="carousel__status" aria-live="polite" aria-atomic="true">'
+      '<span class="carousel__status" aria-live="polite" aria-atomic="true">'
     )
   })
 
@@ -81,7 +77,7 @@ describe('the generated markup', () => {
     const state: Partial<PlaygroundState> = { slidesAnimation: 'fade-in' }
 
     expect(build(state)).toContain(
-      'data-selected={index === carousel.selectedIndex}'
+      ':data-selected="index === carousel.selectedIndex"'
     )
     expect(buildStyles({ ...DEFAULT_STATE, ...state })).toContain(
       "[data-selected='true']"

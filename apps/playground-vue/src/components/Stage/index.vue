@@ -3,7 +3,7 @@
     <div class="pg-stage__slider" :style="{ width: state.stageWidth + 'px' }">
       <div :class="['pg-carousel', { 'pg-carousel--vertical': isVertical }]">
         <span class="pg-visually-hidden" aria-live="polite" aria-atomic="true">
-          Slide {{ (carousel?.selectedIndex ?? 0) + 1 }} of {{ carousel?.snapCount ?? 0 }}
+          Slide {{ carousel.selectedIndex + 1 }} of {{ carousel.snapCount }}
         </span>
 
         <div class="pg-carousel__row">
@@ -12,14 +12,14 @@
             type="button"
             class="pg-carousel__arrow"
             aria-label="Previous slide"
-            :disabled="!carousel?.canScrollPrev"
-            @click="carousel?.scrollPrev()"
+            :disabled="!carousel.canScrollPrev"
+            @click="carousel.scrollPrev()"
           >
             {{ previousArrow }}
           </button>
 
           <div
-            :ref="carouselRefSetter"
+            :ref="carouselRef"
             class="pg-carousel__viewport"
             :style="getViewportStyle(state, isVertical)"
             role="group"
@@ -39,7 +39,7 @@
                 role="group"
                 aria-roledescription="slide"
                 :aria-label="`${index + 1} of ${slides.length}`"
-                :style="getSlideStyle(state, index === (carousel?.selectedIndex ?? 0))"
+                :style="getSlideStyle(state, index === carousel.selectedIndex)"
               >
                 <div
                   class="pg-carousel__slide-box"
@@ -56,8 +56,8 @@
             type="button"
             class="pg-carousel__arrow"
             aria-label="Next slide"
-            :disabled="!carousel?.canScrollNext"
-            @click="carousel?.scrollNext()"
+            :disabled="!carousel.canScrollNext"
+            @click="carousel.scrollNext()"
           >
             {{ nextArrow }}
           </button>
@@ -65,17 +65,17 @@
 
         <nav v-if="state.showDots" class="pg-carousel__dots">
           <button
-            v-for="(_, index) in (carousel?.snapCount ?? 0)"
+            v-for="(_, index) in carousel.snapCount"
             :key="index"
             type="button"
             class="pg-carousel__dot"
             :aria-label="`Go to slide ${index + 1}`"
-            :aria-current="index === (carousel?.selectedIndex ?? 0)"
-            @click="carousel?.scrollTo(index)"
+            :aria-current="index === carousel.selectedIndex"
+            @click="carousel.scrollTo(index)"
           >
             <span
               class="pg-carousel__dot-mark"
-              :data-active="index === (carousel?.selectedIndex ?? 0)"
+              :data-active="index === carousel.selectedIndex"
               :style="{ transition: `${state.animationSpeed}ms` }"
             />
           </button>
@@ -91,14 +91,17 @@
         visible slides: <b>{{ visibleSlides }}</b>
       </li>
       <li>
-        snap positions: <b>{{ carousel?.snapCount ?? 0 }}</b>
+        snap positions: <b>{{ carousel.snapCount }}</b>
       </li>
       <li>
-        active breakpoint: <b>{{ activeBreakpoint ? `maxWidth ${activeBreakpoint.maxWidth}` : 'none' }}</b>
+        active breakpoint:
+        <b>{{
+          activeBreakpoint ? `maxWidth ${activeBreakpoint.maxWidth}` : 'none'
+        }}</b>
       </li>
     </ul>
 
-    <p v-if="carousel && !carousel.hasOverflow" class="pg-warning">
+    <p v-if="!carousel.hasOverflow" class="pg-warning">
       All slides fit on the screen, so arrows, dots navigation and
       <code>loop</code> are disabled — add more slides, decrease
       <code>slidesNumber</code> or narrow the stage.
@@ -107,83 +110,107 @@
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
-import { computed, watch, onMounted, onUnmounted, ref } from 'vue'
-import { useSwipiCarousel } from 'swipi'
-import type { StageProps } from '@swipi/playground-core'
-import { getArrows, getSlideStyle, getTrackStyle, getViewportStyle, isNextKey, isPreviousKey, getActiveBreakpoint, getBias, getSlideWidth, getSpaceBetween, getVisibleSlides } from './helpers'
-import { VERTICAL_AXIS } from '@swipi/playground-core'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { useSwipiCarousel } from 'swipi-vue'
+import type { SlidePositions, SwipiState } from 'swipi-vue'
+import {
+  VERTICAL_AXIS,
+  getActiveBreakpoint,
+  getArrows,
+  getBias,
+  getConfig,
+  getSlideStyle,
+  getSlideWidth,
+  getSpaceBetween,
+  getTrackStyle,
+  getViewportStyle,
+  getVisibleSlides,
+  isNextKey,
+  isPreviousKey
+} from '@swipi/playground-core'
+import type { CarouselRef } from '@swipi/playground-core'
+import type { StageProps } from '../../types'
 
 const props = defineProps<StageProps>()
 
 const emit = defineEmits<{
-  (e: 'select', state: any): void
-  (e: 'change', state: any): void
+  (e: 'select', state: SwipiState): void
+  (e: 'change', positions: SlidePositions): void
+  (e: 'ready', carousel: CarouselRef): void
 }>()
 
-const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 0)
+const windowWidth = ref(window.innerWidth)
 
-const onResize = () => {
+const onResize = (): void => {
   windowWidth.value = window.innerWidth
 }
 
-onMounted(() => {
-  window.addEventListener('resize', onResize)
-})
+onMounted(() => window.addEventListener('resize', onResize))
 
-onUnmounted(() => {
-  window.removeEventListener('resize', onResize)
-})
+onUnmounted(() => window.removeEventListener('resize', onResize))
 
-const activeBreakpoint = computed(() => getActiveBreakpoint(props.state.config, windowWidth.value))
+const config = computed(() => getConfig(props.state))
+
+const activeBreakpoint = computed(() =>
+  getActiveBreakpoint(config.value, windowWidth.value)
+)
 
 const isVertical = computed(() => props.state.axis === VERTICAL_AXIS)
-const bias = computed(() => getBias(props.state, activeBreakpoint.value))
-const slideWidth = computed(() => getSlideWidth(props.state, activeBreakpoint.value))
-const spaceBetween = computed(() => getSpaceBetween(props.state, activeBreakpoint.value))
-const visibleSlides = computed(() => getVisibleSlides(props.state, activeBreakpoint.value))
 
-const carouselRef = ref<HTMLElement | null>(null)
+const visibleSlides = computed(() =>
+  getVisibleSlides(props.state, config.value, windowWidth.value)
+)
 
-const { carousel } = useSwipiCarousel(computed(() => ({
-  axis: props.state.axis,
-  loop: props.state.loop,
-  dragFree: props.state.dragFree,
-  autoplay: props.state.autoplay,
-  startIndex: props.state.startIndex,
-  autoplaySpeed: props.state.autoplaySpeed,
-  animationSpeed: props.state.animationSpeed,
-  respectReducedMotion: props.state.respectReducedMotion,
-  slideWidth: slideWidth.value,
-  spaceBetween: spaceBetween.value,
-  onSelect: (st) => emit('select', st),
-  onChange: (st) => emit('change', st)
-})), carouselRef)
+const bias = computed(() =>
+  getBias(props.state, config.value, windowWidth.value, visibleSlides.value)
+)
 
-const carouselRefSetter = (el: any) => {
-  carouselRef.value = el as HTMLElement
-}
+const slideWidth = computed(() => getSlideWidth(props.state))
 
-watch(carousel, (c) => {
-  if (props.swipiRef && c) {
-    props.swipiRef.value = {
-      scrollNext: c.scrollNext,
-      scrollPrev: c.scrollPrev,
-      scrollTo: c.scrollTo,
-      selectedScrollSnap: () => c.selectedIndex,
-      scrollSnapList: () => Array.from({ length: c.snapCount }, (_, index) => index),
-      canScrollNext: () => c.canScrollNext,
-      canScrollPrev: () => c.canScrollPrev
-    }
-  }
-}, { immediate: true })
+const spaceBetween = computed(() =>
+  getSpaceBetween(props.state, config.value, windowWidth.value)
+)
 
-const showArrows = computed(() => props.state.showArrows && carousel.value?.hasOverflow)
+const [carouselRef, carousel] = useSwipiCarousel(
+  computed(() => ({
+    axis: props.state.axis,
+    loop: props.state.loop,
+    dragFree: props.state.dragFree,
+    autoplay: props.state.autoplay,
+    startIndex: props.state.startIndex,
+    autoplaySpeed: props.state.autoplaySpeed,
+    animationSpeed: props.state.animationSpeed,
+    respectReducedMotion: props.state.respectReducedMotion,
+    slideWidth: slideWidth.value,
+    spaceBetween: spaceBetween.value,
+    onSelect: (state: SwipiState) => emit('select', state),
+    onChange: (positions: SlidePositions) => emit('change', positions)
+  }))
+)
+
+onMounted(() => {
+  emit('ready', {
+    scrollNext: carousel.scrollNext,
+    scrollPrev: carousel.scrollPrev,
+    scrollTo: carousel.scrollTo,
+    selectedScrollSnap: () => carousel.selectedIndex,
+    scrollSnapList: () =>
+      Array.from({ length: carousel.snapCount }, (_, index) => index),
+    canScrollNext: () => carousel.canScrollNext,
+    canScrollPrev: () => carousel.canScrollPrev
+  })
+})
+
+const showArrows = computed(
+  () => props.state.showArrows && carousel.hasOverflow
+)
+
 const previousArrow = computed(() => getArrows(isVertical.value)[0])
+
 const nextArrow = computed(() => getArrows(isVertical.value)[1])
 
-const handleKeyDown = (event: KeyboardEvent) => {
-  if (isPreviousKey(event.key, isVertical.value)) carousel.value?.scrollPrev()
-  if (isNextKey(event.key, isVertical.value)) carousel.value?.scrollNext()
+const handleKeyDown = (event: KeyboardEvent): void => {
+  if (isPreviousKey(event.key, isVertical.value)) carousel.scrollPrev()
+  if (isNextKey(event.key, isVertical.value)) carousel.scrollNext()
 }
 </script>

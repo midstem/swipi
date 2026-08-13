@@ -7,9 +7,15 @@
       :id="id"
       class="pg-input"
       :value="value"
-      @change="$emit('change', ($event.target as HTMLSelectElement).value)"
+      @change="
+        $emit('change', ($event.target as HTMLSelectElement).value as Value)
+      "
     >
-      <option v-for="option in options" :key="option.value" :value="option.value">
+      <option
+        v-for="option in options"
+        :key="option.value"
+        :value="option.value"
+      >
         {{ option.label }}
       </option>
     </select>
@@ -17,15 +23,14 @@
   </div>
 </template>
 
-<script setup lang="ts">
-// @ts-nocheck
+<script setup lang="ts" generic="Value extends string">
 import { ref } from 'vue'
 import type { SelectFieldProps } from '@swipi/playground-core'
 
-const props = defineProps<SelectFieldProps>()
+defineProps<SelectFieldProps<Value>>()
 
 defineEmits<{
-  (e: 'change', value: string): void
+  (e: 'change', value: Value): void
 }>()
 
 const id = ref(`select-field-${Math.random().toString(36).slice(2, 9)}`)

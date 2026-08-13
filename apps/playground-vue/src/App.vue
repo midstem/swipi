@@ -2,10 +2,19 @@
   <div class="pg">
     <header class="pg-header">
       <div>
-        <h1 class="pg-header__title" style="display: flex; align-items: center; gap: 8px;">
+        <h1
+          class="pg-header__title"
+          style="display: flex; align-items: center; gap: 8px"
+        >
           <svg class="logo" viewBox="0 0 128 128" width="24" height="24">
-            <path fill="#42b883" d="M78.8,10L64,35.4L49.2,10H0l64,110l64-110C128,10,78.8,10,78.8,10z" />
-            <path fill="#35495e" d="M78.8,10L64,35.4L49.2,10H25.6L64,76l38.4-66H78.8z" />
+            <path
+              fill="#42b883"
+              d="M78.8,10L64,35.4L49.2,10H0l64,110l64-110C128,10,78.8,10,78.8,10z"
+            />
+            <path
+              fill="#35495e"
+              d="M78.8,10L64,35.4L49.2,10H25.6L64,76l38.4-66H78.8z"
+            />
           </svg>
           Swipi playground
         </h1>
@@ -33,12 +42,12 @@
           :key="remountKey"
           :state="state"
           :slides="slides"
-          :swipiRef="swipiRef"
           @select="handleSelect"
           @change="handleChange"
+          @ready="handleReady"
         />
-        <ImperativeApi :swipiRef="swipiRef" :slidesCount="state.slidesCount" />
-        <StatePanel :swipiState="swipiState" :positions="positions" />
+        <ImperativeApi :carousel="swipiRef" :slides-count="state.slidesCount" />
+        <StatePanel :swipi-state="swipiState" :positions="positions" />
         <EventLog :events="events" @clear="clearEvents" />
         <CodeSnippet :state="state" />
       </main>
@@ -47,7 +56,6 @@
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
 import { usePlayground } from './usePlayground'
 import CodeSnippet from './components/CodeSnippet/index.vue'
 import ControlsPanel from './components/ControlsPanel/index.vue'
@@ -69,6 +77,7 @@ const {
   reset,
   clearEvents,
   handleSelect,
-  handleChange
+  handleChange,
+  handleReady
 } = usePlayground()
 </script>

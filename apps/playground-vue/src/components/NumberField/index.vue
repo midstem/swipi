@@ -33,9 +33,13 @@
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
 import { ref } from 'vue'
-const DEFAULT_MIN = 0; const DEFAULT_MAX = 100; const DEFAULT_STEP = 1;
+import {
+  DEFAULT_MAX,
+  DEFAULT_MIN,
+  DEFAULT_STEP,
+  clamp
+} from '@swipi/playground-core'
 import type { NumberFieldProps } from '@swipi/playground-core'
 
 const props = withDefaults(defineProps<NumberFieldProps>(), {
@@ -55,9 +59,8 @@ const id = ref(`number-field-${Math.random().toString(36).slice(2, 9)}`)
 const handleChange = (e: Event) => {
   const target = e.target as HTMLInputElement
   const rawValue = parseFloat(target.value)
-  let val = isNaN(rawValue) ? props.min : rawValue
-  if (val > props.max) val = props.max
-  if (val < props.min) val = props.min
-  emit('change', val)
+  const value = Number.isNaN(rawValue) ? props.min : rawValue
+
+  emit('change', clamp(value, props.min, props.max))
 }
 </script>

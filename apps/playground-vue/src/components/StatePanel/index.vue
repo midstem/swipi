@@ -12,13 +12,16 @@
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
 import { computed } from 'vue'
 import { JSON_INDENT } from '@swipi/playground-core'
 import type { StatePanelProps } from '@swipi/playground-core'
 
 const props = defineProps<StatePanelProps>()
 
-const swipiStateStr = computed(() => JSON.stringify(props.swipiState, null, JSON_INDENT))
-const positionsStr = computed(() => JSON.stringify(props.positions, null, JSON_INDENT))
+const swipiStateStr = computed(() =>
+  JSON.stringify(props.swipiState, null, JSON_INDENT)
+)
+const positionsStr = computed(() =>
+  JSON.stringify(props.positions, null, JSON_INDENT)
+)
 </script>

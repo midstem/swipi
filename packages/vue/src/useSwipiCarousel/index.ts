@@ -5,7 +5,12 @@ import {
   SwipiApi,
   SwipiSnapshot
 } from '@swipi/core'
-import { SwipiCarousel, SwipiCarouselOptions, UseSwipiCarousel } from './types'
+import {
+  SwipiCarousel,
+  SwipiCarouselOptions,
+  SwipiCarouselRef,
+  UseSwipiCarousel
+} from './types'
 
 const noop = (): void => {}
 
@@ -22,6 +27,7 @@ export const useSwipiCarousel = (
   options: SwipiCarouselOptions | Ref<SwipiCarouselOptions> = {}
 ): UseSwipiCarousel => {
   let engine: SwipiApi | null = null
+  let attached: HTMLElement | null = null
   let cleanupSubscription: (() => void) | null = null
 
   const carousel = reactive<SwipiCarousel>({
@@ -51,15 +57,21 @@ export const useSwipiCarousel = (
     carousel.canScrollPrev = snapshot.canScrollPrev
   }
 
-  const carouselRef = (node: Element | null): void => {
+  const carouselRef: SwipiCarouselRef = (node): void => {
+    const next = node instanceof HTMLElement ? node : null
+
+    if (next === attached) return
+
+    attached = next
+
     if (cleanupSubscription) {
       cleanupSubscription()
       cleanupSubscription = null
     }
     engine?.destroy()
 
-    if (node && node instanceof HTMLElement) {
-      engine = createSwipi(node, getFullOptions())
+    if (next) {
+      engine = createSwipi(next, getFullOptions())
       cleanupSubscription = engine.subscribe(updateSnapshot)
       updateSnapshot()
     } else {
@@ -83,6 +95,7 @@ export const useSwipiCarousel = (
     }
     engine?.destroy()
     engine = null
+    attached = null
   })
 
   return [carouselRef, carousel]

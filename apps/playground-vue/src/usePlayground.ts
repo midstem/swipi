@@ -1,16 +1,16 @@
-// @ts-nocheck
 import { ref, reactive, computed, watch, shallowRef } from 'vue'
-import { SlidePositions, SwipiState } from 'swipi'
+import { SlidePositions, SwipiState } from 'swipi-vue'
 import { CarouselRef } from '@swipi/playground-core'
 import { DEFAULT_STATE, MAX_EVENTS, SLIDE_COLORS } from '@swipi/playground-core'
 import { loadState, saveState } from '@swipi/playground-core'
 import {
   PlaygroundEvent,
   PlaygroundState,
-  UsePlaygroundReturn
+  UpdateState
 } from '@swipi/playground-core'
+import { UsePlaygroundReturn } from './types'
 
-export const usePlayground = () => {
+export const usePlayground = (): UsePlaygroundReturn => {
   const state = reactive<PlaygroundState>(loadState())
   const swipiState = ref<SwipiState>()
   const positions = ref<SlidePositions>()
@@ -28,10 +28,7 @@ export const usePlayground = () => {
     { deep: true }
   )
 
-  const update = <Key extends keyof PlaygroundState>(
-    key: Key,
-    value: PlaygroundState[Key]
-  ): void => {
+  const update: UpdateState = (key, value) => {
     state[key] = value
   }
 
@@ -55,6 +52,10 @@ export const usePlayground = () => {
   const handleChange = (next: SlidePositions): void => {
     positions.value = next
     pushEvent('onChange', next)
+  }
+
+  const handleReady = (carousel: CarouselRef): void => {
+    swipiRef.value = carousel
   }
 
   const remount = (): void => {
@@ -88,6 +89,7 @@ export const usePlayground = () => {
     reset,
     clearEvents,
     handleSelect,
-    handleChange
+    handleChange,
+    handleReady
   }
 }

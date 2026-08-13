@@ -12,10 +12,9 @@
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
 import type { SectionProps } from '@swipi/playground-core'
 
-const props = defineProps<SectionProps>()
+defineProps<SectionProps>()
 
 const BADGE = {
   hook: 'hook option',

@@ -21,7 +21,6 @@
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
 import type { EventLogProps } from '@swipi/playground-core'
 
 defineProps<EventLogProps>()

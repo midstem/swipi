@@ -14,10 +14,9 @@
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
 import type { ToggleProps } from '@swipi/playground-core'
 
-const props = withDefaults(defineProps<ToggleProps>(), {
+withDefaults(defineProps<ToggleProps>(), {
   disabled: false
 })
 
