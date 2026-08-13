@@ -23,7 +23,7 @@ jobs:
         run: npm ci
 
       - name: Lint
-        run: npx eslint src
+        run: npm run lint
 
       - name: Typecheck
         run: npm run typecheck
@@ -59,6 +59,7 @@ jobs:
         run: npm run build
 
       - name: Measure this branch
+        working-directory: packages/react
         run: |
           cp scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
           node scripts/report-size.mjs --json "$RUNNER_TEMP/head-size.json"
@@ -70,6 +71,7 @@ jobs:
           git checkout --force ${{ github.event.pull_request.base.sha }}
           npm ci
           npm run build
+          if [ -d packages/react ]; then cd packages/react; fi
           node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/base-size.json"
 
       - name: Report

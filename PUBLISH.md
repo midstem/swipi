@@ -2,7 +2,7 @@
 
 ## 1. Prepare the release branch
 
-- bump `version` in `package.json`;
+- bump `version` in `packages/react/package.json`;
 - update `MIGRATION.md` and `README.md` if the public API moved.
 
 ## 2. Check it locally
@@ -31,8 +31,8 @@ on CI. Wait for it to go green.
 gh release create v3.0.0 --target main --title "v3.0.0" --generate-notes
 ```
 
-Swap `3.0.0` for the version in `package.json`. The tag carries a `v` prefix and
-the version in `package.json` does not — anything else fails the first step.
+Swap `3.0.0` for the version in `packages/react/package.json`. The tag carries a
+`v` prefix and the version in `packages/react/package.json` does not — anything else fails the first step.
 
 `--generate-notes` lists every pull request merged since the previous tag, which
 for a major says nothing about what broke. Add `--notes` to put a summary above
@@ -44,7 +44,8 @@ gh release create v3.0.0 --target main --title "v3.0.0" --generate-notes \
 ```
 
 Publishing the release starts the `build` workflow, which checks the tag against
-`package.json`, runs lint, typecheck, tests, the build, both package checks and
+`packages/react/package.json`, runs lint, typecheck, tests, the build, both
+package checks and
 the consumer gate, and only then runs `npm publish`.
 
 ## 5. Confirm

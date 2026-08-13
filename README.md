@@ -16,7 +16,7 @@
 small object of state. The markup, the CSS and the accessibility stay yours, so
 nothing of ours ends up in your DOM and there is no stylesheet to import.</p>
 
-<p>It weighs <b>4.4 KB gzipped</b> — 2.15× less than
+<p>It weighs <b>5.1 KB gzipped</b> — 1.85× less than
 <code>embla-carousel-react</code> with its autoplay plugin, measured through the
 same build in
 <a href="https://github.com/midstem/swipi/blob/main/SIZE.md">SIZE.md</a>.</p>
@@ -96,19 +96,8 @@ them. Two of them are yours to tune: `basis-1/2` sets how many slides are
 visible, and the `pl-3` on the slide with the matching `-ml-3` on the track sets
 the space between them. Everything else on the page is styling you own.
 
-Not using Tailwind? The same contract as plain CSS is in
-[DOCUMENTATION.md](./DOCUMENTATION.md#required-css).
+Not using Tailwind? Our documentation provides examples using both Tailwind and plain CSS.
 
 ## **Documentation**
 
-For advanced usage, available options, responsive layout specifics, state management, and accessibility guidelines, please refer to the full [DOCUMENTATION.md](./DOCUMENTATION.md).
-
-## 🛠 **Development**
-
-Run the local playground (`src/Playground`) with hot-reload to try changes:
-
-```bash
-$ npm start
-```
-
-For more details on the verification process, check [DOCUMENTATION.md](./DOCUMENTATION.md#development--verification).
+For advanced usage, available options, responsive layout specifics, state management, and accessibility guidelines, please refer to our full documentation at [https://swipi.midstem.net/docs/](https://swipi.midstem.net/docs/).

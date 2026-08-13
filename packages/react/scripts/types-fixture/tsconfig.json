@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "target": "ES2020",
+    "lib": ["dom", "esnext"],
+    "moduleResolution": "bundler",
+    "skipLibCheck": false,
+    "paths": {
+      "swipi": ["../../dist/index.d.ts"]
+    }
+  },
+  "include": ["app.tsx"]
+}

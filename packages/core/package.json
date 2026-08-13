@@ -1,0 +1,28 @@
+{
+  "name": "@swipi/core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "description": "Framework-agnostic carousel engine. Consumed as source and bundled by the adapters, never published on its own.",
+  "sideEffects": false,
+  "main": "./src/index.ts",
+  "imports": {
+    "#src/*": "./src/*/index.ts"
+  },
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test:run": "vitest run",
+    "test": "vitest"
+  }
+}
