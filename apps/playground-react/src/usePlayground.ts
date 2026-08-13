@@ -3,11 +3,8 @@ import { SlidePositions, SwipiState } from 'swipi'
 import { CarouselRef } from '@swipi/playground-core'
 import { DEFAULT_STATE, MAX_EVENTS, SLIDE_COLORS } from '@swipi/playground-core'
 import { loadState, saveState } from '@swipi/playground-core'
-import {
-  PlaygroundEvent,
-  PlaygroundState,
-  UsePlaygroundReturn
-} from '@swipi/playground-core'
+import { PlaygroundEvent, PlaygroundState } from '@swipi/playground-core'
+import { UsePlaygroundReturn } from './types'
 
 export const usePlayground = (): UsePlaygroundReturn => {
   const [state, setState] = useState<PlaygroundState>(loadState)

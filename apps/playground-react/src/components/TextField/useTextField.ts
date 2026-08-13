@@ -1,5 +1,6 @@
 import { ChangeEvent, useId } from 'react'
-import { UseFieldReturn, UseTextFieldProps } from '@swipi/playground-core'
+import { UseTextFieldProps } from '@swipi/playground-core'
+import { UseFieldReturn } from '../../types'
 
 export const useTextField = ({
   onChange

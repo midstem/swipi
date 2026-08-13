@@ -1,6 +1,7 @@
 import { ChangeEvent, useId } from 'react'
-import { UseFieldReturn, UseNumberFieldProps } from '@swipi/playground-core'
-import { clamp } from './helpers'
+import { UseNumberFieldProps } from '@swipi/playground-core'
+import { UseFieldReturn } from '../../types'
+import { clamp } from '@swipi/playground-core'
 
 export const useNumberField = ({
   min,

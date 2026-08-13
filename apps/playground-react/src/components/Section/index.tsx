@@ -1,5 +1,5 @@
 import type { JSX } from 'react'
-import { SectionProps } from '@swipi/playground-core'
+import { SectionProps } from '../../types'
 
 const BADGE = {
   hook: 'hook option',

@@ -1,5 +1,7 @@
 import type { SwipiAxis } from '@swipi/core'
 import {
+  ConfigNumberFieldOption,
+  ConfigType,
   HookOptionKey,
   PlaygroundState,
   SelectOption,
@@ -100,3 +102,48 @@ export const STAGE_PRESETS: StagePreset[] = [
   { label: 'Desktop', width: 1024 },
   { label: 'Full', width: 1440 }
 ]
+
+export const README_PRESET = {
+  slidesNumber: 2,
+  spaceBetween: 12,
+  biasRight: false,
+  showDots: false
+}
+
+export const CONFIG_NUMBER_FIELDS: ConfigNumberFieldOption[] = [
+  { key: 'maxWidth', label: 'maxWidth' },
+  { key: 'slidesNumber', label: 'slidesNumber' },
+  { key: 'spaceBetween', label: 'spaceBetween' }
+]
+
+export const NEW_CONFIG_ITEM: ConfigType = {
+  maxWidth: 640,
+  slidesNumber: 1,
+  spaceBetween: 10
+}
+
+export const EMPTY_FIELD_VALUE = 0
+
+export const SLIDES_NUMBER_LIMITS = { min: 1, max: 6 }
+
+export const SLIDE_WIDTH_LIMITS = { min: 0, max: 600, step: 10 }
+
+export const SPACE_BETWEEN_LIMITS = { min: 0, max: 80 }
+
+export const AUTOPLAY_SPEED_LIMITS = { min: 500, max: 10000, step: 100 }
+
+export const ANIMATION_SPEED_LIMITS = { min: 0, max: 2000, step: 50 }
+
+export const STAGE_WIDTH_LIMITS = { min: 240, max: 1440, step: 10 }
+
+export const STAGE_HEIGHT_LIMITS = { min: 160, max: 900, step: 10 }
+
+export const FIRST_INDEX = 0
+
+export const LAST_INDEX_OFFSET = 1
+
+export const DEFAULT_MIN = 0
+
+export const DEFAULT_MAX = 100
+
+export const DEFAULT_STEP = 1

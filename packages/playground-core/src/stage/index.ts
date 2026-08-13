@@ -1,8 +1,7 @@
-import { CSSProperties } from 'react'
-import { ConfigService } from '@swipi/playground-core'
-import { NO_SLIDE_WIDTH, ONE_SLIDE, REDUCE_SLIDE } from '@swipi/playground-core'
-import { isFadeInAnimation } from '@swipi/playground-core'
-import { ConfigType, PlaygroundState } from '@swipi/playground-core'
+import { ConfigService } from '../configService'
+import { NO_SLIDE_WIDTH, ONE_SLIDE, REDUCE_SLIDE } from '../constants'
+import { isFadeInAnimation } from '../helpers'
+import { ConfigType, PlaygroundState, StyleObject } from '../types'
 
 const NO_BIAS = 1
 
@@ -57,7 +56,7 @@ export const getBias = (
 export const getViewportStyle = (
   state: PlaygroundState,
   isVertical: boolean
-): CSSProperties => (isVertical ? { height: state.stageHeight } : {})
+): StyleObject => (isVertical ? { height: state.stageHeight } : {})
 
 export const getArrows = (isVertical: boolean): [string, string] =>
   isVertical ? ['↑', '↓'] : ['‹', '›']
@@ -79,18 +78,17 @@ export const getTrackStyle = (
   visibleSlides: number,
   bias: number,
   slideWidth?: number
-): CSSProperties =>
-  ({
-    '--pg-basis':
-      slideWidth === undefined
-        ? `calc(100% / ${visibleSlides} * ${bias})`
-        : 'calc(var(--swipi-slide-width) + var(--swipi-slide-gap, 0px))'
-  }) as CSSProperties
+): StyleObject => ({
+  '--pg-basis':
+    slideWidth === undefined
+      ? `calc(100% / ${visibleSlides} * ${bias})`
+      : 'calc(var(--swipi-slide-width) + var(--swipi-slide-gap, 0px))'
+})
 
 export const getSlideStyle = (
   state: PlaygroundState,
   isSelected: boolean
-): CSSProperties => {
+): StyleObject => {
   if (!isFadeInAnimation(state.slidesAnimation)) return {}
 
   return {

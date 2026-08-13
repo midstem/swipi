@@ -24,7 +24,7 @@ import {
   SPACE_BETWEEN_LIMITS,
   STAGE_HEIGHT_LIMITS,
   STAGE_WIDTH_LIMITS
-} from './constants'
+} from '@swipi/playground-core'
 import { useControlsPanel } from './useControlsPanel'
 
 const ControlsPanel = ({ state, update }: ControlsPanelProps): JSX.Element => {

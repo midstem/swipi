@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import ts from 'typescript'
-import { buildMarkup, buildStyles } from './helpers'
+import { buildStyles } from '@swipi/playground-core'
+import { buildMarkup } from './helpers'
 import { DEFAULT_STATE } from '@swipi/playground-core'
 import { PlaygroundState } from '@swipi/playground-core'
 

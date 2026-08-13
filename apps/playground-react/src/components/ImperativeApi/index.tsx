@@ -1,8 +1,7 @@
 import type { JSX } from 'react'
 import { JSON_INDENT } from '@swipi/playground-core'
-import { ImperativeApiProps } from '@swipi/playground-core'
-import { FIRST_INDEX } from './constants'
-import { getLastIndex } from './helpers'
+import { ImperativeApiProps } from '../../types'
+import { FIRST_INDEX, getLastIndex } from '@swipi/playground-core'
 import { useImperativeApi } from './useImperativeApi'
 
 const ImperativeApi = ({

@@ -1,6 +1,6 @@
 import type { JSX } from 'react'
 import { ConfigEditorProps } from '@swipi/playground-core'
-import { CONFIG_NUMBER_FIELDS, EMPTY_FIELD_VALUE } from './constants'
+import { CONFIG_NUMBER_FIELDS, EMPTY_FIELD_VALUE } from '@swipi/playground-core'
 import { useConfigEditor } from './useConfigEditor'
 
 const ConfigEditor = ({

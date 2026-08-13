@@ -1,5 +1,6 @@
 import { ChangeEvent, useId } from 'react'
-import { UseFieldReturn, UseSelectFieldProps } from '@swipi/playground-core'
+import { UseSelectFieldProps } from '@swipi/playground-core'
+import { UseFieldReturn } from '../../types'
 
 export const useSelectField = <Value extends string>({
   onChange

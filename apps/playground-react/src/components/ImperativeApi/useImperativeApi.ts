@@ -1,11 +1,7 @@
 import { ChangeEvent, useState } from 'react'
-import {
-  ImperativeReadings,
-  UseImperativeApiProps,
-  UseImperativeApiReturn
-} from '@swipi/playground-core'
-import { FIRST_INDEX } from './constants'
-import { clampIndex } from './helpers'
+import { ImperativeReadings } from '@swipi/playground-core'
+import { UseImperativeApiProps, UseImperativeApiReturn } from '../../types'
+import { FIRST_INDEX, clampIndex } from '@swipi/playground-core'
 
 export const useImperativeApi = ({
   slidesCount,

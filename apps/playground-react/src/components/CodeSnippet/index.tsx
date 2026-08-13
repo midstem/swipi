@@ -1,7 +1,8 @@
 import type { JSX } from 'react'
 import { useMemo, useState } from 'react'
 import { PlaygroundState } from '@swipi/playground-core'
-import { buildMarkup, buildStyles } from './helpers'
+import { buildStyles } from '@swipi/playground-core'
+import { buildMarkup } from './helpers'
 
 type CodeSnippetProps = {
   state: PlaygroundState

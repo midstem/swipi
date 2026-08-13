@@ -1,6 +1,6 @@
 import type { JSX, KeyboardEvent } from 'react'
 import { useSwipiCarousel } from 'swipi'
-import { StageProps } from '@swipi/playground-core'
+import { StageProps } from '../../types'
 import { useStage } from './useStage'
 import {
   getArrows,
@@ -9,7 +9,7 @@ import {
   getViewportStyle,
   isNextKey,
   isPreviousKey
-} from './helpers'
+} from '@swipi/playground-core'
 
 const Stage = ({
   state,

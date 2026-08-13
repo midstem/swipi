@@ -1,4 +1,3 @@
-import type { ChangeEvent, ReactNode, RefObject } from 'react'
 import {
   SlidePositions,
   SwipiAxis,
@@ -12,6 +11,8 @@ export enum SlidesAnimation {
 }
 
 export type ValueOf<T extends string> = `${T}`
+
+export type StyleObject = Record<string, string | number | undefined>
 
 export type ConfigType = {
   maxWidth: number
@@ -86,29 +87,12 @@ export type ImperativeReadings = {
   canScrollPrev: boolean
 }
 
-export type UsePlaygroundReturn = {
-  state: PlaygroundState
-  slides: string[]
-  events: PlaygroundEvent[]
-  remountKey: string
-  swipiRef: RefObject<CarouselRef | null>
-  swipiState?: SwipiState
-  positions?: SlidePositions
-  update: UpdateState
-  remount: () => void
-  reset: () => void
-  clearEvents: () => void
-  handleSelect: (state: SwipiState) => void
-  handleChange: (positions: SlidePositions) => void
-}
-
 export type SectionOrigin = 'hook' | 'playground'
 
 export type SectionProps = {
   title: string
   origin: SectionOrigin
   hint?: string
-  children: ReactNode
 }
 
 export type ToggleProps = {
@@ -120,10 +104,6 @@ export type ToggleProps = {
 }
 
 export type UseToggleProps = Pick<ToggleProps, 'onChange'>
-
-export type UseToggleReturn = {
-  handleChange: (event: ChangeEvent<HTMLInputElement>) => void
-}
 
 export type NumberFieldProps = {
   label: string
@@ -165,11 +145,6 @@ export type UseSelectFieldProps<Value extends string> = {
   onChange: (value: Value) => void
 }
 
-export type UseFieldReturn<Element extends HTMLElement> = {
-  id: string
-  handleChange: (event: ChangeEvent<Element>) => void
-}
-
 export type ConfigNumberField = 'maxWidth' | 'slidesNumber' | 'spaceBetween'
 
 export type ConfigNumberFieldOption = {
@@ -184,18 +159,6 @@ export type ConfigEditorProps = {
 }
 
 export type UseConfigEditorProps = ConfigEditorProps
-
-export type UseConfigEditorReturn = {
-  addItem: () => void
-  removeItem: (index: number) => () => void
-  changeNumber: (
-    index: number,
-    field: ConfigNumberField
-  ) => (event: ChangeEvent<HTMLInputElement>) => void
-  changeBiasRight: (
-    index: number
-  ) => (event: ChangeEvent<HTMLInputElement>) => void
-}
 
 export type ControlsPanelProps = {
   state: PlaygroundState
@@ -214,7 +177,6 @@ export type UseControlsPanelReturn = {
 export type StageProps = {
   state: PlaygroundState
   slides: string[]
-  swipiRef: RefObject<CarouselRef | null>
   onSelect: (state: SwipiState) => void
   onChange: (positions: SlidePositions) => void
 }
@@ -234,20 +196,9 @@ export type UseStageReturn = {
 
 export type ImperativeApiProps = {
   slidesCount: number
-  swipiRef: RefObject<CarouselRef | null>
 }
 
 export type UseImperativeApiProps = ImperativeApiProps
-
-export type UseImperativeApiReturn = {
-  index: number
-  readings?: ImperativeReadings
-  changeIndex: (event: ChangeEvent<HTMLInputElement>) => void
-  scrollPrev: () => void
-  scrollNext: () => void
-  scrollTo: () => void
-  readState: () => void
-}
 
 export type StatePanelProps = {
   swipiState?: SwipiState

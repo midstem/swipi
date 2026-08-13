@@ -7,9 +7,7 @@
     "paths": {
       "swipi": ["../../packages/react/src/index.ts"],
       "swipi-vue": ["../../packages/vue/src/index.ts"],
-      "@swipi/playground-core": [
-        "../../packages/playground-core/src/index.ts"
-      ]
+      "@swipi/playground-core": ["../../packages/playground-core/src/index.ts"]
     }
   }
 }

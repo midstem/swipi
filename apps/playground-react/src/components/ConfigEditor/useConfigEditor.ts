@@ -1,10 +1,11 @@
 import { ChangeEvent } from 'react'
+import { ConfigNumberField, UseConfigEditorProps } from '@swipi/playground-core'
+import { UseConfigEditorReturn } from '../../types'
 import {
-  ConfigNumberField,
-  UseConfigEditorProps,
-  UseConfigEditorReturn
+  addConfigItem,
+  removeConfigItem,
+  updateConfigItem
 } from '@swipi/playground-core'
-import { addConfigItem, removeConfigItem, updateConfigItem } from './helpers'
 
 export const useConfigEditor = ({
   config,

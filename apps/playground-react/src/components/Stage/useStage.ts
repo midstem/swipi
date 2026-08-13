@@ -9,7 +9,7 @@ import {
   getSlideWidth,
   getSpaceBetween,
   getVisibleSlides
-} from './helpers'
+} from '@swipi/playground-core'
 
 export const useStage = ({ state }: UseStageProps): UseStageReturn => {
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth)

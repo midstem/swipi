@@ -1,6 +1,6 @@
 import type { JSX } from 'react'
 import { NumberFieldProps } from '@swipi/playground-core'
-import { DEFAULT_MAX, DEFAULT_MIN, DEFAULT_STEP } from './constants'
+import { DEFAULT_MAX, DEFAULT_MIN, DEFAULT_STEP } from '@swipi/playground-core'
 import { useNumberField } from './useNumberField'
 
 const NumberField = ({

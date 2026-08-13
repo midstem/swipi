@@ -1,5 +1,6 @@
 import { ChangeEvent } from 'react'
-import { UseToggleProps, UseToggleReturn } from '@swipi/playground-core'
+import { UseToggleProps } from '@swipi/playground-core'
+import { UseToggleReturn } from '../../types'
 
 export const useToggle = ({ onChange }: UseToggleProps): UseToggleReturn => ({
   handleChange: (event: ChangeEvent<HTMLInputElement>): void =>
