@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { createApp } from 'vue'
 import App from './App.vue'
-import '../../../packages/playground-core/src/playground.css'
+import '@swipi/playground-core/playground.css'
 
 createApp(App).mount('#root')

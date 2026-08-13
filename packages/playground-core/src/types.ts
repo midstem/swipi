@@ -2,9 +2,9 @@ import type { ChangeEvent, ReactNode, RefObject } from 'react'
 import {
   SlidePositions,
   SwipiAxis,
-  SwipiCarouselOptions,
+  SwipiOptions,
   SwipiState
-} from 'swipi'
+} from '@swipi/core'
 
 export enum SlidesAnimation {
   DEFAULT = 'default',
@@ -56,10 +56,7 @@ export type PlaygroundState = {
 
 export type PlaygroundStateKey = keyof PlaygroundState
 
-export type HookOptionKey = Exclude<
-  keyof SwipiCarouselOptions,
-  'onChange' | 'onSelect'
->
+export type HookOptionKey = Exclude<keyof SwipiOptions, 'onChange' | 'onSelect'>
 
 export type UpdateState = <Key extends PlaygroundStateKey>(
   key: Key,

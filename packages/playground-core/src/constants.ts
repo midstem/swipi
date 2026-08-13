@@ -1,4 +1,4 @@
-import type { SwipiAxis } from 'swipi'
+import type { SwipiAxis } from '@swipi/core'
 import {
   HookOptionKey,
   PlaygroundState,
