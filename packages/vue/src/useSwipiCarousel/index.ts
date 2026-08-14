@@ -2,6 +2,7 @@ import {
   reactive,
   watch,
   onBeforeUnmount,
+  onUpdated,
   getCurrentInstance,
   isRef,
   Ref
@@ -105,7 +106,12 @@ export const useSwipiCarousel = (
     attached = null
   }
 
-  if (getCurrentInstance()) onBeforeUnmount(teardown)
+  if (getCurrentInstance()) {
+    onUpdated(() => {
+      engine?.sync()
+    })
+    onBeforeUnmount(teardown)
+  }
 
   return [carouselRef, carousel]
 }

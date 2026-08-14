@@ -9,9 +9,26 @@ const FILE_NAME_BY_FORMAT: Record<string, string> = {
 
 export default defineConfig({
   test: {
-    environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts'],
-    include: ['src/**/*.test.ts']
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: 'dom',
+          environment: 'jsdom',
+          setupFiles: ['./src/test/setup.ts'],
+          include: ['src/**/*.test.ts'],
+          exclude: ['src/**/*.ssr.test.ts']
+        }
+      },
+      {
+        extends: true,
+        test: {
+          name: 'ssr',
+          environment: 'node',
+          include: ['src/**/*.ssr.test.ts']
+        }
+      }
+    ]
   },
   plugins: [
     dts({
