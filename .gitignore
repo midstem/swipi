@@ -29,3 +29,5 @@ packages/react/LICENSE
 *.njsproj
 *.sln
 *.sw?
+
+.claude

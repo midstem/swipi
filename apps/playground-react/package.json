@@ -1,0 +1,19 @@
+{
+  "name": "@swipi/playground-react",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "description": "Interactive playground for the Swipi React adapter",
+  "scripts": {
+    "start": "vite --open --host",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "dependencies": {
+    "@swipi/playground-core": "*",
+    "swipi": "*"
+  }
+}

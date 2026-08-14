@@ -1,0 +1,34 @@
+{
+  "name": "@swipi/playground-core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "description": "Shared logic and styles for Swipi playgrounds",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./playground.css": "./src/playground.css",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@swipi/core": "*"
+  },
+  "devDependencies": {
+    "vite": "^8.1.0",
+    "vite-plugin-dts": "^5.0.3",
+    "typescript": "^6.0.3"
+  },
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run"
+  }
+}

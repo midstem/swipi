@@ -1,0 +1,112 @@
+
+> @swipi/playground-vue@0.0.0 typecheck
+> vue-tsc --noEmit
+
+src/App.vue(36,12): error TS2322: Type 'CarouselRef | null' is not assignable to type 'RefObject<CarouselRef | null>'.
+  Type 'null' is not assignable to type 'RefObject<CarouselRef | null>'.
+src/App.vue(40,25): error TS2322: Type 'CarouselRef | null' is not assignable to type 'RefObject<CarouselRef | null>'.
+  Type 'null' is not assignable to type 'RefObject<CarouselRef | null>'.
+src/components/CodeSnippet/helpers.test.ts(3,10): error TS2305: Module '"@swipi/playground-core"' has no exported member 'buildMarkup'.
+src/components/CodeSnippet/helpers.test.ts(3,23): error TS2305: Module '"@swipi/playground-core"' has no exported member 'buildStyles'.
+src/components/CodeSnippet/index.vue(63,10): error TS2305: Module '"@swipi/playground-core"' has no exported member 'buildMarkup'.
+src/components/CodeSnippet/index.vue(63,23): error TS2305: Module '"@swipi/playground-core"' has no exported member 'buildStyles'.
+src/components/ConfigEditor/helpers.ts(2,10): error TS2305: Module '"@swipi/playground-core"' has no exported member 'NEW_CONFIG_ITEM'.
+src/components/ConfigEditor/index.vue(12,21): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type 'ConfigType'.
+src/components/ConfigEditor/index.vue(57,10): error TS2724: '"@swipi/playground-core"' has no exported member named 'CONFIG_NUMBER_FIELDS'. Did you mean 'ConfigNumberField'?
+src/components/ConfigEditor/index.vue(57,32): error TS2305: Module '"@swipi/playground-core"' has no exported member 'EMPTY_FIELD_VALUE'.
+src/components/ConfigEditor/index.vue(71,11): error TS2322: Type 'ConfigType | { maxWidth: any; }' is not assignable to type 'ConfigType'.
+  Property 'slidesNumber' is missing in type '{ maxWidth: any; }' but required in type 'ConfigType'.
+src/components/ConfigEditor/index.vue(71,28): error TS2741: Property 'slidesNumber' is missing in type '{ maxWidth: any; }' but required in type 'ConfigType'.
+src/components/ConfigEditor/useConfigEditor.ts(3,10): error TS2305: Module '"@swipi/playground-core"' has no exported member 'addConfigItem'.
+src/components/ConfigEditor/useConfigEditor.ts(3,25): error TS2305: Module '"@swipi/playground-core"' has no exported member 'removeConfigItem'.
+src/components/ConfigEditor/useConfigEditor.ts(3,43): error TS2305: Module '"@swipi/playground-core"' has no exported member 'updateConfigItem'.
+src/components/ControlsPanel/controlsPanel.test.tsx(3,27): error TS2307: Cannot find module '.' or its corresponding type declarations.
+src/components/ControlsPanel/index.vue(3,6): error TS2345: Argument of type '{ title: string; origin: "hook"; hint: string; }' is not assignable to parameter of type '{ readonly title: string; readonly origin: SectionOrigin; readonly hint?: string | undefined; readonly children: ReactNode; } & VNodeProps & AllowedComponentProps & ComponentCustomProps & Record<...>'.
+  Property 'children' is missing in type '{ title: string; origin: "hook"; hint: string; }' but required in type '{ readonly title: string; readonly origin: SectionOrigin; readonly hint?: string | undefined; readonly children: ReactNode; }'.
+src/components/ControlsPanel/index.vue(29,17): error TS2339: Property 'AUTOPLAY_SPEED_LIMITS' does not exist on type 'CreateComponentPublicInstanceWithMixins<ToResolvedProps<__VLS_Props, {}>, { ConfigEditor: DefineComponent<ConfigEditorProps, {}, {}, {}, {}, ComponentOptionsMixin, ... 13 more ..., any>; ... 8 more ...; isVertical: ComputedRef<...>; }, ... 23 more ..., {}>'.
+src/components/ControlsPanel/index.vue(37,17): error TS2339: Property 'ANIMATION_SPEED_LIMITS' does not exist on type 'CreateComponentPublicInstanceWithMixins<ToResolvedProps<__VLS_Props, {}>, { ConfigEditor: DefineComponent<ConfigEditorProps, {}, {}, {}, {}, ComponentOptionsMixin, ... 13 more ..., any>; ... 8 more ...; isVertical: ComputedRef<...>; }, ... 23 more ..., {}>'.
+src/components/ControlsPanel/index.vue(48,6): error TS2345: Argument of type '{ title: string; origin: "hook"; hint: string; }' is not assignable to parameter of type '{ readonly title: string; readonly origin: SectionOrigin; readonly hint?: string | undefined; readonly children: ReactNode; } & VNodeProps & AllowedComponentProps & ComponentCustomProps & Record<...>'.
+  Property 'children' is missing in type '{ title: string; origin: "hook"; hint: string; }' but required in type '{ readonly title: string; readonly origin: SectionOrigin; readonly hint?: string | undefined; readonly children: ReactNode; }'.
+src/components/ControlsPanel/index.vue(57,19): error TS2339: Property 'AXIS_OPTIONS' does not exist on type 'CreateComponentPublicInstanceWithMixins<ToResolvedProps<__VLS_Props, {}>, { ConfigEditor: DefineComponent<ConfigEditorProps, {}, {}, {}, {}, ComponentOptionsMixin, ... 13 more ..., any>; ... 8 more ...; isVertical: ComputedRef<...>; }, ... 23 more ..., {}>'.
+src/components/ControlsPanel/index.vue(65,35): error TS2339: Property 'ONE_SLIDE' does not exist on type 'CreateComponentPublicInstanceWithMixins<ToResolvedProps<__VLS_Props, {}>, { ConfigEditor: DefineComponent<ConfigEditorProps, {}, {}, {}, {}, ComponentOptionsMixin, ... 13 more ..., any>; ... 8 more ...; isVertical: ComputedRef<...>; }, ... 23 more ..., {}>'.
+src/components/ControlsPanel/index.vue(72,17): error TS2339: Property 'SLIDE_WIDTH_LIMITS' does not exist on type 'CreateComponentPublicInstanceWithMixins<ToResolvedProps<__VLS_Props, {}>, { ConfigEditor: DefineComponent<ConfigEditorProps, {}, {}, {}, {}, ComponentOptionsMixin, ... 13 more ..., any>; ... 8 more ...; isVertical: ComputedRef<...>; }, ... 23 more ..., {}>'.
+src/components/ControlsPanel/index.vue(79,17): error TS2339: Property 'SPACE_BETWEEN_LIMITS' does not exist on type 'CreateComponentPublicInstanceWithMixins<ToResolvedProps<__VLS_Props, {}>, { ConfigEditor: DefineComponent<ConfigEditorProps, {}, {}, {}, {}, ComponentOptionsMixin, ... 13 more ..., any>; ... 8 more ...; isVertical: ComputedRef<...>; }, ... 23 more ..., {}>'.
+src/components/ControlsPanel/index.vue(84,6): error TS2345: Argument of type '{ title: string; origin: "playground"; hint: string; }' is not assignable to parameter of type '{ readonly title: string; readonly origin: SectionOrigin; readonly hint?: string | undefined; readonly children: ReactNode; } & VNodeProps & AllowedComponentProps & ComponentCustomProps & Record<...>'.
+  Property 'children' is missing in type '{ title: string; origin: "playground"; hint: string; }' but required in type '{ readonly title: string; readonly origin: SectionOrigin; readonly hint?: string | undefined; readonly children: ReactNode; }'.
+src/components/ControlsPanel/index.vue(93,15): error TS2339: Property 'MIN_SLIDES_COUNT' does not exist on type 'CreateComponentPublicInstanceWithMixins<ToResolvedProps<__VLS_Props, {}>, { ConfigEditor: DefineComponent<ConfigEditorProps, {}, {}, {}, {}, ComponentOptionsMixin, ... 13 more ..., any>; ... 8 more ...; isVertical: ComputedRef<...>; }, ... 23 more ..., {}>'.
+src/components/ControlsPanel/index.vue(94,15): error TS2339: Property 'MAX_SLIDES_COUNT' does not exist on type 'CreateComponentPublicInstanceWithMixins<ToResolvedProps<__VLS_Props, {}>, { ConfigEditor: DefineComponent<ConfigEditorProps, {}, {}, {}, {}, ComponentOptionsMixin, ... 13 more ..., any>; ... 8 more ...; isVertical: ComputedRef<...>; }, ... 23 more ..., {}>'.
+src/components/ControlsPanel/index.vue(101,17): error TS2339: Property 'SLIDES_NUMBER_LIMITS' does not exist on type 'CreateComponentPublicInstanceWithMixins<ToResolvedProps<__VLS_Props, {}>, { ConfigEditor: DefineComponent<ConfigEditorProps, {}, {}, {}, {}, ComponentOptionsMixin, ... 13 more ..., any>; ... 8 more ...; isVertical: ComputedRef<...>; }, ... 23 more ..., {}>'.
+src/components/ControlsPanel/index.vue(108,19): error TS2339: Property 'SLIDES_ANIMATION_OPTIONS' does not exist on type 'CreateComponentPublicInstanceWithMixins<ToResolvedProps<__VLS_Props, {}>, { ConfigEditor: DefineComponent<ConfigEditorProps, {}, {}, {}, {}, ComponentOptionsMixin, ... 13 more ..., any>; ... 8 more ...; isVertical: ComputedRef<...>; }, ... 23 more ..., {}>'.
+src/components/ControlsPanel/index.vue(120,6): error TS2345: Argument of type '{ title: string; origin: "playground"; }' is not assignable to parameter of type '{ readonly title: string; readonly origin: SectionOrigin; readonly hint?: string | undefined; readonly children: ReactNode; } & VNodeProps & AllowedComponentProps & ComponentCustomProps & Record<...>'.
+  Property 'children' is missing in type '{ title: string; origin: "playground"; }' but required in type '{ readonly title: string; readonly origin: SectionOrigin; readonly hint?: string | undefined; readonly children: ReactNode; }'.
+src/components/ControlsPanel/index.vue(133,6): error TS2345: Argument of type '{ title: string; origin: "playground"; }' is not assignable to parameter of type '{ readonly title: string; readonly origin: SectionOrigin; readonly hint?: string | undefined; readonly children: ReactNode; } & VNodeProps & AllowedComponentProps & ComponentCustomProps & Record<...>'.
+  Property 'children' is missing in type '{ title: string; origin: "playground"; }' but required in type '{ readonly title: string; readonly origin: SectionOrigin; readonly hint?: string | undefined; readonly children: ReactNode; }'.
+src/components/ControlsPanel/index.vue(147,6): error TS2345: Argument of type '{ title: string; origin: "playground"; }' is not assignable to parameter of type '{ readonly title: string; readonly origin: SectionOrigin; readonly hint?: string | undefined; readonly children: ReactNode; } & VNodeProps & AllowedComponentProps & ComponentCustomProps & Record<...>'.
+  Property 'children' is missing in type '{ title: string; origin: "playground"; }' but required in type '{ readonly title: string; readonly origin: SectionOrigin; readonly hint?: string | undefined; readonly children: ReactNode; }'.
+src/components/ControlsPanel/index.vue(156,6): error TS2345: Argument of type '{ title: string; origin: "playground"; }' is not assignable to parameter of type '{ readonly title: string; readonly origin: SectionOrigin; readonly hint?: string | undefined; readonly children: ReactNode; } & VNodeProps & AllowedComponentProps & ComponentCustomProps & Record<...>'.
+  Property 'children' is missing in type '{ title: string; origin: "playground"; }' but required in type '{ readonly title: string; readonly origin: SectionOrigin; readonly hint?: string | undefined; readonly children: ReactNode; }'.
+src/components/ControlsPanel/index.vue(161,17): error TS2339: Property 'STAGE_WIDTH_LIMITS' does not exist on type 'CreateComponentPublicInstanceWithMixins<ToResolvedProps<__VLS_Props, {}>, { ConfigEditor: DefineComponent<ConfigEditorProps, {}, {}, {}, {}, ComponentOptionsMixin, ... 13 more ..., any>; ... 8 more ...; isVertical: ComputedRef<...>; }, ... 23 more ..., {}>'.
+src/components/ControlsPanel/index.vue(168,17): error TS2339: Property 'STAGE_HEIGHT_LIMITS' does not exist on type 'CreateComponentPublicInstanceWithMixins<ToResolvedProps<__VLS_Props, {}>, { ConfigEditor: DefineComponent<ConfigEditorProps, {}, {}, {}, {}, ComponentOptionsMixin, ... 13 more ..., any>; ... 8 more ...; isVertical: ComputedRef<...>; }, ... 23 more ..., {}>'.
+src/components/ControlsPanel/index.vue(174,28): error TS2339: Property 'STAGE_PRESETS' does not exist on type 'CreateComponentPublicInstanceWithMixins<ToResolvedProps<__VLS_Props, {}>, { ConfigEditor: DefineComponent<ConfigEditorProps, {}, {}, {}, {}, ComponentOptionsMixin, ... 13 more ..., any>; ... 8 more ...; isVertical: ComputedRef<...>; }, ... 23 more ..., {}>'.
+src/components/ControlsPanel/index.vue(189,18): error TS2307: Cannot find module './helpers' or its corresponding type declarations.
+src/components/ControlsPanel/index.vue(190,1): error TS6133: 'ControlsPanelProps' is declared but its value is never read.
+src/components/ControlsPanel/index.vue(208,63): error TS2304: Cannot find name 'NO_SLIDE_WIDTH'.
+src/components/ControlsPanel/index.vue(209,56): error TS2304: Cannot find name 'VERTICAL_AXIS'.
+src/components/ImperativeApi/helpers.ts(1,48): error TS2307: Cannot find module '../../constants' or its corresponding type declarations.
+src/components/ImperativeApi/index.vue(40,23): error TS2305: Module '"@swipi/playground-core"' has no exported member 'FIRST_INDEX'.
+src/components/ImperativeApi/index.vue(40,36): error TS2305: Module '"@swipi/playground-core"' has no exported member 'getLastIndex'.
+src/components/ImperativeApi/index.vue(55,42): error TS2339: Property 'scrollPrev' does not exist on type 'RefObject<CarouselRef | null>'.
+src/components/ImperativeApi/index.vue(56,42): error TS2339: Property 'scrollNext' does not exist on type 'RefObject<CarouselRef | null>'.
+src/components/ImperativeApi/index.vue(57,40): error TS2339: Property 'scrollTo' does not exist on type 'RefObject<CarouselRef | null>'.
+src/components/ImperativeApi/index.vue(61,37): error TS2339: Property 'canScrollNext' does not exist on type 'RefObject<CarouselRef | null>'.
+src/components/ImperativeApi/index.vue(62,37): error TS2339: Property 'canScrollPrev' does not exist on type 'RefObject<CarouselRef | null>'.
+src/components/ImperativeApi/index.vue(63,38): error TS2339: Property 'scrollSnapList' does not exist on type 'RefObject<CarouselRef | null>'.
+src/components/ImperativeApi/index.vue(64,42): error TS2339: Property 'selectedScrollSnap' does not exist on type 'RefObject<CarouselRef | null>'.
+src/components/ImperativeApi/useImperativeApi.ts(3,10): error TS2305: Module '"@swipi/playground-core"' has no exported member 'FIRST_INDEX'.
+src/components/ImperativeApi/useImperativeApi.ts(4,10): error TS2305: Module '"@swipi/playground-core"' has no exported member 'clampIndex'.
+src/components/NumberField/index.vue(37,10): error TS2305: Module '"./helpers"' has no exported member 'DEFAULT_MIN'.
+src/components/NumberField/index.vue(37,23): error TS2305: Module '"./helpers"' has no exported member 'DEFAULT_MAX'.
+src/components/NumberField/index.vue(37,36): error TS2305: Module '"./helpers"' has no exported member 'DEFAULT_STEP'.
+src/components/Section/index.vue(17,7): error TS6133: 'props' is declared but its value is never read.
+src/components/SelectField/index.vue(24,7): error TS6133: 'props' is declared but its value is never read.
+src/components/SelectField/index.vue(24,27): error TS2314: Generic type 'SelectFieldProps' requires 1 type argument(s).
+src/components/Stage/index.vue(21,12): error TS2345: Argument of type '{ role: string; tabindex: string; 'aria-roledescription': string; 'aria-label': string; style: React.CSSProperties; class: string; ref: (el: any) => void; onKeydown: (event: KeyboardEvent) => void; }' is not assignable to parameter of type 'HTMLAttributes & ReservedProps & Record<string, unknown>'.
+  Type '{ role: string; tabindex: string; 'aria-roledescription': string; 'aria-label': string; style: React.CSSProperties; class: string; ref: (el: any) => void; onKeydown: (event: KeyboardEvent) => void; }' is not assignable to type 'HTMLAttributes'.
+    Types of property 'style' are incompatible.
+      Type 'CSSProperties' is not assignable to type 'StyleValue'.
+        Type 'Properties<string | number, string & {}>' is missing the following properties from type 'StyleValue[]': length, pop, push, concat, and 33 more.
+src/components/Stage/index.vue(31,14): error TS2345: Argument of type '{ style: React.CSSProperties; class: string; }' is not assignable to parameter of type 'HTMLAttributes & ReservedProps & Record<string, unknown>'.
+  Type '{ style: React.CSSProperties; class: string; }' is not assignable to type 'HTMLAttributes'.
+    Types of property 'style' are incompatible.
+      Type 'CSSProperties' is not assignable to type 'StyleValue'.
+        Type 'Properties<string | number, string & {}>' is missing the following properties from type 'StyleValue[]': length, pop, push, concat, and 33 more.
+src/components/Stage/index.vue(35,16): error TS2345: Argument of type '{ style: React.CSSProperties; role: string; 'aria-roledescription': string; 'aria-label': string; class: string; key: string; }' is not assignable to parameter of type 'HTMLAttributes & ReservedProps & Record<string, unknown>'.
+  Type '{ style: React.CSSProperties; role: string; 'aria-roledescription': string; 'aria-label': string; class: string; key: string; }' is not assignable to type 'HTMLAttributes'.
+    Types of property 'style' are incompatible.
+      Type 'CSSProperties' is not assignable to type 'StyleValue'.
+        Type 'Properties<string | number, string & {}>' is missing the following properties from type 'StyleValue[]': length, pop, push, concat, and 33 more.
+src/components/Stage/index.vue(140,29): error TS2554: Expected 4 arguments, but got 2.
+src/components/Stage/index.vue(141,62): error TS2554: Expected 1 arguments, but got 2.
+src/components/Stage/index.vue(142,37): error TS2554: Expected 3 arguments, but got 2.
+src/components/Stage/index.vue(143,38): error TS2554: Expected 3 arguments, but got 2.
+src/components/Stage/index.vue(147,9): error TS2339: Property 'carousel' does not exist on type 'UseSwipiCarousel'.
+src/components/Stage/index.vue(158,14): error TS7006: Parameter 'st' implicitly has an 'any' type.
+src/components/Stage/index.vue(159,14): error TS7006: Parameter 'st' implicitly has an 'any' type.
+src/components/Stage/index.vue(160,6): error TS2554: Expected 0-1 arguments, but got 2.
+src/components/Stage/index.vue(168,20): error TS2339: Property 'value' does not exist on type 'RefObject<CarouselRef | null>'.
+src/components/Stage/useStage.ts(12,32): error TS2552: Cannot find name 'getConfig'. Did you mean 'config'?
+src/components/Stage/useStage.ts(14,25): error TS2552: Cannot find name 'getVisibleSlides'. Did you mean 'visibleSlides'?
+src/components/Stage/useStage.ts(21,17): error TS2304: Cannot find name 'getSlideWidth'.
+src/components/Stage/useStage.ts(22,19): error TS2304: Cannot find name 'getSpaceBetween'.
+src/components/Stage/useStage.ts(23,11): error TS2304: Cannot find name 'getBias'.
+src/components/Stage/useStage.ts(24,23): error TS2304: Cannot find name 'getActiveBreakpoint'.
+src/components/TextField/index.vue(22,7): error TS6133: 'props' is declared but its value is never read.
+src/components/Toggle/index.vue(19,7): error TS6133: 'props' is declared but its value is never read.
+src/usePlayground.ts(6,44): error TS6133: 'UsePlaygroundReturn' is declared but its value is never read.
+npm error Lifecycle script `typecheck` failed with error:
+npm error code 2
+npm error path /Users/user/Desktop/work/midstem/swipi/apps/playground-vue
+npm error workspace @swipi/playground-vue@0.0.0
+npm error location /Users/user/Desktop/work/midstem/swipi/apps/playground-vue
+npm error command failed
+npm error command sh -c vue-tsc --noEmit

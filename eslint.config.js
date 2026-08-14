@@ -6,6 +6,8 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y'
 import importPlugin from 'eslint-plugin-import'
 import htmlPlugin from 'eslint-plugin-html'
+import vuePlugin from 'eslint-plugin-vue'
+import vueParser from 'vue-eslint-parser'
 import prettierRecommended from 'eslint-plugin-prettier/recommended'
 import globals from 'globals'
 import { fileURLToPath } from 'url'
@@ -127,6 +129,35 @@ export default [
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
       'react/jsx-props-no-spreading': 'off'
+    }
+  },
+  ...vuePlugin.configs['flat/recommended'],
+
+  {
+    files: ['packages/vue/**/*.{ts,js}', 'apps/playground-vue/**/*.{ts,js}'],
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+      'react-hooks/exhaustive-deps': 'off'
+    }
+  },
+
+  {
+    files: ['**/*.vue'],
+    languageOptions: {
+      parser: vueParser,
+      parserOptions: {
+        parser: tsParser,
+        projectService: true,
+        tsconfigRootDir: __dirname,
+        extraFileExtensions: ['.vue']
+      },
+      globals: {
+        ...globals.browser,
+        ...globals.es2021
+      }
+    },
+    rules: {
+      'vue/multi-word-component-names': 'off'
     }
   },
 
