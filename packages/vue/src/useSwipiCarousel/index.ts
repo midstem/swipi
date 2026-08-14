@@ -1,4 +1,11 @@
-import { reactive, watch, onBeforeUnmount, isRef, Ref } from 'vue'
+import {
+  reactive,
+  watch,
+  onBeforeUnmount,
+  getCurrentInstance,
+  isRef,
+  Ref
+} from 'vue'
 import {
   createSwipi,
   DEFAULT_OPTIONS,
@@ -81,14 +88,14 @@ export const useSwipiCarousel = (
   }
 
   watch(
-    options,
+    () => (isRef(options) ? options.value : options),
     () => {
       engine?.update(getFullOptions())
     },
     { deep: true }
   )
 
-  onBeforeUnmount(() => {
+  const teardown = (): void => {
     if (cleanupSubscription) {
       cleanupSubscription()
       cleanupSubscription = null
@@ -96,7 +103,9 @@ export const useSwipiCarousel = (
     engine?.destroy()
     engine = null
     attached = null
-  })
+  }
+
+  if (getCurrentInstance()) onBeforeUnmount(teardown)
 
   return [carouselRef, carousel]
 }
