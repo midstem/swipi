@@ -20,7 +20,8 @@ import { setupObservers } from '#src/modules/orchestration/observers'
 import { setupAutoplay } from '#src/modules/orchestration/autoplay'
 import { setupPrefersReducedMotion } from '#src/modules/orchestration/prefersReducedMotion'
 
-import { DEFAULT_OPTIONS, MISSING_TRACK_ERROR } from './constants'
+import { MISSING_TRACK_ERROR } from './constants'
+import { resolveOptions } from './options'
 import { toStoreState } from './helpers'
 import { setupStore } from './store'
 import { setupScroll } from './scroll'
@@ -33,7 +34,7 @@ export const createSwipi = (
   const track = viewport.firstElementChild as HTMLElement | null
   if (!track) throw new Error(MISSING_TRACK_ERROR)
 
-  let currentOptions: ResolvedSwipiOptions = { ...DEFAULT_OPTIONS, ...options }
+  let currentOptions: ResolvedSwipiOptions = resolveOptions(options)
   let prefersReducedMotion = false
 
   const offsets: SlideOffsets = new WeakMap()
@@ -149,7 +150,7 @@ export const createSwipi = (
     subscribe: store.subscribe,
     update: (newOptions) => {
       const prevOptions = currentOptions
-      currentOptions = { ...currentOptions, ...newOptions }
+      currentOptions = resolveOptions({ ...currentOptions, ...newOptions })
 
       if (prevOptions.axis !== currentOptions.axis) {
         resetSlideOffsets(track, offsets)
