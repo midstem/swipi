@@ -1,4 +1,3 @@
-import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vitest/config'
 import dts from 'vite-plugin-dts'
 import { resolve } from 'path'
@@ -15,7 +14,6 @@ export default defineConfig({
     include: ['src/**/*.test.ts']
   },
   plugins: [
-    vue(),
     dts({
       bundleTypes: { bundledPackages: ['@swipi/core'] },
       include: ['src'],

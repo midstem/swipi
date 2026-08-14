@@ -190,16 +190,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Build
+        run: npm run build --workspace @swipi/core --workspace swipi-vue
+
       - name: Pin Vue ${{ matrix.vue }}
         run: |
-          npm install --no-save --no-package-lock \
+          npm install --no-save --no-package-lock --legacy-peer-deps \
             vue@${{ matrix.vue }}
 
-      - name: Test
-        run: npm run test:run
-
-      - name: Build
-        run: npm run build
+      - name: Test the adapter
+        run: npm run test:run --workspace swipi-vue
 
       - name: Typecheck the public API
-        run: npm run typecheck:package
+        run: npm run typecheck:package --workspace swipi-vue
