@@ -1,12 +1,15 @@
 import {
   computed,
+  createApp,
   defineComponent,
   h,
   nextTick,
+  reactive,
+  type App,
   type PropType,
   type VNode
 } from 'vue'
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { afterEach } from 'vitest'
 import { useSwipiCarousel } from '..'
 import { SwipiCarousel, SwipiCarouselOptions } from '../types'
 import { SLIDE_WIDTH, SLIDES_COUNT } from './dom'
@@ -48,9 +51,7 @@ export const Carousel = defineComponent({
           )
         ]),
         h('p', { 'data-testid': 'label' }, props.label),
-        h('p', { 'data-testid': 'state' }, readable(carousel)),
-        h('button', { onClick: () => carousel.scrollNext() }, 'forward'),
-        h('button', { onClick: () => carousel.scrollPrev() }, 'back')
+        h('p', { 'data-testid': 'state' }, readable(carousel))
       ])
   }
 })
@@ -62,14 +63,45 @@ export type CarouselProps = {
   trackStyle?: string
 }
 
+export type MountedCarousel = {
+  setProps: (next: CarouselProps) => Promise<void>
+  unmount: () => void
+}
+
+const live = new Set<{ app: App; host: HTMLElement }>()
+
+const teardown = (entry: { app: App; host: HTMLElement }): void => {
+  entry.app.unmount()
+  entry.host.remove()
+  live.delete(entry)
+}
+
+afterEach(() => Array.from(live).forEach(teardown))
+
 export const settle = (): Promise<void> => nextTick()
 
 export const mountCarousel = async (
   props: CarouselProps = {}
-): Promise<VueWrapper<InstanceType<typeof Carousel>>> => {
-  const wrapper = mount(Carousel, { props, attachTo: document.body })
+): Promise<MountedCarousel> => {
+  const host = document.createElement('div')
+
+  document.body.appendChild(host)
+
+  const state = reactive<CarouselProps>({ ...props })
+  const app = createApp({ render: () => h(Carousel, { ...state }) })
+  const entry = { app, host }
+
+  app.mount(host)
+  live.add(entry)
 
   await settle()
 
-  return wrapper
+  return {
+    setProps: async (next: CarouselProps): Promise<void> => {
+      Object.assign(state, next)
+
+      await settle()
+    },
+    unmount: () => teardown(entry)
+  }
 }
