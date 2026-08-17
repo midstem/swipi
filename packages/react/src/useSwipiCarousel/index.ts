@@ -7,7 +7,7 @@ import {
 } from 'react'
 import {
   createSwipi,
-  DEFAULT_OPTIONS,
+  resolveOptions,
   SwipiApi,
   SwipiSnapshot
 } from '@swipi/core'
@@ -49,14 +49,7 @@ export const useSwipiCarousel = (
 ): UseSwipiCarousel => {
   const engineRef = useRef<SwipiApi | null>(null)
   const [engine, setEngine] = useState<SwipiApi | null>(null)
-  const fullOptions = {
-    ...DEFAULT_OPTIONS,
-    onChange: noop,
-    onSelect: noop,
-    slideWidth: undefined,
-    spaceBetween: undefined,
-    ...options
-  }
+  const fullOptions = resolveOptions(options)
 
   const optionsRef = useLatestRef(fullOptions)
 

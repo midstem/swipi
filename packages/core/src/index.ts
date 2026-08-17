@@ -18,3 +18,4 @@ export * from './types'
 
 export * from './createSwipi'
 export * from './createSwipi/constants'
+export * from './createSwipi/options'
