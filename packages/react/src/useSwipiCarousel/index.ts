@@ -18,16 +18,16 @@ import { useLatestRef } from '../hooks/useLatestRef'
 const noop = (): void => {}
 const noopSubscribe = () => noop
 
-const getEmptySnapshot = (): SwipiSnapshot => ({
+const emptySnapshot: SwipiSnapshot = {
   selectedIndex: 0,
   snapCount: 0,
   slidesCount: 0,
   hasOverflow: false,
   canScrollNext: false,
   canScrollPrev: false
-})
+}
 
-const emptySnapshot = getEmptySnapshot()
+const getEmptySnapshot = (): SwipiSnapshot => emptySnapshot
 
 const toCarousel = (
   snapshot: SwipiSnapshot,
