@@ -191,7 +191,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build --workspace @swipi/core --workspace swipi-vue
+        run: npm run build --workspace @swipi/core --workspace @midstem/swipi-vue
 
       - name: Pin Vue ${{ matrix.vue }}
         run: |
@@ -199,7 +199,7 @@ jobs:
             vue@${{ matrix.vue }}
 
       - name: Test the adapter
-        run: npm run test:run --workspace swipi-vue
+        run: npm run test:run --workspace @midstem/swipi-vue
 
       - name: Typecheck the public API
-        run: npm run typecheck:package --workspace swipi-vue
+        run: npm run typecheck:package --workspace @midstem/swipi-vue

@@ -4,7 +4,7 @@ set -euo pipefail
 TAG="${TAG:-}"
 
 if [[ ! "$TAG" =~ ^(.+)@([0-9]+\.[0-9]+\.[0-9]+.*)$ ]]; then
-  echo "a release tag names one package: swipi@3.1.1, swipi-vue@1.0.0"
+  echo "a release tag names one package: @midstem/swipi-react@1.0.1, @midstem/swipi-vue@1.0.0"
   echo "it is tagged ${TAG:-nothing}"
   exit 1
 fi

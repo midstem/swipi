@@ -1,5 +1,5 @@
 import { ref, reactive, computed, watch, shallowRef } from 'vue'
-import { SlidePositions, SwipiState } from 'swipi-vue'
+import { SlidePositions, SwipiState } from '@midstem/swipi-vue'
 import { CarouselRef } from '@swipi/playground-core'
 import { DEFAULT_STATE, MAX_EVENTS, SLIDE_COLORS } from '@swipi/playground-core'
 import { loadState, saveState } from '@swipi/playground-core'

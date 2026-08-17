@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { SlidePositions, SwipiState } from 'swipi'
+import { SlidePositions, SwipiState } from '@midstem/swipi-react'
 import { CarouselRef } from '@swipi/playground-core'
 import { DEFAULT_STATE, MAX_EVENTS, SLIDE_COLORS } from '@swipi/playground-core'
 import { loadState, saveState } from '@swipi/playground-core'

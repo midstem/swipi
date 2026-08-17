@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@swipi/playground-core": "*",
-    "swipi-vue": "*",
+    "@midstem/swipi-vue": "*",
     "vue": "^3.5.12"
   },
   "devDependencies": {

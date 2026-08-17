@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: [swipi, swipi-vue]
+        package: ['@midstem/swipi-react', '@midstem/swipi-vue']
     steps:
       - name: Checkout
         uses: actions/checkout@v4

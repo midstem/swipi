@@ -1,4 +1,4 @@
-import { useSwipiCarousel } from 'swipi'
+import { useSwipiCarousel } from '@midstem/swipi-react'
 
 const SLIDES = ['one', 'two', 'three', 'four']
 

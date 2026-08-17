@@ -1,5 +1,5 @@
 {
-  "name": "swipi-vue",
+  "name": "@midstem/swipi-vue",
   "version": "1.0.0",
   "type": "module",
   "license": "MIT",
@@ -57,5 +57,8 @@
     "test": "vitest",
     "test:run": "vitest run",
     "prepack": "node scripts/copy-root-docs.mjs"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -93,7 +93,7 @@ ${ATTRIBUTE_INDENT}data-selected={index === carousel.selectedIndex}`
 
   const params = isFadeIn ? '(item, index)' : '(item)'
 
-  return `import { useSwipiCarousel } from 'swipi'
+  return `import { useSwipiCarousel } from '@midstem/swipi-react'
 
 export const Carousel = ({ items }) => {
   const [carouselRef, carousel] = useSwipiCarousel(${getOptions(state)})
@@ -130,7 +130,7 @@ export const buildMarkup = (
 
   const [previousKey, nextKey] = KEYS[state.axis]
 
-  return `import { useSwipiCarousel } from 'swipi'
+  return `import { useSwipiCarousel } from '@midstem/swipi-react'
 
 export const Carousel = ({ items }) => {
   const [carouselRef, carousel] = useSwipiCarousel(${getOptions(state)})

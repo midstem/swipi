@@ -16,7 +16,7 @@ const PLAYGROUND_CORE_SOURCE = resolve(
 export default defineConfig({
   resolve: {
     alias: [
-      { find: /^swipi-vue$/, replacement: SWIPI_SOURCE },
+      { find: /^@midstem\/swipi-vue$/, replacement: SWIPI_SOURCE },
       {
         find: /^@swipi\/playground-core$/,
         replacement: PLAYGROUND_CORE_SOURCE
