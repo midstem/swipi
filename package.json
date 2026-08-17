@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "license": "MIT",
-  "author": "Maksym Tkachuk, Oleksandr Didyshen",
+  "author": "Midstem",
   "description": "Monorepo for the Swipi carousel: a framework-agnostic core and the adapters built on it",
   "workspaces": [
     "packages/*",
