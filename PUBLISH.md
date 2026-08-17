@@ -29,10 +29,40 @@ is not `<npm name>@<version>`, refuses private workspaces, and fails the release
 unless the version in that package's `package.json` matches the tag exactly.
 Nothing else in the workflow decides which package goes out.
 
+## The CLI does all of this
+
+```bash
+npm run release
+```
+
+It lists the publishable packages with their local and published versions, asks
+which one you mean, and then does whichever half of the job is due:
+
+- **the local version is already on npm** — it offers patch, minor, major,
+  prerelease or a version you type, writes it to that package's `package.json`
+  and to the one line of `package-lock.json` that carries it, and prints the git
+  commands for getting it onto `main`;
+- **the local version is not on npm yet** — it checks that you are on `main`,
+  clean, in sync with `origin`, that `HEAD` really carries that version, and
+  that neither the tag nor the release exists; asks for an optional line to put
+  above the generated notes; shows the exact tag, target commit and dist-tag,
+  and creates the release once you confirm.
+
+So a release is two runs: one to bump, one to tag. `npm run release -- --dry-run`
+walks the same path and writes nothing — it prints the `gh` command it would
+have run.
+
+Everything below is what the CLI does on your behalf, for when you want to do it
+by hand or need to fix something it refuses to touch.
+
 ## 1. Prepare the release branch
 
 - bump `version` in the package you are releasing — `packages/react/package.json`
   **or** `packages/vue/package.json`, not both;
+- keep `package-lock.json` in step: the `packages/<dir>` entry repeats that
+  version. Do **not** reach for `npm version` or a plain `npm install` here —
+  the lockfile is stale against `apps/playground-vue`, so either one rewrites
+  around two thousand lines of unrelated dependency churn;
 - update `MIGRATION.md` and the package's `README.md` if its public API moved.
 
 Releasing both adapters after a core change is two bumps, two tags and two
@@ -73,7 +103,8 @@ gh release create swipi-vue@1.0.0 --target main --title "swipi-vue@1.0.0" --gene
 `--generate-notes` lists every pull request merged since the previous tag in the
 repository — which, with two packages releasing on their own cadence, is
 probably the _other_ package's tag. Point it at this package's previous release
-instead:
+instead (the CLI reads it from `git tag --list "<package>@*"`, falling back to
+the legacy `v*` tags for `swipi`):
 
 ```bash
 gh release create swipi-vue@1.1.0 --target main --title "swipi-vue@1.1.0" \
