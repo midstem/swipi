@@ -1,5 +1,5 @@
 {
-  "name": "swipi-consumer-app",
+  "name": "swipi-vue-consumer-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +9,7 @@
     "build:unused": "vite build --config vite.unused.config.js"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^6.0.3",
+    "@vitejs/plugin-vue": "^6.0.8",
     "jsdom": "^30.0.0",
     "vite": "^8.1.0"
   }

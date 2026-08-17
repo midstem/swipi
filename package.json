@@ -32,7 +32,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint --cache ./packages ./apps --quiet --fix",
     "lint:format": "prettier --write --log-level warn \"./**/*.{js,jsx,mjs,ts,tsx,css,md,json}\"",
-    "lint-tsc": "npm run build && npm run verify:package && npm run lint:format && npm run lint:fix && npm run typecheck && npm run test:run"
+    "lint-tsc": "npm run build && npm run verify:package && npm run lint:format && npm run lint:fix && npm run typecheck && npm run test:run",
+    "release": "node tools/release/index.mjs"
   },
   "browserslist": {
     "production": [

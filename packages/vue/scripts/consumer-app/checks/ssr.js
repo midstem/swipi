@@ -1,12 +1,12 @@
 import assert from 'node:assert/strict'
-import { createElement as element, StrictMode, version } from 'react'
-import { renderToString } from 'react-dom/server'
+import { createSSRApp, version } from 'vue'
+import { renderToString } from 'vue/server-renderer'
 import { Carousel, SLIDES } from './carousel.js'
 import { listenToConsole } from './environment.js'
 
 const listener = listenToConsole()
 
-const html = renderToString(element(StrictMode, null, element(Carousel)))
+const html = await renderToString(createSSRApp(Carousel))
 
 listener.restore()
 
@@ -17,10 +17,10 @@ SLIDES.forEach((slide) =>
 )
 
 assert.ok(
-  html.replace(/<!-- -->/g, '').includes('0/0/0'),
+  html.includes('0/0/0'),
   'the server output does not report an unmeasured carousel'
 )
 
 assert.deepEqual(listener.messages, [], 'the server run wrote to the console')
 
-console.log(`ssr: renderToString is silent on react ${version}`)
+console.log(`ssr: renderToString is silent on vue ${version}`)

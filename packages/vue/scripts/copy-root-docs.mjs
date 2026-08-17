@@ -3,7 +3,7 @@ import { resolve } from 'node:path'
 
 const ROOT = resolve('..', '..')
 
-const DOCS = ['README.md', 'LICENSE']
+const DOCS = ['LICENSE']
 
 DOCS.forEach((file) => copyFileSync(resolve(ROOT, file), resolve(file)))
 

@@ -19,7 +19,7 @@ jobs:
           cache: npm
           registry-url: https://registry.npmjs.org/
 
-      - name: Check the version against the release tag
+      - name: Read the package out of the release tag
         env:
           TAG: ${{ github.event.release.tag_name }}
         run: .github/scripts/check-release-version.sh
@@ -40,17 +40,15 @@ jobs:
         run: npm run build
 
       - name: Verify the package contents
-        run: npm run verify:package
+        run: npm run verify:package --workspace "$PACKAGE"
 
       - name: Typecheck the public API
-        run: npm run typecheck:package
+        run: npm run typecheck:package --workspace "$PACKAGE"
 
       - name: Verify the tarball in a real app
-        run: npm run verify:published
+        run: npm run verify:published --workspace "$PACKAGE"
 
       - name: Publish
-        run: |
-          npm publish --workspace swipi
-          npm publish --workspace swipi-vue
+        run: npm publish --workspace "$PACKAGE" --tag "$NPM_TAG"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

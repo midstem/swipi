@@ -9,6 +9,11 @@ jobs:
   consumer-app:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    name: ${{ matrix.package }}
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [swipi, swipi-vue]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -23,4 +28,4 @@ jobs:
         run: npm ci
 
       - name: Verify the tarball in a real app
-        run: npm run verify:published
+        run: npm run verify:published --workspace ${{ matrix.package }}

@@ -1,0 +1,1 @@
+export const MISSING_PACKAGE_CODE = 'E404'

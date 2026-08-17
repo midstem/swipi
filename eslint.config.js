@@ -131,6 +131,17 @@ export default [
       'react/jsx-props-no-spreading': 'off'
     }
   },
+  {
+    files: ['**/*.mjs'],
+    rules: tsPlugin.configs['flat/disable-type-checked'].rules,
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.es2021
+      }
+    }
+  },
+
   ...vuePlugin.configs['flat/recommended'],
 
   {

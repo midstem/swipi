@@ -1,10 +1,9 @@
 import assert from 'node:assert/strict'
-import { createElement as element, StrictMode, version } from 'react'
 import { createDom, listenToConsole, waitFor } from './environment.js'
 
 const window = createDom()
 
-const { createRoot } = await import('react-dom/client')
+const { createApp, version } = await import('vue')
 const { Carousel, SLIDES } = await import('./carousel.js')
 
 const listener = listenToConsole()
@@ -17,9 +16,9 @@ const readState = () => {
   return state.textContent.split('/').map(Number)
 }
 
-const root = createRoot(window.document.querySelector('#root'))
+const app = createApp(Carousel)
 
-root.render(element(StrictMode, null, element(Carousel)))
+app.mount(window.document.querySelector('#root'))
 
 await waitFor(() => {
   const [, snapCount, slidesCount] = readState()
@@ -44,7 +43,7 @@ await waitFor(() => {
   assert.equal(selectedIndex, 1, 'the carousel did not move to the next snap')
 })
 
-root.unmount()
+app.unmount()
 
 await new Promise((resolve) => setTimeout(resolve, 50))
 
@@ -52,4 +51,4 @@ listener.restore()
 
 assert.deepEqual(listener.messages, [], 'the client run wrote to the console')
 
-console.log(`client: StrictMode mount, move and unmount on react ${version}`)
+console.log(`client: mount, move and unmount on vue ${version}`)

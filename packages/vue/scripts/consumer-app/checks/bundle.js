@@ -38,7 +38,7 @@ assert.ok(
 const unused = readChunks(resolve('dist-unused'))
 
 assert.ok(
-  unused.includes('never calls the hook'),
+  unused.includes('never calls the composable'),
   'the tree-shaking build produced nothing to look at'
 )
 

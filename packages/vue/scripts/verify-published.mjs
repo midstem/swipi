@@ -9,9 +9,9 @@ import {
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 
-const REACT_VERSIONS = ['19', '18']
+const VUE_VERSIONS = ['3', '3.2']
 
-const DEV_PORT = 5199
+const DEV_PORT = 5198
 
 const DEV_HOST = '127.0.0.1'
 
@@ -25,7 +25,7 @@ const keepWorkdir = args.includes('--keep')
 
 const manifest = JSON.parse(readFileSync('package.json', 'utf8'))
 
-const workdir = mkdtempSync(join(tmpdir(), 'swipi-consumer-'))
+const workdir = mkdtempSync(join(tmpdir(), 'swipi-vue-consumer-'))
 
 const appDir = join(workdir, 'app')
 
@@ -130,6 +130,12 @@ const openHmrSocket = async () => {
   return { socket, payloads, waitForPayload }
 }
 
+const readHotModule = async (update) => {
+  const separator = update.acceptedPath.includes('?') ? '&' : '?'
+
+  return readDevPage(`${update.acceptedPath}${separator}t=${update.timestamp}`)
+}
+
 const verifyDevServer = async () => {
   const server = startDevServer()
 
@@ -142,32 +148,38 @@ const verifyDevServer = async () => {
       throw new Error('the dev server does not serve the app shell')
     }
 
-    const entry = await readDevPage('/src/main.jsx')
+    const entry = await readDevPage('/src/main.js')
 
-    if (!entry.includes('createRoot')) {
+    if (!entry.includes('createApp')) {
       throw new Error('the dev server does not transform the app entry')
     }
 
-    const component = await readDevPage('/src/Carousel.jsx')
+    const component = await readDevPage('/src/Carousel.vue')
 
-    if (!component.includes('deps/swipi.js')) {
-      throw new Error('vite did not pre-bundle swipi for the dev server')
+    if (!component.includes('deps/swipi-vue.js')) {
+      throw new Error('vite did not pre-bundle swipi-vue for the dev server')
     }
 
-    console.log('dev: the dev server pre-bundles swipi and serves the app')
+    if (!component.includes('_sfc_render')) {
+      throw new Error(
+        'the dev server does not compile the single-file component'
+      )
+    }
+
+    console.log('dev: the dev server pre-bundles swipi-vue and serves the app')
 
     const hmr = await openHmrSocket()
-    const componentPath = join(appDir, 'src', 'Carousel.jsx')
+    const componentPath = join(appDir, 'src', 'Carousel.vue')
     const source = readFileSync(componentPath, 'utf8')
 
     writeFileSync(componentPath, source.replace("'four'", "'four (hot)'"))
 
-    const update = await hmr.waitForPayload(
+    const payload = await hmr.waitForPayload(
       (payload) =>
         payload.type === 'update' &&
         payload.updates.some(
-          (entry) =>
-            entry.type === 'js-update' && entry.path === '/src/Carousel.jsx'
+          (update) =>
+            update.type === 'js-update' && update.path === '/src/Carousel.vue'
         ),
       HMR_TIMEOUT
     )
@@ -180,11 +192,9 @@ const verifyDevServer = async () => {
       throw new Error('the carousel module fell out of its refresh boundary')
     }
 
-    const hot = await readDevPage(
-      `/src/Carousel.jsx?t=${update.updates[0].timestamp}`
-    )
+    const hot = await Promise.all(payload.updates.map(readHotModule))
 
-    if (!hot.includes('four (hot)')) {
+    if (!hot.some((module) => module.includes('four (hot)'))) {
       throw new Error('the hot update does not carry the edit')
     }
 
@@ -213,17 +223,17 @@ const verifyProductionBuild = () => {
   check('bundle.js')
 }
 
-const installReact = (version) =>
+const installVue = (version) =>
   run(
     'npm',
     [
       'install',
       '--no-audit',
       '--no-fund',
+      '--legacy-peer-deps',
       '--cache',
       cacheDir,
-      `react@${version}`,
-      `react-dom@${version}`
+      `vue@${version}`
     ],
     { cwd: appDir }
   )
@@ -246,7 +256,7 @@ const main = async () => {
   cpSync(resolve('scripts', 'consumer-app'), appDir, { recursive: true })
   console.log(appDir)
 
-  step(`install the tarball on react ${REACT_VERSIONS[0]}`)
+  step(`install the tarball on vue ${VUE_VERSIONS[0]}`)
   run(
     'npm',
     [
@@ -256,13 +266,12 @@ const main = async () => {
       '--cache',
       cacheDir,
       tarball,
-      `react@${REACT_VERSIONS[0]}`,
-      `react-dom@${REACT_VERSIONS[0]}`
+      `vue@${VUE_VERSIONS[0]}`
     ],
     { cwd: appDir }
   )
 
-  step(`entries, ssr and client on react ${REACT_VERSIONS[0]}`)
+  step(`entries, ssr and client on vue ${VUE_VERSIONS[0]}`)
   check('entries.js', [manifest.version])
   check('ssr.js')
   check('client.js')
@@ -273,11 +282,11 @@ const main = async () => {
   step('the production build')
   verifyProductionBuild()
 
-  for (const version of REACT_VERSIONS.slice(1)) {
-    step(`install react ${version}`)
-    installReact(version)
+  for (const version of VUE_VERSIONS.slice(1)) {
+    step(`install vue ${version}`)
+    installVue(version)
 
-    step(`entries, ssr and client on react ${version}`)
+    step(`entries, ssr and client on vue ${version}`)
     check('entries.js', [manifest.version])
     check('ssr.js')
     check('client.js')
