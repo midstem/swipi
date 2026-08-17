@@ -72,6 +72,7 @@ export const createDom = () => {
     navigator: window.navigator,
     Element: window.Element,
     HTMLElement: window.HTMLElement,
+    SVGElement: window.SVGElement,
     Node: window.Node,
     Event: window.Event,
     MouseEvent: window.MouseEvent,

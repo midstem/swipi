@@ -1,28 +1,31 @@
-import { createElement as element } from 'react'
-import { useSwipiCarousel } from 'swipi'
+import { defineComponent, h } from 'vue'
+import { useSwipiCarousel } from 'swipi-vue'
 
 export const SLIDES = ['one', 'two', 'three', 'four']
 
-export const Carousel = () => {
-  const [carouselRef, carousel] = useSwipiCarousel({ slideWidth: 300 })
+export const Carousel = defineComponent({
+  setup() {
+    const [carouselRef, carousel] = useSwipiCarousel({ slideWidth: 300 })
 
-  return element(
-    'section',
-    null,
-    element(
-      'div',
-      { id: 'viewport', ref: carouselRef },
-      element(
-        'div',
-        { id: 'track' },
-        SLIDES.map((slide) => element('article', { key: slide }, slide))
-      )
-    ),
-    element('button', { id: 'next', onClick: carousel.scrollNext }, 'next'),
-    element(
-      'p',
-      { id: 'state' },
-      `${carousel.selectedIndex}/${carousel.snapCount}/${carousel.slidesCount}`
-    )
-  )
-}
+    return () =>
+      h('section', [
+        h('div', { id: 'viewport', ref: carouselRef }, [
+          h(
+            'div',
+            { id: 'track' },
+            SLIDES.map((slide) => h('article', { key: slide }, slide))
+          )
+        ]),
+        h(
+          'button',
+          { id: 'next', onClick: () => carousel.scrollNext() },
+          'next'
+        ),
+        h(
+          'p',
+          { id: 'state' },
+          `${carousel.selectedIndex}/${carousel.snapCount}/${carousel.slidesCount}`
+        )
+      ])
+  }
+})

@@ -113,6 +113,23 @@ artifacts.forEach(([kind, artifact]) =>
   )
 )
 
+const PEER = 'vue'
+
+check(
+  `"${PEER}" is not a peer dependency`,
+  Object.keys(packageJson.peerDependencies ?? {}).includes(PEER)
+)
+
+check(
+  `the ESM bundle inlines "${PEER}" instead of importing it`,
+  new RegExp(`from\\s*['"]${PEER}['"]`).test(esm)
+)
+
+check(
+  `the CJS bundle inlines "${PEER}" instead of requiring it`,
+  new RegExp(`require\\(['"]${PEER}['"]\\)`).test(cjs)
+)
+
 const packed = JSON.parse(
   execFileSync('npm', ['pack', '--dry-run', '--json'], { encoding: 'utf8' })
 )
