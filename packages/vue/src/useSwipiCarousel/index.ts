@@ -9,7 +9,7 @@ import {
 } from 'vue'
 import {
   createSwipi,
-  DEFAULT_OPTIONS,
+  resolveOptions,
   SwipiApi,
   SwipiSnapshot
 } from '@swipi/core'
@@ -19,8 +19,6 @@ import {
   SwipiCarouselRef,
   UseSwipiCarousel
 } from './types'
-
-const noop = (): void => {}
 
 const getEmptySnapshot = (): SwipiSnapshot => ({
   selectedIndex: 0,
@@ -45,14 +43,8 @@ export const useSwipiCarousel = (
     scrollTo: (index: number) => engine?.scrollTo(index)
   })
 
-  const getFullOptions = () => ({
-    ...DEFAULT_OPTIONS,
-    onChange: noop,
-    onSelect: noop,
-    slideWidth: undefined,
-    spaceBetween: undefined,
-    ...(isRef(options) ? options.value : options)
-  })
+  const getFullOptions = () =>
+    resolveOptions(isRef(options) ? options.value : options)
 
   const updateSnapshot = () => {
     if (!engine) return
