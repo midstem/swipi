@@ -16,7 +16,9 @@ npm run release -- --dry-run
 ```
 
 The dry run walks the same path, writes nothing, and prints the `gh` command it
-would have used.
+would have used. `npm run release --dry-run` works too — npm keeps that flag for
+itself instead of forwarding it, so the script reads `npm_config_dry_run` as
+well.
 
 ## What it does
 
