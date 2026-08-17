@@ -28,7 +28,7 @@ the tree it does not say what was released. The tags that already exist
 (`v1.1.5` … `v3.1.0`) are the React package's history from when it was the only
 package; leave them alone.
 
-`.github/scripts/check-release-version.sh` parses the tag, refuses anything that
+`.github/scripts/release-tag.mjs` parses the tag, refuses anything that
 is not `<npm name>@<version>`, refuses private workspaces, and fails the release
 unless the version in that package's `package.json` matches the tag exactly.
 Nothing else in the workflow decides which package goes out.
