@@ -1,7 +1,6 @@
 import { stdin } from 'node:process'
 
-import { DRY_RUN_FLAG } from './constants.mjs'
-import { pad } from './helpers/index.mjs'
+import { isDryRun, pad } from './helpers/index.mjs'
 import { bump } from './modules/bump/index.mjs'
 import { fail, step } from './modules/log/index.mjs'
 import { isCancelled, openPrompt } from './modules/prompt/index.mjs'
@@ -14,7 +13,7 @@ import { release } from './modules/release/index.mjs'
 import { attempt } from './modules/shell/index.mjs'
 import { readPackages } from './modules/workspaces/index.mjs'
 
-const dryRun = process.argv.includes(DRY_RUN_FLAG)
+const dryRun = isDryRun()
 
 const describe = (entry, published, width) =>
   `${pad(entry.name, width)}  ${pad(entry.location, 16)}${pad(entry.version, 12)}${describePublished(published, entry.version)}`
