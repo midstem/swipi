@@ -1,5 +1,5 @@
 import type { ComputedRef, Ref, ShallowRef } from 'vue'
-import type { SlidePositions, SwipiState } from 'swipi-vue'
+import type { SlidePositions, SwipiState } from '@midstem/swipi-vue'
 import type {
   CarouselRef,
   ImperativeApiProps as CoreImperativeApiProps,

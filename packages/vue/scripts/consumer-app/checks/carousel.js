@@ -1,5 +1,5 @@
 import { defineComponent, h } from 'vue'
-import { useSwipiCarousel } from 'swipi-vue'
+import { useSwipiCarousel } from '@midstem/swipi-vue'
 
 export const SLIDES = ['one', 'two', 'three', 'four']
 

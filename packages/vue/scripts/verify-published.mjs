@@ -156,7 +156,7 @@ const verifyDevServer = async () => {
 
     const component = await readDevPage('/src/Carousel.vue')
 
-    if (!component.includes('deps/swipi-vue.js')) {
+    if (!component.includes('deps/@midstem_swipi-vue.js')) {
       throw new Error('vite did not pre-bundle swipi-vue for the dev server')
     }
 

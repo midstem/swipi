@@ -111,8 +111,8 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { useSwipiCarousel } from 'swipi-vue'
-import type { SlidePositions, SwipiState } from 'swipi-vue'
+import { useSwipiCarousel } from '@midstem/swipi-vue'
+import type { SlidePositions, SwipiState } from '@midstem/swipi-vue'
 import {
   VERTICAL_AXIS,
   getActiveBreakpoint,

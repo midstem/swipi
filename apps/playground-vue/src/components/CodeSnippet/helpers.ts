@@ -71,7 +71,7 @@ const handleKeyDown = (event) => {
 }`
 
   return `<script setup>
-import { useSwipiCarousel } from 'swipi-vue'
+import { useSwipiCarousel } from '@midstem/swipi-vue'
 
 defineProps({ items: { type: Array, required: true } })
 

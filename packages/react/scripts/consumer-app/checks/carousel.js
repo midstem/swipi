@@ -1,5 +1,5 @@
 import { createElement as element } from 'react'
-import { useSwipiCarousel } from 'swipi'
+import { useSwipiCarousel } from '@midstem/swipi-react'
 
 export const SLIDES = ['one', 'two', 'three', 'four']
 

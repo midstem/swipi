@@ -148,7 +148,7 @@ requiredFiles.forEach((file) =>
   check(`"${file}" is not published`, packedFiles.includes(file))
 )
 
-const excludedFiles = ['MIGRATION.md', 'PUBLISH.md', 'SIZE.md']
+const excludedFiles = ['PUBLISH.md']
 
 excludedFiles.forEach((file) =>
   check(`"${file}" is published`, !packedFiles.includes(file))

@@ -1,5 +1,5 @@
 import type { JSX, KeyboardEvent } from 'react'
-import { useSwipiCarousel } from 'swipi'
+import { useSwipiCarousel } from '@midstem/swipi-react'
 import { StageProps } from '../../types'
 import { useStage } from './useStage'
 import {

@@ -1,5 +1,5 @@
 import { defineComponent, h, ref, shallowRef, type Ref, type VNode } from 'vue'
-import { useSwipiCarousel } from 'swipi-vue'
+import { useSwipiCarousel } from '@midstem/swipi-vue'
 import type {
   SlidePositions,
   SwipiAxis,
@@ -7,7 +7,7 @@ import type {
   SwipiCarouselOptions,
   SwipiCarouselRef,
   SwipiState
-} from 'swipi-vue'
+} from '@midstem/swipi-vue'
 
 const AXIS: SwipiAxis = 'y'
 

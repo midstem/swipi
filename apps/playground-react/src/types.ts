@@ -1,5 +1,5 @@
 import type { ChangeEvent, ReactNode, RefObject } from 'react'
-import type { SlidePositions, SwipiState } from 'swipi'
+import type { SlidePositions, SwipiState } from '@midstem/swipi-react'
 import type {
   CarouselRef,
   ConfigNumberField,

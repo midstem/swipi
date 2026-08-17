@@ -7,7 +7,7 @@ const expectedVersion = process.argv[2]
 
 const EXPECTED_EXPORTS = ['useSwipiCarousel']
 
-const esm = await import('swipi')
+const esm = await import('@midstem/swipi-react')
 
 assert.equal(
   typeof esm.useSwipiCarousel,
@@ -23,7 +23,7 @@ assert.deepEqual(
   `the ESM entry exports more than ${EXPECTED_EXPORTS.join(', ')} at runtime`
 )
 
-const cjs = require('swipi')
+const cjs = require('@midstem/swipi-react')
 
 assert.equal(
   typeof cjs.useSwipiCarousel,
@@ -37,7 +37,7 @@ assert.deepEqual(
   `the CJS entry exports more than ${EXPECTED_EXPORTS.join(', ')} at runtime`
 )
 
-const manifest = require('swipi/package.json')
+const manifest = require('@midstem/swipi-react/package.json')
 
 assert.equal(
   manifest.version,

@@ -1,6 +1,6 @@
 import { createApp, h } from 'vue'
-import { useSwipiCarousel } from 'swipi-vue'
-import type { SwipiCarousel, SwipiCarouselOptions } from 'swipi-vue'
+import { useSwipiCarousel } from '@midstem/swipi-vue'
+import type { SwipiCarousel, SwipiCarouselOptions } from '@midstem/swipi-vue'
 
 const options: SwipiCarouselOptions = { loop: true }
 

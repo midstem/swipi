@@ -1,11 +1,11 @@
 # Swipi
 
-[![NPM version][npm-image]][npm-url] [![bundle size][bundlephobia-image]][bundlephobia-url]
+[![NPM version][npm-image]][npm-url] [![bundle size][size-image]][size-url]
 
-[npm-image]: https://img.shields.io/npm/v/swipi.svg
-[npm-url]: http://npmjs.org/package/swipi
-[bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/swipi?color=%238ab4f8&label=gzip%20size
-[bundlephobia-url]: https://bundlephobia.com/result?p=swipi
+[npm-image]: https://img.shields.io/npm/v/%40midstem%2Fswipi-react.svg
+[npm-url]: https://npmjs.org/package/@midstem/swipi-react
+[size-image]: https://deno.bundlejs.com/badge?q=@midstem/swipi-react&treeshake=%5B%7BuseSwipiCarousel%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22react-dom%22%5D%7D%7D
+[size-url]: https://bundlejs.com/?q=%40midstem%2Fswipi-react&treeshake=%5B%7BuseSwipiCarousel%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22react-dom%22%5D%7D%7D
 
 <a href='https://midstem.net'>
   <img src='assets/midstem.png' height='60'>
@@ -16,28 +16,24 @@
 small object of state. The markup, the CSS and the accessibility stay yours, so
 nothing of ours ends up in your DOM and there is no stylesheet to import.</p>
 
-<p>It weighs <b>5.1 KB gzipped</b> — 1.85× less than
-<code>embla-carousel-react</code> with its autoplay plugin, measured through the
-same build in
-<a href="https://github.com/midstem/swipi/blob/main/SIZE.md">SIZE.md</a>.</p>
-
-> Upgrading from Swipi 2? The `<Swipi>` component and its ~30 props are gone in
-> 3.0 —
-> [MIGRATION.md](https://github.com/midstem/swipi/blob/main/MIGRATION.md) maps
-> every one of them to a hook option or a line of CSS.
+<p>It weighs around <b>4.7 KB gzipped</b> with React kept external — roughly
+1.7× less than
+<a href="https://bundlejs.com/?q=embla-carousel-react&treeshake=%5B%7Bdefault%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22react-dom%22%5D%7D%7D"><code>embla-carousel-react</code></a>
+measured the same way. The badge above is the live figure: bundlejs recomputes it
+from the published package, so it is never a number we forgot to update.</p>
 
 ### Installation
 
 **npm**
 
 ```bash
-$ npm install swipi
+$ npm install @midstem/swipi-react
 ```
 
 **yarn**
 
 ```bash
-$ yarn add swipi
+$ yarn add @midstem/swipi-react
 ```
 
 ## 🔥 <a href='https://swipi.midstem.net'>View more examples and create a custom slider</a>
@@ -50,7 +46,7 @@ slides are the children of the track.
 ### The markup
 
 ```tsx
-import { useSwipiCarousel } from 'swipi'
+import { useSwipiCarousel } from '@midstem/swipi-react'
 
 export const Carousel = ({ items }) => {
   const [carouselRef, carousel] = useSwipiCarousel({ loop: true })

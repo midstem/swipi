@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import { useSwipiCarousel } from 'swipi-vue'
+import { useSwipiCarousel } from '@midstem/swipi-vue'
 
 const SLIDES = ['one', 'two', 'three', 'four']
 

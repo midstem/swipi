@@ -9,7 +9,7 @@
     "moduleResolution": "bundler",
     "skipLibCheck": false,
     "paths": {
-      "swipi": ["../../dist/index.d.ts"]
+      "@midstem/swipi-react": ["../../dist/index.d.ts"]
     }
   },
   "include": ["app.tsx"]

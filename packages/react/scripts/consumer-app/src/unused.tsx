@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { useSwipiCarousel } from 'swipi'
-import type { SwipiCarousel, SwipiCarouselOptions } from 'swipi'
+import { useSwipiCarousel } from '@midstem/swipi-react'
+import type { SwipiCarousel, SwipiCarouselOptions } from '@midstem/swipi-react'
 
 const options: SwipiCarouselOptions = { loop: true }
 

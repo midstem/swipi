@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { useSwipiCarousel } from 'swipi'
+import { useSwipiCarousel } from '@midstem/swipi-react'
 import type {
   SlidePositions,
   SwipiAxis,
   SwipiCarousel,
   SwipiCarouselRef,
   SwipiState
-} from 'swipi'
+} from '@midstem/swipi-react'
 
 const AXIS: SwipiAxis = 'y'
 

@@ -29,7 +29,9 @@ describe('the generated markup', () => {
   })
 
   it('imports the composable from the vue adapter', () => {
-    expect(build({})).toContain("import { useSwipiCarousel } from 'swipi-vue'")
+    expect(build({})).toContain(
+      "import { useSwipiCarousel } from '@midstem/swipi-vue'"
+    )
   })
 
   it('labels the carousel with the name from the playground', () => {

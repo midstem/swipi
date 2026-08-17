@@ -1,11 +1,11 @@
 # Swipi for Vue
 
-[![NPM version][npm-image]][npm-url] [![bundle size][bundlephobia-image]][bundlephobia-url]
+[![NPM version][npm-image]][npm-url] [![bundle size][size-image]][size-url]
 
-[npm-image]: https://img.shields.io/npm/v/swipi-vue.svg
-[npm-url]: http://npmjs.org/package/swipi-vue
-[bundlephobia-image]: https://img.shields.io/bundlephobia/minzip/swipi-vue?color=%238ab4f8&label=gzip%20size
-[bundlephobia-url]: https://bundlephobia.com/result?p=swipi-vue
+[npm-image]: https://img.shields.io/npm/v/%40midstem%2Fswipi-vue.svg
+[npm-url]: https://npmjs.org/package/@midstem/swipi-vue
+[size-image]: https://deno.bundlejs.com/badge?q=@midstem/swipi-vue&treeshake=%5B%7BuseSwipiCarousel%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22vue%22%5D%7D%7D
+[size-url]: https://bundlejs.com/?q=%40midstem%2Fswipi-vue&treeshake=%5B%7BuseSwipiCarousel%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22vue%22%5D%7D%7D
 
 <a href='https://midstem.net'>
   <img src='https://raw.githubusercontent.com/midstem/swipi/main/assets/midstem.png' height='60'>
@@ -17,23 +17,23 @@ ref and a reactive object of state. The markup, the CSS and the accessibility
 stay yours, so nothing of ours ends up in your DOM and there is no stylesheet to
 import.</p>
 
-<p>It weighs <b>5.2 KB gzipped</b> and runs on the same
-framework-agnostic core as the React adapter
-(<a href="https://www.npmjs.com/package/swipi"><code>swipi</code></a>), measured
-in <a href="https://github.com/midstem/swipi/blob/main/SIZE.md">SIZE.md</a>.</p>
+<p>It runs on the same framework-agnostic core as the React adapter
+(<a href="https://www.npmjs.com/package/@midstem/swipi-react"><code>@midstem/swipi-react</code></a>),
+so it lands in the same weight class. The badge above is the live gzipped size
+with Vue kept external, recomputed by bundlejs from the published package.</p>
 
 ### Installation
 
 **npm**
 
 ```bash
-$ npm install swipi-vue
+$ npm install @midstem/swipi-vue
 ```
 
 **yarn**
 
 ```bash
-$ yarn add swipi-vue
+$ yarn add @midstem/swipi-vue
 ```
 
 Vue 3.2 or newer is a peer dependency.
@@ -49,7 +49,7 @@ slides are the children of the track.
 
 ```vue
 <script setup>
-import { useSwipiCarousel } from 'swipi-vue'
+import { useSwipiCarousel } from '@midstem/swipi-vue'
 
 const props = defineProps({ items: { type: Array, required: true } })
 

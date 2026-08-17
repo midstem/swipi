@@ -8,7 +8,7 @@
     "moduleResolution": "bundler",
     "skipLibCheck": false,
     "paths": {
-      "swipi-vue": ["../../dist/index.d.ts"]
+      "@midstem/swipi-vue": ["../../dist/index.d.ts"]
     }
   },
   "include": ["app.ts"]

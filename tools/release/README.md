@@ -1,7 +1,7 @@
 # release
 
 The interactive release CLI for this monorepo. Every package is published on its
-own version and its own tag (`swipi@3.1.1`, `swipi-vue@1.0.0`), and this script
+own version and its own tag (`@midstem/swipi-react@1.0.1`, `@midstem/swipi-vue@1.0.0`), and this script
 is what picks the package, writes the version and creates the tagged GitHub
 release — so nobody has to type a tag by hand and get it wrong.
 
