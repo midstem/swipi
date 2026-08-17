@@ -20,17 +20,19 @@ const listenToConsole = (): string[] => {
   return messages
 }
 
-const hydrate = (ui: JSX.Element): HTMLElement => {
+const renderOnServer = (ui: JSX.Element): HTMLElement => {
   const container = document.createElement('div')
 
   container.innerHTML = renderToString(ui)
   document.body.appendChild(container)
 
+  return container
+}
+
+const hydrate = (container: HTMLElement, ui: JSX.Element): void => {
   act(() => {
     root = hydrateRoot(container, ui)
   })
-
-  return container
 }
 
 afterEach(() => {
@@ -42,27 +44,35 @@ afterEach(() => {
 
 describe('useSwipiCarousel hydration', () => {
   it('says nothing to the console while hydrating', () => {
+    const ui = <Carousel loop />
+    const container = renderOnServer(ui)
+
     const messages = listenToConsole()
 
-    hydrate(<Carousel loop />)
+    hydrate(container, ui)
 
     expect(messages).toEqual([])
   })
 
   it('says nothing to the console while hydrating in StrictMode', () => {
-    const messages = listenToConsole()
-
-    hydrate(
+    const ui = (
       <StrictMode>
         <Carousel />
       </StrictMode>
     )
+    const container = renderOnServer(ui)
+
+    const messages = listenToConsole()
+
+    hydrate(container, ui)
 
     expect(messages).toEqual([])
   })
 
   it('measures the carousel once it is hydrated', () => {
-    hydrate(<Carousel />)
+    const ui = <Carousel />
+
+    hydrate(renderOnServer(ui), ui)
 
     expect(readState()).toBe('0/4/4/false/true/true')
   })
