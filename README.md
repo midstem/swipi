@@ -8,7 +8,7 @@
 [size-url]: https://bundlejs.com/?q=%40midstem%2Fswipi-react&treeshake=%5B%7BuseSwipiCarousel%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22react-dom%22%5D%7D%7D
 
 <a href='https://midstem.net'>
-  <img src='assets/midstem.png' height='60'>
+  <img src='https://raw.githubusercontent.com/midstem/swipi/main/assets/midstem.png' height='60'>
 </a>
 
 <p><b>Swipi</b> is a headless carousel for React. One hook gives you the engine

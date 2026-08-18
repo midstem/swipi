@@ -17,10 +17,10 @@ ref and a reactive object of state. The markup, the CSS and the accessibility
 stay yours, so nothing of ours ends up in your DOM and there is no stylesheet to
 import.</p>
 
-<p>It runs on the same framework-agnostic core as the React adapter
-(<a href="https://www.npmjs.com/package/@midstem/swipi-react"><code>@midstem/swipi-react</code></a>),
-so it lands in the same weight class. The badge above is the live gzipped size
-with Vue kept external, recomputed by bundlejs from the published package.</p>
+<p>It weighs around <b>4.7 KB gzipped</b> with Vue kept external — roughly
+1.7× less than
+<a href="https://bundlejs.com/?q=embla-carousel-vue&treeshake=%5B%7Bdefault%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22vue%22%5D%7D%7D"><code>embla-carousel-vue</code></a>
+measured the same way.</p>
 
 ### Installation
 
@@ -35,8 +35,6 @@ $ npm install @midstem/swipi-vue
 ```bash
 $ yarn add @midstem/swipi-vue
 ```
-
-Vue 3.2 or newer is a peer dependency.
 
 ## 🔥 <a href='https://swipi.midstem.net'>View more examples and create a custom slider</a>
 
@@ -86,13 +84,8 @@ const [carouselRef, carousel] = useSwipiCarousel({ loop: true })
 </template>
 ```
 
-`carouselRef` is a function ref, so it goes on the viewport as `:ref` — Vue
-calls it with the element once it is mounted. `carousel` is reactive: read
-`selectedIndex`, `snapCount`, `slidesCount`, `canScrollPrev`, `canScrollNext`
-and `hasOverflow` straight in the template.
-
-Options can be a plain object or a `ref`. Pass a `ref` and the engine picks up
-every change to it without remounting the carousel.
+`carouselRef` is a function ref, so it goes on the viewport as `:ref`, and
+`carousel` is reactive — read its state straight in the template.
 
 ### The classes
 
