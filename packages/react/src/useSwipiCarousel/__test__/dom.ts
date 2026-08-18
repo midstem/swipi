@@ -1,3 +1,4 @@
+import { afterEach } from 'vitest'
 import { fireEvent, screen } from '@testing-library/react'
 
 export const SLIDES_COUNT = 4
@@ -7,6 +8,8 @@ export const SLIDE_WIDTH = 900
 export const POINTER_ID = 1
 
 export const PAUSE_BEFORE_RELEASE = 150
+
+export const POINTER_STEP = 1
 
 export const readState = (): string => screen.getByTestId('state').textContent
 
@@ -37,8 +40,26 @@ export const addSlide = (): void => {
   getTrack().appendChild(document.createElement('article'))
 }
 
+const readRealTime = performance.now.bind(performance)
+
+let pointerTime = 0
+
+let isPointerTimeFrozen = false
+
+Object.defineProperty(performance, 'now', {
+  configurable: true,
+  value: (): number => (isPointerTimeFrozen ? pointerTime : readRealTime())
+})
+
+afterEach(() => {
+  isPointerTimeFrozen = false
+})
+
 export const drag = (points: [number, number][]): void => {
   const viewport = getViewport()
+
+  pointerTime = readRealTime()
+  isPointerTimeFrozen = true
 
   fireEvent.pointerDown(viewport, {
     pointerId: POINTER_ID,
@@ -48,17 +69,26 @@ export const drag = (points: [number, number][]): void => {
   })
 
   points.slice(1).forEach(([clientX, clientY]) => {
+    pointerTime += POINTER_STEP
+
     fireEvent.pointerMove(viewport, { pointerId: POINTER_ID, clientX, clientY })
   })
 }
 
 export const release = (): void => {
   fireEvent.pointerUp(getViewport(), { pointerId: POINTER_ID })
+
+  isPointerTimeFrozen = false
 }
 
 export const cancelDrag = (): void => {
   fireEvent.pointerCancel(getViewport(), { pointerId: POINTER_ID })
+
+  isPointerTimeFrozen = false
 }
 
-export const rest = (): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, PAUSE_BEFORE_RELEASE))
+export const rest = (): Promise<void> => {
+  pointerTime += PAUSE_BEFORE_RELEASE
+
+  return new Promise((resolve) => setTimeout(resolve, PAUSE_BEFORE_RELEASE))
+}
