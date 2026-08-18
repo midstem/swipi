@@ -2,14 +2,15 @@
 
 This repository publishes one package per framework under the `@midstem` scope —
 `@midstem/swipi-react` from `packages/react`, `@midstem/swipi-vue` from
-`packages/vue`, `@midstem/swipi-svelte` from `packages/svelte` — and each one is
-released on its own. They share the `@swipi/core` engine, which is private and
-never published: every adapter inlines it at build time, so a core change only
-reaches users through an adapter release.
+`packages/vue`, `@midstem/swipi-svelte` from `packages/svelte`,
+`@midstem/swipi-angular` from `packages/angular` — and each one is released on
+its own. They share the `@swipi/core` engine, which is private and never
+published: every adapter inlines it at build time, so a core change only reaches
+users through an adapter release.
 
 **Versions are independent.** A bug in the Vue adapter is a
-`@midstem/swipi-vue` patch and leaves the React and Svelte packages alone. The
-numbers are free to drift, and they will.
+`@midstem/swipi-vue` patch and leaves the React, Svelte and Angular packages
+alone. The numbers are free to drift, and they will.
 
 The unscoped `swipi` package on npm is the pre-scope history of the React
 adapter, frozen at `3.1.0`. Every scoped package starts again at `1.0.0`.
@@ -22,6 +23,7 @@ A release tag is the npm coordinate of exactly one package:
 @midstem/swipi-react@1.0.1
 @midstem/swipi-vue@1.0.0
 @midstem/swipi-svelte@1.0.0
+@midstem/swipi-angular@1.0.0
 ```
 
 This is the same convention Lerna's independent mode and Changesets use in a
@@ -64,8 +66,9 @@ by hand or need to fix something it refuses to touch.
 ## 1. Prepare the release branch
 
 - bump `version` in the package you are releasing — one of
-  `packages/react/package.json`, `packages/vue/package.json` or
-  `packages/svelte/package.json`, never more than one;
+  `packages/react/package.json`, `packages/vue/package.json`,
+  `packages/svelte/package.json` or `packages/angular/package.json`, never more
+  than one;
 - keep `package-lock.json` in step: the `packages/<dir>` entry repeats that
   version, and `npm ci` fails when the two disagree. `npm run release` edits that
   one line for you;
@@ -88,8 +91,8 @@ The consumer gate is per package, so run the one you are releasing:
 npm run verify:published --workspace @midstem/swipi-vue
 ```
 
-It packs the tarball, installs it into a throwaway Vite app for that framework
-and runs it the way a consumer does — entries, SSR, client mount, dev server with
+It packs the tarball, installs it into a throwaway app for that framework and
+runs it the way a consumer does — entries, SSR, client mount, dev server with
 HMR, production build, tree-shaking. React and Vue run it on both ends of the
 supported peer range (React 19 and 18; Vue 3.5 and 3.2); the Svelte app needs
 `@sveltejs/vite-plugin-svelte`, which only supports Svelte 5, so the Svelte 4
@@ -98,6 +101,20 @@ runs the adapter's own tests and its public-API typecheck on Svelte 4. It is the
 last gate before the release. Drop
 the `--workspace` flag to run every package's gate; add `-- --keep` to keep the
 generated app around for a look.
+
+The Angular app is the odd one out: it is built by the Angular CLI rather than
+by Vite directly, because AOT is the thing worth proving for an Angular package.
+Its gate installs `@angular/build`, prerenders the app with `@angular/ssr` — the
+prerender is where a server-side DOM access would surface — and then runs the
+production bundle twice in jsdom, once as a fresh client mount off
+`index.csr.html` and once hydrating the prerendered `index.html`. Two things it
+does not do that the other three do: it asserts that the dev server picks an
+edit up without a restart rather than that the edit stays inside a hot boundary,
+because Angular answers a component edit with a page reload; and it runs on
+Angular 22 only, because the test harness needs `platformBrowserTesting`, which
+`@angular/platform-browser/testing` only grew in Angular 20. The Angular 17 end
+of the peer range is covered by the `angular-compatibility` CI job, which
+typechecks the public API against it.
 
 ## 3. Merge into `main`
 

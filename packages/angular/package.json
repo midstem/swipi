@@ -1,0 +1,63 @@
+{
+  "name": "@midstem/swipi-angular",
+  "version": "1.0.0",
+  "type": "module",
+  "license": "MIT",
+  "author": "Midstem",
+  "description": "Headless TypeScript carousel signal for Angular",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "@angular/core": ">=17"
+  },
+  "devDependencies": {
+    "@swipi/core": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/midstem/swipi.git",
+    "directory": "packages/angular"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "keywords": [
+    "angular",
+    "typescript",
+    "headless",
+    "carousel",
+    "angular-signals",
+    "infinite-carousel",
+    "image-carousel"
+  ],
+  "bugs": {
+    "url": "https://github.com/midstem/swipi/issues"
+  },
+  "homepage": "https://swipi.midstem.net/",
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "typecheck:package": "tsc -p scripts/types-fixture",
+    "verify:package": "node scripts/verify-package.mjs",
+    "verify:published": "node scripts/verify-published.mjs",
+    "size": "node scripts/report-size.mjs",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "prepack": "node scripts/copy-root-docs.mjs"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -288,3 +288,90 @@ jobs:
 
       - name: Typecheck the public API
         run: npm run typecheck:package --workspace @midstem/swipi-svelte
+
+  bundle-size-angular:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Measure this branch
+        working-directory: packages/angular
+        run: |
+          cp scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
+          node scripts/report-size.mjs --json "$RUNNER_TEMP/head-size.json"
+
+      - name: Measure the base branch
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: |
+          git checkout --force ${{ github.event.pull_request.base.sha }}
+          npm ci
+          npm run build
+          if [ -d packages/angular ]; then cd packages/angular; fi
+          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/base-size.json"
+
+      - name: Report
+        run: |
+          if [ -f "$RUNNER_TEMP/base-size.json" ]; then
+            node "$RUNNER_TEMP/report-size.mjs" \
+              --current "$RUNNER_TEMP/head-size.json" \
+              --base "$RUNNER_TEMP/base-size.json" >> "$GITHUB_STEP_SUMMARY"
+          else
+            node "$RUNNER_TEMP/report-size.mjs" \
+              --current "$RUNNER_TEMP/head-size.json" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  angular-compatibility:
+    runs-on: ubuntu-latest
+    name: angular ${{ matrix.angular }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - angular: '17'
+            adapter-tests: false
+          - angular: '^22.0.0'
+            adapter-tests: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build --workspace @swipi/core --workspace @midstem/swipi-angular
+
+      - name: Pin Angular ${{ matrix.angular }}
+        run: |
+          npm install --no-save --no-package-lock --legacy-peer-deps \
+            @angular/core@${{ matrix.angular }}
+
+      - name: Test the adapter
+        if: matrix.adapter-tests
+        run: npm run test:run --workspace @midstem/swipi-angular
+
+      - name: Typecheck the public API
+        run: npm run typecheck:package --workspace @midstem/swipi-angular
