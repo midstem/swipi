@@ -151,6 +151,7 @@ export default [
     files: [
       'packages/vue/**/*.{ts,js}',
       'packages/svelte/**/*.{ts,js}',
+      'packages/angular/**/*.{ts,js}',
       'apps/playground-vue/**/*.{ts,js}',
       'apps/playground-svelte/**/*.{ts,js}'
     ],

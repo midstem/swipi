@@ -17,7 +17,8 @@ jobs:
           [
             '@midstem/swipi-react',
             '@midstem/swipi-vue',
-            '@midstem/swipi-svelte'
+            '@midstem/swipi-svelte',
+            '@midstem/swipi-angular'
           ]
     steps:
       - name: Checkout

@@ -1,0 +1,23 @@
+{
+  "name": "swipi-angular-consumer-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "ng serve",
+    "build": "ng build app",
+    "build:unused": "ng build unused"
+  },
+  "devDependencies": {
+    "@angular/build": "^22.1.2",
+    "@angular/cli": "^22.1.2",
+    "@angular/common": "^22.1.2",
+    "@angular/compiler": "^22.1.2",
+    "@angular/compiler-cli": "^22.1.2",
+    "@angular/platform-browser": "^22.1.2",
+    "@angular/platform-server": "^22.1.2",
+    "@angular/ssr": "^22.1.2",
+    "jsdom": "^30.0.0",
+    "typescript": "^6.0.3"
+  }
+}

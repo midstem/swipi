@@ -31,3 +31,5 @@ packages/react/LICENSE
 *.sw?
 
 .claude
+# angular cli cache
+.angular
