@@ -37,6 +37,9 @@ jobs:
       - name: Verify the published package
         run: npm run verify:package
 
+      - name: Build the Svelte playground
+        run: npm run build --workspace @swipi/playground-svelte
+
   bundle-size-react:
     runs-on: ubuntu-latest
     continue-on-error: true

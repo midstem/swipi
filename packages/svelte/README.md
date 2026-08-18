@@ -49,7 +49,7 @@ slides are the children of the track.
 <script>
   import { useSwipiCarousel } from '@midstem/swipi-svelte'
 
-  export let items
+  let { items } = $props()
 
   const [carouselRef, carousel] = useSwipiCarousel({ loop: true })
 </script>
@@ -65,14 +65,14 @@ slides are the children of the track.
 <button
   type="button"
   disabled={!$carousel.canScrollPrev}
-  on:click={() => $carousel.scrollPrev()}
+  onclick={() => $carousel.scrollPrev()}
 >
   ‹
 </button>
 <button
   type="button"
   disabled={!$carousel.canScrollNext}
-  on:click={() => $carousel.scrollNext()}
+  onclick={() => $carousel.scrollNext()}
 >
   ›
 </button>
@@ -82,6 +82,9 @@ slides are the children of the track.
 `carousel` is a readable store — read its state in the template with the `$`
 prefix. The action tears the engine down when the element leaves the DOM, so
 there is nothing to clean up by hand.
+
+The snippet above is Svelte 5. Nothing in the package is tied to runes, so the
+same wiring works on Svelte 4 with `export let items` and `on:click`.
 
 ### Reactive options
 

@@ -8,6 +8,8 @@ import importPlugin from 'eslint-plugin-import'
 import htmlPlugin from 'eslint-plugin-html'
 import vuePlugin from 'eslint-plugin-vue'
 import vueParser from 'vue-eslint-parser'
+import sveltePlugin from 'eslint-plugin-svelte'
+import svelteParser from 'svelte-eslint-parser'
 import prettierRecommended from 'eslint-plugin-prettier/recommended'
 import globals from 'globals'
 import { fileURLToPath } from 'url'
@@ -22,6 +24,7 @@ export default [
       'eslint.config.js',
       '**/vite.config.ts',
       '**/vitest.config.ts',
+      '**/svelte.config.js',
       '**/scripts/**',
       '**/dist/**',
       '**/node_modules/**'
@@ -148,8 +151,32 @@ export default [
     files: [
       'packages/vue/**/*.{ts,js}',
       'packages/svelte/**/*.{ts,js}',
-      'apps/playground-vue/**/*.{ts,js}'
+      'apps/playground-vue/**/*.{ts,js}',
+      'apps/playground-svelte/**/*.{ts,js}'
     ],
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+      'react-hooks/exhaustive-deps': 'off'
+    }
+  },
+
+  ...sveltePlugin.configs['flat/recommended'],
+
+  {
+    files: ['**/*.svelte', '**/*.svelte.ts', '**/*.svelte.js'],
+    languageOptions: {
+      parser: svelteParser,
+      parserOptions: {
+        parser: tsParser,
+        projectService: true,
+        tsconfigRootDir: __dirname,
+        extraFileExtensions: ['.svelte']
+      },
+      globals: {
+        ...globals.browser,
+        ...globals.es2021
+      }
+    },
     rules: {
       'react-hooks/rules-of-hooks': 'off',
       'react-hooks/exhaustive-deps': 'off'
