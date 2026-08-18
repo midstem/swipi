@@ -1,0 +1,24 @@
+{
+  "name": "@swipi/playground-svelte",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "description": "Interactive playground for the Swipi Svelte adapter",
+  "scripts": {
+    "start": "vite --open --host",
+    "build": "vite build",
+    "typecheck": "svelte-check --tsconfig ./tsconfig.json",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "dependencies": {
+    "@swipi/playground-core": "*",
+    "@midstem/swipi-svelte": "*",
+    "svelte": "^5.56.9"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^7.3.0",
+    "svelte-check": "^4.7.6"
+  }
+}

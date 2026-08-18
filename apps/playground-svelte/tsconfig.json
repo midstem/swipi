@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "include": ["src"],
+  "exclude": ["dist", "node_modules"],
+  "compilerOptions": {
+    "noEmit": true,
+    "paths": {
+      "@midstem/swipi-svelte": ["../../packages/svelte/src/index.ts"],
+      "@swipi/playground-core": ["../../packages/playground-core/src/index.ts"]
+    }
+  }
+}
