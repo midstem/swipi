@@ -145,7 +145,11 @@ export default [
   ...vuePlugin.configs['flat/recommended'],
 
   {
-    files: ['packages/vue/**/*.{ts,js}', 'apps/playground-vue/**/*.{ts,js}'],
+    files: [
+      'packages/vue/**/*.{ts,js}',
+      'packages/svelte/**/*.{ts,js}',
+      'apps/playground-vue/**/*.{ts,js}'
+    ],
     rules: {
       'react-hooks/rules-of-hooks': 'off',
       'react-hooks/exhaustive-deps': 'off'
