@@ -22,6 +22,7 @@
     "start": "npm run start --workspace @swipi/playground-react",
     "start:vue": "npm run start --workspace @swipi/playground-vue",
     "start:svelte": "npm run start --workspace @swipi/playground-svelte",
+    "start:vanilla": "npm run start --workspace @swipi/playground-vanilla",
     "build": "npm run build --workspace @midstem/swipi --workspace @swipi/playground-core --workspace @midstem/swipi-react --workspace @midstem/swipi-vue --workspace @midstem/swipi-svelte --workspace @midstem/swipi-angular",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "typecheck:package": "npm run typecheck:package --workspace @midstem/swipi --workspace @midstem/swipi-react --workspace @midstem/swipi-vue --workspace @midstem/swipi-svelte --workspace @midstem/swipi-angular",
