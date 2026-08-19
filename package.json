@@ -23,6 +23,7 @@
     "start:vue": "npm run start --workspace @swipi/playground-vue",
     "start:svelte": "npm run start --workspace @swipi/playground-svelte",
     "start:vanilla": "npm run start --workspace @swipi/playground-vanilla",
+    "start:angular": "npm run start --workspace @swipi/playground-angular",
     "build": "npm run build --workspace @midstem/swipi --workspace @swipi/playground-core --workspace @midstem/swipi-react --workspace @midstem/swipi-vue --workspace @midstem/swipi-svelte --workspace @midstem/swipi-angular",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "typecheck:package": "npm run typecheck:package --workspace @midstem/swipi --workspace @midstem/swipi-react --workspace @midstem/swipi-vue --workspace @midstem/swipi-svelte --workspace @midstem/swipi-angular",
@@ -50,8 +51,11 @@
     ]
   },
   "devDependencies": {
+    "@analogjs/vite-plugin-angular": "^2.7.0",
+    "@angular/build": "^22.1.4",
     "@angular/common": "^22.1.2",
     "@angular/compiler": "^22.1.2",
+    "@angular/compiler-cli": "^22.1.2",
     "@angular/core": "^22.1.2",
     "@angular/platform-browser": "^22.1.2",
     "@eslint/js": "^9.0.0",

@@ -153,7 +153,8 @@ export default [
       'packages/svelte/**/*.{ts,js}',
       'packages/angular/**/*.{ts,js}',
       'apps/playground-vue/**/*.{ts,js}',
-      'apps/playground-svelte/**/*.{ts,js}'
+      'apps/playground-svelte/**/*.{ts,js}',
+      'apps/playground-angular/**/*.{ts,js}'
     ],
     rules: {
       'react-hooks/rules-of-hooks': 'off',

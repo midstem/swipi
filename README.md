@@ -37,8 +37,9 @@ for that framework and the layout contract.
 
 [`apps/`](apps) holds a live playground for
 [React](apps/playground-react), [Vue](apps/playground-vue),
-[Svelte](apps/playground-svelte) and [vanilla](apps/playground-vanilla). All
-four draw their options, controls and styles from the shared
+[Svelte](apps/playground-svelte), [Angular](apps/playground-angular) and
+[vanilla](apps/playground-vanilla). All five draw their options, controls and
+styles from the shared
 [`@swipi/playground-core`](packages/playground-core), so the same carousel can
 be tried on each adapter and compared side by side.
 
@@ -47,8 +48,8 @@ npm install
 npm start
 ```
 
-`npm start` opens the React playground; `start:vue`, `start:svelte` and
-`start:vanilla` open the others.
+`npm start` opens the React playground; `start:vue`, `start:svelte`,
+`start:angular` and `start:vanilla` open the others.
 
 ## 🔥 <a href='https://swipi.midstem.net'>View more examples and create a custom slider</a>
 
