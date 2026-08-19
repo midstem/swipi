@@ -40,6 +40,7 @@ export default defineConfig({
     react(),
     dts({
       bundleTypes: { bundledPackages: ['@midstem/swipi'] },
+      compilerOptions: { paths: {} },
       include: ['src'],
       exclude: [
         'src/test',

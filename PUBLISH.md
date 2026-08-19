@@ -22,11 +22,25 @@ internal: the modules import each other through the `#src/*` map, not through
 the entry, so geometry, math, drag and the rest can be reshaped without a major.
 Adding to the entry is a minor; changing what is already there is a major.
 
-Inside the repository the adapters resolve `@midstem/swipi` to
-`packages/core/src/index.ts` through a `resolve.alias` in each `vite.config.ts`,
-so their builds and their tests run against the engine's source, not against its
-`dist`. Add that alias to any new package that imports the engine — without it
-the package silently builds against the last `npm run build`.
+Inside the repository nothing waits for the engine to be built. Three settings
+arrange that, and a new package that imports the engine needs all three:
+
+- `resolve.alias` in its `vite.config.ts` maps `@midstem/swipi` to
+  `packages/core/src/index.ts`, so builds and tests run against the engine's
+  source rather than against the last `npm run build`;
+- `paths` does the same for TypeScript — repo-wide in `tsconfig.base.json`, and
+  repeated in the playground apps because a `paths` block in a child config
+  replaces the inherited one instead of merging with it. Without it `npm run
+lint` and `npm run typecheck` fail on a fresh clone with a wall of
+  `no-unsafe-*`, because the engine's types resolve only through its `dist`;
+- `compilerOptions: { paths: {} }` inside `dts()` switches those paths back off
+  for the declaration build, which needs the engine's published `.d.ts`. Left
+  on, it pulls the engine's sources into the program and `tsc` refuses them with
+  `TS6059: not under rootDir`.
+
+For the same reason the packages' own `tsconfig.json` files are typecheck-only
+(`noEmit`): the emit paths belong to Vite, and an emitting config would hit the
+same `rootDir` complaint.
 
 **Versions are independent.** A bug in the Vue adapter is a
 `@midstem/swipi-vue` patch and leaves the React, Svelte and Angular packages

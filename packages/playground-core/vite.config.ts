@@ -19,6 +19,7 @@ export default defineConfig({
   },
   plugins: [
     dts({
+      compilerOptions: { paths: {} },
       include: ['src'],
       exclude: ['src/test', 'src/**/__test__/**', 'src/**/*.test.ts']
     })

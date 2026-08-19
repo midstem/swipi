@@ -38,6 +38,7 @@ export default defineConfig({
   plugins: [
     dts({
       bundleTypes: { bundledPackages: ['@midstem/swipi'] },
+      compilerOptions: { paths: {} },
       include: ['src'],
       exclude: ['src/test', 'src/**/__test__/**', 'src/**/*.test.ts']
     })

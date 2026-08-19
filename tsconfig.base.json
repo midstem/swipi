@@ -12,6 +12,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "moduleResolution": "bundler",
+    "paths": {
+      "@midstem/swipi": ["./packages/core/src/index.ts"]
+    },
     "jsx": "react-jsx",
     "esModuleInterop": true,
     "skipLibCheck": true,

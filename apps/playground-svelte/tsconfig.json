@@ -5,6 +5,7 @@
   "compilerOptions": {
     "noEmit": true,
     "paths": {
+      "@midstem/swipi": ["../../packages/core/src/index.ts"],
       "@midstem/swipi-svelte": ["../../packages/svelte/src/index.ts"],
       "@swipi/playground-core": ["../../packages/playground-core/src/index.ts"]
     }
