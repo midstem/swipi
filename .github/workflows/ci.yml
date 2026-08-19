@@ -43,6 +43,9 @@ jobs:
       - name: Build the Vanilla playground
         run: npm run build --workspace @swipi/playground-vanilla
 
+      - name: Build the Angular playground
+        run: npm run build --workspace @swipi/playground-angular
+
   bundle-size-engine:
     runs-on: ubuntu-latest
     continue-on-error: true

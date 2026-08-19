@@ -1,0 +1,22 @@
+{
+  "name": "@swipi/playground-angular",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "description": "Interactive playground for the Swipi Angular adapter",
+  "scripts": {
+    "start": "vite --open --host",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "dependencies": {
+    "@swipi/playground-core": "*",
+    "@midstem/swipi-angular": "*"
+  },
+  "devDependencies": {
+    "@analogjs/vite-plugin-angular": "^2.7.0"
+  }
+}
