@@ -67,8 +67,8 @@ jobs:
       - name: Measure this branch
         working-directory: packages/core
         run: |
-          cp scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
-          node scripts/report-size.mjs --json "$RUNNER_TEMP/head-size.json"
+          cp ../../tools/scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
+          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/head-size.json"
 
       - name: Measure the base branch
         if: github.event_name == 'pull_request'
@@ -115,8 +115,8 @@ jobs:
       - name: Measure this branch
         working-directory: packages/react
         run: |
-          cp scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
-          node scripts/report-size.mjs --json "$RUNNER_TEMP/head-size.json"
+          cp ../../tools/scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
+          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/head-size.json"
 
       - name: Measure the base branch
         if: github.event_name == 'pull_request'
@@ -200,8 +200,8 @@ jobs:
       - name: Measure this branch
         working-directory: packages/vue
         run: |
-          cp scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
-          node scripts/report-size.mjs --json "$RUNNER_TEMP/head-size.json"
+          cp ../../tools/scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
+          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/head-size.json"
 
       - name: Measure the base branch
         if: github.event_name == 'pull_request'
@@ -282,8 +282,8 @@ jobs:
       - name: Measure this branch
         working-directory: packages/svelte
         run: |
-          cp scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
-          node scripts/report-size.mjs --json "$RUNNER_TEMP/head-size.json"
+          cp ../../tools/scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
+          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/head-size.json"
 
       - name: Measure the base branch
         if: github.event_name == 'pull_request'
@@ -364,8 +364,8 @@ jobs:
       - name: Measure this branch
         working-directory: packages/angular
         run: |
-          cp scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
-          node scripts/report-size.mjs --json "$RUNNER_TEMP/head-size.json"
+          cp ../../tools/scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
+          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/head-size.json"
 
       - name: Measure the base branch
         if: github.event_name == 'pull_request'

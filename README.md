@@ -1,98 +1,84 @@
 # Swipi
 
-[![NPM version][npm-image]][npm-url] [![bundle size][size-image]][size-url]
-
-[npm-image]: https://img.shields.io/npm/v/%40midstem%2Fswipi-react.svg
-[npm-url]: https://npmjs.org/package/@midstem/swipi-react
-[size-image]: https://deno.bundlejs.com/badge?q=@midstem/swipi-react&treeshake=%5B%7BuseSwipiCarousel%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22react-dom%22%5D%7D%7D
-[size-url]: https://bundlejs.com/?q=%40midstem%2Fswipi-react&treeshake=%5B%7BuseSwipiCarousel%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22react-dom%22%5D%7D%7D
-
 <a href='https://midstem.net'>
   <img src='https://raw.githubusercontent.com/midstem/swipi/main/assets/midstem.png' height='60'>
 </a>
 
-<p><b>Swipi</b> is a headless carousel for React. One hook gives you the engine
-— drag, momentum, snapping, looping, autoplay — and hands back a ref and a
-small object of state. The markup, the CSS and the accessibility stay yours, so
-nothing of ours ends up in your DOM and there is no stylesheet to import.</p>
+<p><b>Swipi</b> is a headless, framework-agnostic carousel. One engine handles
+drag, momentum, snapping, looping and autoplay; a thin adapter hands it to your
+framework as a hook, a composable, an action or a signal. The markup, the CSS
+and the accessibility stay yours — nothing of ours ends up in your DOM and there
+is no stylesheet to import.</p>
 
-<p>It weighs around <b>4.7 KB gzipped</b> with React kept external — roughly
-1.7× less than
-<a href="https://bundlejs.com/?q=embla-carousel-react&treeshake=%5B%7Bdefault%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22react-dom%22%5D%7D%7D"><code>embla-carousel-react</code></a>
-measured the same way.</p>
+## Documentation
 
-### Installation
+For advanced usage, available options, responsive layout specifics, state
+management, and accessibility guidelines, please refer to our full documentation
+at [https://swipi.midstem.net/docs/](https://swipi.midstem.net/docs/).
 
-**npm**
+## Packages
+
+Every adapter bundles the engine, so you install one package and nothing else.
+
+| Package                                        | Version                          | Size                            | Compared to Embla |
+| ---------------------------------------------- | -------------------------------- | ------------------------------- | ----------------- |
+| [`@midstem/swipi`](packages/core) — the engine | [![npm][v-core]][npm-core]       | [![size][s-core]][b-core]       | no dependencies   |
+| [`@midstem/swipi-react`](packages/react)       | [![npm][v-react]][npm-react]     | [![size][s-react]][b-react]     | ~1.7× smaller     |
+| [`@midstem/swipi-vue`](packages/vue)           | [![npm][v-vue]][npm-vue]         | [![size][s-vue]][b-vue]         | ~1.7× smaller     |
+| [`@midstem/swipi-svelte`](packages/svelte)     | [![npm][v-svelte]][npm-svelte]   | [![size][s-svelte]][b-svelte]   | ~1.7× smaller     |
+| [`@midstem/swipi-angular`](packages/angular)   | [![npm][v-angular]][npm-angular] | [![size][s-angular]][b-angular] | ~2.5× smaller     |
+
+Sizes are gzipped with the framework kept external, and the Embla column
+compares each adapter against its `embla-carousel-*` counterpart measured the
+same way. Follow a package link for its own README — installation, the wiring
+for that framework and the layout contract.
+
+## Playgrounds
+
+[`apps/`](apps) holds a live playground for
+[React](apps/playground-react), [Vue](apps/playground-vue),
+[Svelte](apps/playground-svelte) and [vanilla](apps/playground-vanilla). All
+four draw their options, controls and styles from the shared
+[`@swipi/playground-core`](packages/playground-core), so the same carousel can
+be tried on each adapter and compared side by side.
 
 ```bash
-$ npm install @midstem/swipi-react
+npm install
+npm start
 ```
 
-**yarn**
-
-```bash
-$ yarn add @midstem/swipi-react
-```
+`npm start` opens the React playground; `start:vue`, `start:svelte` and
+`start:vanilla` open the others.
 
 ## 🔥 <a href='https://swipi.midstem.net'>View more examples and create a custom slider</a>
 
-## **Basic Usage**
+## Documentation
 
-Wiring is a single ref on the viewport. The track is its only child and the
-slides are the children of the track.
+For advanced usage, available options, responsive layout specifics, state
+management, and accessibility guidelines, please refer to our full documentation
+at [https://swipi.midstem.net/docs/](https://swipi.midstem.net/docs/).
 
-### The markup
+## License
 
-```tsx
-import { useSwipiCarousel } from '@midstem/swipi-react'
+[MIT](LICENSE)
 
-export const Carousel = ({ items }) => {
-  const [carouselRef, carousel] = useSwipiCarousel({ loop: true })
-
-  return (
-    <>
-      <div className="overflow-hidden touch-pan-y" ref={carouselRef}>
-        <div className="flex -ml-3 select-none">
-          {items.map((item) => (
-            <div
-              className="min-w-0 shrink-0 grow-0 basis-1/2 pl-3"
-              key={item.id}
-            >
-              {item.title}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <button
-        type="button"
-        onClick={carousel.scrollPrev}
-        disabled={!carousel.canScrollPrev}
-      >
-        ‹
-      </button>
-      <button
-        type="button"
-        onClick={carousel.scrollNext}
-        disabled={!carousel.canScrollNext}
-      >
-        ›
-      </button>
-    </>
-  )
-}
-```
-
-### The classes
-
-Those three class lists are a contract, not decoration — the geometry depends on
-them. Two of them are yours to tune: `basis-1/2` sets how many slides are
-visible, and the `pl-3` on the slide with the matching `-ml-3` on the track sets
-the space between them. Everything else on the page is styling you own.
-
-Not using Tailwind? Our documentation provides examples using both Tailwind and plain CSS.
-
-## **Documentation**
-
-For advanced usage, available options, responsive layout specifics, state management, and accessibility guidelines, please refer to our full documentation at [https://swipi.midstem.net/docs/](https://swipi.midstem.net/docs/).
+[npm-core]: https://npmjs.org/package/@midstem/swipi
+[v-core]: https://img.shields.io/npm/v/%40midstem%2Fswipi.svg
+[s-core]: https://deno.bundlejs.com/badge?q=@midstem/swipi&treeshake=%5B%7BcreateSwipi%7D%5D
+[b-core]: https://bundlejs.com/?q=%40midstem%2Fswipi&treeshake=%5B%7BcreateSwipi%7D%5D
+[npm-react]: https://npmjs.org/package/@midstem/swipi-react
+[v-react]: https://img.shields.io/npm/v/%40midstem%2Fswipi-react.svg
+[s-react]: https://deno.bundlejs.com/badge?q=@midstem/swipi-react&treeshake=%5B%7BuseSwipiCarousel%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22react-dom%22%5D%7D%7D
+[b-react]: https://bundlejs.com/?q=%40midstem%2Fswipi-react&treeshake=%5B%7BuseSwipiCarousel%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22react-dom%22%5D%7D%7D
+[npm-vue]: https://npmjs.org/package/@midstem/swipi-vue
+[v-vue]: https://img.shields.io/npm/v/%40midstem%2Fswipi-vue.svg
+[s-vue]: https://deno.bundlejs.com/badge?q=@midstem/swipi-vue&treeshake=%5B%7BuseSwipiCarousel%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22vue%22%5D%7D%7D
+[b-vue]: https://bundlejs.com/?q=%40midstem%2Fswipi-vue&treeshake=%5B%7BuseSwipiCarousel%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22vue%22%5D%7D%7D
+[npm-svelte]: https://npmjs.org/package/@midstem/swipi-svelte
+[v-svelte]: https://img.shields.io/npm/v/%40midstem%2Fswipi-svelte.svg
+[s-svelte]: https://deno.bundlejs.com/badge?q=@midstem/swipi-svelte&treeshake=%5B%7BuseSwipiCarousel%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22svelte%22%2C%22svelte%2Fstore%22%5D%7D%7D
+[b-svelte]: https://bundlejs.com/?q=%40midstem%2Fswipi-svelte&treeshake=%5B%7BuseSwipiCarousel%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22svelte%22%2C%22svelte%2Fstore%22%5D%7D%7D
+[npm-angular]: https://npmjs.org/package/@midstem/swipi-angular
+[v-angular]: https://img.shields.io/npm/v/%40midstem%2Fswipi-angular.svg
+[s-angular]: https://deno.bundlejs.com/badge?q=@midstem/swipi-angular&treeshake=%5B%7BuseSwipiCarousel%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22%40angular%2Fcore%22%5D%7D%7D
+[b-angular]: https://bundlejs.com/?q=%40midstem%2Fswipi-angular&treeshake=%5B%7BuseSwipiCarousel%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22%40angular%2Fcore%22%5D%7D%7D
