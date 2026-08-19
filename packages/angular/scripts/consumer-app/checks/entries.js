@@ -50,7 +50,7 @@ assert.equal(manifest.sideEffects, false, 'the package is not side-effect free')
 assert.equal(
   manifest.dependencies,
   undefined,
-  'the package declares dependencies, but @swipi/core is not published'
+  'the package declares dependencies, but the adapter inlines the engine'
 )
 
 assert.deepEqual(

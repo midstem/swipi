@@ -15,6 +15,7 @@ jobs:
       matrix:
         package:
           [
+            '@midstem/swipi',
             '@midstem/swipi-react',
             '@midstem/swipi-vue',
             '@midstem/swipi-svelte',

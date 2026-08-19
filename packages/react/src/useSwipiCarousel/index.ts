@@ -10,7 +10,7 @@ import {
   resolveOptions,
   SwipiApi,
   SwipiSnapshot
-} from '@swipi/core'
+} from '@midstem/swipi'
 import { SwipiCarousel, SwipiCarouselOptions, UseSwipiCarousel } from './types'
 import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect'
 import { useLatestRef } from '../hooks/useLatestRef'

@@ -21,7 +21,7 @@
     "svelte": ">=4"
   },
   "devDependencies": {
-    "@swipi/core": "*",
+    "@midstem/swipi": "*",
     "svelte": "^5.56.9"
   },
   "repository": {

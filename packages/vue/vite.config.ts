@@ -30,9 +30,15 @@ export default defineConfig({
       }
     ]
   },
+  resolve: {
+    alias: {
+      '@midstem/swipi': resolve('..', 'core', 'src', 'index.ts')
+    }
+  },
   plugins: [
     dts({
-      bundleTypes: { bundledPackages: ['@swipi/core'] },
+      bundleTypes: { bundledPackages: ['@midstem/swipi'] },
+      compilerOptions: { paths: {} },
       include: ['src'],
       exclude: ['src/test', 'src/**/__test__/**', 'src/**/*.test.ts']
     })

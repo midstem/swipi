@@ -1,28 +1,61 @@
 {
-  "name": "@swipi/core",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@midstem/swipi",
+  "version": "1.0.0",
   "type": "module",
   "license": "MIT",
-  "description": "Framework-agnostic carousel engine. Consumed as source and bundled by the adapters, never published on its own.",
+  "author": "Midstem",
+  "description": "Headless TypeScript carousel engine for vanilla JavaScript",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "sideEffects": false,
-  "main": "./src/index.ts",
   "imports": {
     "#src/*": "./src/*/index.ts"
   },
-  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "default": "./src/index.ts"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./package.json": "./package.json"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/midstem/swipi.git",
+    "directory": "packages/core"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "keywords": [
+    "carousel",
+    "slider",
+    "vanilla",
+    "javascript",
+    "typescript",
+    "headless",
+    "infinite-carousel",
+    "image-carousel"
+  ],
+  "bugs": {
+    "url": "https://github.com/midstem/swipi/issues"
+  },
+  "homepage": "https://swipi.midstem.net/",
   "scripts": {
-    "prepare": "npm run build",
-    "build": "tsc -p tsconfig.build.json",
+    "build": "vite build",
     "typecheck": "tsc --noEmit",
+    "typecheck:package": "tsc -p scripts/types-fixture",
+    "verify:package": "node scripts/verify-package.mjs",
+    "verify:published": "node scripts/verify-published.mjs",
+    "size": "node scripts/report-size.mjs",
+    "test": "vitest",
     "test:run": "vitest run",
-    "test": "vitest"
+    "prepack": "node scripts/copy-root-docs.mjs"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -21,7 +21,7 @@
     "react": ">=18"
   },
   "devDependencies": {
-    "@swipi/core": "*"
+    "@midstem/swipi": "*"
   },
   "repository": {
     "type": "git",

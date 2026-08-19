@@ -3,7 +3,7 @@ import {
   SwipiAxis,
   SwipiOptions,
   SwipiState
-} from '@swipi/core'
+} from '@midstem/swipi'
 
 export enum SlidesAnimation {
   DEFAULT = 'default',

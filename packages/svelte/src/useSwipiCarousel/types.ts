@@ -1,6 +1,6 @@
 import type { Action } from 'svelte/action'
 import type { Readable } from 'svelte/store'
-import { SlidePositions, SwipiAxis, SwipiState } from '@swipi/core'
+import { SlidePositions, SwipiAxis, SwipiState } from '@midstem/swipi'
 
 export type SwipiCarouselOptions = {
   axis?: SwipiAxis

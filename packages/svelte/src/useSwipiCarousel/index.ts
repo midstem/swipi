@@ -5,7 +5,7 @@ import {
   resolveOptions,
   SwipiApi,
   SwipiSnapshot
-} from '@swipi/core'
+} from '@midstem/swipi'
 import {
   SwipiCarousel,
   SwipiCarouselOptions,
