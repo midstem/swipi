@@ -40,6 +40,9 @@ jobs:
       - name: Build the Svelte playground
         run: npm run build --workspace @swipi/playground-svelte
 
+      - name: Build the Vanilla playground
+        run: npm run build --workspace @swipi/playground-vanilla
+
   bundle-size-engine:
     runs-on: ubuntu-latest
     continue-on-error: true
