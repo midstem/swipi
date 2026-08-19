@@ -53,10 +53,10 @@
     "typecheck:package": "tsc -p scripts/types-fixture",
     "verify:package": "node scripts/verify-package.mjs",
     "verify:published": "node scripts/verify-published.mjs",
-    "size": "node scripts/report-size.mjs",
+    "size": "node ../../tools/scripts/report-size.mjs",
     "test": "vitest",
     "test:run": "vitest run",
-    "prepack": "node scripts/copy-root-docs.mjs"
+    "prepack": "node ../../tools/scripts/copy-root-docs.mjs"
   },
   "publishConfig": {
     "access": "public"

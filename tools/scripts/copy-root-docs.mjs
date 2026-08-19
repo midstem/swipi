@@ -1,9 +1,10 @@
 import { copyFileSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const ROOT = resolve('..', '..')
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..')
 
-const DOCS = ['README.md', 'LICENSE']
+const DOCS = ['LICENSE']
 
 DOCS.forEach((file) => copyFileSync(resolve(ROOT, file), resolve(file)))
 

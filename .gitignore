@@ -22,8 +22,7 @@ tsconfig.tsbuildinfo
 .DS_Store
 
 # copied from the repository root by the prepack step
-packages/react/README.md
-packages/react/LICENSE
+packages/*/LICENSE
 *.suo
 *.ntvs*
 *.njsproj
