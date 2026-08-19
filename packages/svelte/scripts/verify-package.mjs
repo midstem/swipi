@@ -94,10 +94,10 @@ check(
   !JSON.stringify(packageJson.exports).includes('.css')
 )
 
-const WORKSPACE_ONLY = '@swipi/core'
+const WORKSPACE_ONLY = '@midstem/swipi'
 
 check(
-  `"${WORKSPACE_ONLY}" is a dependency, but it is not published to the registry`,
+  `"${WORKSPACE_ONLY}" is a dependency, but the adapter inlines the engine`,
   !Object.keys(packageJson.dependencies ?? {}).includes(WORKSPACE_ONLY)
 )
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { render, waitFor } from '@testing-library/react'
-import { SwipiState } from '@swipi/core'
+import { SwipiState } from '@midstem/swipi'
 import { isPointerCaptured } from '../../test/setup'
 import { Carousel } from './carousel'
 import {

@@ -1,21 +1,21 @@
-export * from './modules/animation'
+import { createSwipi as createSwipiEngine } from './createSwipi'
+import { resolveOptions as resolveSwipiOptions } from './createSwipi/options'
+import type { ResolvedSwipiOptions, SwipiApi, SwipiOptions } from './types'
 
-export * from './modules/autoplay'
+export const createSwipi: (
+  viewport: HTMLElement,
+  options?: SwipiOptions
+) => SwipiApi = createSwipiEngine
 
-export * from './modules/axis'
+export const resolveOptions: (options?: SwipiOptions) => ResolvedSwipiOptions =
+  resolveSwipiOptions
 
-export * from './constants'
-
-export * from './modules/drag'
-
-export * from './modules/geometry'
-
-export * from './modules/math'
-
-export * from './modules/neighbours'
-
-export * from './types'
-
-export * from './createSwipi'
-export * from './createSwipi/constants'
-export * from './createSwipi/options'
+export type {
+  ResolvedSwipiOptions,
+  SwipiApi,
+  SwipiOptions,
+  SwipiSnapshot,
+  SwipiState,
+  SlidePositions,
+  SwipiAxis
+} from './types'

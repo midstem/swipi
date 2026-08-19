@@ -1,12 +1,32 @@
 # Publishing
 
-This repository publishes one package per framework under the `@midstem` scope —
+This repository publishes the engine and one package per framework under the
+`@midstem` scope — `@midstem/swipi` from `packages/core`,
 `@midstem/swipi-react` from `packages/react`, `@midstem/swipi-vue` from
 `packages/vue`, `@midstem/swipi-svelte` from `packages/svelte`,
 `@midstem/swipi-angular` from `packages/angular` — and each one is released on
-its own. They share the `@swipi/core` engine, which is private and never
-published: every adapter inlines it at build time, so a core change only reaches
-users through an adapter release.
+its own.
+
+`@midstem/swipi` is the engine itself: the plain-JavaScript entry for consumers
+on no framework, and the base for anyone writing an adapter we do not ship. The
+four adapters are built on it and **inline it at build time** rather than
+declaring it as a dependency, so a consumer never ends up with two copies of the
+engine and the versions never have to line up. An engine change therefore
+reaches adapter users only through an adapter release, and reaches the engine's
+own users through an engine release.
+
+**The engine's public API is its `src/index.ts`, and only that.** It exports
+`createSwipi`, `resolveOptions` and the public types — the exact surface every
+adapter here is written against. Everything else under `packages/core/src` is
+internal: the modules import each other through the `#src/*` map, not through
+the entry, so geometry, math, drag and the rest can be reshaped without a major.
+Adding to the entry is a minor; changing what is already there is a major.
+
+Inside the repository the adapters resolve `@midstem/swipi` to
+`packages/core/src/index.ts` through a `resolve.alias` in each `vite.config.ts`,
+so their builds and their tests run against the engine's source, not against its
+`dist`. Add that alias to any new package that imports the engine — without it
+the package silently builds against the last `npm run build`.
 
 **Versions are independent.** A bug in the Vue adapter is a
 `@midstem/swipi-vue` patch and leaves the React, Svelte and Angular packages
@@ -20,6 +40,7 @@ adapter, frozen at `3.1.0`. Every scoped package starts again at `1.0.0`.
 A release tag is the npm coordinate of exactly one package:
 
 ```
+@midstem/swipi@1.0.0
 @midstem/swipi-react@1.0.1
 @midstem/swipi-vue@1.0.0
 @midstem/swipi-svelte@1.0.0
@@ -66,15 +87,15 @@ by hand or need to fix something it refuses to touch.
 ## 1. Prepare the release branch
 
 - bump `version` in the package you are releasing — one of
-  `packages/react/package.json`, `packages/vue/package.json`,
-  `packages/svelte/package.json` or `packages/angular/package.json`, never more
-  than one;
+  `packages/core/package.json`, `packages/react/package.json`,
+  `packages/vue/package.json`, `packages/svelte/package.json` or
+  `packages/angular/package.json`, never more than one;
 - keep `package-lock.json` in step: the `packages/<dir>` entry repeats that
   version, and `npm ci` fails when the two disagree. `npm run release` edits that
   one line for you;
 - update the package's `README.md` if its public API moved.
 
-Releasing every adapter after a core change is one bump, one tag and one release
+Releasing every package after a core change is one bump, one tag and one release
 each. They are independent, so the order does not matter.
 
 ## 2. Check it locally
@@ -101,6 +122,14 @@ runs the adapter's own tests and its public-API typecheck on Svelte 4. It is the
 last gate before the release. Drop
 the `--workspace` flag to run every package's gate; add `-- --keep` to keep the
 generated app around for a look.
+
+The `@midstem/swipi` app is the plain one: there is no framework to render on
+the server, so in place of an SSR check it asserts that importing the entry in
+bare Node reaches `createSwipi` without touching a DOM, and in place of a hot
+boundary it asserts that an edit to the entry reaches the browser as a reload —
+a plain module has no boundary to stay inside. Everything else is the same
+sequence: entries, a client mount in jsdom, the dev server, the production build
+and tree-shaking.
 
 The Angular app is the odd one out: it is built by the Angular CLI rather than
 by Vite directly, because AOT is the thing worth proving for an Angular package.

@@ -31,10 +31,15 @@ export default defineConfig({
       }
     ]
   },
+  resolve: {
+    alias: {
+      '@midstem/swipi': resolve('..', 'core', 'src', 'index.ts')
+    }
+  },
   plugins: [
     react(),
     dts({
-      bundleTypes: { bundledPackages: ['@swipi/core'] },
+      bundleTypes: { bundledPackages: ['@midstem/swipi'] },
       include: ['src'],
       exclude: [
         'src/test',

@@ -1,5 +1,5 @@
 import type { ComponentPublicInstance } from 'vue'
-import { SlidePositions, SwipiAxis, SwipiState } from '@swipi/core'
+import { SlidePositions, SwipiAxis, SwipiState } from '@midstem/swipi'
 
 export type SwipiCarouselOptions = {
   axis?: SwipiAxis

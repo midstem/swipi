@@ -8,4 +8,4 @@ export type {
   SwipiCarouselStore
 } from './useSwipiCarousel/types'
 
-export type { SwipiState, SlidePositions, SwipiAxis } from '@swipi/core'
+export type { SwipiState, SlidePositions, SwipiAxis } from '@midstem/swipi'

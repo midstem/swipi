@@ -40,6 +40,54 @@ jobs:
       - name: Build the Svelte playground
         run: npm run build --workspace @swipi/playground-svelte
 
+  bundle-size-engine:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Measure this branch
+        working-directory: packages/core
+        run: |
+          cp scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
+          node scripts/report-size.mjs --json "$RUNNER_TEMP/head-size.json"
+
+      - name: Measure the base branch
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: |
+          git checkout --force ${{ github.event.pull_request.base.sha }}
+          npm ci
+          npm run build
+          if [ -d packages/core ]; then cd packages/core; fi
+          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/base-size.json"
+
+      - name: Report
+        run: |
+          if [ -f "$RUNNER_TEMP/base-size.json" ]; then
+            node "$RUNNER_TEMP/report-size.mjs" \
+              --current "$RUNNER_TEMP/head-size.json" \
+              --base "$RUNNER_TEMP/base-size.json" >> "$GITHUB_STEP_SUMMARY"
+          else
+            node "$RUNNER_TEMP/report-size.mjs" \
+              --current "$RUNNER_TEMP/head-size.json" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
   bundle-size-react:
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -194,7 +242,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build --workspace @swipi/core --workspace @midstem/swipi-vue
+        run: npm run build --workspace @midstem/swipi --workspace @midstem/swipi-vue
 
       - name: Pin Vue ${{ matrix.vue }}
         run: |
@@ -276,7 +324,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build --workspace @swipi/core --workspace @midstem/swipi-svelte
+        run: npm run build --workspace @midstem/swipi --workspace @midstem/swipi-svelte
 
       - name: Pin Svelte ${{ matrix.svelte }}
         run: |
@@ -362,7 +410,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build --workspace @swipi/core --workspace @midstem/swipi-angular
+        run: npm run build --workspace @midstem/swipi --workspace @midstem/swipi-angular
 
       - name: Pin Angular ${{ matrix.angular }}
         run: |

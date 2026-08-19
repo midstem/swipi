@@ -12,6 +12,11 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['src/**/*.test.ts']
   },
+  resolve: {
+    alias: {
+      '@midstem/swipi': resolve('..', 'core', 'src', 'index.ts')
+    }
+  },
   plugins: [
     dts({
       include: ['src'],

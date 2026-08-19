@@ -2,7 +2,7 @@ import { StrictMode, type JSX } from 'react'
 import { render } from '@testing-library/react'
 import { useSwipiCarousel } from '../..'
 import { SwipiCarousel, SwipiCarouselOptions } from '../../types'
-import { SlidePositions, SwipiState } from '@swipi/core'
+import { SlidePositions, SwipiState } from '@midstem/swipi'
 import { SLIDE_WIDTH, SLIDES_COUNT } from '../dom'
 
 export type BaselineProps = SwipiCarouselOptions & {

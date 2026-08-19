@@ -1,4 +1,4 @@
-import type { SwipiAxis } from '@swipi/core'
+import type { SwipiAxis } from '@midstem/swipi'
 import {
   ConfigNumberFieldOption,
   ConfigType,

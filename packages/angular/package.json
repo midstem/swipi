@@ -21,7 +21,7 @@
     "@angular/core": ">=17"
   },
   "devDependencies": {
-    "@swipi/core": "*"
+    "@midstem/swipi": "*"
   },
   "repository": {
     "type": "git",
