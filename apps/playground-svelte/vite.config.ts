@@ -1,3 +1,4 @@
+import tailwindcss from '@tailwindcss/vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import { svelteTesting } from '@testing-library/svelte/vite'
 import { defineConfig } from 'vitest/config'
@@ -22,6 +23,7 @@ const PLAYGROUND_CORE_SOURCE = resolve(
 )
 
 export default defineConfig({
+  base: './',
   resolve: {
     alias: [
       { find: /^@midstem\/swipi-svelte$/, replacement: SWIPI_SOURCE },
@@ -42,5 +44,5 @@ export default defineConfig({
   preview: {
     port: 8080
   },
-  plugins: [svelte(), svelteTesting()]
+  plugins: [tailwindcss(), svelte(), svelteTesting()]
 })

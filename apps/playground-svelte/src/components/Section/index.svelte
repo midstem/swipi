@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { STYLES } from '@swipi/playground-core'
   import type { SectionProps } from '../../types'
 
   const BADGE = {
@@ -9,14 +10,14 @@
   let { title, origin, hint, children }: SectionProps = $props()
 </script>
 
-<details class="pg-section pg-section--{origin}" open>
-  <summary class="pg-section__title">
+<details class={STYLES.section} data-pg="section" data-origin={origin} open>
+  <summary class={STYLES.sectionTitle}>
     {title}
-    <span class="pg-section__badge">{BADGE[origin]}</span>
+    <span class={STYLES.sectionBadge}>{BADGE[origin]}</span>
   </summary>
-  <div class="pg-section__body">
+  <div class={STYLES.sectionBody}>
     {#if hint}
-      <p class="pg-hint">{hint}</p>
+      <p class={STYLES.hint}>{hint}</p>
     {/if}
     {@render children()}
   </div>

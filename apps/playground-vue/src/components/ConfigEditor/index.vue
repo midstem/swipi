@@ -1,16 +1,20 @@
 <template>
-  <div :class="['pg-config', { 'pg-field--disabled': disabled }]">
-    <div v-for="(item, index) in config" :key="index" class="pg-config__item">
-      <div class="pg-config__grid">
+  <div :class="STYLES.config" data-pg="config" :data-disabled="disabled">
+    <div
+      v-for="(item, index) in config"
+      :key="index"
+      :class="STYLES.configItem"
+    >
+      <div :class="STYLES.configGrid">
         <label
           v-for="{ key, label } in CONFIG_NUMBER_FIELDS"
           :key="key"
-          class="pg-config__cell"
+          :class="STYLES.configCell"
         >
-          <span class="pg-hint">{{ label }}</span>
+          <span :class="STYLES.hint">{{ label }}</span>
           <input
             type="number"
-            class="pg-input pg-input--number"
+            :class="STYLES.configInput"
             :min="EMPTY_FIELD_VALUE"
             :disabled="disabled"
             :value="item[key] ?? EMPTY_FIELD_VALUE"
@@ -19,19 +23,20 @@
           />
         </label>
       </div>
-      <div class="pg-config__footer">
-        <label class="pg-toggle pg-toggle--inline">
+      <div :class="STYLES.configFooter">
+        <label :class="STYLES.toggleInline">
           <input
             type="checkbox"
+            :class="STYLES.checkbox"
             :disabled="disabled"
             :checked="Boolean(item.biasRight)"
             @change="changeBiasRight(index)($event)"
           />
-          <span class="pg-label">biasRight</span>
+          <span :class="STYLES.label" data-pg="label">biasRight</span>
         </label>
         <button
           type="button"
-          class="pg-button pg-button--ghost"
+          :class="STYLES.ghostButton"
           :disabled="disabled"
           @click="removeItem(index)()"
         >
@@ -42,14 +47,14 @@
 
     <button
       type="button"
-      class="pg-button"
+      :class="STYLES.button"
       :disabled="disabled"
       @click="addItem"
     >
       + Add breakpoint
     </button>
 
-    <p class="pg-hint">
+    <p :class="STYLES.hint">
       Breakpoints are matched against <code>window.innerWidth</code>: every item
       with <code>maxWidth &gt;= window width</code> matches and the last
       matching one wins — keep them ordered from the widest to the narrowest.
@@ -58,6 +63,7 @@
 </template>
 
 <script setup lang="ts">
+import { STYLES } from '@swipi/playground-core'
 import {
   CONFIG_NUMBER_FIELDS,
   EMPTY_FIELD_VALUE,

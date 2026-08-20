@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { STYLES } from '@swipi/playground-core'
   import {
     FIRST_INDEX,
     JSON_INDENT,
@@ -37,19 +38,19 @@
   }
 </script>
 
-<div class="pg-card">
-  <h2 class="pg-card__title">Carousel methods</h2>
-  <div class="pg-row">
-    <button type="button" class="pg-button" onclick={scrollPrev}>
+<div class={STYLES.card}>
+  <h2 class={STYLES.cardTitle}>Carousel methods</h2>
+  <div class={STYLES.row}>
+    <button type="button" class={STYLES.button} onclick={scrollPrev}>
       scrollPrev()
     </button>
-    <button type="button" class="pg-button" onclick={scrollNext}>
+    <button type="button" class={STYLES.button} onclick={scrollNext}>
       scrollNext()
     </button>
-    <span class="pg-row__group">
+    <span class={STYLES.rowGroup}>
       <input
         type="number"
-        class="pg-input pg-input--number"
+        class={STYLES.numberInput}
         aria-label="Slide index for scrollTo"
         min={FIRST_INDEX}
         max={getLastIndex(slidesCount)}
@@ -57,19 +58,15 @@
         onchange={changeIndex}
         oninput={changeIndex}
       />
-      <button type="button" class="pg-button" onclick={scrollTo}>
+      <button type="button" class={STYLES.button} onclick={scrollTo}>
         scrollTo(index)
       </button>
     </span>
-    <button
-      type="button"
-      class="pg-button pg-button--ghost"
-      onclick={readState}
-    >
+    <button type="button" class={STYLES.ghostButton} onclick={readState}>
       Read carousel state
     </button>
   </div>
   {#if readings}
-    <pre class="pg-code">{JSON.stringify(readings, null, JSON_INDENT)}</pre>
+    <pre class={STYLES.code}>{JSON.stringify(readings, null, JSON_INDENT)}</pre>
   {/if}
 </div>

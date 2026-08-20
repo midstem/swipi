@@ -1,14 +1,14 @@
-import { JSON_INDENT } from '@swipi/playground-core'
+import { STYLES, JSON_INDENT } from '@swipi/playground-core'
 import type { StatePanelProps } from '@swipi/playground-core'
 import { element, setText } from '../../dom'
 import type { Component } from '../../types'
 
 const createBlock = (title: string): [HTMLElement, HTMLElement] => {
-  const code = element('pre', { class: 'pg-code' })
+  const code = element('pre', { class: STYLES.code })
 
   return [
     element('div', {}, [
-      element('h2', { class: 'pg-card__title' }, [title]),
+      element('h2', { class: STYLES.cardTitle }, [title]),
       code
     ]),
     code
@@ -21,7 +21,7 @@ export const createStatePanel = (
   const [selectBlock, selectCode] = createBlock('onSelect state')
   const [changeBlock, changeCode] = createBlock('onChange positions')
 
-  const card = element('div', { class: 'pg-card pg-card--split' }, [
+  const card = element('div', { class: STYLES.cardSplit }, [
     selectBlock,
     changeBlock
   ])

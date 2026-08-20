@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { STYLES } from '@swipi/playground-core'
   import {
     DEFAULT_MAX,
     DEFAULT_MIN,
@@ -29,11 +30,11 @@
   }
 </script>
 
-<div class="pg-field" class:pg-field--disabled={disabled}>
-  <label class="pg-label" for={id}>
+<div class={STYLES.field} data-pg="field" data-disabled={disabled}>
+  <label class={STYLES.label} data-pg="label" for={id}>
     {label}
   </label>
-  <div class="pg-field__row">
+  <div class={STYLES.fieldRow}>
     {#if withSlider}
       <input
         type="range"
@@ -49,7 +50,7 @@
     <input
       {id}
       type="number"
-      class="pg-input pg-input--number"
+      class={STYLES.numberInput}
       {min}
       {max}
       {step}
@@ -60,6 +61,6 @@
     />
   </div>
   {#if hint}
-    <span class="pg-hint">{hint}</span>
+    <span class={STYLES.hint}>{hint}</span>
   {/if}
 </div>

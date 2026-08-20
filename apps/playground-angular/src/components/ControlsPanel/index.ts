@@ -1,5 +1,6 @@
 import { Component, computed, input } from '@angular/core'
 import {
+  STYLES,
   ANIMATION_SPEED_LIMITS,
   AUTOPLAY_SPEED_LIMITS,
   AXIS_OPTIONS,
@@ -43,7 +44,7 @@ const SLIDE_WIDTH_HINT =
   styles: ':host { display: contents; }',
   imports: [ConfigEditor, NumberField, Section, SelectField, TextField, Toggle],
   template: `
-    <aside class="pg-controls">
+    <aside [class]="STYLES.controls">
       <pg-section
         title="Behaviour"
         origin="hook"
@@ -225,11 +226,11 @@ const SLIDE_WIDTH_HINT =
           [disabled]="!isVertical()"
           (changed)="change('stageHeight')($event)"
         />
-        <div class="pg-row">
+        <div [class]="STYLES.row">
           @for (preset of stagePresets; track preset.label) {
             <button
               type="button"
-              class="pg-button pg-button--ghost"
+              [class]="STYLES.ghostButton"
               (click)="changeStageWidth(preset.width)()"
             >
               {{ preset.label }}
@@ -241,6 +242,8 @@ const SLIDE_WIDTH_HINT =
   `
 })
 export class ControlsPanel {
+  protected readonly STYLES = STYLES
+
   readonly state = input.required<PlaygroundState>()
 
   readonly update = input.required<UpdateState>()

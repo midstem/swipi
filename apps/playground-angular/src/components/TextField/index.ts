@@ -1,29 +1,32 @@
 import { Component, input, output } from '@angular/core'
 import { createFieldId } from '../../helpers'
+import { STYLES } from '@swipi/playground-core'
 
 @Component({
   selector: 'pg-text-field',
   styles: ':host { display: contents; }',
   template: `
-    <div class="pg-field">
-      <label class="pg-label" [attr.for]="id">
+    <div [class]="STYLES.field" data-pg="field">
+      <label [class]="STYLES.label" data-pg="label" [attr.for]="id">
         {{ label() }}
       </label>
       <input
         [id]="id"
         type="text"
-        class="pg-input"
+        [class]="STYLES.input"
         [value]="value()"
         [attr.placeholder]="placeholder()"
         (change)="handleChange($event)"
       />
       @if (hint()) {
-        <span class="pg-hint">{{ hint() }}</span>
+        <span [class]="STYLES.hint">{{ hint() }}</span>
       }
     </div>
   `
 })
 export class TextField {
+  protected readonly STYLES = STYLES
+
   readonly label = input.required<string>()
 
   readonly hint = input<string>()

@@ -1,3 +1,4 @@
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vitest/config'
 import { resolve } from 'path'
 
@@ -13,6 +14,7 @@ const PLAYGROUND_CORE_SOURCE = resolve(
 )
 
 export default defineConfig({
+  base: './',
   resolve: {
     alias: [
       { find: /^@midstem\/swipi$/, replacement: SWIPI_SOURCE },
@@ -32,5 +34,6 @@ export default defineConfig({
   },
   preview: {
     port: 8080
-  }
+  },
+  plugins: [tailwindcss()]
 })

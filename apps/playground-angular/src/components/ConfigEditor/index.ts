@@ -1,5 +1,6 @@
 import { Component, input, output } from '@angular/core'
 import {
+  STYLES,
   CONFIG_NUMBER_FIELDS,
   EMPTY_FIELD_VALUE,
   addConfigItem,
@@ -12,16 +13,20 @@ import type { ConfigNumberField, ConfigType } from '@swipi/playground-core'
   selector: 'pg-config-editor',
   styles: ':host { display: contents; }',
   template: `
-    <div class="pg-config" [class.pg-field--disabled]="disabled()">
+    <div
+      [class]="STYLES.config"
+      data-pg="config"
+      [attr.data-disabled]="disabled()"
+    >
       @for (item of config(); track $index) {
-        <div class="pg-config__item">
-          <div class="pg-config__grid">
+        <div [class]="STYLES.configItem">
+          <div [class]="STYLES.configGrid">
             @for (field of fields; track field.key) {
-              <label class="pg-config__cell">
-                <span class="pg-hint">{{ field.label }}</span>
+              <label [class]="STYLES.configCell">
+                <span [class]="STYLES.hint">{{ field.label }}</span>
                 <input
                   type="number"
-                  class="pg-input pg-input--number"
+                  [class]="STYLES.configInput"
                   [min]="empty"
                   [disabled]="disabled()"
                   [value]="item[field.key] ?? empty"
@@ -31,19 +36,20 @@ import type { ConfigNumberField, ConfigType } from '@swipi/playground-core'
               </label>
             }
           </div>
-          <div class="pg-config__footer">
-            <label class="pg-toggle pg-toggle--inline">
+          <div [class]="STYLES.configFooter">
+            <label [class]="STYLES.toggleInline">
               <input
                 type="checkbox"
+                [class]="STYLES.checkbox"
                 [disabled]="disabled()"
                 [checked]="!!item.biasRight"
                 (change)="changeBiasRight($index, $event)"
               />
-              <span class="pg-label">biasRight</span>
+              <span [class]="STYLES.label" data-pg="label">biasRight</span>
             </label>
             <button
               type="button"
-              class="pg-button pg-button--ghost"
+              [class]="STYLES.ghostButton"
               [disabled]="disabled()"
               (click)="removeItem($index)"
             >
@@ -55,14 +61,14 @@ import type { ConfigNumberField, ConfigType } from '@swipi/playground-core'
 
       <button
         type="button"
-        class="pg-button"
+        [class]="STYLES.button"
         [disabled]="disabled()"
         (click)="addItem()"
       >
         + Add breakpoint
       </button>
 
-      <p class="pg-hint">
+      <p [class]="STYLES.hint">
         Breakpoints are matched against <code>window.innerWidth</code>: every
         item with <code>maxWidth &gt;= window width</code> matches and the last
         matching one wins — keep them ordered from the widest to the narrowest.
@@ -71,6 +77,8 @@ import type { ConfigNumberField, ConfigType } from '@swipi/playground-core'
   `
 })
 export class ConfigEditor {
+  protected readonly STYLES = STYLES
+
   readonly config = input.required<ConfigType[]>()
 
   readonly disabled = input.required<boolean>()

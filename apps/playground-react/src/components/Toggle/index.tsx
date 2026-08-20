@@ -1,5 +1,5 @@
 import type { JSX } from 'react'
-import { ToggleProps } from '@swipi/playground-core'
+import { STYLES, ToggleProps } from '@swipi/playground-core'
 import { useToggle } from './useToggle'
 
 const Toggle = ({
@@ -12,16 +12,19 @@ const Toggle = ({
   const { handleChange } = useToggle({ onChange })
 
   return (
-    <label className="pg-toggle">
+    <label className={STYLES.toggle} data-pg="toggle">
       <input
         type="checkbox"
+        className={STYLES.checkbox}
         checked={checked}
         disabled={disabled}
         onChange={handleChange}
       />
-      <span className="pg-toggle__text">
-        <span className="pg-label">{label}</span>
-        {hint && <span className="pg-hint">{hint}</span>}
+      <span className={STYLES.toggleText}>
+        <span className={STYLES.label} data-pg="label">
+          {label}
+        </span>
+        {hint && <span className={STYLES.hint}>{hint}</span>}
       </span>
     </label>
   )

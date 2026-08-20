@@ -1,26 +1,22 @@
 import type { JSX } from 'react'
-import { EventLogProps } from '@swipi/playground-core'
+import { STYLES, EventLogProps } from '@swipi/playground-core'
 
 const EventLog = ({ events, onClear }: EventLogProps): JSX.Element => (
-  <div className="pg-card">
-    <div className="pg-card__header">
-      <h2 className="pg-card__title">Events</h2>
-      <button
-        type="button"
-        className="pg-button pg-button--ghost"
-        onClick={onClear}
-      >
+  <div className={STYLES.card}>
+    <div className={STYLES.cardHeader}>
+      <h2 className={STYLES.cardTitle}>Events</h2>
+      <button type="button" className={STYLES.ghostButton} onClick={onClear}>
         Clear
       </button>
     </div>
-    <ul className="pg-events">
+    <ul className={STYLES.events}>
       {events.map((event) => (
-        <li key={event.id}>
-          <span className="pg-events__name">{event.name}</span>
+        <li key={event.id} className={STYLES.event}>
+          <span className={STYLES.eventName}>{event.name}</span>
           <code>{event.payload}</code>
         </li>
       ))}
-      {!events.length && <li className="pg-hint">No events yet</li>}
+      {!events.length && <li className={STYLES.hint}>No events yet</li>}
     </ul>
   </div>
 )

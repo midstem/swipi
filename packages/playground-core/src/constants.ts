@@ -2,6 +2,7 @@ import type { SwipiAxis } from '@midstem/swipi'
 import {
   ConfigNumberFieldOption,
   ConfigType,
+  FrameworkOption,
   HookOptionKey,
   PlaygroundState,
   SelectOption,
@@ -9,8 +10,6 @@ import {
   StagePreset,
   ValueOf
 } from './types'
-
-export const STORAGE_KEY = 'swipi-playground-state'
 
 export const ONE_SLIDE = 1
 
@@ -147,3 +146,21 @@ export const DEFAULT_MIN = 0
 export const DEFAULT_MAX = 100
 
 export const DEFAULT_STEP = 1
+
+export const EMBED_QUERY_KEY = 'embed'
+
+export const EMBED_READY_MESSAGE = 'swipi-playground:ready'
+
+export const EMBED_HEIGHT_MESSAGE = 'swipi-playground:height'
+
+export const EMBED_MEASURE_MESSAGE = 'swipi-playground:measure'
+
+export const ANY_ORIGIN = '*'
+
+export const PLAYGROUND_FRAMEWORKS: FrameworkOption[] = [
+  { id: 'react', title: 'React' },
+  { id: 'vue', title: 'Vue' },
+  { id: 'svelte', title: 'Svelte' },
+  { id: 'angular', title: 'Angular' },
+  { id: 'vanilla', title: 'Vanilla' }
+]

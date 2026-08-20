@@ -1,11 +1,5 @@
 import type { SlidePositions, SwipiState } from '@midstem/swipi'
-import {
-  DEFAULT_STATE,
-  MAX_EVENTS,
-  SLIDE_COLORS,
-  loadState,
-  saveState
-} from '@swipi/playground-core'
+import { DEFAULT_STATE, MAX_EVENTS, SLIDE_COLORS } from '@swipi/playground-core'
 import type {
   CarouselRef,
   PlaygroundEvent,
@@ -19,7 +13,7 @@ const FIRST_EVENT_ID = 0
 const FIRST_REMOUNT_TOKEN = 0
 
 export const createPlayground = (): Playground => {
-  let state: PlaygroundState = loadState()
+  let state: PlaygroundState = { ...DEFAULT_STATE }
   let events: PlaygroundEvent[] = []
   let carousel: CarouselRef | null = null
   let swipiState: SwipiState | undefined
@@ -50,7 +44,6 @@ export const createPlayground = (): Playground => {
   const update: UpdateState = (key, value) => {
     state = { ...state, [key]: value }
 
-    saveState(state)
     notify()
   }
 
@@ -80,7 +73,6 @@ export const createPlayground = (): Playground => {
       events = []
       remountToken += 1
 
-      saveState(state)
       notify()
     },
     clearEvents: () => {

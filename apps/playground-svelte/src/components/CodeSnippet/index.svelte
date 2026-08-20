@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { STYLES } from '@swipi/playground-core'
   import { buildStyles } from '@swipi/playground-core'
   import type { CodeSnippetProps } from '@swipi/playground-core'
   import { buildMarkup } from './helpers'
@@ -35,17 +36,19 @@
   }
 </script>
 
-<section class="pg-card">
-  <header class="pg-card__header">
-    <h2 class="pg-card__title">Generated code</h2>
-    <div class="pg-row">
-      <div class="pg-toolbar-group">
-        <span class="pg-toolbar-label">Markup</span>
-        <div class="pg-segmented">
+<section class={STYLES.card}>
+  <header class={STYLES.cardHeader}>
+    <h2 class={STYLES.cardTitle}>Generated code</h2>
+    <div class={STYLES.row}>
+      <div class={STYLES.toolbarGroup}>
+        <span class={STYLES.toolbarLabel}>Markup</span>
+        <div class={STYLES.segmented}>
           {#each VARIANTS as variant (variant.title)}
             <button
               type="button"
-              class="pg-segment"
+              class={variant.minimal === minimal
+                ? STYLES.segmentActive
+                : STYLES.segment}
               aria-pressed={variant.minimal === minimal}
               onclick={() => (minimal = variant.minimal)}
             >
@@ -55,13 +58,15 @@
         </div>
       </div>
 
-      <div class="pg-toolbar-group">
-        <span class="pg-toolbar-label">Styles</span>
-        <div class="pg-segmented">
+      <div class={STYLES.toolbarGroup}>
+        <span class={STYLES.toolbarLabel}>Styles</span>
+        <div class={STYLES.segmented}>
           {#each FLAVOURS as flavour (flavour.title)}
             <button
               type="button"
-              class="pg-segment"
+              class={flavour.tailwind === tailwind
+                ? STYLES.segmentActive
+                : STYLES.segment}
               aria-pressed={flavour.tailwind === tailwind}
               onclick={() => (tailwind = flavour.tailwind)}
             >
@@ -71,15 +76,15 @@
         </div>
       </div>
 
-      <span class="pg-toolbar-divider"></span>
+      <span class={STYLES.toolbarDivider}></span>
 
-      <button type="button" class="pg-button" onclick={copy}>
+      <button type="button" class={STYLES.button} onclick={copy}>
         {copied ? 'Copied' : 'Copy'}
       </button>
     </div>
   </header>
 
-  <p class="pg-hint">
+  <p class={STYLES.hint}>
     {#if minimal}
       The same carousel with everything optional taken off: no roles, no labels,
       no live region, no arrow keys — the layout as
@@ -93,8 +98,8 @@
     {/if}
   </p>
 
-  <pre class="pg-code">{markup}</pre>
+  <pre class={STYLES.code}>{markup}</pre>
   {#if styles}
-    <pre class="pg-code">{styles}</pre>
+    <pre class={STYLES.code}>{styles}</pre>
   {/if}
 </section>

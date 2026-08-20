@@ -213,3 +213,35 @@ export type EventLogProps = {
 export type CodeSnippetProps = {
   state: PlaygroundState
 }
+
+export type EmbedHeightMessage = {
+  type: 'swipi-playground:height'
+  height: number
+}
+
+export type EmbedReadyMessage = {
+  type: 'swipi-playground:ready'
+}
+
+export type EmbedMeasureMessage = {
+  type: 'swipi-playground:measure'
+}
+
+export type EmbedMessage = EmbedHeightMessage | EmbedReadyMessage
+
+export type PlaygroundFramework =
+  | 'react'
+  | 'vue'
+  | 'svelte'
+  | 'angular'
+  | 'vanilla'
+
+export type FrameworkOption = {
+  id: PlaygroundFramework
+  title: string
+}
+
+export type FrameworkLink = FrameworkOption & {
+  href: string
+  isCurrent: boolean
+}

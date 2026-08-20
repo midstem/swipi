@@ -1,5 +1,5 @@
 <template>
-  <aside class="pg-controls">
+  <aside :class="STYLES.controls">
     <Section
       title="Behaviour"
       origin="hook"
@@ -173,12 +173,12 @@
         :disabled="!isVertical"
         @change="change('stageHeight')($event)"
       />
-      <div class="pg-row">
+      <div :class="STYLES.row">
         <button
           v-for="preset in STAGE_PRESETS"
           :key="preset.label"
           type="button"
-          class="pg-button pg-button--ghost"
+          :class="STYLES.ghostButton"
           @click="changeStageWidth(preset.width)()"
         >
           {{ preset.label }}
@@ -189,6 +189,7 @@
 </template>
 
 <script setup lang="ts">
+import { STYLES } from '@swipi/playground-core'
 import { computed } from 'vue'
 import {
   ANIMATION_SPEED_LIMITS,

@@ -14,9 +14,10 @@ const renderPanel = (state: Partial<PlaygroundState> = {}): HTMLElement => {
 
 const getControl = (root: HTMLElement, label: string): HTMLElement => {
   const controls = Array.from(
-    root.querySelectorAll<HTMLElement>('.pg-label')
+    root.querySelectorAll<HTMLElement>('[data-pg="label"]')
   ).filter(
-    (node) => node.textContent?.trim() === label && !node.closest('.pg-config')
+    (node) =>
+      node.textContent?.trim() === label && !node.closest('[data-pg="config"]')
   )
 
   if (controls.length !== 1) {
@@ -27,7 +28,9 @@ const getControl = (root: HTMLElement, label: string): HTMLElement => {
 }
 
 const getInput = (root: HTMLElement, label: string): HTMLInputElement => {
-  const field = getControl(root, label).closest('.pg-field, .pg-toggle')
+  const field = getControl(root, label).closest(
+    '[data-pg="field"], [data-pg="toggle"]'
+  )
   const input = field?.querySelector<HTMLInputElement>(
     'input[type="number"], input[type="checkbox"]'
   )
@@ -38,7 +41,7 @@ const getInput = (root: HTMLElement, label: string): HTMLInputElement => {
 }
 
 const getSection = (root: HTMLElement, label: string): HTMLElement => {
-  const section = getControl(root, label).closest('.pg-section')
+  const section = getControl(root, label).closest('[data-pg="section"]')
 
   if (!section) throw new Error(`"${label}" is outside of any section`)
 
@@ -65,14 +68,14 @@ describe('the controls panel against the public API', () => {
   it.each(HOOK_OPTION_KEYS)('marks %s as an option of the hook', (option) => {
     const section = getSection(renderPanel(), option)
 
-    expect(section.className).toContain('pg-section--hook')
+    expect(section.dataset.origin).toBe('hook')
     expect(section.textContent).toContain('hook option')
   })
 
   it.each(PLAYGROUND_ONLY)('marks %s as drawn by the playground', (control) => {
     const section = getSection(renderPanel(), control)
 
-    expect(section.className).toContain('pg-section--playground')
+    expect(section.dataset.origin).toBe('playground')
     expect(section.textContent).toContain('playground only')
   })
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { STYLES } from '@swipi/playground-core'
   import { onMount, untrack } from 'svelte'
   import { writable } from 'svelte/store'
   import { useSwipiCarousel } from '@midstem/swipi-svelte'
@@ -96,18 +97,18 @@
 
 <svelte:window onresize={handleResize} />
 
-<div class="pg-card">
-  <div class="pg-stage__slider" style="width: {playgroundState.stageWidth}px">
-    <div class="pg-carousel" class:pg-carousel--vertical={isVertical}>
-      <span class="pg-visually-hidden" aria-live="polite" aria-atomic="true">
+<div class={STYLES.card}>
+  <div class={STYLES.slider} style="width: {playgroundState.stageWidth}px">
+    <div class={STYLES.carousel} data-pg="carousel">
+      <span class={STYLES.visuallyHidden} aria-live="polite" aria-atomic="true">
         Slide {$carousel.selectedIndex + 1} of {$carousel.snapCount}
       </span>
 
-      <div class="pg-carousel__row">
+      <div class={STYLES.carouselRow} data-axis={playgroundState.axis}>
         {#if showArrows}
           <button
             type="button"
-            class="pg-carousel__arrow"
+            class={STYLES.arrow}
             aria-label="Previous slide"
             disabled={!$carousel.canScrollPrev}
             onclick={() => $carousel.scrollPrev()}
@@ -120,7 +121,9 @@
         <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
         <div
           use:carouselRef
-          class="pg-carousel__viewport"
+          class={STYLES.viewport}
+          data-pg="viewport"
+          data-axis={playgroundState.axis}
           style={toStyle(getViewportStyle(playgroundState, isVertical))}
           role="group"
           tabindex="0"
@@ -129,12 +132,15 @@
           onkeydown={handleKeyDown}
         >
           <div
-            class="pg-carousel__track"
+            class={STYLES.track}
+            data-axis={playgroundState.axis}
             style={toStyle(getTrackStyle(visibleSlides, bias, slideWidth))}
           >
             {#each slides as color, index (color)}
               <div
-                class="pg-carousel__slide"
+                class={STYLES.slide}
+                data-pg="slide"
+                data-axis={playgroundState.axis}
                 role="group"
                 aria-roledescription="slide"
                 aria-label="{index + 1} of {slides.length}"
@@ -145,10 +151,7 @@
                   )
                 )}
               >
-                <div
-                  class="pg-carousel__slide-box"
-                  style="background-color: {color}"
-                >
+                <div class={STYLES.slideBox} style="background-color: {color}">
                   {index + 1}
                 </div>
               </div>
@@ -159,7 +162,7 @@
         {#if showArrows}
           <button
             type="button"
-            class="pg-carousel__arrow"
+            class={STYLES.arrow}
             aria-label="Next slide"
             disabled={!$carousel.canScrollNext}
             onclick={() => $carousel.scrollNext()}
@@ -170,17 +173,17 @@
       </div>
 
       {#if playgroundState.showDots}
-        <nav class="pg-carousel__dots">
+        <nav class={STYLES.dots}>
           {#each dots as index (index)}
             <button
               type="button"
-              class="pg-carousel__dot"
+              class={STYLES.dot}
               aria-label="Go to slide {index + 1}"
               aria-current={index === $carousel.selectedIndex}
               onclick={() => $carousel.scrollTo(index)}
             >
               <span
-                class="pg-carousel__dot-mark"
+                class={STYLES.dotMark}
                 data-active={index === $carousel.selectedIndex}
                 style="transition: {playgroundState.animationSpeed}ms"
               ></span>
@@ -191,7 +194,7 @@
     </div>
   </div>
 
-  <ul class="pg-facts">
+  <ul class={STYLES.facts}>
     <li>
       window width: <b>{windowWidth}px</b>
     </li>
@@ -210,7 +213,7 @@
   </ul>
 
   {#if !$carousel.hasOverflow}
-    <p class="pg-warning">
+    <p class={STYLES.warning}>
       All slides fit on the screen, so arrows, dots navigation and
       <code>loop</code> are disabled — add more slides, decrease
       <code>slidesNumber</code> or narrow the stage.

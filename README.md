@@ -35,13 +35,23 @@ for that framework and the layout contract.
 
 ## Playgrounds
 
-[`apps/`](apps) holds a live playground for
-[React](apps/playground-react), [Vue](apps/playground-vue),
-[Svelte](apps/playground-svelte), [Angular](apps/playground-angular) and
-[vanilla](apps/playground-vanilla). All five draw their options, controls and
-styles from the shared
+Every adapter has a playground of its own, deployed on every push to `main` and
+embedded on the [playground page](https://swipi.midstem.net/playground/) of the
+documentation site.
+
+| Playground | Try it                                           | Source                                               |
+| ---------- | ------------------------------------------------ | ---------------------------------------------------- |
+| React      | [live](https://midstem.github.io/swipi/react/)   | [`apps/playground-react`](apps/playground-react)     |
+| Vue        | [live](https://midstem.github.io/swipi/vue/)     | [`apps/playground-vue`](apps/playground-vue)         |
+| Svelte     | [live](https://midstem.github.io/swipi/svelte/)  | [`apps/playground-svelte`](apps/playground-svelte)   |
+| Angular    | [live](https://midstem.github.io/swipi/angular/) | [`apps/playground-angular`](apps/playground-angular) |
+| Vanilla JS | [live](https://midstem.github.io/swipi/vanilla/) | [`apps/playground-vanilla`](apps/playground-vanilla) |
+
+All five draw their options, controls and styles from the shared
 [`@swipi/playground-core`](packages/playground-core), so the same carousel can
 be tried on each adapter and compared side by side.
+[midstem.github.io/swipi](https://midstem.github.io/swipi/) links to all of
+them.
 
 ```bash
 npm install
@@ -49,7 +59,8 @@ npm start
 ```
 
 `npm start` opens the React playground; `start:vue`, `start:svelte`,
-`start:angular` and `start:vanilla` open the others.
+`start:angular` and `start:vanilla` open the others. `npm run build:pages`
+builds all five the way the deployment does.
 
 ## 🔥 <a href='https://swipi.midstem.net'>View more examples and create a custom slider</a>
 

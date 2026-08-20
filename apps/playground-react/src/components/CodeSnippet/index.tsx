@@ -1,6 +1,6 @@
 import type { JSX } from 'react'
 import { useMemo, useState } from 'react'
-import { PlaygroundState } from '@swipi/playground-core'
+import { STYLES, PlaygroundState } from '@swipi/playground-core'
 import { buildStyles } from '@swipi/playground-core'
 import { buildMarkup } from './helpers'
 
@@ -44,18 +44,22 @@ const CodeSnippet = ({ state }: CodeSnippetProps): JSX.Element => {
   }
 
   return (
-    <section className="pg-card">
-      <header className="pg-card__header">
-        <h2 className="pg-card__title">Generated code</h2>
-        <div className="pg-row">
-          <div className="pg-toolbar-group">
-            <span className="pg-toolbar-label">Markup</span>
-            <div className="pg-segmented">
+    <section className={STYLES.card}>
+      <header className={STYLES.cardHeader}>
+        <h2 className={STYLES.cardTitle}>Generated code</h2>
+        <div className={STYLES.row}>
+          <div className={STYLES.toolbarGroup}>
+            <span className={STYLES.toolbarLabel}>Markup</span>
+            <div className={STYLES.segmented}>
               {VARIANTS.map((variant) => (
                 <button
                   key={variant.title}
                   type="button"
-                  className="pg-segment"
+                  className={
+                    variant.minimal === minimal
+                      ? STYLES.segmentActive
+                      : STYLES.segment
+                  }
                   aria-pressed={variant.minimal === minimal}
                   onClick={() => setMinimal(variant.minimal)}
                 >
@@ -65,14 +69,18 @@ const CodeSnippet = ({ state }: CodeSnippetProps): JSX.Element => {
             </div>
           </div>
 
-          <div className="pg-toolbar-group">
-            <span className="pg-toolbar-label">Styles</span>
-            <div className="pg-segmented">
+          <div className={STYLES.toolbarGroup}>
+            <span className={STYLES.toolbarLabel}>Styles</span>
+            <div className={STYLES.segmented}>
               {FLAVOURS.map((flavour) => (
                 <button
                   key={flavour.title}
                   type="button"
-                  className="pg-segment"
+                  className={
+                    flavour.tailwind === tailwind
+                      ? STYLES.segmentActive
+                      : STYLES.segment
+                  }
                   aria-pressed={flavour.tailwind === tailwind}
                   onClick={() => setTailwind(flavour.tailwind)}
                 >
@@ -82,15 +90,15 @@ const CodeSnippet = ({ state }: CodeSnippetProps): JSX.Element => {
             </div>
           </div>
 
-          <span className="pg-toolbar-divider" />
+          <span className={STYLES.toolbarDivider} />
 
-          <button type="button" className="pg-button" onClick={copy}>
+          <button type="button" className={STYLES.button} onClick={copy}>
             {copied ? 'Copied' : 'Copy'}
           </button>
         </div>
       </header>
 
-      <p className="pg-hint">
+      <p className={STYLES.hint}>
         {minimal
           ? `The same carousel with everything optional taken off: no roles, no labels, no live region, no arrow keys — the layout as ${
               tailwind ? 'Tailwind classes' : 'CSS'
@@ -100,8 +108,8 @@ const CodeSnippet = ({ state }: CodeSnippetProps): JSX.Element => {
             }. The roles, labels and the live region are yours to edit and translate once you paste this.`}
       </p>
 
-      <pre className="pg-code">{markup}</pre>
-      {styles && <pre className="pg-code">{styles}</pre>}
+      <pre className={STYLES.code}>{markup}</pre>
+      {styles && <pre className={STYLES.code}>{styles}</pre>}
     </section>
   )
 }

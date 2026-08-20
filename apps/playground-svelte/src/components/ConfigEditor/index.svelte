@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { STYLES } from '@swipi/playground-core'
   import {
     CONFIG_NUMBER_FIELDS,
     EMPTY_FIELD_VALUE,
@@ -39,16 +40,16 @@
     }
 </script>
 
-<div class="pg-config" class:pg-field--disabled={disabled}>
+<div class={STYLES.config} data-pg="config" data-disabled={disabled}>
   {#each config as item, index (index)}
-    <div class="pg-config__item">
-      <div class="pg-config__grid">
+    <div class={STYLES.configItem}>
+      <div class={STYLES.configGrid}>
         {#each CONFIG_NUMBER_FIELDS as { key, label } (key)}
-          <label class="pg-config__cell">
-            <span class="pg-hint">{label}</span>
+          <label class={STYLES.configCell}>
+            <span class={STYLES.hint}>{label}</span>
             <input
               type="number"
-              class="pg-input pg-input--number"
+              class={STYLES.configInput}
               min={EMPTY_FIELD_VALUE}
               {disabled}
               value={item[key] ?? EMPTY_FIELD_VALUE}
@@ -58,19 +59,19 @@
           </label>
         {/each}
       </div>
-      <div class="pg-config__footer">
-        <label class="pg-toggle pg-toggle--inline">
+      <div class={STYLES.configFooter}>
+        <label class={STYLES.toggleInline}>
           <input
             type="checkbox"
             {disabled}
             checked={Boolean(item.biasRight)}
             onchange={changeBiasRight(index)}
           />
-          <span class="pg-label">biasRight</span>
+          <span class={STYLES.label} data-pg="label">biasRight</span>
         </label>
         <button
           type="button"
-          class="pg-button pg-button--ghost"
+          class={STYLES.ghostButton}
           {disabled}
           onclick={removeItem(index)}
         >
@@ -80,11 +81,11 @@
     </div>
   {/each}
 
-  <button type="button" class="pg-button" {disabled} onclick={addItem}>
+  <button type="button" class={STYLES.button} {disabled} onclick={addItem}>
     + Add breakpoint
   </button>
 
-  <p class="pg-hint">
+  <p class={STYLES.hint}>
     Breakpoints are matched against <code>window.innerWidth</code>: every item
     with <code>maxWidth &gt;= window width</code> matches and the last matching one
     wins — keep them ordered from the widest to the narrowest.

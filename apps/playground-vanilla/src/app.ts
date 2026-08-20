@@ -1,4 +1,4 @@
-import { applyStyle, element, svgElement } from './dom'
+import { element, svgElement } from './dom'
 import { createPlayground } from './playground'
 import { createCodeSnippet } from './components/CodeSnippet'
 import { createControlsPanel } from './components/ControlsPanel'
@@ -7,6 +7,7 @@ import { createImperativeApi } from './components/ImperativeApi'
 import { createStage } from './components/Stage'
 import { createStatePanel } from './components/StatePanel'
 import type { PlaygroundSnapshot, StageComponent } from './types'
+import { STYLES, getFrameworkLinks } from '@swipi/playground-core'
 
 const LOGO_SIZE = 24
 
@@ -34,11 +35,31 @@ const createLogo = (): SVGSVGElement =>
     ]
   )
 
+const createFrameworkNav = (): HTMLElement =>
+  element(
+    'nav',
+    { class: STYLES.frameworkNav, 'aria-label': 'Playgrounds' },
+    getFrameworkLinks('vanilla').map(({ title, href, isCurrent }) =>
+      element(
+        'a',
+        {
+          href,
+          class: isCurrent ? STYLES.frameworkLinkCurrent : STYLES.frameworkLink,
+          'aria-current': isCurrent ? 'page' : undefined
+        },
+        [title]
+      )
+    )
+  )
+
 const createHeaderButton = (
   label: string,
   onClick: () => void
 ): HTMLElement => {
-  const button = element('button', { type: 'button', class: 'pg-button' })
+  const button = element('button', {
+    type: 'button',
+    class: STYLES.ghostButton
+  })
 
   button.textContent = label
   button.addEventListener('click', onClick)
@@ -76,38 +97,35 @@ export const createApp = (root: HTMLElement): void => {
 
   const codeSnippet = createCodeSnippet({ state: snapshot.state })
 
-  const main = element('main', { class: 'pg-stage' }, [
+  const main = element('main', { class: STYLES.stage }, [
     imperativeApi.element,
     statePanel.element,
     eventLog.element,
     codeSnippet.element
   ])
 
-  const title = element('h1', { class: 'pg-header__title' }, [
+  const title = element('h1', { class: STYLES.headerTitle }, [
     createLogo(),
     'Swipi playground'
   ])
 
-  applyStyle(title, { display: 'flex', alignItems: 'center', gap: 8 })
-
-  const header = element('header', { class: 'pg-header' }, [
+  const header = element('header', { class: STYLES.header }, [
     element('div', {}, [
       title,
-      element('p', { class: 'pg-hint' }, [
-        'Every option of createSwipi is editable here, next to the layout the playground draws around it — the settings are kept in ',
-        element('code', {}, ['localStorage']),
-        ' between reloads.'
+      element('p', { class: STYLES.hint }, [
+        'Every option of createSwipi is editable here, next to the layout the playground draws around it — and the panel below prints the call, the markup and the CSS your settings need.'
       ])
     ]),
-    element('div', { class: 'pg-header__actions' }, [
+    element('div', { class: STYLES.headerActions }, [
+      createFrameworkNav(),
       createHeaderButton('Remount', playground.remount),
       createHeaderButton('Reset props', playground.reset)
     ])
   ])
 
-  const app = element('div', { class: 'pg' }, [
+  const app = element('div', { class: STYLES.page }, [
     header,
-    element('div', { class: 'pg-layout' }, [controls.element, main])
+    element('div', { class: STYLES.layout }, [controls.element, main])
   ])
 
   const mountStage = (next: PlaygroundSnapshot): void => {

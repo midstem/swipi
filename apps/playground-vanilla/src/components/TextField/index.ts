@@ -1,6 +1,7 @@
 import type { TextFieldProps } from '@swipi/playground-core'
 import { createId, element, setText, setValue } from '../../dom'
 import type { Component } from '../../types'
+import { STYLES } from '@swipi/playground-core'
 
 export const createTextField = (
   props: TextFieldProps
@@ -12,16 +13,23 @@ export const createTextField = (
   const input = element('input', {
     id,
     type: 'text',
-    class: 'pg-input',
+    class: STYLES.input,
     placeholder: props.placeholder
   })
 
   input.addEventListener('change', () => current.onChange(input.value))
 
-  const label = element('label', { class: 'pg-label', for: id }, [props.label])
-  const hint = element('span', { class: 'pg-hint' }, [props.hint ?? ''])
+  const label = element(
+    'label',
+    { class: STYLES.label, 'data-pg': 'label', for: id },
+    [props.label]
+  )
+  const hint = element('span', { class: STYLES.hint }, [props.hint ?? ''])
 
-  const field = element('div', { class: 'pg-field' }, [label, input])
+  const field = element('div', { class: STYLES.field, 'data-pg': 'field' }, [
+    label,
+    input
+  ])
 
   if (props.hint) field.append(hint)
 

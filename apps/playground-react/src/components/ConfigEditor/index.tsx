@@ -1,5 +1,5 @@
 import type { JSX } from 'react'
-import { ConfigEditorProps } from '@swipi/playground-core'
+import { STYLES, ConfigEditorProps } from '@swipi/playground-core'
 import { CONFIG_NUMBER_FIELDS, EMPTY_FIELD_VALUE } from '@swipi/playground-core'
 import { useConfigEditor } from './useConfigEditor'
 
@@ -12,16 +12,16 @@ const ConfigEditor = ({
     useConfigEditor({ config, disabled, onChange })
 
   return (
-    <div className={`pg-config${disabled ? ' pg-field--disabled' : ''}`}>
+    <div className={STYLES.config} data-pg="config" data-disabled={disabled}>
       {config.map((item, index) => (
-        <div className="pg-config__item" key={index}>
-          <div className="pg-config__grid">
+        <div className={STYLES.configItem} key={index}>
+          <div className={STYLES.configGrid}>
             {CONFIG_NUMBER_FIELDS.map(({ key, label }) => (
-              <label className="pg-config__cell" key={key}>
-                <span className="pg-hint">{label}</span>
+              <label className={STYLES.configCell} key={key}>
+                <span className={STYLES.hint}>{label}</span>
                 <input
                   type="number"
-                  className="pg-input pg-input--number"
+                  className={STYLES.configInput}
                   min={EMPTY_FIELD_VALUE}
                   disabled={disabled}
                   value={item[key] ?? EMPTY_FIELD_VALUE}
@@ -30,19 +30,22 @@ const ConfigEditor = ({
               </label>
             ))}
           </div>
-          <div className="pg-config__footer">
-            <label className="pg-toggle pg-toggle--inline">
+          <div className={STYLES.configFooter}>
+            <label className={STYLES.toggleInline}>
               <input
                 type="checkbox"
+                className={STYLES.checkbox}
                 disabled={disabled}
                 checked={Boolean(item.biasRight)}
                 onChange={changeBiasRight(index)}
               />
-              <span className="pg-label">biasRight</span>
+              <span className={STYLES.label} data-pg="label">
+                biasRight
+              </span>
             </label>
             <button
               type="button"
-              className="pg-button pg-button--ghost"
+              className={STYLES.ghostButton}
               disabled={disabled}
               onClick={removeItem(index)}
             >
@@ -54,14 +57,14 @@ const ConfigEditor = ({
 
       <button
         type="button"
-        className="pg-button"
+        className={STYLES.button}
         disabled={disabled}
         onClick={addItem}
       >
         + Add breakpoint
       </button>
 
-      <p className="pg-hint">
+      <p className={STYLES.hint}>
         Breakpoints are matched against <code>window.innerWidth</code>: every
         item with <code>maxWidth &gt;= window width</code> matches and the last
         matching one wins — keep them ordered from the widest to the narrowest.

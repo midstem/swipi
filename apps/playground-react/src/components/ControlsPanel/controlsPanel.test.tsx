@@ -12,8 +12,8 @@ const renderPanel = (state: Partial<PlaygroundState> = {}): void => {
 
 const getControl = (label: string): HTMLElement => {
   const controls = screen
-    .getAllByText(label, { selector: '.pg-label' })
-    .filter((node) => !node.closest('.pg-config'))
+    .getAllByText(label, { selector: '[data-pg="label"]' })
+    .filter((node) => !node.closest('[data-pg="config"]'))
 
   if (controls.length !== 1) {
     throw new Error(`expected one "${label}" control, found ${controls.length}`)
@@ -23,7 +23,9 @@ const getControl = (label: string): HTMLElement => {
 }
 
 const getInput = (label: string): HTMLInputElement => {
-  const field = getControl(label).closest('.pg-field, .pg-toggle')
+  const field = getControl(label).closest(
+    '[data-pg="field"], [data-pg="toggle"]'
+  )
   const input = field?.querySelector<HTMLInputElement>(
     'input[type="number"], input[type="checkbox"]'
   )
@@ -34,7 +36,7 @@ const getInput = (label: string): HTMLInputElement => {
 }
 
 const getSection = (label: string): HTMLElement => {
-  const section = getControl(label).closest('.pg-section')
+  const section = getControl(label).closest('[data-pg="section"]')
 
   if (!section) throw new Error(`"${label}" is outside of any section`)
 
@@ -63,14 +65,14 @@ describe('the controls panel against the public API', () => {
   it.each(HOOK_OPTION_KEYS)('marks %s as an option of the hook', (option) => {
     renderPanel()
 
-    expect(getSection(option).className).toContain('pg-section--hook')
+    expect(getSection(option).dataset.origin).toBe('hook')
     expect(getSection(option).textContent).toContain('hook option')
   })
 
   it.each(PLAYGROUND_ONLY)('marks %s as drawn by the playground', (control) => {
     renderPanel()
 
-    expect(getSection(control).className).toContain('pg-section--playground')
+    expect(getSection(control).dataset.origin).toBe('playground')
     expect(getSection(control).textContent).toContain('playground only')
   })
 

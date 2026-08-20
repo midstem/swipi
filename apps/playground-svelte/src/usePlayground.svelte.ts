@@ -1,6 +1,5 @@
 import type { SlidePositions, SwipiState } from '@midstem/swipi-svelte'
 import { DEFAULT_STATE, MAX_EVENTS, SLIDE_COLORS } from '@swipi/playground-core'
-import { loadState, saveState } from '@swipi/playground-core'
 import type {
   CarouselRef,
   PlaygroundEvent,
@@ -10,7 +9,7 @@ import type {
 import type { UsePlaygroundReturn } from './types'
 
 export const usePlayground = (): UsePlaygroundReturn => {
-  const state = $state<PlaygroundState>(loadState())
+  const state = $state<PlaygroundState>({ ...DEFAULT_STATE })
 
   let swipiState = $state<SwipiState | undefined>(undefined)
   let positions = $state<SlidePositions | undefined>(undefined)
@@ -23,8 +22,6 @@ export const usePlayground = (): UsePlaygroundReturn => {
   const slides = $derived(SLIDE_COLORS.slice(0, state.slidesCount))
 
   const remountKey = $derived(`${remountToken}-${state.startIndex}`)
-
-  $effect(() => saveState($state.snapshot(state)))
 
   const update: UpdateState = (key, value) => {
     state[key] = value
