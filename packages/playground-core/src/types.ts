@@ -228,3 +228,20 @@ export type EmbedMeasureMessage = {
 }
 
 export type EmbedMessage = EmbedHeightMessage | EmbedReadyMessage
+
+export type PlaygroundFramework =
+  | 'react'
+  | 'vue'
+  | 'svelte'
+  | 'angular'
+  | 'vanilla'
+
+export type FrameworkOption = {
+  id: PlaygroundFramework
+  title: string
+}
+
+export type FrameworkLink = FrameworkOption & {
+  href: string
+  isCurrent: boolean
+}

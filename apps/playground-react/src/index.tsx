@@ -7,7 +7,9 @@ import Stage from './components/Stage'
 import StatePanel from './components/StatePanel'
 import { usePlayground } from './usePlayground'
 import '@swipi/playground-core/playground.css'
-import { STYLES } from '@swipi/playground-core'
+import { STYLES, getFrameworkLinks } from '@swipi/playground-core'
+
+const FRAMEWORK = 'react'
 
 const Playground = (): JSX.Element => {
   const {
@@ -76,6 +78,24 @@ const Playground = (): JSX.Element => {
           </p>
         </div>
         <div className={STYLES.headerActions}>
+          <nav className={STYLES.frameworkNav} aria-label="Playgrounds">
+            {getFrameworkLinks(FRAMEWORK).map(
+              ({ id, title, href, isCurrent }) => (
+                <a
+                  key={id}
+                  href={href}
+                  className={
+                    isCurrent
+                      ? STYLES.frameworkLinkCurrent
+                      : STYLES.frameworkLink
+                  }
+                  aria-current={isCurrent ? 'page' : undefined}
+                >
+                  {title}
+                </a>
+              )
+            )}
+          </nav>
           <button
             type="button"
             className={STYLES.ghostButton}

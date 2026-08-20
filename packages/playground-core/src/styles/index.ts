@@ -65,6 +65,10 @@ export const STYLES = {
   segmented:
     'flex items-center gap-1 rounded-md border border-pg-border bg-black p-0.5',
   segment: `${SEGMENT_BASE} bg-transparent text-pg-muted hover:text-white`,
+  frameworkNav:
+    'flex flex-wrap items-center gap-1 rounded-md border border-pg-border bg-black p-0.5',
+  frameworkLink: `${SEGMENT_BASE} bg-transparent text-pg-muted no-underline hover:text-white`,
+  frameworkLinkCurrent: `${SEGMENT_BASE} bg-pg-accent-strong text-white no-underline`,
   segmentActive: `${SEGMENT_BASE} bg-pg-accent-strong text-white`,
 
   code: 'overflow-x-auto rounded-md bg-black p-3 text-xs leading-relaxed text-pg-subtle',

@@ -7,7 +7,7 @@ import { createImperativeApi } from './components/ImperativeApi'
 import { createStage } from './components/Stage'
 import { createStatePanel } from './components/StatePanel'
 import type { PlaygroundSnapshot, StageComponent } from './types'
-import { STYLES } from '@swipi/playground-core'
+import { STYLES, getFrameworkLinks } from '@swipi/playground-core'
 
 const LOGO_SIZE = 24
 
@@ -33,6 +33,23 @@ const createLogo = (): SVGSVGElement =>
         ['JS']
       )
     ]
+  )
+
+const createFrameworkNav = (): HTMLElement =>
+  element(
+    'nav',
+    { class: STYLES.frameworkNav, 'aria-label': 'Playgrounds' },
+    getFrameworkLinks('vanilla').map(({ title, href, isCurrent }) =>
+      element(
+        'a',
+        {
+          href,
+          class: isCurrent ? STYLES.frameworkLinkCurrent : STYLES.frameworkLink,
+          'aria-current': isCurrent ? 'page' : undefined
+        },
+        [title]
+      )
+    )
   )
 
 const createHeaderButton = (
@@ -100,6 +117,7 @@ export const createApp = (root: HTMLElement): void => {
       ])
     ]),
     element('div', { class: STYLES.headerActions }, [
+      createFrameworkNav(),
       createHeaderButton('Remount', playground.remount),
       createHeaderButton('Reset props', playground.reset)
     ])

@@ -6,7 +6,7 @@ import { ImperativeApi } from './components/ImperativeApi'
 import { Stage } from './components/Stage'
 import { StatePanel } from './components/StatePanel'
 import { usePlayground } from './usePlayground'
-import { STYLES } from '@swipi/playground-core'
+import { STYLES, getFrameworkLinks } from '@swipi/playground-core'
 
 @Component({
   selector: 'pg-root',
@@ -46,6 +46,21 @@ import { STYLES } from '@swipi/playground-core'
           </p>
         </div>
         <div [class]="STYLES.headerActions">
+          <nav [class]="STYLES.frameworkNav" aria-label="Playgrounds">
+            @for (link of frameworks; track link.id) {
+              <a
+                [href]="link.href"
+                [class]="
+                  link.isCurrent
+                    ? STYLES.frameworkLinkCurrent
+                    : STYLES.frameworkLink
+                "
+                [attr.aria-current]="link.isCurrent ? 'page' : null"
+              >
+                {{ link.title }}
+              </a>
+            }
+          </nav>
           <button
             type="button"
             [class]="STYLES.ghostButton"
@@ -89,6 +104,8 @@ import { STYLES } from '@swipi/playground-core'
 })
 export class App {
   protected readonly STYLES = STYLES
+
+  protected readonly frameworks = getFrameworkLinks('angular')
 
   private readonly playground = usePlayground()
 

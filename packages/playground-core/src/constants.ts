@@ -2,6 +2,7 @@ import type { SwipiAxis } from '@midstem/swipi'
 import {
   ConfigNumberFieldOption,
   ConfigType,
+  FrameworkOption,
   HookOptionKey,
   PlaygroundState,
   SelectOption,
@@ -155,3 +156,11 @@ export const EMBED_HEIGHT_MESSAGE = 'swipi-playground:height'
 export const EMBED_MEASURE_MESSAGE = 'swipi-playground:measure'
 
 export const ANY_ORIGIN = '*'
+
+export const PLAYGROUND_FRAMEWORKS: FrameworkOption[] = [
+  { id: 'react', title: 'React' },
+  { id: 'vue', title: 'Vue' },
+  { id: 'svelte', title: 'Svelte' },
+  { id: 'angular', title: 'Angular' },
+  { id: 'vanilla', title: 'Vanilla' }
+]

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { STYLES } from '@swipi/playground-core'
+  import { STYLES, getFrameworkLinks } from '@swipi/playground-core'
   import { usePlayground } from './usePlayground.svelte'
   import CodeSnippet from './components/CodeSnippet/index.svelte'
   import ControlsPanel from './components/ControlsPanel/index.svelte'
@@ -7,6 +7,8 @@
   import ImperativeApi from './components/ImperativeApi/index.svelte'
   import Stage from './components/Stage/index.svelte'
   import StatePanel from './components/StatePanel/index.svelte'
+
+  const frameworks = getFrameworkLinks('svelte')
 
   const playground = usePlayground()
 
@@ -44,6 +46,19 @@
       </p>
     </div>
     <div class={STYLES.headerActions}>
+      <nav class={STYLES.frameworkNav} aria-label="Playgrounds">
+        {#each frameworks as link (link.id)}
+          <a
+            href={link.href}
+            class={link.isCurrent
+              ? STYLES.frameworkLinkCurrent
+              : STYLES.frameworkLink}
+            aria-current={link.isCurrent ? 'page' : undefined}
+          >
+            {link.title}
+          </a>
+        {/each}
+      </nav>
       <button type="button" class={STYLES.ghostButton} onclick={remount}>
         Remount
       </button>

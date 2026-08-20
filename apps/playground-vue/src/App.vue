@@ -22,6 +22,21 @@
         </p>
       </div>
       <div :class="STYLES.headerActions">
+        <nav :class="STYLES.frameworkNav" aria-label="Playgrounds">
+          <a
+            v-for="link in frameworks"
+            :key="link.id"
+            :href="link.href"
+            :class="
+              link.isCurrent
+                ? STYLES.frameworkLinkCurrent
+                : STYLES.frameworkLink
+            "
+            :aria-current="link.isCurrent ? 'page' : undefined"
+          >
+            {{ link.title }}
+          </a>
+        </nav>
         <button type="button" :class="STYLES.ghostButton" @click="remount">
           Remount
         </button>
@@ -53,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { STYLES } from '@swipi/playground-core'
+import { STYLES, getFrameworkLinks } from '@swipi/playground-core'
 import { usePlayground } from './usePlayground'
 import CodeSnippet from './components/CodeSnippet/index.vue'
 import ControlsPanel from './components/ControlsPanel/index.vue'
@@ -61,6 +76,8 @@ import EventLog from './components/EventLog/index.vue'
 import ImperativeApi from './components/ImperativeApi/index.vue'
 import Stage from './components/Stage/index.vue'
 import StatePanel from './components/StatePanel/index.vue'
+
+const frameworks = getFrameworkLinks('vue')
 
 const {
   state,
