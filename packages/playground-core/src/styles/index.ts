@@ -1,3 +1,5 @@
+import { CodeTokenKind } from '../types'
+
 const INPUT_BASE =
   'rounded-md border border-pg-border bg-black px-2 py-1.5 text-sm text-white placeholder:text-pg-faint focus-visible:border-pg-accent focus-visible:outline-none disabled:opacity-50'
 
@@ -7,11 +9,25 @@ const BUTTON_BASE =
 const SEGMENT_BASE =
   'cursor-pointer rounded px-2.5 py-1 text-xs font-semibold transition-colors'
 
+export const CODE_TOKEN_STYLES: Record<CodeTokenKind, string> = {
+  plain: 'text-code-plain',
+  comment: 'text-code-comment italic',
+  string: 'text-code-string',
+  keyword: 'text-code-keyword',
+  number: 'text-code-number',
+  tag: 'text-code-tag',
+  attribute: 'text-code-attribute',
+  function: 'text-code-function',
+  property: 'text-code-property',
+  selector: 'text-code-selector',
+  punctuation: 'text-code-punctuation'
+}
+
 export const STYLES = {
   page: 'mx-auto w-full max-w-[1400px] px-5 pt-6 pb-16',
   header: 'mb-5 flex flex-wrap items-start justify-between gap-3 embed:hidden',
   headerTitle: 'mb-1 flex items-center gap-2 text-3xl font-bold text-white',
-  headerActions: 'flex flex-wrap items-center gap-2',
+  headerActions: 'flex w-full flex-wrap items-center gap-2',
   layout: 'grid items-start gap-5 lg:grid-cols-[320px_minmax(0,1fr)]',
   controls:
     'order-1 flex flex-col gap-2.5 lg:sticky lg:top-4 lg:order-none lg:max-h-[calc(100vh-32px)] lg:overflow-y-auto lg:pr-1',
@@ -45,6 +61,7 @@ export const STYLES = {
   toggleInline: 'flex cursor-pointer items-center gap-2',
   toggleText: 'flex flex-col gap-0.5',
 
+  docsLink: `${BUTTON_BASE} ml-auto inline-flex items-center border-pg-accent bg-pg-accent text-white no-underline hover:border-pg-accent-strong hover:bg-pg-accent-strong`,
   button: `${BUTTON_BASE} border-pg-accent-strong bg-pg-accent-strong text-white hover:not-disabled:border-pg-accent hover:not-disabled:bg-pg-accent`,
   ghostButton: `${BUTTON_BASE} border-pg-border bg-transparent text-pg-subtle hover:not-disabled:border-pg-faint hover:not-disabled:bg-white/10 hover:not-disabled:text-white`,
 
@@ -71,7 +88,7 @@ export const STYLES = {
   frameworkLinkCurrent: `${SEGMENT_BASE} bg-pg-accent-strong text-white no-underline`,
   segmentActive: `${SEGMENT_BASE} bg-pg-accent-strong text-white`,
 
-  code: 'overflow-x-auto rounded-md bg-black p-3 text-xs leading-relaxed text-pg-subtle',
+  code: 'overflow-x-auto rounded-md bg-black p-3 text-xs leading-relaxed text-code-plain',
   events: 'flex max-h-[200px] flex-col gap-1.5 overflow-y-auto',
   event: 'flex items-baseline gap-2 text-xs text-pg-subtle',
   eventName: 'w-[72px] flex-none font-semibold text-pg-accent',

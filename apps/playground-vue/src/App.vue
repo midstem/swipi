@@ -43,6 +43,7 @@
         <button type="button" :class="STYLES.ghostButton" @click="reset">
           Reset props
         </button>
+        <a :class="STYLES.docsLink" :href="docsHref">Documentation</a>
       </div>
     </header>
 
@@ -68,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { STYLES, getFrameworkLinks } from '@swipi/playground-core'
+import { STYLES, getDocsHref, getFrameworkLinks } from '@swipi/playground-core'
 import { usePlayground } from './usePlayground'
 import CodeSnippet from './components/CodeSnippet/index.vue'
 import ControlsPanel from './components/ControlsPanel/index.vue'
@@ -78,6 +79,8 @@ import Stage from './components/Stage/index.vue'
 import StatePanel from './components/StatePanel/index.vue'
 
 const frameworks = getFrameworkLinks('vue')
+
+const docsHref = getDocsHref('vue')
 
 const {
   state,

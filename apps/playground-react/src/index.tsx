@@ -7,7 +7,7 @@ import Stage from './components/Stage'
 import StatePanel from './components/StatePanel'
 import { usePlayground } from './usePlayground'
 import '@swipi/playground-core/playground.css'
-import { STYLES, getFrameworkLinks } from '@swipi/playground-core'
+import { STYLES, getDocsHref, getFrameworkLinks } from '@swipi/playground-core'
 
 const FRAMEWORK = 'react'
 
@@ -106,6 +106,9 @@ const Playground = (): JSX.Element => {
           <button type="button" className={STYLES.ghostButton} onClick={reset}>
             Reset props
           </button>
+          <a className={STYLES.docsLink} href={getDocsHref(FRAMEWORK)}>
+            Documentation
+          </a>
         </div>
       </header>
 

@@ -66,8 +66,8 @@
       </template>
     </p>
 
-    <pre :class="STYLES.code">{{ markup }}</pre>
-    <pre v-if="styles" :class="STYLES.code">{{ styles }}</pre>
+    <CodeBlock :code="markup" language="markup" />
+    <CodeBlock v-if="styles" :code="styles" language="css" />
   </section>
 </template>
 
@@ -77,6 +77,7 @@ import { ref, computed } from 'vue'
 import type { PlaygroundState } from '@swipi/playground-core'
 import { buildStyles } from '@swipi/playground-core'
 import { buildMarkup } from './helpers'
+import CodeBlock from '../CodeBlock/index.vue'
 
 const props = defineProps<{
   state: PlaygroundState
