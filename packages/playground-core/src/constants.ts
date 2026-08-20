@@ -2,6 +2,7 @@ import type { SwipiAxis } from '@midstem/swipi'
 import {
   ConfigNumberFieldOption,
   ConfigType,
+  EmbedTheme,
   HookOptionKey,
   PlaygroundState,
   SelectOption,
@@ -147,3 +148,15 @@ export const DEFAULT_MIN = 0
 export const DEFAULT_MAX = 100
 
 export const DEFAULT_STEP = 1
+
+export const EMBED_QUERY_KEY = 'embed'
+
+export const EMBED_READY_MESSAGE = 'swipi-playground:ready'
+
+export const EMBED_HEIGHT_MESSAGE = 'swipi-playground:height'
+
+export const EMBED_THEME_MESSAGE = 'swipi-playground:theme'
+
+export const EMBED_THEMES: EmbedTheme[] = ['light', 'dark']
+
+export const ANY_ORIGIN = '*'

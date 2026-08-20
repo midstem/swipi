@@ -27,6 +27,7 @@ export default [
       '**/svelte.config.js',
       '**/scripts/**',
       '**/dist/**',
+      'dist-pages/**',
       '**/node_modules/**'
     ]
   },

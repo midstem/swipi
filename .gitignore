@@ -32,3 +32,5 @@ packages/*/LICENSE
 .claude
 # angular cli cache
 .angular
+
+dist-pages

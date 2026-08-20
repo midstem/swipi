@@ -36,6 +36,7 @@
     "lint:fix": "eslint --cache ./packages ./apps --quiet --fix",
     "lint:format": "prettier --write --log-level warn \"./**/*.{js,jsx,mjs,ts,tsx,svelte,css,md,json}\"",
     "lint-tsc": "npm run build --workspace @midstem/swipi && npm run lint:format && npm run lint:fix && npm run typecheck",
+    "build:pages": "node tools/scripts/build-pages.mjs",
     "release": "node tools/release/index.mjs"
   },
   "browserslist": {
