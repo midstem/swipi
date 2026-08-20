@@ -3,6 +3,7 @@
   import { buildStyles } from '@swipi/playground-core'
   import type { CodeSnippetProps } from '@swipi/playground-core'
   import { buildMarkup } from './helpers'
+  import CodeBlock from '../CodeBlock/index.svelte'
 
   const COPIED_TIMEOUT = 1500
 
@@ -98,8 +99,8 @@
     {/if}
   </p>
 
-  <pre class={STYLES.code}>{markup}</pre>
+  <CodeBlock code={markup} language="markup" />
   {#if styles}
-    <pre class={STYLES.code}>{styles}</pre>
+    <CodeBlock code={styles} language="css" />
   {/if}
 </section>

@@ -1,4 +1,4 @@
-import { PLAYGROUND_FRAMEWORKS } from '../constants'
+import { DOCS_URL, PLAYGROUND_FRAMEWORKS } from '../constants'
 import { FrameworkLink, PlaygroundFramework } from '../types'
 
 export const getFrameworkLinks = (
@@ -10,3 +10,6 @@ export const getFrameworkLinks = (
     href: `../${id}/`,
     isCurrent: id === current
   }))
+
+export const getDocsHref = (framework: PlaygroundFramework): string =>
+  `${DOCS_URL}?framework=${framework}`

@@ -6,7 +6,7 @@ import { ImperativeApi } from './components/ImperativeApi'
 import { Stage } from './components/Stage'
 import { StatePanel } from './components/StatePanel'
 import { usePlayground } from './usePlayground'
-import { STYLES, getFrameworkLinks } from '@swipi/playground-core'
+import { STYLES, getDocsHref, getFrameworkLinks } from '@swipi/playground-core'
 
 @Component({
   selector: 'pg-root',
@@ -71,6 +71,7 @@ import { STYLES, getFrameworkLinks } from '@swipi/playground-core'
           <button type="button" [class]="STYLES.ghostButton" (click)="reset()">
             Reset props
           </button>
+          <a [class]="STYLES.docsLink" [href]="docsHref">Documentation</a>
         </div>
       </header>
 
@@ -106,6 +107,8 @@ export class App {
   protected readonly STYLES = STYLES
 
   protected readonly frameworks = getFrameworkLinks('angular')
+
+  protected readonly docsHref = getDocsHref('angular')
 
   private readonly playground = usePlayground()
 

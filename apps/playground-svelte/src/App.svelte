@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { STYLES, getFrameworkLinks } from '@swipi/playground-core'
+  import {
+    STYLES,
+    getDocsHref,
+    getFrameworkLinks
+  } from '@swipi/playground-core'
   import { usePlayground } from './usePlayground.svelte'
   import CodeSnippet from './components/CodeSnippet/index.svelte'
   import ControlsPanel from './components/ControlsPanel/index.svelte'
@@ -9,6 +13,8 @@
   import StatePanel from './components/StatePanel/index.svelte'
 
   const frameworks = getFrameworkLinks('svelte')
+
+  const docsHref = getDocsHref('svelte')
 
   const playground = usePlayground()
 
@@ -65,6 +71,7 @@
       <button type="button" class={STYLES.ghostButton} onclick={reset}>
         Reset props
       </button>
+      <a class={STYLES.docsLink} href={docsHref}>Documentation</a>
     </div>
   </header>
 

@@ -1,6 +1,7 @@
 import { STYLES, buildStyles } from '@swipi/playground-core'
 import type { CodeSnippetProps } from '@swipi/playground-core'
 import { element, setText } from '../../dom'
+import { createCodeBlock } from '../CodeBlock'
 import type { Component } from '../../types'
 import { buildMarkup, buildScript } from './helpers'
 
@@ -35,9 +36,9 @@ export const createCodeSnippet = (
   let copied = false
 
   const hint = element('p', { class: STYLES.hint })
-  const markupCode = element('pre', { class: STYLES.code })
-  const scriptCode = element('pre', { class: STYLES.code })
-  const stylesCode = element('pre', { class: STYLES.code })
+  const markupCode = createCodeBlock({ code: '', language: 'markup' })
+  const scriptCode = createCodeBlock({ code: '', language: 'javascript' })
+  const stylesCode = createCodeBlock({ code: '', language: 'css' })
   const copy = element('button', { type: 'button', class: STYLES.button })
 
   const updates: (() => void)[] = []
@@ -45,13 +46,20 @@ export const createCodeSnippet = (
   const render = (): void => {
     const styles = tailwind ? '' : buildStyles(current.state, minimal)
 
-    setText(markupCode, buildMarkup(current.state, minimal, tailwind))
-    setText(scriptCode, buildScript(current.state, minimal))
-    setText(stylesCode, styles)
+    markupCode.update({
+      code: buildMarkup(current.state, minimal, tailwind),
+      language: 'markup'
+    })
+    scriptCode.update({
+      code: buildScript(current.state, minimal),
+      language: 'javascript'
+    })
+    stylesCode.update({ code: styles, language: 'css' })
+
     setText(hint, getHint(minimal, tailwind))
     setText(copy, copied ? 'Copied' : 'Copy')
 
-    stylesCode.hidden = !styles
+    stylesCode.element.hidden = !styles
 
     updates.forEach((apply) => apply())
   }
@@ -138,9 +146,9 @@ export const createCodeSnippet = (
       ])
     ]),
     hint,
-    markupCode,
-    scriptCode,
-    stylesCode
+    markupCode.element,
+    scriptCode.element,
+    stylesCode.element
   ])
 
   render()

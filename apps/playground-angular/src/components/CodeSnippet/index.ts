@@ -2,6 +2,7 @@ import { Component, computed, input, signal } from '@angular/core'
 import { STYLES, buildStyles } from '@swipi/playground-core'
 import type { PlaygroundState } from '@swipi/playground-core'
 import { buildMarkup } from './helpers'
+import { CodeBlock } from '../CodeBlock'
 
 const COPIED_TIMEOUT = 1500
 
@@ -17,6 +18,7 @@ const FLAVOURS = [
 
 @Component({
   selector: 'pg-code-snippet',
+  imports: [CodeBlock],
   styles: ':host { display: contents; }',
   template: `
     <section [class]="STYLES.card">
@@ -84,9 +86,9 @@ const FLAVOURS = [
         }
       </p>
 
-      <pre [class]="STYLES.code">{{ markup() }}</pre>
+      <pg-code-block [code]="markup()" language="typescript" />
       @if (styles()) {
-        <pre [class]="STYLES.code">{{ styles() }}</pre>
+        <pg-code-block [code]="styles()" language="css" />
       }
     </section>
   `

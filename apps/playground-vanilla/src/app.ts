@@ -7,7 +7,7 @@ import { createImperativeApi } from './components/ImperativeApi'
 import { createStage } from './components/Stage'
 import { createStatePanel } from './components/StatePanel'
 import type { PlaygroundSnapshot, StageComponent } from './types'
-import { STYLES, getFrameworkLinks } from '@swipi/playground-core'
+import { STYLES, getDocsHref, getFrameworkLinks } from '@swipi/playground-core'
 
 const LOGO_SIZE = 24
 
@@ -51,6 +51,11 @@ const createFrameworkNav = (): HTMLElement =>
       )
     )
   )
+
+const createDocsLink = (): HTMLElement =>
+  element('a', { class: STYLES.docsLink, href: getDocsHref('vanilla') }, [
+    'Documentation'
+  ])
 
 const createHeaderButton = (
   label: string,
@@ -119,7 +124,8 @@ export const createApp = (root: HTMLElement): void => {
     element('div', { class: STYLES.headerActions }, [
       createFrameworkNav(),
       createHeaderButton('Remount', playground.remount),
-      createHeaderButton('Reset props', playground.reset)
+      createHeaderButton('Reset props', playground.reset),
+      createDocsLink()
     ])
   ])
 

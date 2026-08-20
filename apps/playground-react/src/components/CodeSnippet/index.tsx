@@ -1,6 +1,7 @@
 import type { JSX } from 'react'
 import { useMemo, useState } from 'react'
 import { STYLES, PlaygroundState } from '@swipi/playground-core'
+import CodeBlock from '../CodeBlock'
 import { buildStyles } from '@swipi/playground-core'
 import { buildMarkup } from './helpers'
 
@@ -108,8 +109,8 @@ const CodeSnippet = ({ state }: CodeSnippetProps): JSX.Element => {
             }. The roles, labels and the live region are yours to edit and translate once you paste this.`}
       </p>
 
-      <pre className={STYLES.code}>{markup}</pre>
-      {styles && <pre className={STYLES.code}>{styles}</pre>}
+      <CodeBlock code={markup} language="jsx" />
+      {styles && <CodeBlock code={styles} language="css" />}
     </section>
   )
 }

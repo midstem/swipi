@@ -19,6 +19,17 @@
   --color-pg-accent: #ea352e;
   --color-pg-accent-strong: #b70808;
   --color-pg-accent-soft: rgb(255 0 0 / 0.2);
+  --color-code-plain: #c9d1d9;
+  --color-code-comment: #8b949e;
+  --color-code-string: #a5d6ff;
+  --color-code-keyword: #ff7b72;
+  --color-code-number: #79c0ff;
+  --color-code-tag: #7ee787;
+  --color-code-attribute: #79c0ff;
+  --color-code-function: #d2a8ff;
+  --color-code-property: #79c0ff;
+  --color-code-selector: #7ee787;
+  --color-code-punctuation: #8b949e;
 }
 
 @layer base {

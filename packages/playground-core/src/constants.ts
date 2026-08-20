@@ -157,6 +157,8 @@ export const EMBED_MEASURE_MESSAGE = 'swipi-playground:measure'
 
 export const ANY_ORIGIN = '*'
 
+export const DOCS_URL = 'https://swipi.midstem.net/docs/'
+
 export const PLAYGROUND_FRAMEWORKS: FrameworkOption[] = [
   { id: 'react', title: 'React' },
   { id: 'vue', title: 'Vue' },

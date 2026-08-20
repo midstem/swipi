@@ -245,3 +245,33 @@ export type FrameworkLink = FrameworkOption & {
   href: string
   isCurrent: boolean
 }
+
+export type CodeLanguage =
+  | 'jsx'
+  | 'markup'
+  | 'javascript'
+  | 'typescript'
+  | 'css'
+
+export type CodeTokenKind =
+  | 'plain'
+  | 'comment'
+  | 'string'
+  | 'keyword'
+  | 'number'
+  | 'tag'
+  | 'attribute'
+  | 'function'
+  | 'property'
+  | 'selector'
+  | 'punctuation'
+
+export type CodeToken = {
+  text: string
+  kind: CodeTokenKind
+}
+
+export type CodeBlockProps = {
+  code: string
+  language: CodeLanguage
+}
