@@ -1,3 +1,4 @@
+import tailwindcss from '@tailwindcss/vite'
 import angular from '@analogjs/vite-plugin-angular'
 import { defineConfig } from 'vitest/config'
 import { resolve } from 'path'
@@ -42,5 +43,5 @@ export default defineConfig({
   preview: {
     port: 8080
   },
-  plugins: [angular({ tsconfig: 'tsconfig.json' })]
+  plugins: [tailwindcss(), angular({ tsconfig: 'tsconfig.json' })]
 })

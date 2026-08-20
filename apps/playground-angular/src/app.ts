@@ -6,6 +6,7 @@ import { ImperativeApi } from './components/ImperativeApi'
 import { Stage } from './components/Stage'
 import { StatePanel } from './components/StatePanel'
 import { usePlayground } from './usePlayground'
+import { STYLES } from '@swipi/playground-core'
 
 @Component({
   selector: 'pg-root',
@@ -18,13 +19,10 @@ import { usePlayground } from './usePlayground'
     StatePanel
   ],
   template: `
-    <div class="pg">
-      <header class="pg-header">
+    <div [class]="STYLES.page">
+      <header [class]="STYLES.header">
         <div>
-          <h1
-            class="pg-header__title"
-            style="display: flex; align-items: center; gap: 8px"
-          >
+          <h1 [class]="STYLES.headerTitle">
             <svg class="logo" viewBox="0 0 250 250" width="24" height="24">
               <path
                 fill="#dd0031"
@@ -41,26 +39,30 @@ import { usePlayground } from './usePlayground'
             </svg>
             Swipi playground
           </h1>
-          <p class="pg-hint">
+          <p [class]="STYLES.hint">
             Every option of the hook is editable here, next to the layout the
-            playground draws around it — the settings are kept in
-            <code>localStorage</code> between reloads.
+            playground draws around it — and the panel below prints the call,
+            the markup and the CSS your settings need.
           </p>
         </div>
-        <div class="pg-header__actions">
-          <button type="button" class="pg-button" (click)="remount()">
+        <div [class]="STYLES.headerActions">
+          <button
+            type="button"
+            [class]="STYLES.ghostButton"
+            (click)="remount()"
+          >
             Remount
           </button>
-          <button type="button" class="pg-button" (click)="reset()">
+          <button type="button" [class]="STYLES.ghostButton" (click)="reset()">
             Reset props
           </button>
         </div>
       </header>
 
-      <div class="pg-layout">
+      <div [class]="STYLES.layout">
         <pg-controls-panel [state]="state()" [update]="update" />
 
-        <main class="pg-stage">
+        <main [class]="STYLES.stage">
           @for (key of [remountKey()]; track key) {
             <pg-stage
               [state]="state()"
@@ -86,6 +88,8 @@ import { usePlayground } from './usePlayground'
   `
 })
 export class App {
+  protected readonly STYLES = STYLES
+
   private readonly playground = usePlayground()
 
   readonly state = this.playground.state

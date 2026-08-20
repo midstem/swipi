@@ -1,11 +1,11 @@
 <template>
-  <div class="pg-field">
-    <label class="pg-label" :for="id">
+  <div :class="STYLES.field" data-pg="field">
+    <label :class="STYLES.label" data-pg="label" :for="id">
       {{ label }}
     </label>
     <select
       :id="id"
-      class="pg-input"
+      :class="STYLES.select"
       :value="value"
       @change="
         $emit('change', ($event.target as HTMLSelectElement).value as Value)
@@ -19,11 +19,12 @@
         {{ option.label }}
       </option>
     </select>
-    <span v-if="hint" class="pg-hint">{{ hint }}</span>
+    <span v-if="hint" :class="STYLES.hint">{{ hint }}</span>
   </div>
 </template>
 
 <script setup lang="ts" generic="Value extends string">
+import { STYLES } from '@swipi/playground-core'
 import { ref } from 'vue'
 import type { SelectFieldProps } from '@swipi/playground-core'
 

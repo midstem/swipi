@@ -1,5 +1,6 @@
 import type { SwipiAxis } from '@midstem/swipi'
 import {
+  STYLES,
   ANIMATION_SPEED_LIMITS,
   AUTOPLAY_SPEED_LIMITS,
   AXIS_OPTIONS,
@@ -268,11 +269,11 @@ export const createControlsPanel = (
   stage.body.append(
     element(
       'div',
-      { class: 'pg-row' },
+      { class: STYLES.row },
       STAGE_PRESETS.map((preset) => {
         const button = element('button', {
           type: 'button',
-          class: 'pg-button pg-button--ghost'
+          class: STYLES.ghostButton
         })
 
         button.textContent = preset.label
@@ -285,7 +286,7 @@ export const createControlsPanel = (
     )
   )
 
-  const panel = element('aside', { class: 'pg-controls' }, [
+  const panel = element('aside', { class: STYLES.controls }, [
     behaviour.element,
     geometry.element,
     slides.element,

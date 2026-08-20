@@ -1,5 +1,6 @@
 import { Component, computed, input } from '@angular/core'
 import type { SectionOrigin } from '@swipi/playground-core'
+import { STYLES } from '@swipi/playground-core'
 
 const BADGE: Record<SectionOrigin, string> = {
   hook: 'hook option',
@@ -10,14 +11,19 @@ const BADGE: Record<SectionOrigin, string> = {
   selector: 'pg-section',
   styles: ':host { display: contents; }',
   template: `
-    <details class="pg-section pg-section--{{ origin() }}" open>
-      <summary class="pg-section__title">
+    <details
+      [class]="STYLES.section"
+      data-pg="section"
+      [attr.data-origin]="origin()"
+      open
+    >
+      <summary [class]="STYLES.sectionTitle">
         {{ title() }}
-        <span class="pg-section__badge">{{ badge() }}</span>
+        <span [class]="STYLES.sectionBadge">{{ badge() }}</span>
       </summary>
-      <div class="pg-section__body">
+      <div [class]="STYLES.sectionBody">
         @if (hint()) {
-          <p class="pg-hint">{{ hint() }}</p>
+          <p [class]="STYLES.hint">{{ hint() }}</p>
         }
         <ng-content />
       </div>
@@ -25,6 +31,8 @@ const BADGE: Record<SectionOrigin, string> = {
   `
 })
 export class Section {
+  protected readonly STYLES = STYLES
+
   readonly title = input.required<string>()
 
   readonly origin = input.required<SectionOrigin>()

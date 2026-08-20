@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { STYLES } from '@swipi/playground-core'
   import type { ToggleProps } from '@swipi/playground-core'
 
   let {
@@ -14,12 +15,18 @@
   }
 </script>
 
-<label class="pg-toggle">
-  <input type="checkbox" {checked} {disabled} onchange={handleChange} />
-  <span class="pg-toggle__text">
-    <span class="pg-label">{label}</span>
+<label class={STYLES.toggle} data-pg="toggle">
+  <input
+    type="checkbox"
+    class={STYLES.checkbox}
+    {checked}
+    {disabled}
+    onchange={handleChange}
+  />
+  <span class={STYLES.toggleText}>
+    <span class={STYLES.label} data-pg="label">{label}</span>
     {#if hint}
-      <span class="pg-hint">{hint}</span>
+      <span class={STYLES.hint}>{hint}</span>
     {/if}
   </span>
 </label>

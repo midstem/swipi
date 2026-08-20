@@ -1,4 +1,5 @@
 import {
+  STYLES,
   DEFAULT_MAX,
   DEFAULT_MIN,
   DEFAULT_STEP,
@@ -17,11 +18,11 @@ export const createNumberField = (
 
   const id = createId('pg-number')
 
-  const range = element('input', { type: 'range' })
+  const range = element('input', { type: 'range', class: STYLES.range })
   const number = element('input', {
     id,
     type: 'number',
-    class: 'pg-input pg-input--number'
+    class: STYLES.numberInput
   })
 
   const handleChange = (event: Event): void => {
@@ -38,16 +39,23 @@ export const createNumberField = (
     input.addEventListener('change', handleChange)
   })
 
-  const label = element('label', { class: 'pg-label', for: id }, [props.label])
-  const hint = element('span', { class: 'pg-hint' }, [props.hint ?? ''])
+  const label = element(
+    'label',
+    { class: STYLES.label, 'data-pg': 'label', for: id },
+    [props.label]
+  )
+  const hint = element('span', { class: STYLES.hint }, [props.hint ?? ''])
 
-  const row = element('div', { class: 'pg-field__row' })
+  const row = element('div', { class: STYLES.fieldRow })
 
   if (props.withSlider ?? WITH_SLIDER) row.append(range)
 
   row.append(number)
 
-  const field = element('div', { class: 'pg-field' }, [label, row])
+  const field = element('div', { class: STYLES.field, 'data-pg': 'field' }, [
+    label,
+    row
+  ])
 
   if (props.hint) field.append(hint)
 
@@ -68,7 +76,7 @@ export const createNumberField = (
       input.disabled = disabled
     })
 
-    field.classList.toggle('pg-field--disabled', disabled)
+    field.dataset.disabled = String(disabled)
 
     setText(label, next.label)
     setText(hint, next.hint ?? '')

@@ -1,4 +1,5 @@
 import {
+  STYLES,
   CONFIG_NUMBER_FIELDS,
   EMPTY_FIELD_VALUE,
   addConfigItem,
@@ -27,7 +28,7 @@ export const createConfigEditor = (
     const inputs = CONFIG_NUMBER_FIELDS.map(({ key, label }) => {
       const input = element('input', {
         type: 'number',
-        class: 'pg-input pg-input--number',
+        class: STYLES.configInput,
         min: EMPTY_FIELD_VALUE
       })
 
@@ -44,15 +45,18 @@ export const createConfigEditor = (
       input.addEventListener('input', handleChange)
       input.addEventListener('change', handleChange)
 
-      const cell = element('label', { class: 'pg-config__cell' }, [
-        element('span', { class: 'pg-hint' }, [label]),
+      const cell = element('label', { class: STYLES.configCell }, [
+        element('span', { class: STYLES.hint }, [label]),
         input
       ])
 
       return { key, cell, input }
     })
 
-    const bias = element('input', { type: 'checkbox' })
+    const bias = element('input', {
+      type: 'checkbox',
+      class: STYLES.checkbox
+    })
 
     bias.addEventListener('change', () =>
       current.onChange(
@@ -62,7 +66,7 @@ export const createConfigEditor = (
 
     const remove = element('button', {
       type: 'button',
-      class: 'pg-button pg-button--ghost'
+      class: STYLES.ghostButton
     })
 
     remove.textContent = 'Remove'
@@ -70,16 +74,18 @@ export const createConfigEditor = (
       current.onChange(removeConfigItem(current.config, index))
     )
 
-    const row = element('div', { class: 'pg-config__item' }, [
+    const row = element('div', { class: STYLES.configItem }, [
       element(
         'div',
-        { class: 'pg-config__grid' },
+        { class: STYLES.configGrid },
         inputs.map(({ cell }) => cell)
       ),
-      element('div', { class: 'pg-config__footer' }, [
-        element('label', { class: 'pg-toggle pg-toggle--inline' }, [
+      element('div', { class: STYLES.configFooter }, [
+        element('label', { class: STYLES.toggleInline }, [
           bias,
-          element('span', { class: 'pg-label' }, ['biasRight'])
+          element('span', { class: STYLES.label, 'data-pg': 'label' }, [
+            'biasRight'
+          ])
         ]),
         remove
       ])
@@ -103,17 +109,17 @@ export const createConfigEditor = (
 
   const list = element('div')
 
-  const add = element('button', { type: 'button', class: 'pg-button' })
+  const add = element('button', { type: 'button', class: STYLES.button })
 
   add.textContent = '+ Add breakpoint'
   add.addEventListener('click', () =>
     current.onChange(addConfigItem(current.config))
   )
 
-  const editor = element('div', { class: 'pg-config' }, [
+  const editor = element('div', { class: STYLES.config, 'data-pg': 'config' }, [
     list,
     add,
-    element('p', { class: 'pg-hint' }, [HINT])
+    element('p', { class: STYLES.hint }, [HINT])
   ])
 
   const update = (next: ConfigEditorProps): void => {
@@ -132,7 +138,7 @@ export const createConfigEditor = (
     )
 
     add.disabled = next.disabled
-    editor.classList.toggle('pg-field--disabled', next.disabled)
+    editor.dataset.disabled = String(next.disabled)
   }
 
   update(props)

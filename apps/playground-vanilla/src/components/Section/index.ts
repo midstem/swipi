@@ -1,6 +1,7 @@
 import type { SectionProps } from '@swipi/playground-core'
 import { element } from '../../dom'
 import type { SectionComponent } from '../../types'
+import { STYLES } from '@swipi/playground-core'
 
 const BADGE = {
   hook: 'engine option',
@@ -12,17 +13,22 @@ export const createSection = ({
   origin,
   hint
 }: SectionProps): SectionComponent => {
-  const body = element('div', { class: 'pg-section__body' })
+  const body = element('div', { class: STYLES.sectionBody })
 
-  if (hint) body.append(element('p', { class: 'pg-hint' }, [hint]))
+  if (hint) body.append(element('p', { class: STYLES.hint }, [hint]))
 
   const section = element(
     'details',
-    { class: `pg-section pg-section--${origin}`, open: true },
+    {
+      class: STYLES.section,
+      'data-pg': 'section',
+      'data-origin': origin,
+      open: true
+    },
     [
-      element('summary', { class: 'pg-section__title' }, [
+      element('summary', { class: STYLES.sectionTitle }, [
         title,
-        element('span', { class: 'pg-section__badge' }, [BADGE[origin]])
+        element('span', { class: STYLES.sectionBadge }, [BADGE[origin]])
       ]),
       body
     ]

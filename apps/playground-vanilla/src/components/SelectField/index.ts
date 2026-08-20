@@ -1,6 +1,7 @@
 import type { SelectFieldProps } from '@swipi/playground-core'
 import { createId, element, setText, setValue } from '../../dom'
 import type { Component } from '../../types'
+import { STYLES } from '@swipi/playground-core'
 
 export const createSelectField = <Value extends string>(
   props: SelectFieldProps<Value>
@@ -11,7 +12,7 @@ export const createSelectField = <Value extends string>(
 
   const select = element(
     'select',
-    { id, class: 'pg-input' },
+    { id, class: STYLES.select },
     props.options.map((option) =>
       element('option', { value: option.value }, [option.label])
     )
@@ -21,10 +22,17 @@ export const createSelectField = <Value extends string>(
     current.onChange(select.value as Value)
   )
 
-  const label = element('label', { class: 'pg-label', for: id }, [props.label])
-  const hint = element('span', { class: 'pg-hint' }, [props.hint ?? ''])
+  const label = element(
+    'label',
+    { class: STYLES.label, 'data-pg': 'label', for: id },
+    [props.label]
+  )
+  const hint = element('span', { class: STYLES.hint }, [props.hint ?? ''])
 
-  const field = element('div', { class: 'pg-field' }, [label, select])
+  const field = element('div', { class: STYLES.field, 'data-pg': 'field' }, [
+    label,
+    select
+  ])
 
   if (props.hint) field.append(hint)
 

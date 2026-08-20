@@ -1,3 +1,4 @@
+import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vitest/config'
 import { resolve } from 'path'
@@ -35,5 +36,5 @@ export default defineConfig({
   preview: {
     port: 8080
   },
-  plugins: [vue()]
+  plugins: [tailwindcss(), vue()]
 })

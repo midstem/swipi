@@ -1,6 +1,7 @@
 import { createSwipi } from '@midstem/swipi'
 import type { SwipiOptions } from '@midstem/swipi'
 import {
+  STYLES,
   VERTICAL_AXIS,
   getActiveBreakpoint,
   getArrows,
@@ -60,12 +61,13 @@ export const createStage = (props: StageProps): StageComponent => {
   let windowWidth = window.innerWidth
   let slideNodes: HTMLElement[] = []
 
-  const track = element('div', { class: 'pg-carousel__track' })
+  const track = element('div', { class: STYLES.track })
 
   const viewport = element(
     'div',
     {
-      class: 'pg-carousel__viewport',
+      class: STYLES.viewport,
+      'data-pg': 'viewport',
       role: 'group',
       tabindex: '0',
       'aria-roledescription': 'carousel'
@@ -74,7 +76,7 @@ export const createStage = (props: StageProps): StageComponent => {
   )
 
   const status = element('span', {
-    class: 'pg-visually-hidden',
+    class: STYLES.visuallyHidden,
     'aria-live': 'polite',
     'aria-atomic': 'true'
   })
@@ -82,44 +84,55 @@ export const createStage = (props: StageProps): StageComponent => {
   const arrows = ['Previous slide', 'Next slide'].map((label) =>
     element('button', {
       type: 'button',
-      class: 'pg-carousel__arrow',
+      class: STYLES.arrow,
       'aria-label': label
     })
   )
 
   const [previous, next] = arrows
 
-  const dots = element('nav', { class: 'pg-carousel__dots' })
+  const dots = element('nav', { class: STYLES.dots })
 
-  const carouselBox = element('div', { class: 'pg-carousel' }, [
-    status,
-    element('div', { class: 'pg-carousel__row' }, [previous, viewport, next]),
-    dots
+  const row = element('div', { class: STYLES.carouselRow }, [
+    previous,
+    viewport,
+    next
   ])
 
-  const slider = element('div', { class: 'pg-stage__slider' }, [carouselBox])
+  const carouselBox = element(
+    'div',
+    { class: STYLES.carousel, 'data-pg': 'carousel' },
+    [status, row, dots]
+  )
+
+  const slider = element('div', { class: STYLES.slider }, [carouselBox])
 
   const facts = FACTS.map(createFact)
 
-  const warning = element('p', { class: 'pg-warning' }, [
+  const warning = element('p', { class: STYLES.warning }, [
     'All slides fit on the screen, so arrows, dots navigation and loop are disabled — add more slides, decrease slidesNumber or narrow the stage.'
   ])
 
-  const card = element('div', { class: 'pg-card' }, [
+  const card = element('div', { class: STYLES.card }, [
     slider,
     element(
       'ul',
-      { class: 'pg-facts' },
+      { class: STYLES.facts },
       facts.map(([item]) => item)
     ),
     warning
   ])
 
+  const setAxis = (axis: string): void =>
+    [row, viewport, track, ...slideNodes].forEach((node) =>
+      node.setAttribute('data-axis', axis)
+    )
+
   const buildSlides = (colors: string[]): void => {
     clear(track)
 
     slideNodes = colors.map((color, index) => {
-      const box = element('div', { class: 'pg-carousel__slide-box' }, [
+      const box = element('div', { class: STYLES.slideBox }, [
         String(index + FIRST_SLIDE_OFFSET)
       ])
 
@@ -128,7 +141,8 @@ export const createStage = (props: StageProps): StageComponent => {
       return element(
         'div',
         {
-          class: 'pg-carousel__slide',
+          class: STYLES.slide,
+          'data-pg': 'slide',
           role: 'group',
           'aria-roledescription': 'slide',
           'aria-label': `${index + FIRST_SLIDE_OFFSET} of ${colors.length}`
@@ -197,13 +211,13 @@ export const createStage = (props: StageProps): StageComponent => {
 
     dots.append(
       ...toRange(count).map((index) => {
-        const mark = element('span', { class: 'pg-carousel__dot-mark' })
+        const mark = element('span', { class: STYLES.dotMark })
 
         const dot = element(
           'button',
           {
             type: 'button',
-            class: 'pg-carousel__dot',
+            class: STYLES.dot,
             'aria-label': `Go to slide ${index + FIRST_SLIDE_OFFSET}`
           },
           [mark]
@@ -240,7 +254,7 @@ export const createStage = (props: StageProps): StageComponent => {
     const showArrows = state.showArrows && snapshot.hasOverflow
     const [previousArrow, nextArrow] = getArrows(derived.isVertical)
 
-    carouselBox.classList.toggle('pg-carousel--vertical', derived.isVertical)
+    setAxis(state.axis)
 
     applyStyle(slider, { width: state.stageWidth })
     applyStyle(viewport, getViewportStyle(state, derived.isVertical))

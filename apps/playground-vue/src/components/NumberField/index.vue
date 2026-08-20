@@ -1,12 +1,13 @@
 <template>
-  <div :class="['pg-field', { 'pg-field--disabled': disabled }]">
-    <label class="pg-label" :for="id">
+  <div :class="STYLES.field" data-pg="field" :data-disabled="disabled">
+    <label :class="STYLES.label" data-pg="label" :for="id">
       {{ label }}
     </label>
-    <div class="pg-field__row">
+    <div :class="STYLES.fieldRow">
       <input
         v-if="withSlider"
         type="range"
+        :class="STYLES.range"
         :min="min"
         :max="max"
         :step="step"
@@ -18,7 +19,7 @@
       <input
         :id="id"
         type="number"
-        class="pg-input pg-input--number"
+        :class="STYLES.numberInput"
         :min="min"
         :max="max"
         :step="step"
@@ -28,11 +29,12 @@
         @input="handleChange"
       />
     </div>
-    <span v-if="hint" class="pg-hint">{{ hint }}</span>
+    <span v-if="hint" :class="STYLES.hint">{{ hint }}</span>
   </div>
 </template>
 
 <script setup lang="ts">
+import { STYLES } from '@swipi/playground-core'
 import { ref } from 'vue'
 import {
   DEFAULT_MAX,

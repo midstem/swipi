@@ -1,5 +1,5 @@
 import type { JSX } from 'react'
-import { TextFieldProps } from '@swipi/playground-core'
+import { STYLES, TextFieldProps } from '@swipi/playground-core'
 import { useTextField } from './useTextField'
 
 const TextField = ({
@@ -12,19 +12,19 @@ const TextField = ({
   const { id, handleChange } = useTextField({ onChange })
 
   return (
-    <div className="pg-field">
-      <label className="pg-label" htmlFor={id}>
+    <div className={STYLES.field} data-pg="field">
+      <label className={STYLES.label} data-pg="label" htmlFor={id}>
         {label}
       </label>
       <input
         id={id}
         type="text"
-        className="pg-input"
+        className={STYLES.input}
         value={value}
         placeholder={placeholder}
         onChange={handleChange}
       />
-      {hint && <span className="pg-hint">{hint}</span>}
+      {hint && <span className={STYLES.hint}>{hint}</span>}
     </div>
   )
 }

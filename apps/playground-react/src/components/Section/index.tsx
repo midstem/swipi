@@ -1,5 +1,6 @@
 import type { JSX } from 'react'
 import { SectionProps } from '../../types'
+import { STYLES } from '@swipi/playground-core'
 
 const BADGE = {
   hook: 'hook option',
@@ -12,13 +13,18 @@ const Section = ({
   hint,
   children
 }: SectionProps): JSX.Element => (
-  <details className={`pg-section pg-section--${origin}`} open>
-    <summary className="pg-section__title">
+  <details
+    className={STYLES.section}
+    data-pg="section"
+    data-origin={origin}
+    open
+  >
+    <summary className={STYLES.sectionTitle}>
       {title}
-      <span className="pg-section__badge">{BADGE[origin]}</span>
+      <span className={STYLES.sectionBadge}>{BADGE[origin]}</span>
     </summary>
-    <div className="pg-section__body">
-      {hint && <p className="pg-hint">{hint}</p>}
+    <div className={STYLES.sectionBody}>
+      {hint && <p className={STYLES.hint}>{hint}</p>}
       {children}
     </div>
   </details>

@@ -1,18 +1,19 @@
 import { Component, input, output } from '@angular/core'
 import type { SelectOption } from '@swipi/playground-core'
 import { createFieldId } from '../../helpers'
+import { STYLES } from '@swipi/playground-core'
 
 @Component({
   selector: 'pg-select-field',
   styles: ':host { display: contents; }',
   template: `
-    <div class="pg-field">
-      <label class="pg-label" [attr.for]="id">
+    <div [class]="STYLES.field" data-pg="field">
+      <label [class]="STYLES.label" data-pg="label" [attr.for]="id">
         {{ label() }}
       </label>
       <select
         [id]="id"
-        class="pg-input"
+        [class]="STYLES.select"
         [value]="value()"
         (change)="handleChange($event)"
       >
@@ -23,12 +24,14 @@ import { createFieldId } from '../../helpers'
         }
       </select>
       @if (hint()) {
-        <span class="pg-hint">{{ hint() }}</span>
+        <span [class]="STYLES.hint">{{ hint() }}</span>
       }
     </div>
   `
 })
 export class SelectField {
+  protected readonly STYLES = STYLES
+
   readonly label = input.required<string>()
 
   readonly hint = input<string>()

@@ -1,4 +1,5 @@
 import {
+  STYLES,
   FIRST_INDEX,
   JSON_INDENT,
   clampIndex,
@@ -16,7 +17,7 @@ export const createImperativeApi = (
 
   const input = element('input', {
     type: 'number',
-    class: 'pg-input pg-input--number',
+    class: STYLES.numberInput,
     'aria-label': 'Slide index for scrollTo',
     min: FIRST_INDEX,
     value: index
@@ -29,7 +30,7 @@ export const createImperativeApi = (
   input.addEventListener('input', handleIndex)
   input.addEventListener('change', handleIndex)
 
-  const readings = element('pre', { class: 'pg-code', hidden: true })
+  const readings = element('pre', { class: STYLES.code, hidden: true })
 
   const button = (
     label: string,
@@ -38,7 +39,7 @@ export const createImperativeApi = (
   ): HTMLElement => {
     const node = element('button', {
       type: 'button',
-      class: ghost ? 'pg-button pg-button--ghost' : 'pg-button'
+      class: ghost ? STYLES.ghostButton : STYLES.button
     })
 
     node.textContent = label
@@ -63,12 +64,12 @@ export const createImperativeApi = (
     setText(readings, JSON.stringify(values, null, JSON_INDENT))
   }
 
-  const card = element('div', { class: 'pg-card' }, [
-    element('h2', { class: 'pg-card__title' }, ['Carousel methods']),
-    element('div', { class: 'pg-row' }, [
+  const card = element('div', { class: STYLES.card }, [
+    element('h2', { class: STYLES.cardTitle }, ['Carousel methods']),
+    element('div', { class: STYLES.row }, [
       button('scrollPrev()', () => current.carousel?.scrollPrev()),
       button('scrollNext()', () => current.carousel?.scrollNext()),
-      element('span', { class: 'pg-row__group' }, [
+      element('span', { class: STYLES.rowGroup }, [
         input,
         button('scrollTo(index)', () => current.carousel?.scrollTo(index))
       ]),

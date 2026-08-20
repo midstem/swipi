@@ -1,5 +1,6 @@
 import { Component, input, output } from '@angular/core'
 import {
+  STYLES,
   DEFAULT_MAX,
   DEFAULT_MIN,
   DEFAULT_STEP,
@@ -11,14 +12,19 @@ import { createFieldId } from '../../helpers'
   selector: 'pg-number-field',
   styles: ':host { display: contents; }',
   template: `
-    <div class="pg-field" [class.pg-field--disabled]="disabled()">
-      <label class="pg-label" [attr.for]="id">
+    <div
+      [class]="STYLES.field"
+      data-pg="field"
+      [attr.data-disabled]="disabled()"
+    >
+      <label [class]="STYLES.label" data-pg="label" [attr.for]="id">
         {{ label() }}
       </label>
-      <div class="pg-field__row">
+      <div [class]="STYLES.fieldRow">
         @if (withSlider()) {
           <input
             type="range"
+            [class]="STYLES.range"
             [min]="min()"
             [max]="max()"
             [step]="step()"
@@ -31,7 +37,7 @@ import { createFieldId } from '../../helpers'
         <input
           [id]="id"
           type="number"
-          class="pg-input pg-input--number"
+          [class]="STYLES.numberInput"
           [min]="min()"
           [max]="max()"
           [step]="step()"
@@ -42,12 +48,14 @@ import { createFieldId } from '../../helpers'
         />
       </div>
       @if (hint()) {
-        <span class="pg-hint">{{ hint() }}</span>
+        <span [class]="STYLES.hint">{{ hint() }}</span>
       }
     </div>
   `
 })
 export class NumberField {
+  protected readonly STYLES = STYLES
+
   readonly label = input.required<string>()
 
   readonly hint = input<string>()

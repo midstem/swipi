@@ -1,4 +1,4 @@
-import { buildStyles } from '@swipi/playground-core'
+import { STYLES, buildStyles } from '@swipi/playground-core'
 import type { CodeSnippetProps } from '@swipi/playground-core'
 import { element, setText } from '../../dom'
 import type { Component } from '../../types'
@@ -34,11 +34,11 @@ export const createCodeSnippet = (
   let tailwind = true
   let copied = false
 
-  const hint = element('p', { class: 'pg-hint' })
-  const markupCode = element('pre', { class: 'pg-code' })
-  const scriptCode = element('pre', { class: 'pg-code' })
-  const stylesCode = element('pre', { class: 'pg-code' })
-  const copy = element('button', { type: 'button', class: 'pg-button' })
+  const hint = element('p', { class: STYLES.hint })
+  const markupCode = element('pre', { class: STYLES.code })
+  const scriptCode = element('pre', { class: STYLES.code })
+  const stylesCode = element('pre', { class: STYLES.code })
+  const copy = element('button', { type: 'button', class: STYLES.button })
 
   const updates: (() => void)[] = []
 
@@ -65,7 +65,7 @@ export const createCodeSnippet = (
     const segments = options.map((option) => {
       const segment = element('button', {
         type: 'button',
-        class: 'pg-segment'
+        class: STYLES.segment
       })
 
       segment.textContent = option.title
@@ -78,17 +78,17 @@ export const createCodeSnippet = (
     })
 
     updates.push(() =>
-      segments.forEach((segment, index) =>
-        segment.setAttribute(
-          'aria-pressed',
-          String(isPressed(options[index].value))
-        )
-      )
+      segments.forEach((segment, index) => {
+        const pressed = isPressed(options[index].value)
+
+        segment.setAttribute('aria-pressed', String(pressed))
+        segment.className = pressed ? STYLES.segmentActive : STYLES.segment
+      })
     )
 
-    return element('div', { class: 'pg-toolbar-group' }, [
-      element('span', { class: 'pg-toolbar-label' }, [title]),
-      element('div', { class: 'pg-segmented' }, segments)
+    return element('div', { class: STYLES.toolbarGroup }, [
+      element('span', { class: STYLES.toolbarLabel }, [title]),
+      element('div', { class: STYLES.segmented }, segments)
     ])
   }
 
@@ -113,10 +113,10 @@ export const createCodeSnippet = (
     }, COPIED_TIMEOUT)
   })
 
-  const card = element('section', { class: 'pg-card' }, [
-    element('header', { class: 'pg-card__header' }, [
-      element('h2', { class: 'pg-card__title' }, ['Generated code']),
-      element('div', { class: 'pg-row' }, [
+  const card = element('section', { class: STYLES.card }, [
+    element('header', { class: STYLES.cardHeader }, [
+      element('h2', { class: STYLES.cardTitle }, ['Generated code']),
+      element('div', { class: STYLES.row }, [
         createSegmented(
           'Markup',
           VARIANTS,
@@ -133,7 +133,7 @@ export const createCodeSnippet = (
             tailwind = value
           }
         ),
-        element('span', { class: 'pg-toolbar-divider' }),
+        element('span', { class: STYLES.toolbarDivider }),
         copy
       ])
     ]),

@@ -1,5 +1,6 @@
 import type { JSX } from 'react'
 import {
+  STYLES,
   AXIS_OPTIONS,
   MAX_SLIDES_COUNT,
   MIN_SLIDES_COUNT,
@@ -34,7 +35,7 @@ const ControlsPanel = ({ state, update }: ControlsPanelProps): JSX.Element => {
   const isVertical = state.axis === VERTICAL_AXIS
 
   return (
-    <aside className="pg-controls">
+    <aside className={STYLES.controls}>
       <Section
         title="Behaviour"
         origin="hook"
@@ -208,12 +209,12 @@ const ControlsPanel = ({ state, update }: ControlsPanelProps): JSX.Element => {
           disabled={!isVertical}
           onChange={change('stageHeight')}
         />
-        <div className="pg-row">
+        <div className={STYLES.row}>
           {STAGE_PRESETS.map((preset) => (
             <button
               key={preset.label}
               type="button"
-              className="pg-button pg-button--ghost"
+              className={STYLES.ghostButton}
               onClick={changeStageWidth(preset.width)}
             >
               {preset.label}

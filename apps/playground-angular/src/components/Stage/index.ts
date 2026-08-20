@@ -15,6 +15,7 @@ import type {
   SwipiState
 } from '@midstem/swipi-angular'
 import {
+  STYLES,
   VERTICAL_AXIS,
   getActiveBreakpoint,
   getArrows,
@@ -41,11 +42,11 @@ const NEXT_ARROW = 1
   selector: 'pg-stage',
   styles: ':host { display: contents; }',
   template: `
-    <div class="pg-card">
-      <div class="pg-stage__slider" [style]="sliderStyle()">
-        <div class="pg-carousel" [class.pg-carousel--vertical]="isVertical()">
+    <div [class]="STYLES.card">
+      <div [class]="STYLES.slider" [style]="sliderStyle()">
+        <div [class]="STYLES.carousel" data-pg="carousel">
           <span
-            class="pg-visually-hidden"
+            [class]="STYLES.visuallyHidden"
             aria-live="polite"
             aria-atomic="true"
           >
@@ -53,11 +54,11 @@ const NEXT_ARROW = 1
             {{ carousel().snapCount }}
           </span>
 
-          <div class="pg-carousel__row">
+          <div [class]="STYLES.carouselRow" [attr.data-axis]="state().axis">
             @if (showArrows()) {
               <button
                 type="button"
-                class="pg-carousel__arrow"
+                [class]="STYLES.arrow"
                 aria-label="Previous slide"
                 [disabled]="!carousel().canScrollPrev"
                 (click)="carousel().scrollPrev()"
@@ -68,7 +69,9 @@ const NEXT_ARROW = 1
 
             <div
               #viewport
-              class="pg-carousel__viewport"
+              [class]="STYLES.viewport"
+              data-pg="viewport"
+              [attr.data-axis]="state().axis"
               [style]="viewportStyle()"
               role="group"
               tabindex="0"
@@ -76,17 +79,23 @@ const NEXT_ARROW = 1
               [attr.aria-label]="state().ariaLabel"
               (keydown)="handleKeyDown($event)"
             >
-              <div class="pg-carousel__track" [style]="trackStyle()">
+              <div
+                [class]="STYLES.track"
+                [attr.data-axis]="state().axis"
+                [style]="trackStyle()"
+              >
                 @for (color of slides(); track color; let index = $index) {
                   <div
-                    class="pg-carousel__slide"
+                    [class]="STYLES.slide"
+                    data-pg="slide"
+                    [attr.data-axis]="state().axis"
                     role="group"
                     aria-roledescription="slide"
                     attr.aria-label="{{ index + 1 }} of {{ slides().length }}"
                     [style]="slideStyle(index)"
                   >
                     <div
-                      class="pg-carousel__slide-box"
+                      [class]="STYLES.slideBox"
                       [style.background-color]="color"
                     >
                       {{ index + 1 }}
@@ -99,7 +108,7 @@ const NEXT_ARROW = 1
             @if (showArrows()) {
               <button
                 type="button"
-                class="pg-carousel__arrow"
+                [class]="STYLES.arrow"
                 aria-label="Next slide"
                 [disabled]="!carousel().canScrollNext"
                 (click)="carousel().scrollNext()"
@@ -110,17 +119,17 @@ const NEXT_ARROW = 1
           </div>
 
           @if (state().showDots) {
-            <nav class="pg-carousel__dots">
+            <nav [class]="STYLES.dots">
               @for (index of dots(); track index) {
                 <button
                   type="button"
-                  class="pg-carousel__dot"
+                  [class]="STYLES.dot"
                   attr.aria-label="Go to slide {{ index + 1 }}"
                   [attr.aria-current]="index === carousel().selectedIndex"
                   (click)="carousel().scrollTo(index)"
                 >
                   <span
-                    class="pg-carousel__dot-mark"
+                    [class]="STYLES.dotMark"
                     [attr.data-active]="index === carousel().selectedIndex"
                     [style.transition]="state().animationSpeed + 'ms'"
                   ></span>
@@ -131,7 +140,7 @@ const NEXT_ARROW = 1
         </div>
       </div>
 
-      <ul class="pg-facts">
+      <ul [class]="STYLES.facts">
         <li>
           window width: <b>{{ windowWidth() }}px</b>
         </li>
@@ -147,7 +156,7 @@ const NEXT_ARROW = 1
       </ul>
 
       @if (!carousel().hasOverflow) {
-        <p class="pg-warning">
+        <p [class]="STYLES.warning">
           All slides fit on the screen, so arrows, dots navigation and
           <code>loop</code> are disabled — add more slides, decrease
           <code>slidesNumber</code> or narrow the stage.
@@ -157,6 +166,8 @@ const NEXT_ARROW = 1
   `
 })
 export class Stage implements OnInit {
+  protected readonly STYLES = STYLES
+
   readonly state = input.required<PlaygroundState>()
 
   readonly slides = input.required<string[]>()

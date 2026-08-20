@@ -1,17 +1,17 @@
 <template>
-  <div class="pg-card">
-    <h2 class="pg-card__title">Carousel methods</h2>
-    <div class="pg-row">
-      <button type="button" class="pg-button" @click="scrollPrev">
+  <div :class="STYLES.card">
+    <h2 :class="STYLES.cardTitle">Carousel methods</h2>
+    <div :class="STYLES.row">
+      <button type="button" :class="STYLES.button" @click="scrollPrev">
         scrollPrev()
       </button>
-      <button type="button" class="pg-button" @click="scrollNext">
+      <button type="button" :class="STYLES.button" @click="scrollNext">
         scrollNext()
       </button>
-      <span class="pg-row__group">
+      <span :class="STYLES.rowGroup">
         <input
           type="number"
-          class="pg-input pg-input--number"
+          :class="STYLES.numberInput"
           aria-label="Slide index for scrollTo"
           :min="FIRST_INDEX"
           :max="getLastIndex(slidesCount)"
@@ -19,23 +19,20 @@
           @change="changeIndex"
           @input="changeIndex"
         />
-        <button type="button" class="pg-button" @click="scrollTo">
+        <button type="button" :class="STYLES.button" @click="scrollTo">
           scrollTo(index)
         </button>
       </span>
-      <button
-        type="button"
-        class="pg-button pg-button--ghost"
-        @click="readState"
-      >
+      <button type="button" :class="STYLES.ghostButton" @click="readState">
         Read carousel state
       </button>
     </div>
-    <pre v-if="readings" class="pg-code">{{ readingsStr }}</pre>
+    <pre v-if="readings" :class="STYLES.code">{{ readingsStr }}</pre>
   </div>
 </template>
 
 <script setup lang="ts">
+import { STYLES } from '@swipi/playground-core'
 import { computed, ref } from 'vue'
 import {
   FIRST_INDEX,

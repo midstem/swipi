@@ -1,15 +1,9 @@
 import { afterEach, describe, expect, it } from 'vitest'
-import { DEFAULT_STATE, STORAGE_KEY } from '@swipi/playground-core'
-import type { PlaygroundState } from '@swipi/playground-core'
+import { DEFAULT_STATE } from '@swipi/playground-core'
 import { createApp } from './app'
 import { element } from './dom'
 
-const mount = (state: Partial<PlaygroundState> = {}): HTMLElement => {
-  window.localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify({ ...DEFAULT_STATE, ...state })
-  )
-
+const mount = (): HTMLElement => {
   const root = element('div')
 
   document.body.append(root)
@@ -20,7 +14,7 @@ const mount = (state: Partial<PlaygroundState> = {}): HTMLElement => {
 
 const getButton = (root: HTMLElement, label: string): HTMLButtonElement => {
   const button = Array.from(
-    root.querySelectorAll<HTMLButtonElement>('.pg-button')
+    root.querySelectorAll<HTMLButtonElement>('button')
   ).find((node) => node.textContent === label)
 
   if (!button) throw new Error(`no "${label}" button on the page`)
@@ -29,9 +23,11 @@ const getButton = (root: HTMLElement, label: string): HTMLButtonElement => {
 }
 
 const getNumberInput = (root: HTMLElement, label: string): HTMLInputElement => {
-  const field = Array.from(root.querySelectorAll<HTMLElement>('.pg-label'))
+  const field = Array.from(
+    root.querySelectorAll<HTMLElement>('[data-pg="label"]')
+  )
     .find((node) => node.textContent?.trim() === label)
-    ?.closest('.pg-field')
+    ?.closest('[data-pg="field"]')
 
   const input = field?.querySelector<HTMLInputElement>('input[type="number"]')
 
@@ -46,23 +42,20 @@ const setNumber = (input: HTMLInputElement, value: number): void => {
 }
 
 const getSlides = (root: HTMLElement): Element[] =>
-  Array.from(root.querySelectorAll('.pg-carousel__slide'))
+  Array.from(root.querySelectorAll('[data-pg="slide"]'))
 
-afterEach(() => {
-  document.body.replaceChildren()
-  window.localStorage.clear()
-})
+afterEach(() => document.body.replaceChildren())
 
 describe('the playground on the page', () => {
-  it('draws the carousel the stored state asks for', () => {
-    const root = mount({ slidesCount: 4 })
+  it('draws the carousel the default state asks for', () => {
+    const root = mount()
 
-    expect(root.querySelectorAll('.pg-carousel')).toHaveLength(1)
-    expect(getSlides(root)).toHaveLength(4)
+    expect(root.querySelectorAll('[data-pg="carousel"]')).toHaveLength(1)
+    expect(getSlides(root)).toHaveLength(DEFAULT_STATE.slidesCount)
   })
 
   it('rebuilds the track once the playground asks for more slides', () => {
-    const root = mount({ slidesCount: 4 })
+    const root = mount()
 
     setNumber(getNumberInput(root, 'Slides in the playground'), 6)
 
@@ -71,28 +64,31 @@ describe('the playground on the page', () => {
 
   it('replaces the carousel on a remount instead of stacking another one', () => {
     const root = mount()
-    const before = root.querySelector('.pg-carousel__viewport')
+    const before = root.querySelector('[data-pg="viewport"]')
 
     getButton(root, 'Remount').click()
 
-    const after = root.querySelector('.pg-carousel__viewport')
+    const after = root.querySelector('[data-pg="viewport"]')
 
-    expect(root.querySelectorAll('.pg-carousel')).toHaveLength(1)
+    expect(root.querySelectorAll('[data-pg="carousel"]')).toHaveLength(1)
     expect(after).not.toBe(before)
   })
 
   it('remounts the carousel a new startIndex needs on mount', () => {
     const root = mount()
-    const before = root.querySelector('.pg-carousel__viewport')
+    const before = root.querySelector('[data-pg="viewport"]')
 
     setNumber(getNumberInput(root, 'startIndex'), 2)
 
-    expect(root.querySelectorAll('.pg-carousel')).toHaveLength(1)
-    expect(root.querySelector('.pg-carousel__viewport')).not.toBe(before)
+    expect(root.querySelectorAll('[data-pg="carousel"]')).toHaveLength(1)
+    expect(root.querySelector('[data-pg="viewport"]')).not.toBe(before)
   })
 
   it('puts the defaults back on reset', () => {
-    const root = mount({ slidesCount: 4, stageWidth: 320 })
+    const root = mount()
+
+    setNumber(getNumberInput(root, 'Slides in the playground'), 4)
+    setNumber(getNumberInput(root, 'Stage width'), 320)
 
     getButton(root, 'Reset props').click()
 
@@ -100,8 +96,5 @@ describe('the playground on the page', () => {
     expect(getNumberInput(root, 'Stage width').value).toBe(
       String(DEFAULT_STATE.stageWidth)
     )
-    expect(
-      JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? '{}')
-    ).toEqual(DEFAULT_STATE)
   })
 })

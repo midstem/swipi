@@ -1,5 +1,5 @@
 import { Component, computed, input, signal } from '@angular/core'
-import { buildStyles } from '@swipi/playground-core'
+import { STYLES, buildStyles } from '@swipi/playground-core'
 import type { PlaygroundState } from '@swipi/playground-core'
 import { buildMarkup } from './helpers'
 
@@ -19,17 +19,21 @@ const FLAVOURS = [
   selector: 'pg-code-snippet',
   styles: ':host { display: contents; }',
   template: `
-    <section class="pg-card">
-      <header class="pg-card__header">
-        <h2 class="pg-card__title">Generated code</h2>
-        <div class="pg-row">
-          <div class="pg-toolbar-group">
-            <span class="pg-toolbar-label">Markup</span>
-            <div class="pg-segmented">
+    <section [class]="STYLES.card">
+      <header [class]="STYLES.cardHeader">
+        <h2 [class]="STYLES.cardTitle">Generated code</h2>
+        <div [class]="STYLES.row">
+          <div [class]="STYLES.toolbarGroup">
+            <span [class]="STYLES.toolbarLabel">Markup</span>
+            <div [class]="STYLES.segmented">
               @for (variant of variants; track variant.title) {
                 <button
                   type="button"
-                  class="pg-segment"
+                  [class]="
+                    variant.minimal === minimal()
+                      ? STYLES.segmentActive
+                      : STYLES.segment
+                  "
                   [attr.aria-pressed]="variant.minimal === minimal()"
                   (click)="minimal.set(variant.minimal)"
                 >
@@ -39,13 +43,17 @@ const FLAVOURS = [
             </div>
           </div>
 
-          <div class="pg-toolbar-group">
-            <span class="pg-toolbar-label">Styles</span>
-            <div class="pg-segmented">
+          <div [class]="STYLES.toolbarGroup">
+            <span [class]="STYLES.toolbarLabel">Styles</span>
+            <div [class]="STYLES.segmented">
               @for (flavour of flavours; track flavour.title) {
                 <button
                   type="button"
-                  class="pg-segment"
+                  [class]="
+                    flavour.tailwind === tailwind()
+                      ? STYLES.segmentActive
+                      : STYLES.segment
+                  "
                   [attr.aria-pressed]="flavour.tailwind === tailwind()"
                   (click)="tailwind.set(flavour.tailwind)"
                 >
@@ -55,15 +63,15 @@ const FLAVOURS = [
             </div>
           </div>
 
-          <span class="pg-toolbar-divider"></span>
+          <span [class]="STYLES.toolbarDivider"></span>
 
-          <button type="button" class="pg-button" (click)="copy()">
+          <button type="button" [class]="STYLES.button" (click)="copy()">
             {{ copied() ? 'Copied' : 'Copy' }}
           </button>
         </div>
       </header>
 
-      <p class="pg-hint">
+      <p [class]="STYLES.hint">
         @if (minimal()) {
           The same carousel with everything optional taken off: no roles, no
           labels, no live region, no arrow keys — the layout as
@@ -76,14 +84,16 @@ const FLAVOURS = [
         }
       </p>
 
-      <pre class="pg-code">{{ markup() }}</pre>
+      <pre [class]="STYLES.code">{{ markup() }}</pre>
       @if (styles()) {
-        <pre class="pg-code">{{ styles() }}</pre>
+        <pre [class]="STYLES.code">{{ styles() }}</pre>
       }
     </section>
   `
 })
 export class CodeSnippet {
+  protected readonly STYLES = STYLES
+
   readonly state = input.required<PlaygroundState>()
 
   readonly variants = VARIANTS

@@ -214,8 +214,6 @@ export type CodeSnippetProps = {
   state: PlaygroundState
 }
 
-export type EmbedTheme = 'light' | 'dark'
-
 export type EmbedHeightMessage = {
   type: 'swipi-playground:height'
   height: number
@@ -225,12 +223,8 @@ export type EmbedReadyMessage = {
   type: 'swipi-playground:ready'
 }
 
-export type EmbedThemeMessage = {
-  type: 'swipi-playground:theme'
-  theme: EmbedTheme
+export type EmbedMeasureMessage = {
+  type: 'swipi-playground:measure'
 }
 
-export type EmbedMessage =
-  | EmbedHeightMessage
-  | EmbedReadyMessage
-  | EmbedThemeMessage
+export type EmbedMessage = EmbedHeightMessage | EmbedReadyMessage

@@ -1,5 +1,5 @@
 import type { JSX } from 'react'
-import { NumberFieldProps } from '@swipi/playground-core'
+import { STYLES, NumberFieldProps } from '@swipi/playground-core'
 import { DEFAULT_MAX, DEFAULT_MIN, DEFAULT_STEP } from '@swipi/playground-core'
 import { useNumberField } from './useNumberField'
 
@@ -17,14 +17,15 @@ const NumberField = ({
   const { id, handleChange } = useNumberField({ min, max, onChange })
 
   return (
-    <div className={`pg-field${disabled ? ' pg-field--disabled' : ''}`}>
-      <label className="pg-label" htmlFor={id}>
+    <div className={STYLES.field} data-pg="field" data-disabled={disabled}>
+      <label className={STYLES.label} data-pg="label" htmlFor={id}>
         {label}
       </label>
-      <div className="pg-field__row">
+      <div className={STYLES.fieldRow}>
         {withSlider && (
           <input
             type="range"
+            className={STYLES.range}
             min={min}
             max={max}
             step={step}
@@ -36,7 +37,7 @@ const NumberField = ({
         <input
           id={id}
           type="number"
-          className="pg-input pg-input--number"
+          className={STYLES.numberInput}
           min={min}
           max={max}
           step={step}
@@ -45,7 +46,7 @@ const NumberField = ({
           onChange={handleChange}
         />
       </div>
-      {hint && <span className="pg-hint">{hint}</span>}
+      {hint && <span className={STYLES.hint}>{hint}</span>}
     </div>
   )
 }

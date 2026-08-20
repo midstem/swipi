@@ -1,13 +1,12 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { SlidePositions, SwipiState } from '@midstem/swipi-react'
 import { CarouselRef } from '@swipi/playground-core'
 import { DEFAULT_STATE, MAX_EVENTS, SLIDE_COLORS } from '@swipi/playground-core'
-import { loadState, saveState } from '@swipi/playground-core'
 import { PlaygroundEvent, PlaygroundState } from '@swipi/playground-core'
 import { UsePlaygroundReturn } from './types'
 
 export const usePlayground = (): UsePlaygroundReturn => {
-  const [state, setState] = useState<PlaygroundState>(loadState)
+  const [state, setState] = useState<PlaygroundState>(DEFAULT_STATE)
   const [swipiState, setSwipiState] = useState<SwipiState>()
   const [positions, setPositions] = useState<SlidePositions>()
   const [events, setEvents] = useState<PlaygroundEvent[]>([])
@@ -15,8 +14,6 @@ export const usePlayground = (): UsePlaygroundReturn => {
 
   const swipiRef = useRef<CarouselRef>(null)
   const eventId = useRef<number>(0)
-
-  useEffect(() => saveState(state), [state])
 
   const update = useCallback(
     <Key extends keyof PlaygroundState>(

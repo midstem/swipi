@@ -1,5 +1,6 @@
 import { Component, computed, input, signal } from '@angular/core'
 import {
+  STYLES,
   FIRST_INDEX,
   JSON_INDENT,
   clampIndex,
@@ -13,19 +14,19 @@ const RADIX = 10
   selector: 'pg-imperative-api',
   styles: ':host { display: contents; }',
   template: `
-    <div class="pg-card">
-      <h2 class="pg-card__title">Carousel methods</h2>
-      <div class="pg-row">
-        <button type="button" class="pg-button" (click)="scrollPrev()">
+    <div [class]="STYLES.card">
+      <h2 [class]="STYLES.cardTitle">Carousel methods</h2>
+      <div [class]="STYLES.row">
+        <button type="button" [class]="STYLES.button" (click)="scrollPrev()">
           scrollPrev()
         </button>
-        <button type="button" class="pg-button" (click)="scrollNext()">
+        <button type="button" [class]="STYLES.button" (click)="scrollNext()">
           scrollNext()
         </button>
-        <span class="pg-row__group">
+        <span [class]="STYLES.rowGroup">
           <input
             type="number"
-            class="pg-input pg-input--number"
+            [class]="STYLES.numberInput"
             aria-label="Slide index for scrollTo"
             [min]="firstIndex"
             [max]="lastIndex()"
@@ -33,25 +34,27 @@ const RADIX = 10
             (change)="changeIndex($event)"
             (input)="changeIndex($event)"
           />
-          <button type="button" class="pg-button" (click)="scrollTo()">
+          <button type="button" [class]="STYLES.button" (click)="scrollTo()">
             scrollTo(index)
           </button>
         </span>
         <button
           type="button"
-          class="pg-button pg-button--ghost"
+          [class]="STYLES.ghostButton"
           (click)="readState()"
         >
           Read carousel state
         </button>
       </div>
       @if (readings()) {
-        <pre class="pg-code">{{ readingsStr() }}</pre>
+        <pre [class]="STYLES.code">{{ readingsStr() }}</pre>
       }
     </div>
   `
 })
 export class ImperativeApi {
+  protected readonly STYLES = STYLES
+
   readonly carousel = input.required<CarouselRef | null>()
 
   readonly slidesCount = input.required<number>()

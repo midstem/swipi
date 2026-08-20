@@ -1,5 +1,5 @@
 import type { JSX } from 'react'
-import { SelectFieldProps } from '@swipi/playground-core'
+import { STYLES, SelectFieldProps } from '@swipi/playground-core'
 import { useSelectField } from './useSelectField'
 
 const SelectField = <Value extends string>({
@@ -12,13 +12,13 @@ const SelectField = <Value extends string>({
   const { id, handleChange } = useSelectField({ onChange })
 
   return (
-    <div className="pg-field">
-      <label className="pg-label" htmlFor={id}>
+    <div className={STYLES.field} data-pg="field">
+      <label className={STYLES.label} data-pg="label" htmlFor={id}>
         {label}
       </label>
       <select
         id={id}
-        className="pg-input"
+        className={STYLES.select}
         value={value}
         onChange={handleChange}
       >
@@ -28,7 +28,7 @@ const SelectField = <Value extends string>({
           </option>
         ))}
       </select>
-      {hint && <span className="pg-hint">{hint}</span>}
+      {hint && <span className={STYLES.hint}>{hint}</span>}
     </div>
   )
 }

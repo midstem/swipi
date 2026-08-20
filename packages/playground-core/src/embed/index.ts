@@ -1,12 +1,11 @@
 import {
   ANY_ORIGIN,
   EMBED_HEIGHT_MESSAGE,
+  EMBED_MEASURE_MESSAGE,
   EMBED_QUERY_KEY,
-  EMBED_READY_MESSAGE,
-  EMBED_THEME_MESSAGE,
-  EMBED_THEMES
+  EMBED_READY_MESSAGE
 } from '../constants'
-import { EmbedMessage, EmbedTheme } from '../types'
+import { EmbedMeasureMessage, EmbedMessage } from '../types'
 
 const NO_HEIGHT = 0
 
@@ -26,9 +25,6 @@ const getParentOrigin = (): string => {
   }
 }
 
-const isTheme = (value: unknown): value is EmbedTheme =>
-  EMBED_THEMES.some((theme) => theme === value)
-
 const send = (message: EmbedMessage, origin: string): void => {
   window.parent.postMessage(message, origin)
 }
@@ -44,10 +40,10 @@ export const startEmbedBridge = (): (() => void) => {
 
   let reported = NO_HEIGHT
 
-  const report = (): void => {
+  const report = (force = false): void => {
     const height = Math.ceil(document.body.getBoundingClientRect().height)
 
-    if (height === reported) return
+    if (height === reported && !force) return
 
     reported = height
     send({ type: EMBED_HEIGHT_MESSAGE, height }, origin)
@@ -56,21 +52,21 @@ export const startEmbedBridge = (): (() => void) => {
   const receive = ({
     origin: from,
     data
-  }: MessageEvent<EmbedMessage>): void => {
+  }: MessageEvent<EmbedMeasureMessage>): void => {
     if (origin !== ANY_ORIGIN && from !== origin) return
 
-    if (data?.type !== EMBED_THEME_MESSAGE || !isTheme(data.theme)) return
+    if (data?.type !== EMBED_MEASURE_MESSAGE) return
 
-    document.documentElement.dataset.theme = data.theme
+    report(true)
   }
 
-  const observer = new ResizeObserver(report)
+  const observer = new ResizeObserver(() => report())
 
   observer.observe(document.body)
   window.addEventListener('message', receive)
 
   send({ type: EMBED_READY_MESSAGE }, origin)
-  report()
+  report(true)
 
   return () => {
     observer.disconnect()

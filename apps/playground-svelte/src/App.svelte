@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { STYLES } from '@swipi/playground-core'
   import { usePlayground } from './usePlayground.svelte'
   import CodeSnippet from './components/CodeSnippet/index.svelte'
   import ControlsPanel from './components/ControlsPanel/index.svelte'
@@ -20,13 +21,10 @@
   } = playground
 </script>
 
-<div class="pg">
-  <header class="pg-header">
+<div class={STYLES.page}>
+  <header class={STYLES.header}>
     <div>
-      <h1
-        class="pg-header__title"
-        style="display: flex; align-items: center; gap: 8px"
-      >
+      <h1 class={STYLES.headerTitle}>
         <svg class="logo" viewBox="0 0 107 128" width="24" height="24">
           <path
             fill="#ff3e00"
@@ -39,24 +37,26 @@
         </svg>
         Swipi playground
       </h1>
-      <p class="pg-hint">
+      <p class={STYLES.hint}>
         Every option of the hook is editable here, next to the layout the
-        playground draws around it — the settings are kept in
-        <code>localStorage</code> between reloads.
+        playground draws around it — and the panel below prints the call, the
+        markup and the CSS your settings need.
       </p>
     </div>
-    <div class="pg-header__actions">
-      <button type="button" class="pg-button" onclick={remount}>Remount</button>
-      <button type="button" class="pg-button" onclick={reset}>
+    <div class={STYLES.headerActions}>
+      <button type="button" class={STYLES.ghostButton} onclick={remount}>
+        Remount
+      </button>
+      <button type="button" class={STYLES.ghostButton} onclick={reset}>
         Reset props
       </button>
     </div>
   </header>
 
-  <div class="pg-layout">
+  <div class={STYLES.layout}>
     <ControlsPanel state={playground.state} {update} />
 
-    <main class="pg-stage">
+    <main class={STYLES.stage}>
       {#key playground.remountKey}
         <Stage
           state={playground.state}

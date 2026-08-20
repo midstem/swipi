@@ -1,8 +1,7 @@
-import { ref, reactive, computed, watch, shallowRef } from 'vue'
+import { ref, reactive, computed, shallowRef } from 'vue'
 import { SlidePositions, SwipiState } from '@midstem/swipi-vue'
 import { CarouselRef } from '@swipi/playground-core'
 import { DEFAULT_STATE, MAX_EVENTS, SLIDE_COLORS } from '@swipi/playground-core'
-import { loadState, saveState } from '@swipi/playground-core'
 import {
   PlaygroundEvent,
   PlaygroundState,
@@ -11,7 +10,7 @@ import {
 import { UsePlaygroundReturn } from './types'
 
 export const usePlayground = (): UsePlaygroundReturn => {
-  const state = reactive<PlaygroundState>(loadState())
+  const state = reactive<PlaygroundState>({ ...DEFAULT_STATE })
   const swipiState = ref<SwipiState>()
   const positions = ref<SlidePositions>()
   const events = ref<PlaygroundEvent[]>([])
@@ -19,14 +18,6 @@ export const usePlayground = (): UsePlaygroundReturn => {
 
   const swipiRef = shallowRef<CarouselRef | null>(null)
   let eventId = 0
-
-  watch(
-    state,
-    (newState) => {
-      saveState(newState)
-    },
-    { deep: true }
-  )
 
   const update: UpdateState = (key, value) => {
     state[key] = value

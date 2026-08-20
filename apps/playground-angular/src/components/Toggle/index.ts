@@ -1,26 +1,30 @@
 import { Component, input, output } from '@angular/core'
+import { STYLES } from '@swipi/playground-core'
 
 @Component({
   selector: 'pg-toggle',
   styles: ':host { display: contents; }',
   template: `
-    <label class="pg-toggle">
+    <label [class]="STYLES.toggle" data-pg="toggle">
       <input
         type="checkbox"
+        [class]="STYLES.checkbox"
         [checked]="checked()"
         [disabled]="disabled()"
         (change)="handleChange($event)"
       />
-      <span class="pg-toggle__text">
-        <span class="pg-label">{{ label() }}</span>
+      <span [class]="STYLES.toggleText">
+        <span [class]="STYLES.label" data-pg="label">{{ label() }}</span>
         @if (hint()) {
-          <span class="pg-hint">{{ hint() }}</span>
+          <span [class]="STYLES.hint">{{ hint() }}</span>
         }
       </span>
     </label>
   `
 })
 export class Toggle {
+  protected readonly STYLES = STYLES
+
   readonly label = input.required<string>()
 
   readonly hint = input<string>()

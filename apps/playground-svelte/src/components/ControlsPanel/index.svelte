@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { STYLES } from '@swipi/playground-core'
   import {
     ANIMATION_SPEED_LIMITS,
     AUTOPLAY_SPEED_LIMITS,
@@ -37,7 +38,7 @@
   const isVertical = $derived(playgroundState.axis === VERTICAL_AXIS)
 </script>
 
-<aside class="pg-controls">
+<aside class={STYLES.controls}>
   <Section
     title="Behaviour"
     origin="hook"
@@ -209,11 +210,11 @@
       disabled={!isVertical}
       onChange={change('stageHeight')}
     />
-    <div class="pg-row">
+    <div class={STYLES.row}>
       {#each STAGE_PRESETS as preset (preset.label)}
         <button
           type="button"
-          class="pg-button pg-button--ghost"
+          class={STYLES.ghostButton}
           onclick={changeStageWidth(preset.width)}
         >
           {preset.label}

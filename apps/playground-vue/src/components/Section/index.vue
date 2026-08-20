@@ -1,17 +1,18 @@
 <template>
-  <details :class="['pg-section', `pg-section--${origin}`]" open>
-    <summary class="pg-section__title">
+  <details :class="STYLES.section" data-pg="section" :data-origin="origin" open>
+    <summary :class="STYLES.sectionTitle">
       {{ title }}
-      <span class="pg-section__badge">{{ BADGE[origin] }}</span>
+      <span :class="STYLES.sectionBadge">{{ BADGE[origin] }}</span>
     </summary>
-    <div class="pg-section__body">
-      <p v-if="hint" class="pg-hint">{{ hint }}</p>
+    <div :class="STYLES.sectionBody">
+      <p v-if="hint" :class="STYLES.hint">{{ hint }}</p>
       <slot></slot>
     </div>
   </details>
 </template>
 
 <script setup lang="ts">
+import { STYLES } from '@swipi/playground-core'
 import type { SectionProps } from '@swipi/playground-core'
 
 defineProps<SectionProps>()

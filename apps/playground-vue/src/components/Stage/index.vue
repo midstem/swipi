@@ -1,16 +1,20 @@
 <template>
-  <div class="pg-card">
-    <div class="pg-stage__slider" :style="{ width: state.stageWidth + 'px' }">
-      <div :class="['pg-carousel', { 'pg-carousel--vertical': isVertical }]">
-        <span class="pg-visually-hidden" aria-live="polite" aria-atomic="true">
+  <div :class="STYLES.card">
+    <div :class="STYLES.slider" :style="{ width: state.stageWidth + 'px' }">
+      <div :class="STYLES.carousel" data-pg="carousel">
+        <span
+          :class="STYLES.visuallyHidden"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           Slide {{ carousel.selectedIndex + 1 }} of {{ carousel.snapCount }}
         </span>
 
-        <div class="pg-carousel__row">
+        <div :class="STYLES.carouselRow" :data-axis="state.axis">
           <button
             v-if="showArrows"
             type="button"
-            class="pg-carousel__arrow"
+            :class="STYLES.arrow"
             aria-label="Previous slide"
             :disabled="!carousel.canScrollPrev"
             @click="carousel.scrollPrev()"
@@ -20,7 +24,9 @@
 
           <div
             :ref="carouselRef"
-            class="pg-carousel__viewport"
+            :class="STYLES.viewport"
+            data-pg="viewport"
+            :data-axis="state.axis"
             :style="getViewportStyle(state, isVertical)"
             role="group"
             tabindex="0"
@@ -29,20 +35,23 @@
             @keydown="handleKeyDown"
           >
             <div
-              class="pg-carousel__track"
+              :class="STYLES.track"
+              :data-axis="state.axis"
               :style="getTrackStyle(visibleSlides, bias, slideWidth)"
             >
               <div
                 v-for="(color, index) in slides"
                 :key="color"
-                class="pg-carousel__slide"
+                :class="STYLES.slide"
+                data-pg="slide"
+                :data-axis="state.axis"
                 role="group"
                 aria-roledescription="slide"
                 :aria-label="`${index + 1} of ${slides.length}`"
                 :style="getSlideStyle(state, index === carousel.selectedIndex)"
               >
                 <div
-                  class="pg-carousel__slide-box"
+                  :class="STYLES.slideBox"
                   :style="{ backgroundColor: color }"
                 >
                   {{ index + 1 }}
@@ -54,7 +63,7 @@
           <button
             v-if="showArrows"
             type="button"
-            class="pg-carousel__arrow"
+            :class="STYLES.arrow"
             aria-label="Next slide"
             :disabled="!carousel.canScrollNext"
             @click="carousel.scrollNext()"
@@ -63,18 +72,18 @@
           </button>
         </div>
 
-        <nav v-if="state.showDots" class="pg-carousel__dots">
+        <nav v-if="state.showDots" :class="STYLES.dots">
           <button
             v-for="(_, index) in carousel.snapCount"
             :key="index"
             type="button"
-            class="pg-carousel__dot"
+            :class="STYLES.dot"
             :aria-label="`Go to slide ${index + 1}`"
             :aria-current="index === carousel.selectedIndex"
             @click="carousel.scrollTo(index)"
           >
             <span
-              class="pg-carousel__dot-mark"
+              :class="STYLES.dotMark"
               :data-active="index === carousel.selectedIndex"
               :style="{ transition: `${state.animationSpeed}ms` }"
             />
@@ -83,7 +92,7 @@
       </div>
     </div>
 
-    <ul class="pg-facts">
+    <ul :class="STYLES.facts">
       <li>
         window width: <b>{{ windowWidth }}px</b>
       </li>
@@ -101,7 +110,7 @@
       </li>
     </ul>
 
-    <p v-if="!carousel.hasOverflow" class="pg-warning">
+    <p v-if="!carousel.hasOverflow" :class="STYLES.warning">
       All slides fit on the screen, so arrows, dots navigation and
       <code>loop</code> are disabled — add more slides, decrease
       <code>slidesNumber</code> or narrow the stage.
@@ -110,6 +119,7 @@
 </template>
 
 <script setup lang="ts">
+import { STYLES } from '@swipi/playground-core'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useSwipiCarousel } from '@midstem/swipi-vue'
 import type { SlidePositions, SwipiState } from '@midstem/swipi-vue'

@@ -24,9 +24,13 @@ const run = (workspace) =>
 const buildPlayground = ({ id }) => {
   run(`@swipi/playground-${id}`)
 
-  cpSync(resolve(ROOT, 'apps', `playground-${id}`, 'dist'), resolve(OUTPUT, id), {
-    recursive: true
-  })
+  cpSync(
+    resolve(ROOT, 'apps', `playground-${id}`, 'dist'),
+    resolve(OUTPUT, id),
+    {
+      recursive: true
+    }
+  )
 }
 
 const toCard = ({ id, title, packageName }) => `

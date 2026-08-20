@@ -1,8 +1,7 @@
-import { computed, effect, signal } from '@angular/core'
+import { computed, signal } from '@angular/core'
 import { SlidePositions, SwipiState } from '@midstem/swipi-angular'
 import { CarouselRef } from '@swipi/playground-core'
 import { DEFAULT_STATE, MAX_EVENTS, SLIDE_COLORS } from '@swipi/playground-core'
-import { loadState, saveState } from '@swipi/playground-core'
 import {
   PlaygroundEvent,
   PlaygroundState,
@@ -15,7 +14,7 @@ const FIRST_EVENT_ID = 0
 const NEXT_TOKEN = 1
 
 export const usePlayground = (): UsePlaygroundReturn => {
-  const state = signal<PlaygroundState>(loadState())
+  const state = signal<PlaygroundState>(DEFAULT_STATE)
   const swipiState = signal<SwipiState | undefined>(undefined)
   const positions = signal<SlidePositions | undefined>(undefined)
   const events = signal<PlaygroundEvent[]>([])
@@ -23,8 +22,6 @@ export const usePlayground = (): UsePlaygroundReturn => {
   const remountToken = signal(FIRST_EVENT_ID)
 
   let eventId = FIRST_EVENT_ID
-
-  effect(() => saveState(state()))
 
   const update: UpdateState = (key, value) =>
     state.update((previous) => ({ ...previous, [key]: value }))

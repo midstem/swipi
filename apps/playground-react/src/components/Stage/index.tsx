@@ -3,6 +3,7 @@ import { useSwipiCarousel } from '@midstem/swipi-react'
 import { StageProps } from '../../types'
 import { useStage } from './useStage'
 import {
+  STYLES,
   getArrows,
   getSlideStyle,
   getTrackStyle,
@@ -64,20 +65,22 @@ const Stage = ({
   }
 
   return (
-    <div className="pg-card">
-      <div className="pg-stage__slider" style={{ width: state.stageWidth }}>
-        <div
-          className={`pg-carousel${isVertical ? ' pg-carousel--vertical' : ''}`}
-        >
-          <span className="pg-visually-hidden" aria-live="polite" aria-atomic>
+    <div className={STYLES.card}>
+      <div className={STYLES.slider} style={{ width: state.stageWidth }}>
+        <div className={STYLES.carousel} data-pg="carousel">
+          <span
+            className={STYLES.visuallyHidden}
+            aria-live="polite"
+            aria-atomic
+          >
             Slide {carousel.selectedIndex + 1} of {carousel.snapCount}
           </span>
 
-          <div className="pg-carousel__row">
+          <div className={STYLES.carouselRow} data-axis={state.axis}>
             {showArrows && (
               <button
                 type="button"
-                className="pg-carousel__arrow"
+                className={STYLES.arrow}
                 aria-label="Previous slide"
                 disabled={!carousel.canScrollPrev}
                 onClick={carousel.scrollPrev}
@@ -88,7 +91,9 @@ const Stage = ({
 
             <div
               ref={carouselRef}
-              className="pg-carousel__viewport"
+              className={STYLES.viewport}
+              data-pg="viewport"
+              data-axis={state.axis}
               style={getViewportStyle(state, isVertical)}
               role="group"
               tabIndex={0}
@@ -97,13 +102,16 @@ const Stage = ({
               onKeyDown={handleKeyDown}
             >
               <div
-                className="pg-carousel__track"
+                className={STYLES.track}
+                data-axis={state.axis}
                 style={getTrackStyle(visibleSlides, bias, slideWidth)}
               >
                 {slides.map((color, index) => (
                   <div
                     key={color}
-                    className="pg-carousel__slide"
+                    className={STYLES.slide}
+                    data-pg="slide"
+                    data-axis={state.axis}
                     role="group"
                     aria-roledescription="slide"
                     aria-label={`${index + 1} of ${slides.length}`}
@@ -113,7 +121,7 @@ const Stage = ({
                     )}
                   >
                     <div
-                      className="pg-carousel__slide-box"
+                      className={STYLES.slideBox}
                       style={{ backgroundColor: color }}
                     >
                       {index + 1}
@@ -126,7 +134,7 @@ const Stage = ({
             {showArrows && (
               <button
                 type="button"
-                className="pg-carousel__arrow"
+                className={STYLES.arrow}
                 aria-label="Next slide"
                 disabled={!carousel.canScrollNext}
                 onClick={carousel.scrollNext}
@@ -137,7 +145,7 @@ const Stage = ({
           </div>
 
           {state.showDots && (
-            <nav className="pg-carousel__dots">
+            <nav className={STYLES.dots}>
               {Array.from({ length: carousel.snapCount }, (_, index) => {
                 const isActive = index === carousel.selectedIndex
 
@@ -145,13 +153,13 @@ const Stage = ({
                   <button
                     key={index}
                     type="button"
-                    className="pg-carousel__dot"
+                    className={STYLES.dot}
                     aria-label={`Go to slide ${index + 1}`}
                     aria-current={isActive}
                     onClick={() => carousel.scrollTo(index)}
                   >
                     <span
-                      className="pg-carousel__dot-mark"
+                      className={STYLES.dotMark}
                       data-active={isActive}
                       style={{ transition: `${state.animationSpeed}ms` }}
                     />
@@ -163,7 +171,7 @@ const Stage = ({
         </div>
       </div>
 
-      <ul className="pg-facts">
+      <ul className={STYLES.facts}>
         <li>
           window width: <b>{windowWidth}px</b>
         </li>
@@ -184,7 +192,7 @@ const Stage = ({
       </ul>
 
       {!carousel.hasOverflow && (
-        <p className="pg-warning">
+        <p className={STYLES.warning}>
           All slides fit on the screen, so arrows, dots navigation and{' '}
           <code>loop</code> are disabled — add more slides, decrease{' '}
           <code>slidesNumber</code> or narrow the stage.

@@ -7,6 +7,7 @@ import Stage from './components/Stage'
 import StatePanel from './components/StatePanel'
 import { usePlayground } from './usePlayground'
 import '@swipi/playground-core/playground.css'
+import { STYLES } from '@swipi/playground-core'
 
 const Playground = (): JSX.Element => {
   const {
@@ -26,13 +27,10 @@ const Playground = (): JSX.Element => {
   } = usePlayground()
 
   return (
-    <div className="pg">
-      <header className="pg-header">
+    <div className={STYLES.page}>
+      <header className={STYLES.header}>
         <div>
-          <h1
-            className="pg-header__title"
-            style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
-          >
+          <h1 className={STYLES.headerTitle}>
             <svg
               viewBox="0 0 118 103"
               width="24"
@@ -71,26 +69,30 @@ const Playground = (): JSX.Element => {
             </svg>
             Swipi playground
           </h1>
-          <p className="pg-hint">
+          <p className={STYLES.hint}>
             Every option of the hook is editable here, next to the layout the
-            playground draws around it — the settings are kept in{' '}
-            <code>localStorage</code> between reloads.
+            playground draws around it — and the panel below prints the call,
+            the markup and the CSS your settings need.
           </p>
         </div>
-        <div className="pg-header__actions">
-          <button type="button" className="pg-button" onClick={remount}>
+        <div className={STYLES.headerActions}>
+          <button
+            type="button"
+            className={STYLES.ghostButton}
+            onClick={remount}
+          >
             Remount
           </button>
-          <button type="button" className="pg-button" onClick={reset}>
+          <button type="button" className={STYLES.ghostButton} onClick={reset}>
             Reset props
           </button>
         </div>
       </header>
 
-      <div className="pg-layout">
+      <div className={STYLES.layout}>
         <ControlsPanel state={state} update={update} />
 
-        <main className="pg-stage">
+        <main className={STYLES.stage}>
           <Stage
             key={remountKey}
             state={state}
