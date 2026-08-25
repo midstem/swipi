@@ -2,7 +2,7 @@ import { DRAG_THRESHOLD, PRIMARY_BUTTON } from '#src/constants'
 import { getCrossPoint, getMainPoint } from '#src/modules/axis'
 import { getMomentumDuration } from '#src/modules/drag'
 import { clampToSnaps, getMomentumSnap } from '#src/modules/geometry'
-import { PASSIVE } from './constants'
+import { CAPTURE, PASSIVE } from './constants'
 import { DragState, SetupEventsProps } from './types'
 import { capturePointer, getReleaseVelocity, preventDragStart } from './helpers'
 
@@ -19,8 +19,11 @@ export const setupEvents = ({
   animateTo
 }: SetupEventsProps): (() => void) => {
   let dragState: DragState | null = null
+  let shouldPreventClick = false
 
   const onPointerDown = (event: PointerEvent): void => {
+    shouldPreventClick = false
+
     if (!getHasOverflow() || event.button !== PRIMARY_BUTTON) return
 
     const startedAt = performance.now()
@@ -95,6 +98,8 @@ export const setupEvents = ({
 
     if (!drag.isDragging) return
 
+    shouldPreventClick = true
+
     const transform = getTransform()
     const velocity = getReleaseVelocity(drag)
     const isLoop = getIsLoop()
@@ -124,6 +129,14 @@ export const setupEvents = ({
     )
   }
 
+  const onClick = (event: MouseEvent): void => {
+    if (!shouldPreventClick) return
+
+    shouldPreventClick = false
+    event.preventDefault()
+    event.stopPropagation()
+  }
+
   viewport.addEventListener(
     'pointerdown',
     onPointerDown as EventListener,
@@ -141,6 +154,7 @@ export const setupEvents = ({
     PASSIVE
   )
   viewport.addEventListener('dragstart', preventDragStart)
+  viewport.addEventListener('click', onClick as EventListener, CAPTURE)
 
   return () => {
     viewport.removeEventListener('pointerdown', onPointerDown as EventListener)
@@ -148,6 +162,7 @@ export const setupEvents = ({
     viewport.removeEventListener('pointerup', onPointerUp as EventListener)
     viewport.removeEventListener('pointercancel', onPointerUp as EventListener)
     viewport.removeEventListener('dragstart', preventDragStart)
+    viewport.removeEventListener('click', onClick as EventListener, CAPTURE)
   }
 }
 
