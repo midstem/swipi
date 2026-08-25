@@ -4,7 +4,13 @@ import { getMomentumDuration } from '#src/modules/drag'
 import { clampToSnaps, getMomentumSnap } from '#src/modules/geometry'
 import { CAPTURE, PASSIVE } from './constants'
 import { DragState, SetupEventsProps } from './types'
-import { capturePointer, getReleaseVelocity, preventDragStart } from './helpers'
+import {
+  capturePointer,
+  claimDrag,
+  getReleaseVelocity,
+  preventDragStart,
+  releaseDrag
+} from './helpers'
 
 export const setupEvents = ({
   viewport,
@@ -61,6 +67,11 @@ export const setupEvents = ({
       return false
     }
 
+    if (!claimDrag(event.pointerId, viewport)) {
+      dragState = null
+      return false
+    }
+
     drag.isDragging = true
     capturePointer(viewport, event.pointerId, true)
     return true
@@ -94,6 +105,7 @@ export const setupEvents = ({
     if (!drag || drag.pointerId !== event.pointerId) return
 
     dragState = null
+    releaseDrag(event.pointerId, viewport)
     capturePointer(viewport, event.pointerId, false)
 
     if (!drag.isDragging) return
@@ -157,6 +169,8 @@ export const setupEvents = ({
   viewport.addEventListener('click', onClick as EventListener, CAPTURE)
 
   return () => {
+    if (dragState) releaseDrag(dragState.pointerId, viewport)
+
     viewport.removeEventListener('pointerdown', onPointerDown as EventListener)
     viewport.removeEventListener('pointermove', onPointerMove as EventListener)
     viewport.removeEventListener('pointerup', onPointerUp as EventListener)

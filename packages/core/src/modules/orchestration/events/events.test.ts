@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { DRAG_THRESHOLD } from '#src/constants'
-import { SlidesGeometry } from '#src/types'
+import { SlidesGeometry, SwipiAxis } from '#src/types'
 import { setupEvents } from '.'
 
 const SLIDE_WIDTH = 300
@@ -15,9 +15,41 @@ const GEOMETRY: SlidesGeometry = {
 
 const POINTER_ID = 1
 
-let viewport: HTMLElement
+const START = 200
+
+type Carousel = {
+  moveTo: ReturnType<typeof vi.fn>
+  destroy: () => void
+}
+
+let outer: HTMLElement
+let inner: HTMLElement
 let link: HTMLAnchorElement
-let destroy: () => void
+let mounted: Carousel[]
+
+const mount = (viewport: HTMLElement, axis: SwipiAxis = 'x'): Carousel => {
+  const moveTo = vi.fn()
+
+  const carousel = {
+    moveTo,
+    destroy: setupEvents({
+      viewport,
+      getAxis: () => axis,
+      getIsLoop: () => false,
+      getDragFree: () => false,
+      getGeometry: () => GEOMETRY,
+      getHasOverflow: () => true,
+      getAnimationSpeed: () => 0,
+      getTransform: () => 0,
+      moveTo,
+      animateTo: vi.fn()
+    })
+  }
+
+  mounted.push(carousel)
+
+  return carousel
+}
 
 const pointer = (type: string, clientX: number, clientY = 0): void => {
   link.dispatchEvent(
@@ -31,96 +63,137 @@ const pointer = (type: string, clientX: number, clientY = 0): void => {
   )
 }
 
+const drag = (toX: number, toY = 0): void => {
+  pointer('pointerdown', START, START)
+  pointer('pointermove', toX, toY)
+  pointer('pointerup', toX, toY)
+}
+
 const click = (): boolean =>
   link.dispatchEvent(
     new MouseEvent('click', { bubbles: true, cancelable: true })
   )
 
 beforeEach(() => {
-  viewport = document.createElement('div')
+  outer = document.createElement('div')
+  inner = document.createElement('div')
   link = document.createElement('a')
-  viewport.appendChild(link)
-  document.body.appendChild(viewport)
+  mounted = []
 
-  destroy = setupEvents({
-    viewport,
-    getAxis: () => 'x',
-    getIsLoop: () => false,
-    getDragFree: () => false,
-    getGeometry: () => GEOMETRY,
-    getHasOverflow: () => true,
-    getAnimationSpeed: () => 0,
-    getTransform: () => 0,
-    moveTo: vi.fn(),
-    animateTo: vi.fn()
-  })
+  inner.appendChild(link)
+  outer.appendChild(inner)
+  document.body.appendChild(outer)
 })
 
 afterEach(() => {
-  destroy()
+  mounted.forEach((carousel) => carousel.destroy())
   document.body.innerHTML = ''
 })
 
 describe('setupEvents', () => {
   test('should swallow the click that ends a drag', () => {
+    mount(inner)
+
     const listener = vi.fn()
     link.addEventListener('click', listener)
 
-    pointer('pointerdown', 200)
-    pointer('pointermove', 100)
-    pointer('pointerup', 100)
+    drag(100, START)
 
     expect(click()).toEqual(false)
     expect(listener).not.toHaveBeenCalled()
   })
 
   test('should let a click through when the pointer barely moved', () => {
+    mount(inner)
+
     const listener = vi.fn()
     link.addEventListener('click', listener)
 
-    pointer('pointerdown', 200)
-    pointer('pointermove', 200 - DRAG_THRESHOLD + 1)
-    pointer('pointerup', 200 - DRAG_THRESHOLD + 1)
+    drag(START - DRAG_THRESHOLD + 1, START)
 
     expect(click()).toEqual(true)
     expect(listener).toHaveBeenCalledTimes(1)
   })
 
   test('should let a click through when the drag turned to the cross axis', () => {
-    pointer('pointerdown', 200, 200)
-    pointer('pointermove', 200, 100)
-    pointer('pointerup', 200, 100)
+    mount(inner)
+
+    drag(START, 100)
 
     expect(click()).toEqual(true)
   })
 
   test('should swallow only the click that follows the drag', () => {
-    pointer('pointerdown', 200)
-    pointer('pointermove', 100)
-    pointer('pointerup', 100)
+    mount(inner)
+
+    drag(100, START)
 
     expect(click()).toEqual(false)
     expect(click()).toEqual(true)
   })
 
   test('should forget a stale drag when the next press starts', () => {
-    pointer('pointerdown', 200)
-    pointer('pointermove', 100)
-    pointer('pointerup', 100)
+    mount(inner)
 
-    pointer('pointerdown', 100)
-    pointer('pointerup', 100)
+    drag(100, START)
+
+    pointer('pointerdown', 100, START)
+    pointer('pointerup', 100, START)
 
     expect(click()).toEqual(true)
   })
 
   test('should stop swallowing clicks after destroy', () => {
-    pointer('pointerdown', 200)
-    pointer('pointermove', 100)
-    pointer('pointerup', 100)
+    const carousel = mount(inner)
 
-    destroy()
+    drag(100, START)
+    carousel.destroy()
 
     expect(click()).toEqual(true)
+  })
+
+  test('should leave the outer carousel alone while the inner one drags', () => {
+    const outerCarousel = mount(outer)
+    const innerCarousel = mount(inner)
+
+    drag(100, START)
+
+    expect(innerCarousel.moveTo).toHaveBeenCalled()
+    expect(outerCarousel.moveTo).not.toHaveBeenCalled()
+  })
+
+  test('should hand the drag to the outer carousel when the axes differ', () => {
+    const outerCarousel = mount(outer, 'y')
+    const innerCarousel = mount(inner)
+
+    drag(START, 100)
+
+    expect(outerCarousel.moveTo).toHaveBeenCalled()
+    expect(innerCarousel.moveTo).not.toHaveBeenCalled()
+  })
+
+  test('should release the pointer for the next nested drag', () => {
+    const outerCarousel = mount(outer)
+    const innerCarousel = mount(inner)
+
+    drag(100, START)
+    innerCarousel.moveTo.mockClear()
+    drag(100, START)
+
+    expect(innerCarousel.moveTo).toHaveBeenCalled()
+    expect(outerCarousel.moveTo).not.toHaveBeenCalled()
+  })
+
+  test('should release the pointer when the inner carousel is destroyed mid drag', () => {
+    const outerCarousel = mount(outer)
+    const innerCarousel = mount(inner)
+
+    pointer('pointerdown', START, START)
+    pointer('pointermove', 100, START)
+    innerCarousel.destroy()
+
+    drag(100, START)
+
+    expect(outerCarousel.moveTo).toHaveBeenCalled()
   })
 })
