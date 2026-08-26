@@ -54,12 +54,22 @@ jobs:
           node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/base-size.json"
 
       - name: Report
+        env:
+          NAME: ${{ matrix.package.name }}
         run: |
           if [ -f "$RUNNER_TEMP/base-size.json" ]; then
-            node "$RUNNER_TEMP/report-size.mjs" \
+            node "$RUNNER_TEMP/report-size.mjs" --name "$NAME" \
               --current "$RUNNER_TEMP/head-size.json" \
-              --base "$RUNNER_TEMP/base-size.json" >> "$GITHUB_STEP_SUMMARY"
+              --base "$RUNNER_TEMP/base-size.json" > "bundle-size-$NAME.md"
           else
-            node "$RUNNER_TEMP/report-size.mjs" \
-              --current "$RUNNER_TEMP/head-size.json" >> "$GITHUB_STEP_SUMMARY"
+            node "$RUNNER_TEMP/report-size.mjs" --name "$NAME" \
+              --current "$RUNNER_TEMP/head-size.json" > "bundle-size-$NAME.md"
           fi
+          cat "bundle-size-$NAME.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the report
+        uses: actions/upload-artifact@v4
+        with:
+          name: report-bundle-size-${{ matrix.package.name }}
+          path: bundle-size-${{ matrix.package.name }}.md
+          retention-days: 1

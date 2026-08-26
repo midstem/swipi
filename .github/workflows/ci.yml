@@ -84,7 +84,30 @@ jobs:
         run: npm run typecheck ${{ matrix.area.workspaces }}
 
       - name: Test
-        run: npm run test:run ${{ matrix.area.workspaces }}
+        id: test
+        run: |
+          npm run test:run ${{ matrix.area.workspaces }} -- \
+            --reporter=default \
+            --reporter=github-actions \
+            --reporter=json \
+            --outputFile=vitest-report.json
+
+      - name: Collect the failing tests
+        if: failure() && steps.test.outcome == 'failure'
+        env:
+          NAME: ${{ matrix.area.name }}
+        run: |
+          node tools/scripts/report-tests.mjs --name "$NAME" > "failing-tests-$NAME.md"
+          cat "failing-tests-$NAME.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the failing tests
+        if: failure() && steps.test.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: report-failing-tests-${{ matrix.area.name }}
+          path: failing-tests-${{ matrix.area.name }}.md
+          if-no-files-found: ignore
+          retention-days: 1
 
       - name: Build
         run: npm run build ${{ matrix.area.workspaces }}
@@ -129,3 +152,79 @@ jobs:
       vue: ${{ needs.changes.outputs.vue == 'true' }}
       svelte: ${{ needs.changes.outputs.svelte == 'true' }}
       angular: ${{ needs.changes.outputs.angular == 'true' }}
+
+  report:
+    needs: [checks, bundle-size]
+    if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Download the reports
+        uses: actions/download-artifact@v4
+        with:
+          path: reports
+          pattern: report-*
+          merge-multiple: true
+
+      - name: Comment on the pull request
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { readdirSync, readFileSync, existsSync } = require('fs')
+
+            const MARKER = '<!-- swipi-ci-report -->'
+
+            const read = (prefix) =>
+              (existsSync('reports') ? readdirSync('reports') : [])
+                .filter((file) => file.startsWith(prefix))
+                .sort()
+                .map((file) => readFileSync(`reports/${file}`, 'utf8').trim())
+                .filter(Boolean)
+
+            const section = (heading, parts) =>
+              parts.length ? [heading, ...parts].join('\n\n') : ''
+
+            const body = [
+              MARKER,
+              section('## Failing tests', read('failing-tests-')),
+              section('## Bundle size', read('bundle-size-'))
+            ]
+              .filter(Boolean)
+              .join('\n\n')
+
+            const issue = { ...context.repo, issue_number: context.issue.number }
+
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { ...issue, per_page: 100 }
+            )
+
+            const existing = comments.find((comment) =>
+              comment.body?.includes(MARKER)
+            )
+
+            if (body === MARKER) {
+              if (existing) {
+                await github.rest.issues.updateComment({
+                  ...context.repo,
+                  comment_id: existing.id,
+                  body: `${MARKER}\n\nNothing to report for this run.`
+                })
+              }
+
+              return
+            }
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                ...context.repo,
+                comment_id: existing.id,
+                body
+              })
+
+              return
+            }
+
+            await github.rest.issues.createComment({ ...issue, body })

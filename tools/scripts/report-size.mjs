@@ -110,6 +110,7 @@ const renderTable = (rows) =>
 const currentPath = readOption('--current')
 const basePath = readOption('--base')
 const jsonPath = readOption('--json')
+const name = readOption('--name')
 
 const current = currentPath ? readMeasurements(currentPath) : measureDist()
 
@@ -122,7 +123,7 @@ if (jsonPath) writeFileSync(jsonPath, `${JSON.stringify(current, null, 2)}\n`)
 
 const base = basePath ? readMeasurements(basePath) : []
 
-console.log('## Bundle size\n')
+console.log(name ? `### ${name}\n` : '## Bundle size\n')
 console.log(
   renderTable(
     base.length ? buildComparedRows(current, base) : buildRows(current)
