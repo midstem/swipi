@@ -2,7 +2,7 @@ import { INITIAL_TRANSFORM } from '#src/constants'
 import { clamp, normalizeIndex } from '#src/modules/math'
 import { SlidesGeometry } from '#src/types'
 import { SNAP_TOLERANCE } from './constants'
-import { toSnap } from './helpers'
+import { toLoopSnaps, toSnap } from './helpers'
 import { SnapsFromPositions } from './types'
 
 export * from './types'
@@ -47,16 +47,35 @@ export const findNearestSnap = (transform: number, snaps: number[]): number => {
 
 export const getSnapIndex = (
   transform: number,
-  { snaps, loopSize }: SlidesGeometry,
+  geometry: SlidesGeometry,
   loop: boolean
 ): number => {
+  const { snaps, loopSize } = geometry
+
   if (!snaps.length) return 0
 
   if (!loop) return findNearestSnap(transform, snaps)
 
   const scrolled = normalizeIndex(-transform, loopSize)
 
-  return findNearestSnap(-scrolled, [...snaps, -loopSize]) % snaps.length
+  return findNearestSnap(-scrolled, toLoopSnaps(geometry)) % snaps.length
+}
+
+export const alignToSnap = (
+  transform: number,
+  geometry: SlidesGeometry,
+  loop: boolean
+): number => {
+  const { snaps, loopSize } = geometry
+
+  if (!snaps.length) return transform
+
+  if (!loop) return snaps[findNearestSnap(transform, snaps)]
+
+  const scrolled = normalizeIndex(-transform, loopSize)
+  const loopSnaps = toLoopSnaps(geometry)
+
+  return transform + scrolled + loopSnaps[findNearestSnap(-scrolled, loopSnaps)]
 }
 
 export const clampToSnaps = (

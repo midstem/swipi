@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest'
-import { getStepTarget } from '.'
+import { getMomentumSnap, getStepTarget } from '.'
+import { build } from '../__test__/build'
 import { getSlideLap } from '../slides'
 import { getSnapIndex, toSnaps } from '../snaps'
 
@@ -48,5 +49,46 @@ describe('loop period with a gap between slides', () => {
     )
 
     expect(transform).toBe(-geometry.loopSize)
+  })
+})
+
+describe('stepping from a transform between two snaps', () => {
+  const geometry = build([300, 300, 300, 300, 300], 300, true)
+
+  test('should align to the nearest snap when there is no step to take', () => {
+    expect(getStepTarget(-120, geometry, true, 0)).toBe(0)
+    expect(getStepTarget(-260, geometry, true, 0)).toBe(-300)
+    expect(getStepTarget(-1450, geometry, true, 0)).toBe(-1500)
+  })
+
+  test('should land on a snap when stepping on', () => {
+    expect(getStepTarget(-120, geometry, true, 1)).toBe(-300)
+    expect(getStepTarget(-260, geometry, true, -1)).toBe(0)
+  })
+})
+
+describe('getMomentumSnap when a drag interrupts an animation', () => {
+  const geometry = build([300, 300, 300, 300, 300], 300, true)
+
+  const momentum = (transform: number, startTransform: number): number =>
+    getMomentumSnap({
+      transform,
+      velocity: 0,
+      startTransform,
+      geometry,
+      loop: true,
+      dragFree: false
+    })
+
+  test('should settle on the next snap, not beside it', () => {
+    expect(momentum(-220, -120)).toBe(-300)
+  })
+
+  test('should settle back on the nearest snap of a short drag', () => {
+    expect(momentum(-60, -120)).toBe(0)
+  })
+
+  test('should measure the drag from the snap the track was heading to', () => {
+    expect(momentum(-460, -260)).toBe(-600)
   })
 })
