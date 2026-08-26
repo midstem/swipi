@@ -8,6 +8,7 @@ import {
   capturePointer,
   claimDrag,
   getReleaseVelocity,
+  isPointerReleased,
   preventDragStart,
   releaseDrag
 } from './helpers'
@@ -24,6 +25,7 @@ export const setupEvents = ({
   moveTo,
   animateTo
 }: SetupEventsProps): (() => void) => {
+  const ownerDocument = viewport.ownerDocument
   let dragState: DragState | null = null
   let shouldPreventClick = false
 
@@ -77,36 +79,10 @@ export const setupEvents = ({
     return true
   }
 
-  const onPointerMove = (event: PointerEvent): void => {
-    const drag = dragState
-    if (!drag || drag.pointerId !== event.pointerId) return
-
-    const axis = getAxis()
-    const main = getMainPoint(event, axis)
-    const deltaMain = main - drag.startMain
-    const deltaCross = getCrossPoint(event, axis) - drag.startCross
-
-    if (!drag.isDragging && !lockAxis(drag, event, deltaMain, deltaCross)) {
-      return
-    }
-
-    drag.previousMain = drag.lastMain
-    drag.previousAt = drag.lastAt
-    drag.lastMain = main
-    drag.lastAt = performance.now()
-
-    const isLoop = getIsLoop()
-    const geometry = getGeometry()
-    moveTo(clampToSnaps(drag.startTransform + deltaMain, geometry, isLoop))
-  }
-
-  const onPointerUp = (event: PointerEvent): void => {
-    const drag = dragState
-    if (!drag || drag.pointerId !== event.pointerId) return
-
+  const finishDrag = (drag: DragState): void => {
     dragState = null
-    releaseDrag(event.pointerId, viewport)
-    capturePointer(viewport, event.pointerId, false)
+    releaseDrag(drag.pointerId, viewport)
+    capturePointer(viewport, drag.pointerId, false)
 
     if (!drag.isDragging) return
 
@@ -141,6 +117,41 @@ export const setupEvents = ({
     )
   }
 
+  const onPointerMove = (event: PointerEvent): void => {
+    const drag = dragState
+    if (!drag || drag.pointerId !== event.pointerId) return
+
+    if (isPointerReleased(event)) {
+      finishDrag(drag)
+      return
+    }
+
+    const axis = getAxis()
+    const main = getMainPoint(event, axis)
+    const deltaMain = main - drag.startMain
+    const deltaCross = getCrossPoint(event, axis) - drag.startCross
+
+    if (!drag.isDragging && !lockAxis(drag, event, deltaMain, deltaCross)) {
+      return
+    }
+
+    drag.previousMain = drag.lastMain
+    drag.previousAt = drag.lastAt
+    drag.lastMain = main
+    drag.lastAt = performance.now()
+
+    const isLoop = getIsLoop()
+    const geometry = getGeometry()
+    moveTo(clampToSnaps(drag.startTransform + deltaMain, geometry, isLoop))
+  }
+
+  const onPointerUp = (event: PointerEvent): void => {
+    const drag = dragState
+    if (!drag || drag.pointerId !== event.pointerId) return
+
+    finishDrag(drag)
+  }
+
   const onClick = (event: MouseEvent): void => {
     if (!shouldPreventClick) return
 
@@ -159,8 +170,12 @@ export const setupEvents = ({
     onPointerMove as EventListener,
     PASSIVE
   )
-  viewport.addEventListener('pointerup', onPointerUp as EventListener, PASSIVE)
-  viewport.addEventListener(
+  ownerDocument.addEventListener(
+    'pointerup',
+    onPointerUp as EventListener,
+    PASSIVE
+  )
+  ownerDocument.addEventListener(
     'pointercancel',
     onPointerUp as EventListener,
     PASSIVE
@@ -173,8 +188,11 @@ export const setupEvents = ({
 
     viewport.removeEventListener('pointerdown', onPointerDown as EventListener)
     viewport.removeEventListener('pointermove', onPointerMove as EventListener)
-    viewport.removeEventListener('pointerup', onPointerUp as EventListener)
-    viewport.removeEventListener('pointercancel', onPointerUp as EventListener)
+    ownerDocument.removeEventListener('pointerup', onPointerUp as EventListener)
+    ownerDocument.removeEventListener(
+      'pointercancel',
+      onPointerUp as EventListener
+    )
     viewport.removeEventListener('dragstart', preventDragStart)
     viewport.removeEventListener('click', onClick as EventListener, CAPTURE)
   }

@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
-import { DRAG_THRESHOLD } from '#src/constants'
+import { DRAG_THRESHOLD, NO_BUTTONS } from '#src/constants'
 import { SlidesGeometry, SwipiAxis } from '#src/types'
 import { setupEvents } from '.'
 
@@ -17,8 +17,11 @@ const POINTER_ID = 1
 
 const START = 200
 
+const HELD_BUTTON = 1
+
 type Carousel = {
   moveTo: ReturnType<typeof vi.fn>
+  animateTo: ReturnType<typeof vi.fn>
   destroy: () => void
 }
 
@@ -29,9 +32,11 @@ let mounted: Carousel[]
 
 const mount = (viewport: HTMLElement, axis: SwipiAxis = 'x'): Carousel => {
   const moveTo = vi.fn()
+  const animateTo = vi.fn()
 
   const carousel = {
     moveTo,
+    animateTo,
     destroy: setupEvents({
       viewport,
       getAxis: () => axis,
@@ -42,7 +47,7 @@ const mount = (viewport: HTMLElement, axis: SwipiAxis = 'x'): Carousel => {
       getAnimationSpeed: () => 0,
       getTransform: () => 0,
       moveTo,
-      animateTo: vi.fn()
+      animateTo
     })
   }
 
@@ -51,12 +56,24 @@ const mount = (viewport: HTMLElement, axis: SwipiAxis = 'x'): Carousel => {
   return carousel
 }
 
-const pointer = (type: string, clientX: number, clientY = 0): void => {
-  link.dispatchEvent(
+type PointerOptions = {
+  target?: HTMLElement
+  buttons?: number
+}
+
+const pointer = (
+  type: string,
+  clientX: number,
+  clientY = 0,
+  { target = link, buttons = HELD_BUTTON }: PointerOptions = {}
+): void => {
+  target.dispatchEvent(
     new PointerEvent(type, {
       bubbles: true,
       pointerId: POINTER_ID,
+      pointerType: 'mouse',
       button: 0,
+      buttons,
       clientX,
       clientY
     })
@@ -66,7 +83,7 @@ const pointer = (type: string, clientX: number, clientY = 0): void => {
 const drag = (toX: number, toY = 0): void => {
   pointer('pointerdown', START, START)
   pointer('pointermove', toX, toY)
-  pointer('pointerup', toX, toY)
+  pointer('pointerup', toX, toY, { buttons: NO_BUTTONS })
 }
 
 const click = (): boolean =>
@@ -182,6 +199,60 @@ describe('setupEvents', () => {
 
     expect(innerCarousel.moveTo).toHaveBeenCalled()
     expect(outerCarousel.moveTo).not.toHaveBeenCalled()
+  })
+
+  test('should end the drag when the button is released outside the viewport', () => {
+    const carousel = mount(inner)
+
+    pointer('pointerdown', START, START)
+    pointer('pointerup', 100, START, {
+      target: document.body,
+      buttons: NO_BUTTONS
+    })
+    pointer('pointermove', 100, START)
+
+    expect(carousel.moveTo).not.toHaveBeenCalled()
+  })
+
+  test('should end the drag when the pointer returns with no button held', () => {
+    const carousel = mount(inner)
+
+    pointer('pointerdown', START, START)
+    pointer('pointermove', 150, START)
+    carousel.moveTo.mockClear()
+
+    pointer('pointermove', 100, START, { buttons: NO_BUTTONS })
+    pointer('pointermove', 50, START)
+
+    expect(carousel.animateTo).toHaveBeenCalledTimes(1)
+    expect(carousel.moveTo).not.toHaveBeenCalled()
+  })
+
+  test('should snap to a slide when the release is missed', () => {
+    const carousel = mount(inner)
+
+    pointer('pointerdown', START, START)
+    pointer('pointermove', START - SLIDE_WIDTH, START)
+    pointer('pointermove', START - SLIDE_WIDTH, START, { buttons: NO_BUTTONS })
+
+    expect(carousel.animateTo).toHaveBeenCalledWith(
+      -SLIDE_WIDTH,
+      expect.any(Number)
+    )
+  })
+
+  test('should release the pointer when the release is missed', () => {
+    const outerCarousel = mount(outer)
+    const innerCarousel = mount(inner)
+
+    pointer('pointerdown', START, START)
+    pointer('pointermove', 100, START)
+    pointer('pointermove', 100, START, { buttons: NO_BUTTONS })
+    innerCarousel.destroy()
+
+    drag(100, START)
+
+    expect(outerCarousel.moveTo).toHaveBeenCalled()
   })
 
   test('should release the pointer when the inner carousel is destroyed mid drag', () => {
