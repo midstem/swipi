@@ -22,6 +22,7 @@ const HELD_BUTTON = 1
 type Carousel = {
   moveTo: ReturnType<typeof vi.fn>
   animateTo: ReturnType<typeof vi.fn>
+  setTransform: (value: number) => void
   destroy: () => void
 }
 
@@ -33,10 +34,14 @@ let mounted: Carousel[]
 const mount = (viewport: HTMLElement, axis: SwipiAxis = 'x'): Carousel => {
   const moveTo = vi.fn()
   const animateTo = vi.fn()
+  let transform = 0
 
   const carousel = {
     moveTo,
     animateTo,
+    setTransform: (value: number) => {
+      transform = value
+    },
     destroy: setupEvents({
       viewport,
       getAxis: () => axis,
@@ -45,7 +50,7 @@ const mount = (viewport: HTMLElement, axis: SwipiAxis = 'x'): Carousel => {
       getGeometry: () => GEOMETRY,
       getHasOverflow: () => true,
       getAnimationSpeed: () => 0,
-      getTransform: () => 0,
+      getTransform: () => transform,
       moveTo,
       animateTo
     })
@@ -199,6 +204,16 @@ describe('setupEvents', () => {
 
     expect(innerCarousel.moveTo).toHaveBeenCalled()
     expect(outerCarousel.moveTo).not.toHaveBeenCalled()
+  })
+
+  test('should start the drag from where the running animation got to', () => {
+    const carousel = mount(inner)
+
+    pointer('pointerdown', START, START)
+    carousel.setTransform(-40)
+    pointer('pointermove', START - 50, START)
+
+    expect(carousel.moveTo).toHaveBeenLastCalledWith(-90)
   })
 
   test('should end the drag when the button is released outside the viewport', () => {

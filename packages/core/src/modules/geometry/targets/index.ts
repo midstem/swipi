@@ -1,7 +1,7 @@
 import { ONE_STEP } from '#src/constants'
 import { clamp, normalizeIndex } from '#src/modules/math'
 import { SlidesGeometry } from '#src/types'
-import { getSnapIndex } from '../snaps'
+import { alignToSnap, getSnapIndex } from '../snaps'
 import { HALF, MOMENTUM_DECAY_TIME } from './constants'
 import { getStride } from './helpers'
 import { MomentumSnapType } from './types'
@@ -24,12 +24,14 @@ export const getStepTarget = (
     return snaps[clamp(current + step, 0, snaps.length - ONE_STEP)]
   }
 
-  if (!step) return transform
+  const aligned = alignToSnap(transform, geometry, loop)
+
+  if (!step) return aligned
 
   const leaving = step > 0 ? current : normalizeIndex(current - 1, snaps.length)
   const stride = getStride(geometry, leaving)
 
-  return transform - step * stride
+  return aligned - step * stride
 }
 
 export const getScrollToTarget = (
@@ -71,12 +73,13 @@ export const getMomentumSnap = ({
   if (dragFree) return projected
 
   const startIndex = getSnapIndex(startTransform, geometry, loop)
+  const start = alignToSnap(startTransform, geometry, loop)
   const yardstick = geometry.sizes[startIndex] || ONE_STEP
   const steps = clamp(
-    Math.round((startTransform - projected) / yardstick),
+    Math.round((start - projected) / yardstick),
     -ONE_STEP,
     ONE_STEP
   )
 
-  return getStepTarget(startTransform, geometry, loop, steps)
+  return getStepTarget(start, geometry, loop, steps)
 }

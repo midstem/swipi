@@ -75,6 +75,7 @@ export const setupEvents = ({
     }
 
     drag.isDragging = true
+    drag.startTransform = getTransform()
     capturePointer(viewport, event.pointerId, true)
     return true
   }

@@ -16,6 +16,12 @@ const INSTANT = { animationSpeed: 0, slideWidth: SLIDE_WIDTH }
 
 const AUTOPLAY_SPEED = 100
 
+const ANIMATION_SPEED = 300
+
+const HELD_BUTTON = 1
+
+const NO_BUTTON = 0
+
 let engine: SwipiApi | null = null
 let viewport: HTMLElement
 
@@ -24,6 +30,31 @@ const mount = (options = {}): SwipiApi => {
   engine = createSwipi(viewport, { ...INSTANT, ...options })
 
   return engine
+}
+
+const pointer = (
+  type: string,
+  clientX: number,
+  buttons = HELD_BUTTON
+): void => {
+  viewport.dispatchEvent(
+    new PointerEvent(type, {
+      bubbles: true,
+      pointerId: 1,
+      pointerType: 'mouse',
+      button: type === 'pointermove' ? -1 : 0,
+      buttons,
+      clientX,
+      clientY: 0
+    })
+  )
+}
+
+const swipe = (from: number, to: number): void => {
+  pointer('pointerdown', from)
+  pointer('pointermove', (from + to) / 2)
+  pointer('pointermove', to)
+  pointer('pointerup', to, NO_BUTTON)
 }
 
 afterEach(() => {
@@ -92,6 +123,27 @@ describe('createSwipi', () => {
       vi.advanceTimersByTime(AUTOPLAY_SPEED)
 
       expect(swipi.getSnapshot().selectedIndex).toBe(2)
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it('lands on a slide when a drag interrupts the running animation', () => {
+    vi.useFakeTimers()
+
+    try {
+      mount({ loop: true, animationSpeed: ANIMATION_SPEED })
+
+      swipe(600, 300)
+      vi.advanceTimersByTime(ANIMATION_SPEED / 3)
+
+      const interrupted = getTrackOffset(viewport)
+
+      swipe(300, 600)
+      vi.advanceTimersByTime(ANIMATION_SPEED)
+
+      expect(Math.abs(interrupted) % SLIDE_WIDTH).not.toBe(0)
+      expect(Math.abs(getTrackOffset(viewport)) % SLIDE_WIDTH).toBe(0)
     } finally {
       vi.useRealTimers()
     }
