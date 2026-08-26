@@ -91,11 +91,14 @@ const published = AREAS.filter((area) => area.package).map((area) => ({
   needed: engine || touched(new RegExp(`^packages/${area.name}/`))
 }))
 
+const needed = published.filter((area) => area.needed)
+
 const output = [
   ...published.map((area) => `${area.name}=${area.needed}`),
+  `sizes=${JSON.stringify(needed.map((area) => ({ name: area.name, dir: `packages/${area.name}` })))}`,
   `pages=${touched(/^tools\/scripts\/(build-pages|copy-root-docs)\.mjs$/)}`,
   `areas=${JSON.stringify(matrix)}`,
-  `packages=${JSON.stringify(published.filter((a) => a.needed).map((a) => a.package))}`
+  `packages=${JSON.stringify(needed.map((area) => area.package))}`
 ]
 
 appendFileSync(process.env.GITHUB_OUTPUT, `${output.join('\n')}\n`)

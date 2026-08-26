@@ -29,6 +29,9 @@ outputs:
   areas:
     description: A JSON array of the workspace groups that need checking
     value: ${{ steps.detect.outputs.areas }}
+  sizes:
+    description: A JSON array of the packages whose bundle size needs measuring
+    value: ${{ steps.detect.outputs.sizes }}
   packages:
     description: A JSON array of the published packages that need checking
     value: ${{ steps.detect.outputs.packages }}
