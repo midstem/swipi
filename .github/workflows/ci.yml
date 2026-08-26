@@ -1,13 +1,45 @@
 name: CI
 
 on:
+  workflow_dispatch:
+    inputs:
+      all:
+        description: Run every check, whatever changed
+        type: boolean
+        default: true
   pull_request:
     branches: [main]
   push:
     branches: [main]
 
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
-  quality:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      core: ${{ steps.areas.outputs.core }}
+      react: ${{ steps.areas.outputs.react }}
+      vue: ${{ steps.areas.outputs.vue }}
+      svelte: ${{ steps.areas.outputs.svelte }}
+      angular: ${{ steps.areas.outputs.angular }}
+      pages: ${{ steps.areas.outputs.pages }}
+      areas: ${{ steps.areas.outputs.areas }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Work out the changed areas
+        id: areas
+        uses: ./.github/actions/changed-areas
+        with:
+          all: ${{ inputs.all || 'false' }}
+
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,22 +57,65 @@ jobs:
       - name: Lint
         run: npm run lint
 
+  checks:
+    needs: changes
+    if: needs.changes.outputs.areas != '[]'
+    runs-on: ubuntu-latest
+    name: checks ${{ matrix.area.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        area: ${{ fromJSON(needs.changes.outputs.areas) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Typecheck
-        run: npm run typecheck
+        run: npm run typecheck ${{ matrix.area.workspaces }}
 
       - name: Test
-        run: npm run test:run
+        run: npm run test:run ${{ matrix.area.workspaces }}
 
       - name: Build
-        run: npm run build
+        if: matrix.area.package != ''
+        run: npm run build --workspace ${{ matrix.area.package }}
 
       - name: Verify the published package
-        run: npm run verify:package
+        if: matrix.area.package != ''
+        run: npm run verify:package --workspace ${{ matrix.area.package }}
+
+  playgrounds:
+    needs: changes
+    if: needs.changes.outputs.pages == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Build the playgrounds
         run: npm run build:pages
 
   bundle-size-engine:
+    needs: changes
+    if: needs.changes.outputs.core == 'true'
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
@@ -89,6 +164,8 @@ jobs:
           fi
 
   bundle-size-react:
+    needs: changes
+    if: needs.changes.outputs.react == 'true'
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
@@ -137,6 +214,8 @@ jobs:
           fi
 
   react-compatibility:
+    needs: changes
+    if: needs.changes.outputs.react == 'true'
     runs-on: ubuntu-latest
     name: react ${{ matrix.react }}
     strategy:
@@ -174,6 +253,8 @@ jobs:
         run: npm run typecheck:package
 
   bundle-size-vue:
+    needs: changes
+    if: needs.changes.outputs.vue == 'true'
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
@@ -222,6 +303,8 @@ jobs:
           fi
 
   vue-compatibility:
+    needs: changes
+    if: needs.changes.outputs.vue == 'true'
     runs-on: ubuntu-latest
     name: vue ${{ matrix.vue }}
     strategy:
@@ -256,6 +339,8 @@ jobs:
         run: npm run typecheck:package --workspace @midstem/swipi-vue
 
   bundle-size-svelte:
+    needs: changes
+    if: needs.changes.outputs.svelte == 'true'
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
@@ -304,6 +389,8 @@ jobs:
           fi
 
   svelte-compatibility:
+    needs: changes
+    if: needs.changes.outputs.svelte == 'true'
     runs-on: ubuntu-latest
     name: svelte ${{ matrix.svelte }}
     strategy:
@@ -338,6 +425,8 @@ jobs:
         run: npm run typecheck:package --workspace @midstem/swipi-svelte
 
   bundle-size-angular:
+    needs: changes
+    if: needs.changes.outputs.angular == 'true'
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
@@ -386,6 +475,8 @@ jobs:
           fi
 
   angular-compatibility:
+    needs: changes
+    if: needs.changes.outputs.angular == 'true'
     runs-on: ubuntu-latest
     name: angular ${{ matrix.angular }}
     strategy:

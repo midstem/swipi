@@ -2,25 +2,45 @@ name: Validation of publication readiness
 
 on:
   workflow_dispatch:
+    inputs:
+      all:
+        description: Verify every package, whatever changed
+        type: boolean
+        default: true
   push:
     branches: [main]
 
+concurrency:
+  group: verify-published-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.areas.outputs.packages }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Work out the changed areas
+        id: areas
+        uses: ./.github/actions/changed-areas
+        with:
+          all: ${{ inputs.all || 'false' }}
+
   consumer-app:
+    needs: changes
+    if: needs.changes.outputs.packages != '[]'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     name: ${{ matrix.package }}
     strategy:
       fail-fast: false
       matrix:
-        package:
-          [
-            '@midstem/swipi',
-            '@midstem/swipi-react',
-            '@midstem/swipi-vue',
-            '@midstem/swipi-svelte',
-            '@midstem/swipi-angular'
-          ]
+        package: ${{ fromJSON(needs.changes.outputs.packages) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7

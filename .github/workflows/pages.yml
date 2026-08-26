@@ -4,6 +4,12 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
+    paths:
+      - 'packages/**'
+      - 'apps/**'
+      - 'tools/scripts/build-pages.mjs'
+      - 'package-lock.json'
+      - '.github/workflows/pages.yml'
 
 concurrency:
   group: pages

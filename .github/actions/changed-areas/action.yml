@@ -1,0 +1,46 @@
+name: Changed areas
+description: Reports which parts of the monorepo a push or a pull request touches
+
+inputs:
+  all:
+    description: Treat every area as changed
+    required: false
+    default: 'false'
+
+outputs:
+  core:
+    description: The engine, and therefore every adapter, needs checking
+    value: ${{ steps.detect.outputs.core }}
+  react:
+    description: The React adapter needs checking
+    value: ${{ steps.detect.outputs.react }}
+  vue:
+    description: The Vue adapter needs checking
+    value: ${{ steps.detect.outputs.vue }}
+  svelte:
+    description: The Svelte adapter needs checking
+    value: ${{ steps.detect.outputs.svelte }}
+  angular:
+    description: The Angular adapter needs checking
+    value: ${{ steps.detect.outputs.angular }}
+  pages:
+    description: The playgrounds need rebuilding
+    value: ${{ steps.detect.outputs.pages }}
+  areas:
+    description: A JSON array of the workspace groups that need checking
+    value: ${{ steps.detect.outputs.areas }}
+  packages:
+    description: A JSON array of the published packages that need checking
+    value: ${{ steps.detect.outputs.packages }}
+
+runs:
+  using: composite
+  steps:
+    - name: Detect
+      id: detect
+      shell: bash
+      env:
+        RUN_ALL: ${{ inputs.all }}
+        BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+        HEAD_SHA: ${{ github.sha }}
+      run: node "$GITHUB_ACTION_PATH/detect.mjs"
