@@ -1,4 +1,9 @@
-import { NO_VELOCITY, VELOCITY_STALE_TIME } from '#src/constants'
+import {
+  MOUSE_POINTER,
+  NO_BUTTONS,
+  NO_VELOCITY,
+  VELOCITY_STALE_TIME
+} from '#src/constants'
 import { getDragVelocity } from '#src/modules/drag'
 import { DragState } from './types'
 
@@ -43,5 +48,8 @@ export const getReleaseVelocity = (drag: DragState): number => {
     duration: drag.lastAt - drag.previousAt
   })
 }
+
+export const isPointerReleased = (event: PointerEvent): boolean =>
+  event.pointerType === MOUSE_POINTER && event.buttons === NO_BUTTONS
 
 export const preventDragStart = (event: Event): void => event.preventDefault()

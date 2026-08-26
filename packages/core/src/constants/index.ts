@@ -13,6 +13,10 @@ export const DRAG_THRESHOLD = 5
 
 export const PRIMARY_BUTTON = 0
 
+export const NO_BUTTONS = 0
+
+export const MOUSE_POINTER = 'mouse'
+
 export const VELOCITY_STALE_TIME = 100
 
 export const NO_VELOCITY = 0
