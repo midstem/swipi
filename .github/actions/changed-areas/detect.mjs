@@ -93,7 +93,7 @@ const published = AREAS.filter((area) => area.package).map((area) => ({
 
 const output = [
   ...published.map((area) => `${area.name}=${area.needed}`),
-  `pages=${shared || touched(/^packages\//, /^apps\//)}`,
+  `pages=${touched(/^tools\/scripts\/(build-pages|copy-root-docs)\.mjs$/)}`,
   `areas=${JSON.stringify(matrix)}`,
   `packages=${JSON.stringify(published.filter((a) => a.needed).map((a) => a.package))}`
 ]

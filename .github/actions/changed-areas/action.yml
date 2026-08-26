@@ -24,7 +24,7 @@ outputs:
     description: The Angular adapter needs checking
     value: ${{ steps.detect.outputs.angular }}
   pages:
-    description: The playgrounds need rebuilding
+    description: The playground site tooling needs rechecking
     value: ${{ steps.detect.outputs.pages }}
   areas:
     description: A JSON array of the workspace groups that need checking

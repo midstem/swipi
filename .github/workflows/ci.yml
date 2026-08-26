@@ -86,8 +86,7 @@ jobs:
         run: npm run test:run ${{ matrix.area.workspaces }}
 
       - name: Build
-        if: matrix.area.package != ''
-        run: npm run build --workspace ${{ matrix.area.package }}
+        run: npm run build ${{ matrix.area.workspaces }}
 
       - name: Verify the published package
         if: matrix.area.package != ''
