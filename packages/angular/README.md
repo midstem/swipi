@@ -20,7 +20,7 @@ nothing of ours ends up in your DOM and there is no stylesheet to import.</p>
 plain TypeScript, so it needs no Ivy compilation of its own and drops straight
 into an AOT build.</p>
 
-<p>It weighs around <b>4.9 KB gzipped</b> with Angular kept external — roughly
+<p>It weighs around <b>5.1 KB gzipped</b> with Angular kept external — roughly
 2.5× less than
 <a href="https://bundlejs.com/?q=embla-carousel-angular&treeshake=%5B%7BEmblaCarouselDirective%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22%40angular%2Fcore%22%2C%22%40angular%2Fcommon%22%5D%7D%7D"><code>embla-carousel-angular</code></a>
 measured the same way.</p>

@@ -8,9 +8,10 @@ import {
   capturePointer,
   claimDrag,
   getReleaseVelocity,
+  isInsideViewport,
   isPointerReleased,
-  preventDragStart,
-  releaseDrag
+  releaseDrag,
+  wrapsViewport
 } from './helpers'
 
 export const setupEvents = ({
@@ -153,6 +154,17 @@ export const setupEvents = ({
     finishDrag(drag)
   }
 
+  const onDragStart = (event: Event): void => {
+    const { target } = event
+
+    if (
+      isInsideViewport(target, viewport) ||
+      (dragState && wrapsViewport(target, viewport))
+    ) {
+      event.preventDefault()
+    }
+  }
+
   const onClick = (event: MouseEvent): void => {
     if (!shouldPreventClick) return
 
@@ -181,7 +193,7 @@ export const setupEvents = ({
     onPointerUp as EventListener,
     PASSIVE
   )
-  viewport.addEventListener('dragstart', preventDragStart)
+  ownerDocument.addEventListener('dragstart', onDragStart, CAPTURE)
   viewport.addEventListener('click', onClick as EventListener, CAPTURE)
 
   return () => {
@@ -194,7 +206,7 @@ export const setupEvents = ({
       'pointercancel',
       onPointerUp as EventListener
     )
-    viewport.removeEventListener('dragstart', preventDragStart)
+    ownerDocument.removeEventListener('dragstart', onDragStart, CAPTURE)
     viewport.removeEventListener('click', onClick as EventListener, CAPTURE)
   }
 }

@@ -16,7 +16,7 @@ the engine — drag, momentum, snapping, looping, autoplay — and hands back a
 small imperative API. The markup, the CSS and the accessibility stay yours, so
 nothing of ours ends up in your DOM and there is no stylesheet to import.</p>
 
-<p>It weighs around <b>5 KB gzipped</b> and depends on nothing. This is not a
+<p>It weighs around <b>4.5 KB gzipped</b> and depends on nothing. This is not a
 port of the framework adapters — <a
 href="https://npmjs.org/package/@midstem/swipi-react"><code>@midstem/swipi-react</code></a>,
 <a href="https://npmjs.org/package/@midstem/swipi-vue"><code>@midstem/swipi-vue</code></a>,

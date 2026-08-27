@@ -23,9 +23,9 @@ Every adapter bundles the engine, so you install one package and nothing else.
 | Package                                        | Version                          | Size                            | Compared to Embla |
 | ---------------------------------------------- | -------------------------------- | ------------------------------- | ----------------- |
 | [`@midstem/swipi`](packages/core) — the engine | [![npm][v-core]][npm-core]       | [![size][s-core]][b-core]       | no dependencies   |
-| [`@midstem/swipi-react`](packages/react)       | [![npm][v-react]][npm-react]     | [![size][s-react]][b-react]     | ~1.7× smaller     |
+| [`@midstem/swipi-react`](packages/react)       | [![npm][v-react]][npm-react]     | [![size][s-react]][b-react]     | ~1.6× smaller     |
 | [`@midstem/swipi-vue`](packages/vue)           | [![npm][v-vue]][npm-vue]         | [![size][s-vue]][b-vue]         | ~1.7× smaller     |
-| [`@midstem/swipi-svelte`](packages/svelte)     | [![npm][v-svelte]][npm-svelte]   | [![size][s-svelte]][b-svelte]   | ~1.7× smaller     |
+| [`@midstem/swipi-svelte`](packages/svelte)     | [![npm][v-svelte]][npm-svelte]   | [![size][s-svelte]][b-svelte]   | ~1.6× smaller     |
 | [`@midstem/swipi-angular`](packages/angular)   | [![npm][v-angular]][npm-angular] | [![size][s-angular]][b-angular] | ~2.5× smaller     |
 
 Sizes are gzipped with the framework kept external, and the Embla column
