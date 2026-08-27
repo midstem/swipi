@@ -27,13 +27,7 @@ const generateNotes = ({ previousTag, location }) => {
   return lines.join('\n')
 }
 
-export const buildArgs = ({
-  tag,
-  previousTag,
-  location,
-  note,
-  prerelease
-}) => {
+export const buildArgs = ({ tag, previousTag, location, note, prerelease }) => {
   const changes = generateNotes({ previousTag, location })
   const body = [note, changes].filter(Boolean).join('\n\n')
 
