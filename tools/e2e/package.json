@@ -1,0 +1,17 @@
+{
+  "name": "@tools/e2e",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Cross-browser Playwright checks for the Swipi playgrounds",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "playwright test",
+    "test:e2e:firefox": "playwright test --project=firefox",
+    "install:browsers": "playwright install chromium firefox webkit"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.0",
+    "@types/node": "^24.0.0"
+  }
+}

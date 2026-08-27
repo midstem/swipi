@@ -39,3 +39,7 @@ dist-pages
 vitest-report.json
 bundle-size-*.md
 failing-tests-*.md
+
+# playwright
+tools/e2e/test-results
+tools/e2e/playwright-report
