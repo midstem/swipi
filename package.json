@@ -36,6 +36,8 @@
     "lint:fix": "eslint --cache ./packages ./apps --quiet --fix",
     "lint:format": "prettier --write --log-level warn \"./**/*.{js,jsx,mjs,ts,tsx,svelte,css,md,json}\"",
     "lint-tsc": "npm run build --workspace @midstem/swipi && npm run lint:format && npm run lint:fix && npm run typecheck",
+    "test:e2e": "npm run test:e2e --workspace @tools/e2e",
+    "test:e2e:firefox": "npm run test:e2e:firefox --workspace @tools/e2e",
     "build:pages": "node tools/scripts/build-pages.mjs",
     "release": "node tools/release/index.mjs"
   },
