@@ -16,8 +16,8 @@
 small object of state. The markup, the CSS and the accessibility stay yours, so
 nothing of ours ends up in your DOM and there is no stylesheet to import.</p>
 
-<p>It weighs around <b>4.7 KB gzipped</b> with React kept external — roughly
-1.7× less than
+<p>It weighs around <b>5 KB gzipped</b> with React kept external — roughly
+1.6× less than
 <a href="https://bundlejs.com/?q=embla-carousel-react&treeshake=%5B%7Bdefault%7D%5D&config=%7B%22esbuild%22%3A%7B%22external%22%3A%5B%22react%22%2C%22react-dom%22%5D%7D%7D"><code>embla-carousel-react</code></a>
 measured the same way.</p>
 
