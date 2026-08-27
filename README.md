@@ -64,11 +64,16 @@ builds all five the way the deployment does.
 
 ## 🔥 <a href='https://swipi.midstem.net'>View more examples and create a custom slider</a>
 
-## Documentation
+## Contributing
 
-For advanced usage, available options, responsive layout specifics, state
-management, and accessibility guidelines, please refer to our full documentation
-at [https://swipi.midstem.net/docs/](https://swipi.midstem.net/docs/).
+We welcome contributions! Please read the [Contributing Guide](CONTRIBUTING.md)
+to learn how to set up the project, run checks, and submit pull requests.
+
+## Community
+
+- [Code of Conduct](CODE_OF_CONDUCT.md) — please read before participating
+- [Security Policy](SECURITY.md) — how to report vulnerabilities
+- [Changelog](CHANGELOG.md) — notable changes across releases
 
 ## License
 
