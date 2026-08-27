@@ -32,7 +32,13 @@ export const release = async ({ entry, published, prompt, dryRun }) => {
     '\nA line for the top of the release notes (Enter to skip): '
   )
 
-  const args = buildArgs({ tag, previousTag, note, prerelease })
+  const args = buildArgs({
+    tag,
+    previousTag,
+    location: entry.location,
+    note,
+    prerelease
+  })
 
   step('about to create the GitHub release')
 

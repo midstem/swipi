@@ -1,6 +1,42 @@
 import { MAIN_BRANCH } from '../../constants.mjs'
+import { capture } from '../shell/index.mjs'
 
-export const buildArgs = ({ tag, previousTag, note, prerelease }) => {
+const generateNotes = ({ previousTag, location }) => {
+  if (!previousTag) return ''
+
+  const paths = [location]
+
+  if (location !== 'packages/core') paths.push('packages/core')
+
+  const lines = capture('git', [
+    'log',
+    `${previousTag}..HEAD`,
+    '--format=* %s',
+    '--',
+    ...paths
+  ])
+    .split('\n')
+    .filter((line) => line !== '' && !line.includes('update version of'))
+
+  if (!lines.length) {
+    return location === 'packages/core'
+      ? ''
+      : 'Rebuilt with the latest `@midstem/swipi` engine.'
+  }
+
+  return lines.join('\n')
+}
+
+export const buildArgs = ({
+  tag,
+  previousTag,
+  location,
+  note,
+  prerelease
+}) => {
+  const changes = generateNotes({ previousTag, location })
+  const body = [note, changes].filter(Boolean).join('\n\n')
+
   const args = [
     'release',
     'create',
@@ -9,11 +45,10 @@ export const buildArgs = ({ tag, previousTag, note, prerelease }) => {
     MAIN_BRANCH,
     '--title',
     tag,
-    '--generate-notes'
+    '--notes',
+    body || 'Maintenance release.'
   ]
 
-  if (previousTag) args.push('--notes-start-tag', previousTag)
-  if (note) args.push('--notes', note)
   if (prerelease) args.push('--prerelease')
 
   return args
@@ -26,9 +61,16 @@ export const summary = ({
   note,
   prerelease,
   head
-}) => [
-  `  tag         ${tag}`,
-  `  target      ${MAIN_BRANCH} (${head})`,
-  `  notes       pull requests since ${previousTag ?? 'the first commit'}${note ? ', under your line' : ''}`,
-  `  npm         ${entry.name}@${entry.version} on the ${prerelease ? 'next' : 'latest'} dist-tag`
-]
+}) => {
+  const scope =
+    entry.location !== 'packages/core'
+      ? `${entry.location} + packages/core`
+      : entry.location
+
+  return [
+    `  tag         ${tag}`,
+    `  target      ${MAIN_BRANCH} (${head})`,
+    `  notes       changes in ${scope} since ${previousTag ?? 'the first commit'}${note ? ', under your line' : ''}`,
+    `  npm         ${entry.name}@${entry.version} on the ${prerelease ? 'next' : 'latest'} dist-tag`
+  ]
+}

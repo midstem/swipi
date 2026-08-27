@@ -73,7 +73,7 @@ to learn how to set up the project, run checks, and submit pull requests.
 
 - [Code of Conduct](CODE_OF_CONDUCT.md) — please read before participating
 - [Security Policy](SECURITY.md) — how to report vulnerabilities
-- [Changelog](CHANGELOG.md) — notable changes across releases
+- [Releases](https://github.com/midstem/swipi/releases) — release notes for every package
 
 ## License
 
