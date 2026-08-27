@@ -1,0 +1,53 @@
+name: 💡 Feature Request
+description: Suggest a new feature or improvement
+labels: ["enhancement"]
+body:
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      description: Which package does this feature relate to?
+      options:
+        - "@midstem/swipi (core engine)"
+        - "@midstem/swipi-react"
+        - "@midstem/swipi-vue"
+        - "@midstem/swipi-svelte"
+        - "@midstem/swipi-angular"
+        - "All packages"
+        - "I don't know"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of the feature you'd like.
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: >
+        Why do you want this feature? What problem does it solve? Describe your
+        use case.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: >
+        Have you considered any alternative solutions or workarounds? If so,
+        describe them.
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: >
+        Any other context, code examples, screenshots, or links that would help
+        explain the feature.

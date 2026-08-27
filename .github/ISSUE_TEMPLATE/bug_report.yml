@@ -1,0 +1,101 @@
+name: 🐛 Bug Report
+description: Report a bug or unexpected behavior
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      description: Which package is affected?
+      options:
+        - "@midstem/swipi (core engine)"
+        - "@midstem/swipi-react"
+        - "@midstem/swipi-vue"
+        - "@midstem/swipi-svelte"
+        - "@midstem/swipi-angular"
+        - "I don't know"
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      description: >
+        What version of the package are you using? Run
+        `npm ls @midstem/swipi-react` (or the relevant package) to check.
+      placeholder: "1.0.0"
+    validations:
+      required: true
+
+  - type: input
+    id: framework-version
+    attributes:
+      label: Framework version
+      description: >
+        What version of the framework (React, Vue, Svelte, Angular) are you
+        using? Leave blank for `@midstem/swipi` (core).
+      placeholder: "React 19.0.0"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of the bug.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: >
+        Step-by-step instructions to reproduce the issue. A link to a minimal
+        reproduction (CodeSandbox, StackBlitz, or one of the
+        [playgrounds](https://midstem.github.io/swipi/)) is very helpful.
+      placeholder: |
+        1. Go to ...
+        2. Click on ...
+        3. Drag the carousel ...
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What actually happened?
+    validations:
+      required: true
+
+  - type: input
+    id: reproduction-url
+    attributes:
+      label: Reproduction URL
+      description: >
+        Link to a minimal reproduction (CodeSandbox, StackBlitz, GitHub repo).
+      placeholder: "https://codesandbox.io/s/..."
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and OS
+      description: Which browser(s) and operating system did you observe this on?
+      placeholder: "Chrome 130, macOS 15.2"
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: >
+        Anything else that might help — screenshots, console errors, related
+        issues, etc.
