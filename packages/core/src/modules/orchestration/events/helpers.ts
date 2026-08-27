@@ -52,4 +52,14 @@ export const getReleaseVelocity = (drag: DragState): number => {
 export const isPointerReleased = (event: PointerEvent): boolean =>
   event.pointerType === MOUSE_POINTER && event.buttons === NO_BUTTONS
 
-export const preventDragStart = (event: Event): void => event.preventDefault()
+export const isInsideViewport = (
+  target: EventTarget | null,
+  viewport: Element
+): boolean =>
+  !!target && 'nodeType' in target && viewport.contains(target as Node)
+
+export const wrapsViewport = (
+  target: EventTarget | null,
+  viewport: Element
+): boolean =>
+  !!target && 'nodeType' in target && (target as Node).contains(viewport)
