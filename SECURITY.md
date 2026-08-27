@@ -33,13 +33,13 @@ We provide security fixes for the **latest released version** of each package.
 Older versions do not receive backported fixes — please upgrade to the latest
 version.
 
-| Package                  | Supported          |
-| ------------------------ | ------------------ |
-| `@midstem/swipi`         | Latest version ✅  |
-| `@midstem/swipi-react`   | Latest version ✅  |
-| `@midstem/swipi-vue`     | Latest version ✅  |
-| `@midstem/swipi-svelte`  | Latest version ✅  |
-| `@midstem/swipi-angular` | Latest version ✅  |
+| Package                  | Supported         |
+| ------------------------ | ----------------- |
+| `@midstem/swipi`         | Latest version ✅ |
+| `@midstem/swipi-react`   | Latest version ✅ |
+| `@midstem/swipi-vue`     | Latest version ✅ |
+| `@midstem/swipi-svelte`  | Latest version ✅ |
+| `@midstem/swipi-angular` | Latest version ✅ |
 
 ## Scope
 
