@@ -1,13 +1,46 @@
 name: CI
 
 on:
+  workflow_dispatch:
+    inputs:
+      all:
+        description: Run every check, whatever changed
+        type: boolean
+        default: true
   pull_request:
     branches: [main]
   push:
     branches: [main]
 
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
-  quality:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      react: ${{ steps.areas.outputs.react }}
+      vue: ${{ steps.areas.outputs.vue }}
+      svelte: ${{ steps.areas.outputs.svelte }}
+      angular: ${{ steps.areas.outputs.angular }}
+      pages: ${{ steps.areas.outputs.pages }}
+      areas: ${{ steps.areas.outputs.areas }}
+      sizes: ${{ steps.areas.outputs.sizes }}
+      packages: ${{ steps.areas.outputs.packages }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Work out the changed areas
+        id: areas
+        uses: ./.github/actions/changed-areas
+        with:
+          all: ${{ inputs.all || 'false' }}
+
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,401 +58,173 @@ jobs:
       - name: Lint
         run: npm run lint
 
+  checks:
+    needs: changes
+    if: needs.changes.outputs.areas != '[]'
+    runs-on: ubuntu-latest
+    name: checks ${{ matrix.area.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        area: ${{ fromJSON(needs.changes.outputs.areas) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Typecheck
-        run: npm run typecheck
+        run: npm run typecheck ${{ matrix.area.workspaces }}
 
       - name: Test
-        run: npm run test:run
+        id: test
+        run: |
+          npm run test:run ${{ matrix.area.workspaces }} -- \
+            --reporter=default \
+            --reporter=github-actions \
+            --reporter=json \
+            --outputFile=vitest-report.json
+
+      - name: Collect the failing tests
+        if: failure() && steps.test.outcome == 'failure'
+        env:
+          NAME: ${{ matrix.area.name }}
+        run: |
+          node tools/scripts/report-tests.mjs --name "$NAME" > "failing-tests-$NAME.md"
+          cat "failing-tests-$NAME.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the failing tests
+        if: failure() && steps.test.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: report-failing-tests-${{ matrix.area.name }}
+          path: failing-tests-${{ matrix.area.name }}.md
+          if-no-files-found: ignore
+          retention-days: 1
 
       - name: Build
-        run: npm run build
+        run: npm run build ${{ matrix.area.workspaces }}
 
       - name: Verify the published package
-        run: npm run verify:package
+        if: matrix.area.package != ''
+        run: npm run verify:package --workspace ${{ matrix.area.package }}
+
+  playgrounds:
+    needs: changes
+    if: needs.changes.outputs.pages == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Build the playgrounds
         run: npm run build:pages
 
-  bundle-size-engine:
+  bundle-size:
+    needs: changes
+    if: needs.changes.outputs.sizes != '[]'
+    uses: ./.github/workflows/bundle-size.yml
+    with:
+      packages: ${{ needs.changes.outputs.sizes }}
+
+  compatibility:
+    needs: changes
+    if: needs.changes.outputs.packages != '[]'
+    uses: ./.github/workflows/compatibility.yml
+    with:
+      react: ${{ needs.changes.outputs.react == 'true' }}
+      vue: ${{ needs.changes.outputs.vue == 'true' }}
+      svelte: ${{ needs.changes.outputs.svelte == 'true' }}
+      angular: ${{ needs.changes.outputs.angular == 'true' }}
+
+  report:
+    needs: [checks, bundle-size]
+    if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
-    continue-on-error: true
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v7
+      - name: Download the reports
+        uses: actions/download-artifact@v4
         with:
-          fetch-depth: 0
+          path: reports
+          pattern: report-*
+          merge-multiple: true
 
-      - name: Setup Node
-        uses: actions/setup-node@v7
+      - name: Comment on the pull request
+        uses: actions/github-script@v7
         with:
-          node-version: 24.x
-          cache: npm
+          script: |
+            const { readdirSync, readFileSync, existsSync } = require('fs')
 
-      - name: Install dependencies
-        run: npm ci
+            const MARKER = '<!-- swipi-ci-report -->'
 
-      - name: Build
-        run: npm run build
+            const read = (prefix) =>
+              (existsSync('reports') ? readdirSync('reports') : [])
+                .filter((file) => file.startsWith(prefix))
+                .sort()
+                .map((file) => readFileSync(`reports/${file}`, 'utf8').trim())
+                .filter(Boolean)
 
-      - name: Measure this branch
-        working-directory: packages/core
-        run: |
-          cp ../../tools/scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
-          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/head-size.json"
+            const section = (heading, parts) =>
+              parts.length ? [heading, ...parts].join('\n\n') : ''
 
-      - name: Measure the base branch
-        if: github.event_name == 'pull_request'
-        continue-on-error: true
-        run: |
-          git checkout --force ${{ github.event.pull_request.base.sha }}
-          npm ci
-          npm run build
-          if [ -d packages/core ]; then cd packages/core; fi
-          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/base-size.json"
+            const body = [
+              MARKER,
+              section('## Failing tests', read('failing-tests-')),
+              section('## Bundle size', read('bundle-size-'))
+            ]
+              .filter(Boolean)
+              .join('\n\n')
 
-      - name: Report
-        run: |
-          if [ -f "$RUNNER_TEMP/base-size.json" ]; then
-            node "$RUNNER_TEMP/report-size.mjs" \
-              --current "$RUNNER_TEMP/head-size.json" \
-              --base "$RUNNER_TEMP/base-size.json" >> "$GITHUB_STEP_SUMMARY"
-          else
-            node "$RUNNER_TEMP/report-size.mjs" \
-              --current "$RUNNER_TEMP/head-size.json" >> "$GITHUB_STEP_SUMMARY"
-          fi
+            const issue = { ...context.repo, issue_number: context.issue.number }
 
-  bundle-size-react:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { ...issue, per_page: 100 }
+            )
 
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24.x
-          cache: npm
+            const existing = comments.find((comment) =>
+              comment.body?.includes(MARKER)
+            )
 
-      - name: Install dependencies
-        run: npm ci
+            if (body === MARKER) {
+              if (existing) {
+                await github.rest.issues.updateComment({
+                  ...context.repo,
+                  comment_id: existing.id,
+                  body: `${MARKER}\n\nNothing to report for this run.`
+                })
+              }
 
-      - name: Build
-        run: npm run build
+              return
+            }
 
-      - name: Measure this branch
-        working-directory: packages/react
-        run: |
-          cp ../../tools/scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
-          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/head-size.json"
+            if (existing) {
+              await github.rest.issues.updateComment({
+                ...context.repo,
+                comment_id: existing.id,
+                body
+              })
 
-      - name: Measure the base branch
-        if: github.event_name == 'pull_request'
-        continue-on-error: true
-        run: |
-          git checkout --force ${{ github.event.pull_request.base.sha }}
-          npm ci
-          npm run build
-          if [ -d packages/react ]; then cd packages/react; fi
-          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/base-size.json"
+              return
+            }
 
-      - name: Report
-        run: |
-          if [ -f "$RUNNER_TEMP/base-size.json" ]; then
-            node "$RUNNER_TEMP/report-size.mjs" \
-              --current "$RUNNER_TEMP/head-size.json" \
-              --base "$RUNNER_TEMP/base-size.json" >> "$GITHUB_STEP_SUMMARY"
-          else
-            node "$RUNNER_TEMP/report-size.mjs" \
-              --current "$RUNNER_TEMP/head-size.json" >> "$GITHUB_STEP_SUMMARY"
-          fi
-
-  react-compatibility:
-    runs-on: ubuntu-latest
-    name: react ${{ matrix.react }}
-    strategy:
-      fail-fast: false
-      matrix:
-        react: [18, 19]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24.x
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Pin React ${{ matrix.react }}
-        run: |
-          npm install --no-save --no-package-lock \
-            react@${{ matrix.react }} \
-            react-dom@${{ matrix.react }} \
-            @types/react@${{ matrix.react }} \
-            @types/react-dom@${{ matrix.react }}
-
-      - name: Test
-        run: npm run test:run
-
-      - name: Build
-        run: npm run build
-
-      - name: Typecheck the public API
-        run: npm run typecheck:package
-
-  bundle-size-vue:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24.x
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      - name: Measure this branch
-        working-directory: packages/vue
-        run: |
-          cp ../../tools/scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
-          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/head-size.json"
-
-      - name: Measure the base branch
-        if: github.event_name == 'pull_request'
-        continue-on-error: true
-        run: |
-          git checkout --force ${{ github.event.pull_request.base.sha }}
-          npm ci
-          npm run build
-          if [ -d packages/vue ]; then cd packages/vue; fi
-          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/base-size.json"
-
-      - name: Report
-        run: |
-          if [ -f "$RUNNER_TEMP/base-size.json" ]; then
-            node "$RUNNER_TEMP/report-size.mjs" \
-              --current "$RUNNER_TEMP/head-size.json" \
-              --base "$RUNNER_TEMP/base-size.json" >> "$GITHUB_STEP_SUMMARY"
-          else
-            node "$RUNNER_TEMP/report-size.mjs" \
-              --current "$RUNNER_TEMP/head-size.json" >> "$GITHUB_STEP_SUMMARY"
-          fi
-
-  vue-compatibility:
-    runs-on: ubuntu-latest
-    name: vue ${{ matrix.vue }}
-    strategy:
-      fail-fast: false
-      matrix:
-        vue: ['3.2.0', '^3.5.0']
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24.x
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build --workspace @midstem/swipi --workspace @midstem/swipi-vue
-
-      - name: Pin Vue ${{ matrix.vue }}
-        run: |
-          npm install --no-save --no-package-lock --legacy-peer-deps \
-            vue@${{ matrix.vue }}
-
-      - name: Test the adapter
-        run: npm run test:run --workspace @midstem/swipi-vue
-
-      - name: Typecheck the public API
-        run: npm run typecheck:package --workspace @midstem/swipi-vue
-
-  bundle-size-svelte:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24.x
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      - name: Measure this branch
-        working-directory: packages/svelte
-        run: |
-          cp ../../tools/scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
-          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/head-size.json"
-
-      - name: Measure the base branch
-        if: github.event_name == 'pull_request'
-        continue-on-error: true
-        run: |
-          git checkout --force ${{ github.event.pull_request.base.sha }}
-          npm ci
-          npm run build
-          if [ -d packages/svelte ]; then cd packages/svelte; fi
-          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/base-size.json"
-
-      - name: Report
-        run: |
-          if [ -f "$RUNNER_TEMP/base-size.json" ]; then
-            node "$RUNNER_TEMP/report-size.mjs" \
-              --current "$RUNNER_TEMP/head-size.json" \
-              --base "$RUNNER_TEMP/base-size.json" >> "$GITHUB_STEP_SUMMARY"
-          else
-            node "$RUNNER_TEMP/report-size.mjs" \
-              --current "$RUNNER_TEMP/head-size.json" >> "$GITHUB_STEP_SUMMARY"
-          fi
-
-  svelte-compatibility:
-    runs-on: ubuntu-latest
-    name: svelte ${{ matrix.svelte }}
-    strategy:
-      fail-fast: false
-      matrix:
-        svelte: ['4', '^5.0.0']
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24.x
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build --workspace @midstem/swipi --workspace @midstem/swipi-svelte
-
-      - name: Pin Svelte ${{ matrix.svelte }}
-        run: |
-          npm install --no-save --no-package-lock --legacy-peer-deps \
-            svelte@${{ matrix.svelte }}
-
-      - name: Test the adapter
-        run: npm run test:run --workspace @midstem/swipi-svelte
-
-      - name: Typecheck the public API
-        run: npm run typecheck:package --workspace @midstem/swipi-svelte
-
-  bundle-size-angular:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24.x
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      - name: Measure this branch
-        working-directory: packages/angular
-        run: |
-          cp ../../tools/scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
-          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/head-size.json"
-
-      - name: Measure the base branch
-        if: github.event_name == 'pull_request'
-        continue-on-error: true
-        run: |
-          git checkout --force ${{ github.event.pull_request.base.sha }}
-          npm ci
-          npm run build
-          if [ -d packages/angular ]; then cd packages/angular; fi
-          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/base-size.json"
-
-      - name: Report
-        run: |
-          if [ -f "$RUNNER_TEMP/base-size.json" ]; then
-            node "$RUNNER_TEMP/report-size.mjs" \
-              --current "$RUNNER_TEMP/head-size.json" \
-              --base "$RUNNER_TEMP/base-size.json" >> "$GITHUB_STEP_SUMMARY"
-          else
-            node "$RUNNER_TEMP/report-size.mjs" \
-              --current "$RUNNER_TEMP/head-size.json" >> "$GITHUB_STEP_SUMMARY"
-          fi
-
-  angular-compatibility:
-    runs-on: ubuntu-latest
-    name: angular ${{ matrix.angular }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - angular: '17'
-            adapter-tests: false
-          - angular: '^22.0.0'
-            adapter-tests: true
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24.x
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build --workspace @midstem/swipi --workspace @midstem/swipi-angular
-
-      - name: Pin Angular ${{ matrix.angular }}
-        run: |
-          npm install --no-save --no-package-lock --legacy-peer-deps \
-            @angular/core@${{ matrix.angular }}
-
-      - name: Test the adapter
-        if: matrix.adapter-tests
-        run: npm run test:run --workspace @midstem/swipi-angular
-
-      - name: Typecheck the public API
-        run: npm run typecheck:package --workspace @midstem/swipi-angular
+            await github.rest.issues.createComment({ ...issue, body })

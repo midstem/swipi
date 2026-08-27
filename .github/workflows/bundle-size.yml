@@ -1,0 +1,75 @@
+name: Bundle size
+
+on:
+  workflow_call:
+    inputs:
+      packages:
+        description: A JSON array of the packages to measure
+        required: true
+        type: string
+
+jobs:
+  size:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    name: ${{ matrix.package.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJSON(inputs.packages) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Measure this branch
+        working-directory: ${{ matrix.package.dir }}
+        run: |
+          cp ../../tools/scripts/report-size.mjs "$RUNNER_TEMP/report-size.mjs"
+          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/head-size.json"
+
+      - name: Measure the base branch
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        env:
+          DIR: ${{ matrix.package.dir }}
+        run: |
+          git checkout --force ${{ github.event.pull_request.base.sha }}
+          npm ci
+          npm run build
+          if [ -d "$DIR" ]; then cd "$DIR"; fi
+          node "$RUNNER_TEMP/report-size.mjs" --json "$RUNNER_TEMP/base-size.json"
+
+      - name: Report
+        env:
+          NAME: ${{ matrix.package.name }}
+        run: |
+          if [ -f "$RUNNER_TEMP/base-size.json" ]; then
+            node "$RUNNER_TEMP/report-size.mjs" --name "$NAME" \
+              --current "$RUNNER_TEMP/head-size.json" \
+              --base "$RUNNER_TEMP/base-size.json" > "bundle-size-$NAME.md"
+          else
+            node "$RUNNER_TEMP/report-size.mjs" --name "$NAME" \
+              --current "$RUNNER_TEMP/head-size.json" > "bundle-size-$NAME.md"
+          fi
+          cat "bundle-size-$NAME.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload the report
+        uses: actions/upload-artifact@v4
+        with:
+          name: report-bundle-size-${{ matrix.package.name }}
+          path: bundle-size-${{ matrix.package.name }}.md
+          retention-days: 1

@@ -1,0 +1,170 @@
+name: Compatibility
+
+on:
+  workflow_call:
+    inputs:
+      react:
+        description: Check the React adapter against the supported React versions
+        type: boolean
+        default: false
+      vue:
+        description: Check the Vue adapter against the supported Vue versions
+        type: boolean
+        default: false
+      svelte:
+        description: Check the Svelte adapter against the supported Svelte versions
+        type: boolean
+        default: false
+      angular:
+        description: Check the Angular adapter against the supported Angular versions
+        type: boolean
+        default: false
+
+jobs:
+  react:
+    if: inputs.react
+    runs-on: ubuntu-latest
+    name: react ${{ matrix.react }}
+    strategy:
+      fail-fast: false
+      matrix:
+        react: [18, 19]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Pin React ${{ matrix.react }}
+        run: |
+          npm install --no-save --no-package-lock \
+            react@${{ matrix.react }} \
+            react-dom@${{ matrix.react }} \
+            @types/react@${{ matrix.react }} \
+            @types/react-dom@${{ matrix.react }}
+
+      - name: Build
+        run: npm run build --workspace @midstem/swipi --workspace @midstem/swipi-react
+
+      - name: Test the adapter
+        run: npm run test:run --workspace @midstem/swipi-react
+
+      - name: Typecheck the public API
+        run: npm run typecheck:package --workspace @midstem/swipi-react
+
+  vue:
+    if: inputs.vue
+    runs-on: ubuntu-latest
+    name: vue ${{ matrix.vue }}
+    strategy:
+      fail-fast: false
+      matrix:
+        vue: ['3.2.0', '^3.5.0']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build --workspace @midstem/swipi --workspace @midstem/swipi-vue
+
+      - name: Pin Vue ${{ matrix.vue }}
+        run: |
+          npm install --no-save --no-package-lock --legacy-peer-deps \
+            vue@${{ matrix.vue }}
+
+      - name: Test the adapter
+        run: npm run test:run --workspace @midstem/swipi-vue
+
+      - name: Typecheck the public API
+        run: npm run typecheck:package --workspace @midstem/swipi-vue
+
+  svelte:
+    if: inputs.svelte
+    runs-on: ubuntu-latest
+    name: svelte ${{ matrix.svelte }}
+    strategy:
+      fail-fast: false
+      matrix:
+        svelte: ['4', '^5.0.0']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build --workspace @midstem/swipi --workspace @midstem/swipi-svelte
+
+      - name: Pin Svelte ${{ matrix.svelte }}
+        run: |
+          npm install --no-save --no-package-lock --legacy-peer-deps \
+            svelte@${{ matrix.svelte }}
+
+      - name: Test the adapter
+        run: npm run test:run --workspace @midstem/swipi-svelte
+
+      - name: Typecheck the public API
+        run: npm run typecheck:package --workspace @midstem/swipi-svelte
+
+  angular:
+    if: inputs.angular
+    runs-on: ubuntu-latest
+    name: angular ${{ matrix.angular }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - angular: '17'
+            adapter-tests: false
+          - angular: '^22.0.0'
+            adapter-tests: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build --workspace @midstem/swipi --workspace @midstem/swipi-angular
+
+      - name: Pin Angular ${{ matrix.angular }}
+        run: |
+          npm install --no-save --no-package-lock --legacy-peer-deps \
+            @angular/core@${{ matrix.angular }}
+
+      - name: Test the adapter
+        if: matrix.adapter-tests
+        run: npm run test:run --workspace @midstem/swipi-angular
+
+      - name: Typecheck the public API
+        run: npm run typecheck:package --workspace @midstem/swipi-angular
